@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
+	//"os"
 	"strings"
 
 	"fmt"
@@ -119,12 +119,21 @@ func main() {
 	sid_to_sock.mutex = sync.RWMutex{}
 
 	// IF HEROKU BUILD
+	//goth.UseProviders(google.New(
+	//	"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
+	//	"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",
+	//	"https://testfdfdfd-504b74ad04fd.herokuapp.com/callback",
+	//))
+	
 	goth.UseProviders(google.New(
 		"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
 		"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",
-		"https://testfdfdfd-504b74ad04fd.herokuapp.com/callback",
+		"http://ec2-3-21-28-93.us-east-2.compute.amazonaws.com:3000/callback",
 	))
-	port = os.Getenv("PORT")
+
+
+	//port = os.Getenv("PORT")
+	port = "3000"
 	// ALSO TURN :WS TO :WSS IN CHAT.HTML
 
 	/*
@@ -522,14 +531,15 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("/login (Redirected to Google)")
 
 	session, err := store.Get(req, "session-name")
-	//fmt.Println("session values: ", session.Values)
-	//fmt.Println("session id: ", session.ID)
+	fmt.Println("session values: ", session.Values)
+	fmt.Println("session id: ", session.ID)
 	if err != nil {
+		fmt.Println("error here")
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-
+		log.Println("1")
 		t := template.Must(template.ParseFiles(filepath.Join("static", "user.html")))
 		session, err := store.Get(req, "session-name")
 		if err != nil {
@@ -556,6 +566,8 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 		uid_to_user.users[uid] = user_object
 		uid_to_user.mutex.Unlock()
 
+		log.Println("2")
+
 		var user2 = &struct {
 			Email        string
 			AvatarURL    string
@@ -572,6 +584,7 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 			RefreshToken: session.Values["RefreshToken"].(string),
 		}
 
+		log.Println("3")
 		t.Execute(res, user2)
 	} else {
 		gothic.BeginAuthHandler(res, req)

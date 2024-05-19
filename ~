@@ -1,0 +1,25 @@
+console.log("loaded js");
+
+var c = document.getElementById("myCanvas");
+const ctx = c.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || window.msRequestAnimationFrame || function(f){return setTimeout(f,1000/60)};
+window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
+
+ctx.beginPath();
+ctx.rect(20, 20, 150, 100);
+ctx.stroke();
+
+
+var x = 200;
+function anime() {
+	requestAnimationFrame(anime);
+	c.beginPath();
+	c.arc(x,200,30,0,Math.PI*2,false);
+	c.strokeStyle='blue';
+	c.stroke();
+	x += 1;
+	console.log("hi")
+}
+anime()

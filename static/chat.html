@@ -1,0 +1,97 @@
+<html>
+  <head>
+    <title>Chat</title>
+    <style>
+
+      input { display: block; }
+      ul    { list-style: none; }
+
+    </style>  
+  </head>
+  <body>
+    <p>room #{{.room_id}}</p>
+
+    <ul id="messages"></ul>
+    <form id="chatbox">
+      {{.email}}:<br/>
+      <textarea></textarea>
+      <input type="submit" value="Send" />
+    </form>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script>
+
+      $(function(){
+
+        var socket = null;
+        var msgBox = $("#chatbox textarea");
+        var messages = $("#messages");
+
+        $("#chatbox").submit(function(){
+
+          if (!msgBox.val()) return false;
+          if (!socket) {
+            alert("Error: There is no socket connection.");
+            return false;
+          }
+          socket.send(JSON.stringify({'Message': msgBox.val(), 'Event':"hello"}));
+          msgBox.val("");
+          return false;
+
+        });
+
+        if (!window["WebSocket"]) {
+          alert("Error: Your browser does not support web sockets.")
+        } else {
+          socket = new WebSocket("wss://{{.host}}/room?rid={{.room_id}}");
+          socket.onclose = function() {
+            alert("Connection has been closed.");
+          }
+          // Send a ping event every 10 seconds, have to either later remove this when we move away from heroku, or server-side internalize the ping event
+          setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 10000);
+
+          socket.onmessage = function(e) {
+            var msg = eval('('+e.data+')');
+
+            var msg_date = msg.When.substring(0,10);
+            var msg_time = msg.When.substring(11,19);
+
+            console.log(msg.Event, msg.Name)
+
+            if(msg.Event == 'entered') {
+              messages.append(
+                      $('<li>').append(
+                              $('<span>').text(msg_date + ' '),
+                              $('<span>').text(msg_time + ' '),
+                              $('<span>').text(msg.Name + ' has entered the chat!'),
+                      )
+              );
+            }
+            else if(msg.Event == 'left') {
+              messages.append(
+                      $('<li>').append(
+                              $('<span>').text(msg_date + ' '),
+                              $('<span>').text(msg_time + ' '),
+                              $('<span>').text(msg.Name + ' has left the chat!'),
+                      )
+              );
+            }
+            else {
+              messages.append(
+                      $('<li>').append(
+                              $('<span>').text(msg_date + ' '),
+                              $('<span>').text(msg_time + ' '),
+                              $('<span>').text(msg.Name + ': '),
+                              $('<span>').text(msg.Message)
+                      )
+              );
+            }
+
+          }
+        }
+
+      });
+
+    </script>
+  </body>
+</html>

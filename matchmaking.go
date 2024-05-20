@@ -32,7 +32,7 @@ func ms_read(ms *match_socket) {
 
 			msg.When = time.Now()
 			msg.Name = ms.u.email
-			fmt.Println("message~", msg.Name, ms.m.mid, ": ", msg.Message)
+			fmt.Println("message~", msg.Name, ": ", msg.Message)
 
 			if msg.Event == "ping" {
 				fmt.Println("ping!")

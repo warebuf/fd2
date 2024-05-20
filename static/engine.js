@@ -81,7 +81,7 @@ $(function(){
 	if (!window["WebSocket"]) {
 		alert("Error: Your browser does not support web sockets.")
 	} else {
-		socket = new WebSocket("ws://{{.host}}/room?rid={{.room_id}}");
+		socket = new WebSocket("ws://{{.host}}/matchmaking");
 		socket.onclose = function() {
 			alert("Connection has been closed.");
 		}

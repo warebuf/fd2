@@ -54,4 +54,16 @@ function removeB2() {
 	var button = document.getElementById("b2");
 	button.remove();
 	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Connect to a Match</button>");
+
+	document.getElementById("container").insertAdjacentHTML('beforeend',
+		"<div id=\"format\">\n" +
+		"\t\t<label>Choose a Format:</label>\n" +
+		"\t\t<select>\n" +
+		"\t\t\t<option>Free For All</option>\n" +
+		"\t\t\t<option>Team</option>\n" +
+		"\t\t\t<option>1vX</option>\n" +
+		"\t\t</select>\n" +
+		"\n" +
+		"\t</div>");
+
 }

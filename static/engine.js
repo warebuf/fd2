@@ -38,6 +38,13 @@ function anime() {
 anime()
 
 function removeB1() {
+
+	// send message to server to create match
+	var e1 = document.getElementById("formatselect").value;
+	var e2 = document.getElementById("opponentselect").value;
+	socket.send(JSON.stringify({ "Event": 'createMatch', "Message": e1 + ' ' + e2 }))
+
+
 	var button = document.getElementById("b1");
 	button.remove();
 	var menu1 = document.getElementById("opponent");
@@ -49,10 +56,6 @@ function removeB1() {
 
 	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");
 
-	// send message to server to create match
-	var e1 = document.getElementById("formatselect").value;
-	var e2 = document.getElementById("opponentselect").value;
-	socket.send(JSON.stringify({ "Event": 'createMatch', "Message": e1 + ' ' + e2 }))
 
 }
 

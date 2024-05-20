@@ -37,6 +37,7 @@ func ms_read(ms *match_socket) {
 			if msg.Event == "ping" {
 				fmt.Println("ping!")
 			} else if msg.Event == "hello" {
+				fmt.Println("hello!")
 				ms.m.broadcast <- msg
 			}
 		} else {

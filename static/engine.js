@@ -37,6 +37,27 @@ function anime() {
 }
 anime()
 
+var socket = null;
+
+function test() {
+
+	if (!window["WebSocket"]) {
+		alert("Error: Your browser does not support web sockets.")
+	} else {
+		socket = new WebSocket("ws://{{.host}}/matchmaking");
+		socket.onclose = function() {
+			alert("Connection has been closed.");
+		}
+		// Send a ping event every 100 seconds, have to either later remove this when we move away from heroku, or server-side internalize the ping event
+		setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 100000);
+
+		socket.onmessage = function(e) {
+			console.log(msg.Event, msg.Name)
+		}
+	}
+}
+test()
+
 function removeB1() {
 
 	// send message to server to create match
@@ -55,8 +76,7 @@ function removeB1() {
 	menu2.remove();
 
 	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");
-
-
+	
 }
 
 function removeB2() {

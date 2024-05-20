@@ -87,30 +87,5 @@
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
 <script src="/static/engine.js"></script>
 
-<script>
-	function test() {
-		var socket = null;
-
-		if (!window["WebSocket"]) {
-			alert("Error: Your browser does not support web sockets.")
-		} else {
-			socket = new WebSocket("ws://{{.host}}/matchmaking");
-			socket.onclose = function() {
-				alert("Connection has been closed.");
-			}
-			// Send a ping event every 100 seconds, have to either later remove this when we move away from heroku, or server-side internalize the ping event
-			setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 100000);
-
-			socket.onmessage = function(e) {
-				console.log(msg.Event, msg.Name)
-			}
-		}
-	}
-	test()
-</script>
-
-
-
-
 </body>
 </html>

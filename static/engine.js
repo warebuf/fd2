@@ -56,6 +56,12 @@ function removeB2() {
 	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Connect to a Match</button>");
 
 	document.getElementById("container").insertAdjacentHTML('beforeend',
+		"<div id=\"opponent\"> <label>Choose an Opponent:</label> <select> " +
+		"			<option value=bot>player vs. bot</option>" +
+			"</select>	</div>");
+
+
+	document.getElementById("container").insertAdjacentHTML('beforeend',
 		"<div id=\"format\">\n" +
 		"\t\t<label>Choose a Format:</label>\n" +
 		"\t\t<select>\n" +

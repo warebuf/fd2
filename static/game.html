@@ -88,11 +88,26 @@
 <script src="/static/engine.js"></script>
 
 <script>
-	$(function(){
-
+	function test() {
 		console.log("hello")
+		var socket = null;
 
-	});
+		if (!window["WebSocket"]) {
+			alert("Error: Your browser does not support web sockets.")
+		} else {
+			socket = new WebSocket("ws://{{.host}}/matchmaking");
+			socket.onclose = function() {
+				alert("Connection has been closed.");
+			}
+			// Send a ping event every 5 seconds, have to either later remove this when we move away from heroku, or server-side internalize the ping event
+			setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 5000);
+
+			socket.onmessage = function(e) {
+				console.log(msg.Event, msg.Name)
+			}
+		}
+	}
+	test()
 </script>
 
 

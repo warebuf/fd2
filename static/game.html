@@ -13,7 +13,7 @@
 		overflow: hidden;
 	}
 
-	.container {
+	#container {
 		position:relative;
 	}
 
@@ -28,17 +28,57 @@
 		top:50%;
 		left:50%;
 		transform:translate(-50%,-50%);
-	}	
+	}
+	#opponent {
+		position: absolute;
+		padding: 0px;
+		text-align: center;
+		max-width: 100%;
+		width: 100%;
+		margin-left:auto;
+		margin-right:auto;
+		top:55%;
+		left:50%;
+		transform:translate(-50%,-50%);
+	}
+	#format {
+		position: absolute;
+		padding: 0px;
+		text-align: center;
+		max-width: 100%;
+		width: 100%;
+		margin-left:auto;
+		margin-right:auto;
+		top:57%;
+		left:50%;
+		transform:translate(-50%,-50%);
+	}
 
     </style>
 </head>
 
 
 <body>
-<div class="container">
+<div id="container">
 	<div id="test">
-		<button>Connect to a Match</button>
+		<button id="b1", onclick="removeB1()">Connect to a Match</button>
 	</div>
+	<div id="opponent">
+		<label>Choose an Opponent:</label>
+		<select>
+			<option value=bot>player vs. bot</option>
+		</select>
+	</div>
+	<div id="format">
+		<label>Choose a Format:</label>
+		<select>
+			<option>Free For All</option>
+			<option>Team</option>
+			<option>1vX</option>
+		</select>
+
+	</div>
+
 	<canvas id="myCanvas"></canvas>
 </div>
 

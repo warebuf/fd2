@@ -48,7 +48,7 @@
             alert("Connection has been closed.");
           }
           // Send a ping event every 10 seconds, have to either later remove this when we move away from heroku, or server-side internalize the ping event
-          setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 10000);
+          //setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 10000);
 
           socket.onmessage = function(e) {
             var msg = eval('('+e.data+')');

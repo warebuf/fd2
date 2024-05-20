@@ -625,7 +625,8 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
-		t.Execute(res, req)
+		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
+		t.Execute(res, data)
 	} else {
 		fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)

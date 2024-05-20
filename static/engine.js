@@ -74,7 +74,7 @@ function removeB2() {
 }
 
 
-$(function(){
+function wsHandler() {
 
 	var socket = null;
 
@@ -93,4 +93,6 @@ $(function(){
 		}
 	}
 
-});
+}
+
+wsHandler()

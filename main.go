@@ -192,6 +192,7 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	mux.HandleFunc("/matchmaking", matchmakingHandler)
 	mux.HandleFunc("/game", gameHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
@@ -450,73 +451,6 @@ func roomHandler(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func gameHandler(res http.ResponseWriter, req *http.Request) {
-	//c, _ := req.Cookie("session-name")
-
-	// Check if user is already authenticated
-	session, err := store.Get(req, "session-name")
-	fmt.Println(session)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-
-		// get the user's object from their UUID
-		fmt.Println("UUID:", session.Values["uid"])
-		uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
-		uid_to_user.mutex.RLock()
-		requesting_user := uid_to_user.users[uid]
-		uid_to_user.mutex.RUnlock()
-
-		// create a web socket connection
-		var upgrader = &websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
-		sock, err := upgrader.Upgrade(res, req, nil)
-		//sock.SetReadLimit(128000) //have to handle this read limit correctly
-		if err != nil {
-			log.Fatal("ServeHTTP:", err)
-			return
-		}
-
-		// create a socket object for the user
-		not_assigned := true
-		var random_sid uuid.UUID
-		var temp *match_socket
-		for not_assigned {
-			random_sid = uuid.New()
-			msid_to_sock.mutex.RLock()
-			_, found := msid_to_sock.msid_to_sock[random_sid]
-			msid_to_sock.mutex.RUnlock()
-			if !found {
-				msid_to_sock.mutex.Lock()
-				temp = &match_socket{
-					mutex:            sync.RWMutex{},
-					socket:           sock,
-					msid:             random_sid,
-					u:                requesting_user,
-					m:                nil,
-					incoming_message: make(chan *message),
-					open:             true,
-				}
-				msid_to_sock.mutex.Unlock()
-
-				not_assigned = false
-			}
-		}
-
-		go ms_write(temp)
-		go ms_read(temp)
-
-		t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
-		t.Execute(res, req)
-	} else {
-		fmt.Println("User is not authenticated, redirecting to home page")
-		http.Redirect(res, req, "/", http.StatusSeeOther)
-	}
-
-}
-
 func lobbyHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("/lobby")
 
@@ -676,4 +610,82 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 
 		}
 	}
+}
+
+func gameHandler(res http.ResponseWriter, req *http.Request) {
+	//c, _ := req.Cookie("session-name")
+
+	// Check if user is already authenticated
+	session, err := store.Get(req, "session-name")
+	fmt.Println(session)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+		t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
+		t.Execute(res, req)
+	} else {
+		fmt.Println("User is not authenticated, redirecting to home page")
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+	}
+
+}
+
+func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
+	log.Println("/matchmaking")
+
+	// Check if user is already authenticated
+	session, err := store.Get(req, "session-name")
+	fmt.Println(session)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// get the user's object from their UUID
+	fmt.Println("UUID:", session.Values["uid"])
+	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
+	uid_to_user.mutex.RLock()
+	requesting_user := uid_to_user.users[uid]
+	uid_to_user.mutex.RUnlock()
+
+	// create a web socket connection
+	var upgrader = &websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
+	sock, err := upgrader.Upgrade(res, req, nil)
+	//sock.SetReadLimit(128000) //have to handle this read limit correctly
+	if err != nil {
+		log.Fatal("ServeHTTP:", err)
+		return
+	}
+
+	// create a socket object for the user
+	not_assigned := true
+	var random_sid uuid.UUID
+	var temp *match_socket
+	for not_assigned {
+		random_sid = uuid.New()
+		msid_to_sock.mutex.RLock()
+		_, found := msid_to_sock.msid_to_sock[random_sid]
+		msid_to_sock.mutex.RUnlock()
+		if !found {
+			msid_to_sock.mutex.Lock()
+			temp = &match_socket{
+				mutex:            sync.RWMutex{},
+				socket:           sock,
+				msid:             random_sid,
+				u:                requesting_user,
+				m:                nil,
+				incoming_message: make(chan *message),
+				open:             true,
+			}
+			msid_to_sock.mutex.Unlock()
+
+			not_assigned = false
+		}
+	}
+
+	go ms_write(temp)
+	go ms_read(temp)
 }

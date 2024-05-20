@@ -57,12 +57,12 @@ type match struct {
 
 	mid uuid.UUID
 
-	broadcast chan *message // a channel is a thread-safe queue, incoming messages
-	join      chan *socket  // a channel for clients wishing to join
-	leave     chan *socket  // a channel for clients wishing to leave
+	broadcast chan *message      // a channel is a thread-safe queue, incoming messages
+	join      chan *match_socket // a channel for clients wishing to join
+	leave     chan *match_socket // a channel for clients wishing to leave
 
-	uid_to_sid_to_socket map[uuid.UUID]map[uuid.UUID]*socket
-	uid_to_user          map[uuid.UUID]*user
+	uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	uid_to_user                map[uuid.UUID]*user
 
 	message_logs []*message
 
@@ -89,10 +89,10 @@ type match_socket struct {
 
 	socket *websocket.Conn
 
-	sid uuid.UUID
+	msid uuid.UUID
 
 	u *user
-	r *match
+	m *match
 
 	incoming_message chan *message // send is a channel on which messages are sent.
 
@@ -130,11 +130,16 @@ type sid_to_socket struct {
 	sid_to_sock map[uuid.UUID]*socket
 	mutex       sync.RWMutex
 }
+type msid_to_socket struct {
+	msid_to_sock map[uuid.UUID]*match_socket
+	mutex        sync.RWMutex
+}
 
 var uid_to_user userbase
 var rid_to_room roombase
 var roomname_to_rid rname_to_rid
 var sid_to_sock sid_to_socket
+var msid_to_sock msid_to_socket
 
 func main() {
 
@@ -149,6 +154,7 @@ func main() {
 	roomname_to_rid.mutex = sync.RWMutex{}
 	sid_to_sock.sid_to_sock = make(map[uuid.UUID]*socket)
 	sid_to_sock.mutex = sync.RWMutex{}
+	msid_to_sock.msid_to_sock = make(map[uuid.UUID]*match_socket)
 
 	// IF HEROKU BUILD
 	//goth.UseProviders(google.New(
@@ -454,7 +460,54 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+
+		// get the user's object from their UUID
+		fmt.Println("UUID:", session.Values["uid"])
+		uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
+		uid_to_user.mutex.RLock()
+		requesting_user := uid_to_user.users[uid]
+		uid_to_user.mutex.RUnlock()
+
+		// create a web socket connection
+		var upgrader = &websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
+		sock, err := upgrader.Upgrade(res, req, nil)
+		//sock.SetReadLimit(128000) //have to handle this read limit correctly
+		if err != nil {
+			log.Fatal("ServeHTTP:", err)
+			return
+		}
+
+		// create a socket object for the user
+		not_assigned := true
+		var random_sid uuid.UUID
+		var temp *match_socket
+		for not_assigned {
+			random_sid = uuid.New()
+			msid_to_sock.mutex.RLock()
+			_, found := msid_to_sock.msid_to_sock[random_sid]
+			msid_to_sock.mutex.RUnlock()
+			if !found {
+				msid_to_sock.mutex.Lock()
+				temp = &match_socket{
+					mutex:            sync.RWMutex{},
+					socket:           sock,
+					msid:             random_sid,
+					u:                requesting_user,
+					m:                nil,
+					incoming_message: make(chan *message),
+					open:             true,
+				}
+				msid_to_sock.mutex.Unlock()
+
+				not_assigned = false
+			}
+		}
+
+		go ms_write(temp)
+		go ms_read(temp)
+
 		t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
 		t.Execute(res, req)
 	} else {

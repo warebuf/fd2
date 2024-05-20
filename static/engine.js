@@ -59,19 +59,38 @@ function removeB2() {
 		"<div id=\"format\">\n" +
 		"\t\t<label>Choose a Format:</label>\n" +
 		"\t\t<select>\n" +
-		"\t\t\t<option>Free For All</option>\n" +
-		"\t\t\t<option>Team</option>\n" +
-		"\t\t\t<option>1vX</option>\n" +
+		"\t\t\t<option value=\"ffa\">Free For All</option>\n" +
+		"\t\t\t<option value=\"team\">Team</option>\n" +
+		"\t\t\t<option value=\"1vx\">1vX</option>\n" +
 		"\t\t</select>\n" +
 		"\n" +
 		"\t</div>");
 	
 	document.getElementById("container").insertAdjacentHTML('beforeend',
 		"<div id=\"opponent\"> <label>Choose an Opponent:</label> <select> " +
-		"			<option value=bot>player vs. bot</option>" +
-		"			<option value=player>player vs. player</option>" +
+		"			<option value=\"bot\">player vs. bot</option>" +
+		"			<option value=\"player\">player vs. player</option>" +
 			"</select>	</div>");
-
-
-
 }
+
+
+$(function(){
+
+	var socket = null;
+
+	if (!window["WebSocket"]) {
+		alert("Error: Your browser does not support web sockets.")
+	} else {
+		socket = new WebSocket("ws://{{.host}}/room?rid={{.room_id}}");
+		socket.onclose = function() {
+			alert("Connection has been closed.");
+		}
+		// Send a ping event every 5 seconds, have to either later remove this when we move away from heroku, or server-side internalize the ping event
+		setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 5000);
+
+		socket.onmessage = function(e) {
+			console.log(msg.Event, msg.Name)
+		}
+	}
+
+});

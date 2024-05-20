@@ -295,7 +295,6 @@ func (u *user) write(s *socket) {
 	for msg := range s.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
 		if err := s.socket.WriteJSON(msg); err != nil {
 			fmt.Println("error writing to socket")
-			fmt.Println(err)
 			break
 		} else {
 			fmt.Println("successful write")

@@ -52,10 +52,11 @@ func ms_read(ms *match_socket) {
 func createMatch(ms *match_socket, msg *message) uuid.UUID {
 	fmt.Println("called 'createMatch'")
 
+	var random_number uuid.UUID
 	// create a global room for users to chat in
 	not_assigned := true
 	for not_assigned {
-		random_number := uuid.New()
+		random_number = uuid.New()
 
 		mid_to_match.mutex.RLock()
 		_, found := mid_to_match.match[random_number]
@@ -87,9 +88,9 @@ func createMatch(ms *match_socket, msg *message) uuid.UUID {
 			fmt.Println("created MID:", random_number)
 			go mid_to_match.match[random_number].run()
 
-			return random_number
 		}
 	}
+	return random_number
 }
 
 func (m *match) run() {

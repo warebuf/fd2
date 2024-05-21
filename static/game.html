@@ -135,26 +135,33 @@
 				var msg = eval('('+e.data+')');
 				console.log(msg.Event, msg.Name)
 
-				var div_parent = document.getElementById("matches");
-				var div_child = document.createElement("div");
-				div_child.setAttribute("id","panel")
-				var div_body = document.createElement("div");
-				div_body.setAttribute("id","panel_body")
-				div_body.appendChild(document.createTextNode(msg.Event+msg.Name));
-				var div_footer = document.createElement("div");
-				div_footer.setAttribute("id","panel_footer")
-				var div_but1 = document.createElement("button");
-				div_but1.setAttribute("id","panel_join")
-				div_but1.appendChild(document.createTextNode("Join"));
-				var div_but2 = document.createElement("button");
-				div_but2.setAttribute("id","spectate")
-				div_but2.appendChild(document.createTextNode("Spectate"));
+				if(msg.Event = "newMatch") {
+					var div_parent = document.getElementById("matches");
+					var div_child = document.createElement("div");
+					div_child.setAttribute("id","panel")
+					var div_body = document.createElement("div");
+					div_body.setAttribute("id","panel_body")
+					div_body.appendChild(document.createTextNode(msg.Event+msg.Message));
+					var div_footer = document.createElement("div");
+					div_footer.setAttribute("id","panel_footer")
+					var div_but1 = document.createElement("button");
+					div_but1.setAttribute("id","panel_join")
+					div_but1.appendChild(document.createTextNode("Join"));
+					var div_but2 = document.createElement("button");
+					div_but2.setAttribute("id","spectate")
+					div_but2.appendChild(document.createTextNode("Spectate"));
 
-				div_footer.appendChild(div_but1)
-				div_footer.appendChild(div_but2)
-				div_child.appendChild(div_body)
-				div_child.appendChild(div_footer)
-				div_parent.appendChild(div_child)
+					div_footer.appendChild(div_but1)
+					div_footer.appendChild(div_but2)
+					div_child.appendChild(div_body)
+					div_child.appendChild(div_footer)
+					div_parent.appendChild(div_child)
+				}
+				else if(msg.Event = "joinedMatch") {
+
+				}
+
+
 			}
 		}
 	}

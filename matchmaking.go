@@ -41,7 +41,9 @@ func ms_read(ms *match_socket) {
 			} else if msg.Event == "createMatch" {
 				mtch := createMatch(ms, msg)
 				go mtch.run()
+				mtch.broadcast <- &message{Event: "newMatch", Message: msg.Message, When: time.Now()}
 				mtch.join <- ms
+
 			}
 		} else {
 			fmt.Println("error reading from socket")

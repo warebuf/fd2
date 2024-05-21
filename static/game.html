@@ -164,6 +164,8 @@
 				}
 				else if(msg.Event == "joinedMatch") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
+					console.log(list_of_matches)
+					console.log(list_of_matches.children.length)
 					console.log("printing children")
 					for(i=0;i<list_of_matches.children.length;i++) {
 						console.log(list_of_matches.children[i].textContent)

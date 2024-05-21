@@ -163,7 +163,10 @@
 					div_parent.appendChild(div_child)
 				}
 				else if(msg.Event == "joinedMatch") {
-
+					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
+					for(i=0;i<list_of_matches.length;i++) {
+						console.log(list_of_matches[i].textContent)
+					}
 				}
 
 

@@ -44,7 +44,7 @@ function removeB1() {
 	// send message to server to create match
 	var e1 = document.getElementById("formatselect").value;
 	var e2 = document.getElementById("opponentselect").value;
-	socket.send(JSON.stringify({ "Event": 'createMatch', "Message": e1 + ' ' + e2 }))
+	socket.send(JSON.stringify({ "Event": 'createMatch', "Format": e1, "Opponent": e2 }))
 
 
 	var button = document.getElementById("b1");
@@ -70,7 +70,7 @@ function removeB2() {
 		"\t\t<label>Choose a Format:</label>\n" +
 		"\t\t<select id=\"formatselect\">\n" +
 		"\t\t\t<option value=\"ffa\">Free For All</option>\n" +
-		"\t\t\t<option value=\"team\">Team</option>\n" +
+		"\t\t\t<option value=\"tea\">Team</option>\n" +
 		"\t\t\t<option value=\"1vx\">1vX</option>\n" +
 		"\t\t</select>\n" +
 		"\n" +
@@ -79,6 +79,6 @@ function removeB2() {
 	document.getElementById("container").insertAdjacentHTML('beforeend',
 		"<div id=\"opponent\"> <label>Choose an Opponent:</label> <select id=\"opponentselect\"> " +
 		"			<option value=\"bot\">player vs. bot</option>" +
-		"			<option value=\"player\">player vs. player</option>" +
+		"			<option value=\"pla\">player vs. player</option>" +
 			"</select>	</div>");
 }

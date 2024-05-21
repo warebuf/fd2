@@ -132,7 +132,7 @@
 
 			socket.onmessage = function(e) {
 				var msg = eval('('+e.data+')');
-				console.log(msg.Event, msg.Name)
+				console.log(msg.Event, msg.Name, msg.MatchID)
 
 				if(msg.Event == "newMatch") {
 					var div_parent = document.getElementById("matches");
@@ -140,7 +140,8 @@
 					div_child.setAttribute("id","panel")
 					var div_body = document.createElement("div");
 					div_body.setAttribute("id","panel_body")
-					div_body.appendChild(document.createTextNode(msg.Message+"\n"+msg.MatchID));
+					div_body.appendChild(document.createTextNode(msg.MatchID));
+					div_body.appendChild(document.createTextNode(msg.Message));
 					var div_footer = document.createElement("div");
 					div_footer.setAttribute("id","panel_footer")
 					var div_but1 = document.createElement("button");

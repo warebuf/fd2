@@ -44,7 +44,7 @@ function removeB1() {
 	// send message to server to create match
 	var e1 = document.getElementById("formatselect").value;
 	var e2 = document.getElementById("opponentselect").value;
-	socket.send(JSON.stringify({ "Event": 'createMatch', "Format": e1, "Opponent": e2 }))
+	socket.send(JSON.stringify({ "Event": 'createMatch', "Message": e1+e2 }))
 
 
 	var button = document.getElementById("b1");

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -217,7 +216,7 @@ func main() {
 }
 
 func staticHandler(w http.ResponseWriter, r *http.Request) {
-
+	fmt.Println("/static")
 	fs := http.FileServer(http.Dir("./static"))
 	fmt.Println(fs)
 	fmt.Println(http.StripPrefix("/static/", fs))
@@ -228,11 +227,9 @@ func staticHandler(w http.ResponseWriter, r *http.Request) {
 	} else {
 		w.Header().Set("Content-Type", "text/css")
 	}
-	data, err := ioutil.ReadFile(path[1:])
-	if err != nil {
-		fmt.Print(err)
-	}
-	_, err = w.Write(data)
+	// make sure you reference the correct absolute path
+	data := []byte("host:x")
+	_, err := w.Write(data)
 	if err != nil {
 		fmt.Print(err)
 	}

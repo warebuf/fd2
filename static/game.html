@@ -138,10 +138,12 @@
 					var div_parent = document.getElementById("matches");
 					var div_child = document.createElement("div");
 					div_child.setAttribute("id","panel")
-					var div_body = document.createElement("div");
-					div_body.setAttribute("id","panel_body")
-					div_body.appendChild(document.createTextNode(msg.MatchID));
-					div_body.appendChild(document.createTextNode(msg.Message));
+					var div_body1 = document.createElement("div");
+					div_body1.setAttribute("id","panel_body")
+					div_body1.appendChild(document.createTextNode(msg.MatchID));
+					var div_body2 = document.createElement("div");
+					div_body2.setAttribute("id","panel_body2")
+					div_body2.appendChild(document.createTextNode(msg.Message));
 					var div_footer = document.createElement("div");
 					div_footer.setAttribute("id","panel_footer")
 					var div_but1 = document.createElement("button");
@@ -153,7 +155,8 @@
 
 					div_footer.appendChild(div_but1)
 					div_footer.appendChild(div_but2)
-					div_child.appendChild(div_body)
+					div_child.appendChild(div_body1)
+					div_child.appendChild(div_body2)
 					div_child.appendChild(div_footer)
 					div_parent.appendChild(div_child)
 				}

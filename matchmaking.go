@@ -145,7 +145,7 @@ func (m *match) run() {
 			m.message_logs = append(m.message_logs, msg)
 			m.mutex.Unlock()
 
-			fmt.Println(msg)
+			fmt.Println("sending:", msg)
 
 			for _, i := range m.uid_to_sid_to_match_socket {
 				for _, j := range i {

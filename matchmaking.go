@@ -127,7 +127,8 @@ func (m *match) run() {
 			uid_to_user.mutex.Lock()
 			ws.u.mutex.Lock()
 			if check == false {
-				fmt.Println(ws.u.mid_to_match)
+				fmt.Println("1", ws.u.mid_to_match)
+				fmt.Println("2", ws.u)
 				ws.u.mid_to_match[m.mid] = m
 				ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
 			}

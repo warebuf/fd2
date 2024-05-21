@@ -41,7 +41,7 @@ func ms_read(ms *match_socket) {
 			} else if msg.Event == "createMatch" {
 				mtch := createMatch(ms, msg)
 				go mtch.run()
-				globalBroadcast(&message{Event: "newMatch", Message: msg.Message, When: time.Now()})
+				globalBroadcast(&message{Event: "newMatch", Message: msg.Message, When: time.Now(), MatchID: mtch.mid})
 				mtch.join <- ms
 
 			}
@@ -132,7 +132,7 @@ func (m *match) run() {
 
 			// if this is the first socket the user has opened for this room, send a join message
 			if check == false {
-				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
+				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now(), MatchID: m.mid}
 				go func() {
 					ws.m.broadcast <- msg
 				}()

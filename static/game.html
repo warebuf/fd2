@@ -140,7 +140,7 @@
 					div_child.setAttribute("id","panel")
 					var div_body = document.createElement("div");
 					div_body.setAttribute("id","panel_body")
-					div_body.appendChild(document.createTextNode(msg.Message));
+					div_body.appendChild(document.createTextNode(msg.Message+"\n"+msg.MatchID));
 					var div_footer = document.createElement("div");
 					div_footer.setAttribute("id","panel_footer")
 					var div_but1 = document.createElement("button");

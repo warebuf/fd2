@@ -107,6 +107,7 @@ type message struct {
 	Message string
 	When    time.Time
 	Event   string
+	MatchID uuid.UUID
 }
 
 // Global Variables - Utility

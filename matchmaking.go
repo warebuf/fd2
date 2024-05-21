@@ -135,22 +135,28 @@ func (m *match) run() {
 			ws.u.mutex.Unlock()
 			uid_to_user.mutex.Unlock()
 
-			go func(m []*message, w *match_socket, c bool, email string) {
-
-				for i, j := range m {
-					w.incoming_message <- j
-					fmt.Println(i, j.Message)
-				}
-
-				if check == false {
-					msg := &message{Name: email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
-					w.m.broadcast <- msg
-				}
-
-			}(m.message_logs, ws, check, ws.u.email)
+			// if this is the first socket the user has opened for this room, send a join message
+			if check == false {
+				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
+				ws.m.broadcast <- msg
+			}
 
 			fmt.Println("a socket has joined the match")
+		case msg := <-m.broadcast: // forward message to all clients
 
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println(msg)
+
+			for _, i := range m.uid_to_sid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
 		}
 	}
 }

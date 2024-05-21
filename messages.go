@@ -172,7 +172,7 @@ func (r *room) run() {
 				}
 
 				if check == false {
-					msg := &message{Name: email, Message: "x entered the chat", Event: "entered", When: time.Now()}
+					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 					w.r.broadcast <- msg
 				}
 

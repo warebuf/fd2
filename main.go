@@ -1,6 +1,7 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"net/http"
 	"net/url"
@@ -189,8 +190,10 @@ func main() {
 	newRoom("global")
 
 	mux := http.NewServeMux() // create the default multiplexer
-	fs := http.FileServer(http.Dir("./static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	//fs := http.FileServer(http.Dir("./static"))
+	//mux.Handle("/static/", http.StripPrefix("/static/", fs))
+
+	mux.HandleFunc("/static/", staticHandler)
 
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
 	mux.HandleFunc("/game", gameHandler)
@@ -211,6 +214,29 @@ func main() {
 	// run the server
 	log.Println("listening on localhost:" + port)
 	log.Fatal(http.ListenAndServe(":"+port, mux))
+}
+
+func staticHandler(w http.ResponseWriter, r *http.Request) {
+
+	fs := http.FileServer(http.Dir("./static"))
+	fmt.Println(fs)
+	fmt.Println(http.StripPrefix("/static/", fs))
+
+	path := r.URL.Path
+	if strings.HasSuffix(path, "js") {
+		w.Header().Set("Content-Type", "text/javascript")
+	} else {
+		w.Header().Set("Content-Type", "text/css")
+	}
+	data, err := ioutil.ReadFile(path[1:])
+	if err != nil {
+		fmt.Print(err)
+	}
+	_, err = w.Write(data)
+	if err != nil {
+		fmt.Print(err)
+	}
+
 }
 
 func indexHandler(res http.ResponseWriter, req *http.Request) {

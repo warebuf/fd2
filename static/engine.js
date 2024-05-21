@@ -76,7 +76,7 @@ function removeB1() {
 	menu2.remove();
 
 	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");
-	
+
 }
 
 function removeB2() {

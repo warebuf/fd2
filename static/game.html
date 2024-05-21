@@ -73,7 +73,7 @@
 
 <body>
 
-<ul id="matches"></ul>
+<div id="matches"></div>
 
 <div id="container">
 	<div id="test">
@@ -122,11 +122,19 @@
 				var msg = eval('('+e.data+')');
 				console.log(msg.Event, msg.Name)
 
-				var ul = document.getElementById("matches");
-				var li = document.createElement("li");
+				var div_parent = document.getElementById("matches");
+				var div_child = document.createElement("div");
 				li.setAttribute("id","panel")
-				li.appendChild(document.createTextNode(msg.Event+msg.Name));
-				ul.appendChild(li)
+				var div_body = document.createElement("div");
+				div_body.appendChild(document.createTextNode(msg.Event+msg.Name));
+				var div_footer = document.createElement("div");
+				var div_but = document.createElement("button");
+				div_but.appendChild(document.createTextNode("Join"));
+
+				div_footer.appendChild(div_but)
+				div_child.appendChild(div_body)
+				div_child.appendChild(div_footer)
+				div_parent.appendChild(div_child)
 			}
 		}
 	}

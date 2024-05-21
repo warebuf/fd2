@@ -374,7 +374,7 @@ func callbackHandler(res http.ResponseWriter, req *http.Request) {
 func successHandler(res http.ResponseWriter, req *http.Request) {
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
-	fmt.Println(session)
+	//fmt.Println(session)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -620,7 +620,6 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 				}
 				http.Redirect(res, req, "/lobby", http.StatusFound)
 			} else {
-				fmt.Println("1")
 				rid_to_room.rooms[rid].open <- false
 				http.Redirect(res, req, "/lobby", http.StatusFound)
 			}

@@ -265,6 +265,9 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 
 			rid_to_sid_to_socket: make(map[uuid.UUID]map[uuid.UUID]*socket),
 			rid_to_room:          make(map[uuid.UUID]*room),
+
+			mid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+			mid_to_match:                make(map[uuid.UUID]*match),
 		}
 
 		uid_to_user.mutex.Lock()

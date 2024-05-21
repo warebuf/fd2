@@ -103,6 +103,7 @@ func (m *match) run() {
 			// add the match socket to the room
 			m.mutex.RLock()
 			_, check := m.uid_to_user[ws.u.uid]
+			fmt.Println("UID JOIN:", ws.u.uid)
 			m.mutex.RUnlock()
 
 			m.mutex.Lock()
@@ -116,6 +117,7 @@ func (m *match) run() {
 			// add the match socket to the user object
 			ws.u.mutex.RLock()
 			_, check = ws.u.mid_to_match[m.mid]
+			fmt.Println("MID JOIN:", m.mid)
 			ws.u.mutex.RUnlock()
 
 			ws.u.mutex.Lock()
@@ -128,6 +130,7 @@ func (m *match) run() {
 
 			// if this is the first socket the user has opened for this room, send a join message
 			if check == false {
+				fmt.Println("should only happen 1x")
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
 				go func() {
 					ws.m.broadcast <- msg

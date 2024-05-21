@@ -41,7 +41,7 @@ func ms_read(ms *match_socket) {
 			} else if msg.Event == "createMatch" {
 				mtch := createMatch(ms, msg)
 				go mtch.run()
-				mtch.broadcast <- &message{Event: "newMatch", Message: msg.Message, When: time.Now()}
+				globalBroadcast(&message{Event: "newMatch", Message: msg.Message, When: time.Now()})
 				mtch.join <- ms
 
 			}
@@ -156,4 +156,16 @@ func (m *match) run() {
 			}
 		}
 	}
+}
+
+func globalBroadcast(msg *message) {
+	fmt.Println("global broadcast")
+	msid_to_sock.mutex.RLock()
+	for _, i := range msid_to_sock.msid_to_sock {
+		select {
+		case i.incoming_message <- msg:
+		}
+	}
+
+	msid_to_sock.mutex.RUnlock()
 }

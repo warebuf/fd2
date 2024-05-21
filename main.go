@@ -679,24 +679,25 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	// create a socket object for the user
 	not_assigned := true
-	var random_sid uuid.UUID
+	var random_msid uuid.UUID
 	var temp *match_socket
 	for not_assigned {
-		random_sid = uuid.New()
+		random_msid = uuid.New()
 		msid_to_sock.mutex.RLock()
-		_, found := msid_to_sock.msid_to_sock[random_sid]
+		_, found := msid_to_sock.msid_to_sock[random_msid]
 		msid_to_sock.mutex.RUnlock()
 		if !found {
 			msid_to_sock.mutex.Lock()
 			temp = &match_socket{
 				mutex:            sync.RWMutex{},
 				socket:           sock,
-				msid:             random_sid,
+				msid:             random_msid,
 				u:                requesting_user,
 				m:                nil,
 				incoming_message: make(chan *message),
 				open:             true,
 			}
+			msid_to_sock.msid_to_sock[random_msid] = temp
 			msid_to_sock.mutex.Unlock()
 
 			not_assigned = false

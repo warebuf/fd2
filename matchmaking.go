@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"github.com/google/uuid"
+	"sync"
 	"time"
 )
 
@@ -32,15 +34,121 @@ func ms_read(ms *match_socket) {
 
 			msg.When = time.Now()
 			msg.Name = ms.u.email
-			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message, msg.Message[0:3])
+			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
 			if msg.Event == "ping" {
 				fmt.Println("ping!")
 			} else if msg.Event == "createMatch" {
+				num := createMatch(ms, msg)
+				mid_to_match.match[num].join <- ms
 			}
 		} else {
 			fmt.Println("error reading from socket")
 			break
+		}
+	}
+}
+
+func createMatch(ms *match_socket, msg *message) uuid.UUID {
+	fmt.Println("called 'createMatch'")
+
+	// create a global room for users to chat in
+	not_assigned := true
+	for not_assigned {
+		random_number := uuid.New()
+
+		mid_to_match.mutex.RLock()
+		_, found := mid_to_match.match[random_number]
+		mid_to_match.mutex.RUnlock()
+		if !found {
+
+			temp := &match{
+
+				mutex: sync.RWMutex{},
+
+				mid: random_number,
+
+				broadcast: make(chan *message),
+				join:      make(chan *match_socket),
+				leave:     make(chan *match_socket),
+
+				uid_to_sid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+				uid_to_user:                make(map[uuid.UUID]*user),
+
+				message_logs: make([]*message, 0, 16),
+
+				open: make(chan bool),
+			}
+
+			mid_to_match.mutex.Lock()
+			mid_to_match.match[random_number] = temp
+			mid_to_match.mutex.Unlock()
+			not_assigned = false
+			fmt.Println("created MID:", random_number)
+			go mid_to_match.match[random_number].run()
+
+			return random_number
+		}
+	}
+}
+
+func (m *match) run() {
+	for {
+		select {
+		case ws := <-m.join: // joining
+
+			// add ws to match object
+			// check if user is already in the match
+			rid_to_room.mutex.RLock()
+			m.mutex.RLock()
+			_, check := m.uid_to_user[ws.u.uid]
+			m.mutex.RUnlock()
+			rid_to_room.mutex.RUnlock()
+
+			// if the user is not in the match, add the user as well as the web socket
+			rid_to_room.mutex.Lock()
+			m.mutex.Lock()
+			if check == false {
+				m.uid_to_user[ws.u.uid] = ws.u
+				m.uid_to_sid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
+			}
+			m.uid_to_sid_to_match_socket[ws.u.uid][ws.msid] = ws
+			rid_to_room.mutex.Unlock()
+			m.mutex.Unlock()
+
+			// add ws to user object
+			uid_to_user.mutex.RLock()
+			ws.u.mutex.RLock()
+			_, check = ws.u.mid_to_match[m.mid]
+			uid_to_user.mutex.RUnlock()
+			ws.u.mutex.RUnlock()
+
+			uid_to_user.mutex.Lock()
+			ws.u.mutex.Lock()
+			if check == false {
+				ws.u.mid_to_match[m.mid] = m
+				ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
+			}
+			ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
+			ws.u.mutex.Unlock()
+			uid_to_user.mutex.Unlock()
+
+			go func(m []*message, w *match_socket, c bool, email string) {
+
+				for i, j := range m {
+					w.incoming_message <- j
+					fmt.Println(i, j.Message)
+				}
+
+				if check == false {
+					msg := &message{Name: email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
+					w.m.broadcast <- msg
+				}
+
+			}(m.message_logs, ws, check, ws.u.email)
+
+			fmt.Println("a socket has joined the match")
+
 		}
 	}
 }

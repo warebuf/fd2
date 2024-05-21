@@ -32,6 +32,9 @@ type user struct {
 
 	rid_to_sid_to_socket map[uuid.UUID]map[uuid.UUID]*socket
 	rid_to_room          map[uuid.UUID]*room
+
+	mid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	mid_to_match                map[uuid.UUID]*match
 }
 
 type room struct {
@@ -121,6 +124,15 @@ type roombase struct {
 	mutex sync.RWMutex
 }
 
+type matchbase struct {
+	match map[uuid.UUID]*match
+	mutex sync.RWMutex
+}
+
+var uid_to_user userbase
+var rid_to_room roombase
+var mid_to_match matchbase
+
 // QUICK LOOK UP
 type rname_to_rid struct {
 	name_to_rid map[string]uuid.UUID
@@ -135,8 +147,6 @@ type msid_to_socket struct {
 	mutex        sync.RWMutex
 }
 
-var uid_to_user userbase
-var rid_to_room roombase
 var roomname_to_rid rname_to_rid
 var sid_to_sock sid_to_socket
 var msid_to_sock msid_to_socket
@@ -148,6 +158,8 @@ func main() {
 	uid_to_user.mutex = sync.RWMutex{}
 	rid_to_room.rooms = make(map[uuid.UUID]*room)
 	rid_to_room.mutex = sync.RWMutex{}
+	mid_to_match.match = make(map[uuid.UUID]*match)
+	mid_to_match.mutex = sync.RWMutex{}
 
 	// making QUICK LOOKUP data structures
 	roomname_to_rid.name_to_rid = make(map[string]uuid.UUID)

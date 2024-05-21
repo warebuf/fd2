@@ -164,8 +164,11 @@
 				}
 				else if(msg.Event == "joinedMatch") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
+					console.log("list of matches", list_of_matches)
+					console.log("printing divs")
 					for(i=0;i<list_of_matches.length;i++) {
 						console.log(list_of_matches[i].textContent)
+						if(list_of_matches[i].textContent==msg.MatchID)
 					}
 				}
 

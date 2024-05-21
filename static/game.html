@@ -128,10 +128,13 @@
 				var div_body = document.createElement("div");
 				div_body.appendChild(document.createTextNode(msg.Event+msg.Name));
 				var div_footer = document.createElement("div");
-				var div_but = document.createElement("button");
-				div_but.appendChild(document.createTextNode("Join"));
+				var div_but1 = document.createElement("button");
+				div_but1.appendChild(document.createTextNode("Join"));
+				var div_but2 = document.createElement("button");
+				div_but2.appendChild(document.createTextNode("Spectate"));
 
-				div_footer.appendChild(div_but)
+				div_footer.appendChild(div_but1)
+				div_footer.appendChild(div_but2)
 				div_child.appendChild(div_body)
 				div_child.appendChild(div_footer)
 				div_parent.appendChild(div_child)

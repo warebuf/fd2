@@ -60,7 +60,7 @@
 
 <body>
 
-<ul id="messages"></ul>
+<ul id="matches"></ul>
 
 <div id="container">
 	<div id="test">
@@ -91,7 +91,6 @@
 <script src="/static/engine.js"></script>
 
 <script>
-	var messages = $("#messages");
 	var socket = null;
 
 	function test() {
@@ -110,13 +109,10 @@
 				var msg = eval('('+e.data+')');
 				console.log(msg.Event, msg.Name)
 
-				messages.append(
-						$('<li>').append(
-								$('<span>').text(msg_date + ' '),
-								$('<span>').text(msg_time + ' '),
-								$('<span>').text(msg.Name + ' has entered the chat!'),
-						)
-				);
+				var ul = document.getElementById("matches");
+				var li = document.createElement("li");
+				li.appendChild(document.createTextNode(msg.Event+msg.Name));
+				ul.appendChild(li)
 			}
 		}
 	}

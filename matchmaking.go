@@ -129,8 +129,9 @@ func (m *match) run() {
 			// if this is the first socket the user has opened for this room, send a join message
 			if check == false {
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
-				fmt.Println(ws.m)
-				ws.m.broadcast <- msg
+				go func() {
+					ws.m.broadcast <- msg
+				}()
 			}
 
 			fmt.Println("a socket has joined the match")

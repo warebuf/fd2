@@ -86,6 +86,8 @@ func createMatch(ms *match_socket, msg *message) *match {
 			mid_to_match.mutex.Lock()
 			mid_to_match.match[random_number] = ans
 			mid_to_match.mutex.Unlock()
+
+			not_assigned = false
 		}
 	}
 	return ans

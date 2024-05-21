@@ -50,10 +50,8 @@ function removeB1() {
 	var button = document.getElementById("b1");
 	button.remove();
 	var menu1 = document.getElementById("opponent");
-	console.log(menu1);
 	menu1.remove();
 	var menu2 = document.getElementById("format");
-	console.log(menu2);
 	menu2.remove();
 
 	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");

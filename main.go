@@ -189,10 +189,9 @@ func main() {
 	newRoom("global")
 
 	mux := http.NewServeMux() // create the default multiplexer
-	//fs := http.FileServer(http.Dir("./static"))
-	//mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	mux.HandleFunc("/static/", staticHandler)
+	fs := http.FileServer(http.Dir("./static"))
+	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
 	mux.HandleFunc("/game", gameHandler)
@@ -213,27 +212,6 @@ func main() {
 	// run the server
 	log.Println("listening on localhost:" + port)
 	log.Fatal(http.ListenAndServe(":"+port, mux))
-}
-
-func staticHandler(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("/static")
-	fs := http.FileServer(http.Dir("./static"))
-	fmt.Println(fs)
-	fmt.Println(http.StripPrefix("/static/", fs))
-
-	path := r.URL.Path
-	if strings.HasSuffix(path, "js") {
-		w.Header().Set("Content-Type", "text/javascript")
-	} else {
-		w.Header().Set("Content-Type", "text/css")
-	}
-	// make sure you reference the correct absolute path
-	data := []byte("host:x")
-	_, err := w.Write(data)
-	if err != nil {
-		fmt.Print(err)
-	}
-
 }
 
 func indexHandler(res http.ResponseWriter, req *http.Request) {

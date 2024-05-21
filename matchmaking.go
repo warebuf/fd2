@@ -87,6 +87,8 @@ func createMatch(ms *match_socket, msg *message) *match {
 			mid_to_match.match[random_number] = ans
 			mid_to_match.mutex.Unlock()
 
+			ms.m = ans
+
 			not_assigned = false
 		}
 	}
@@ -127,7 +129,7 @@ func (m *match) run() {
 			// if this is the first socket the user has opened for this room, send a join message
 			if check == false {
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now()}
-				fmt.Println(ws.m.broadcast)
+				fmt.Println(ws.m)
 				ws.m.broadcast <- msg
 			}
 

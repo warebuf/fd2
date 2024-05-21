@@ -59,6 +59,9 @@
 
 
 <body>
+
+<ul id="messages"></ul>
+
 <div id="container">
 	<div id="test">
 		<button id="b1", onclick="removeB1()">Connect to a Match</button>
@@ -88,6 +91,7 @@
 <script src="/static/engine.js"></script>
 
 <script>
+	var messages = $("#messages");
 	var socket = null;
 
 	function test() {
@@ -105,6 +109,14 @@
 			socket.onmessage = function(e) {
 				var msg = eval('('+e.data+')');
 				console.log(msg.Event, msg.Name)
+
+				messages.append(
+						$('<li>').append(
+								$('<span>').text(msg_date + ' '),
+								$('<span>').text(msg_time + ' '),
+								$('<span>').text(msg.Name + ' has entered the chat!'),
+						)
+				);
 			}
 		}
 	}

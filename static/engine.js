@@ -80,3 +80,4 @@ function removeB2() {
 		"			<option value=\"pla\">player vs. player</option>" +
 			"</select>	</div>");
 }
+

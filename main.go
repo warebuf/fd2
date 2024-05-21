@@ -240,12 +240,10 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("session values: ", session.Values)
 	fmt.Println("session id: ", session.ID)
 	if err != nil {
-		fmt.Println("error here")
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		log.Println("1")
 		t := template.Must(template.ParseFiles(filepath.Join("static", "user.html")))
 		session, err := store.Get(req, "session-name")
 		if err != nil {
@@ -270,12 +268,11 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 			mid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 			mid_to_match:                make(map[uuid.UUID]*match),
 		}
+		fmt.Println("created User Object")
 
 		uid_to_user.mutex.Lock()
 		uid_to_user.users[uid] = user_object
 		uid_to_user.mutex.Unlock()
-
-		log.Println("2")
 
 		var user2 = &struct {
 			Email        string
@@ -293,7 +290,6 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 			RefreshToken: session.Values["RefreshToken"].(string),
 		}
 
-		log.Println("3")
 		t.Execute(res, user2)
 	} else {
 		gothic.BeginAuthHandler(res, req)
@@ -359,6 +355,9 @@ func callbackHandler(res http.ResponseWriter, req *http.Request) {
 
 		rid_to_sid_to_socket: make(map[uuid.UUID]map[uuid.UUID]*socket),
 		rid_to_room:          make(map[uuid.UUID]*room),
+
+		mid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+		mid_to_match:                make(map[uuid.UUID]*match),
 	}
 
 	uid_to_user.mutex.Lock()

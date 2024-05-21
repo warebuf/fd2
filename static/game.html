@@ -103,6 +103,7 @@
 			setInterval(() => socket.send(JSON.stringify({ "Event": 'ping' })), 100000);
 
 			socket.onmessage = function(e) {
+				var msg = eval('('+e.data+')');
 				console.log(msg.Event, msg.Name)
 			}
 		}

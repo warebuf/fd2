@@ -39,8 +39,9 @@ func ms_read(ms *match_socket) {
 			if msg.Event == "ping" {
 				fmt.Println("ping!")
 			} else if msg.Event == "createMatch" {
-				num := createMatch(ms, msg)
-				mid_to_match.match[num].join <- ms
+				mtch := createMatch(ms, msg)
+				go mtch.run()
+				mtch.join <- ms
 			}
 		} else {
 			fmt.Println("error reading from socket")
@@ -49,21 +50,21 @@ func ms_read(ms *match_socket) {
 	}
 }
 
-func createMatch(ms *match_socket, msg *message) uuid.UUID {
+func createMatch(ms *match_socket, msg *message) *match {
 	fmt.Println("called 'createMatch'")
 
-	var random_number uuid.UUID
+	var ans *match
 	// create a global room for users to chat in
 	not_assigned := true
 	for not_assigned {
-		random_number = uuid.New()
+		random_number := uuid.New()
 
 		mid_to_match.mutex.RLock()
 		_, found := mid_to_match.match[random_number]
 		mid_to_match.mutex.RUnlock()
 		if !found {
 
-			temp := &match{
+			ans = &match{
 
 				mutex: sync.RWMutex{},
 
@@ -80,17 +81,14 @@ func createMatch(ms *match_socket, msg *message) uuid.UUID {
 
 				open: make(chan bool),
 			}
+			fmt.Println("created MID:", random_number)
 
 			mid_to_match.mutex.Lock()
-			mid_to_match.match[random_number] = temp
+			mid_to_match.match[random_number] = ans
 			mid_to_match.mutex.Unlock()
-			not_assigned = false
-			fmt.Println("created MID:", random_number)
-			go mid_to_match.match[random_number].run()
-
 		}
 	}
-	return random_number
+	return ans
 }
 
 func (m *match) run() {
@@ -98,43 +96,31 @@ func (m *match) run() {
 		select {
 		case ws := <-m.join: // joining
 
-			// add ws to match object
-			// check if user is already in the match
-			rid_to_room.mutex.RLock()
+			// add the match socket to the room
 			m.mutex.RLock()
 			_, check := m.uid_to_user[ws.u.uid]
 			m.mutex.RUnlock()
-			rid_to_room.mutex.RUnlock()
 
-			// if the user is not in the match, add the user as well as the web socket
-			rid_to_room.mutex.Lock()
 			m.mutex.Lock()
 			if check == false {
 				m.uid_to_user[ws.u.uid] = ws.u
 				m.uid_to_sid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
 			}
 			m.uid_to_sid_to_match_socket[ws.u.uid][ws.msid] = ws
-			rid_to_room.mutex.Unlock()
 			m.mutex.Unlock()
 
-			// add ws to user object
-			uid_to_user.mutex.RLock()
+			// add the match socket to the user object
 			ws.u.mutex.RLock()
 			_, check = ws.u.mid_to_match[m.mid]
-			uid_to_user.mutex.RUnlock()
 			ws.u.mutex.RUnlock()
 
-			uid_to_user.mutex.Lock()
 			ws.u.mutex.Lock()
 			if check == false {
-				fmt.Println("1", ws.u.mid_to_match)
-				fmt.Println("2", ws.u)
 				ws.u.mid_to_match[m.mid] = m
 				ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
 			}
 			ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
 			ws.u.mutex.Unlock()
-			uid_to_user.mutex.Unlock()
 
 			// if this is the first socket the user has opened for this room, send a join message
 			if check == false {

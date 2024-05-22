@@ -36,12 +36,10 @@ func ms_read(ms *match_socket) {
 			msg.Name = ms.u.email
 			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
-			if msg.Event == "ping" {
-				fmt.Println("ping!")
-			} else if msg.Event == "createMatch" {
+			if msg.Event == "createMatch" {
 				mtch := createMatch(ms, msg)
 				go mtch.run()
-				globalBroadcast(&message{Event: "newMatch", Message: msg.Message, When: time.Now(), MatchID: mtch.mid})
+				globalBroadcast(&message{Event: "newMatch", Message: msg.Message, When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
 				mtch.join <- ms
 
 			}
@@ -70,7 +68,8 @@ func createMatch(ms *match_socket, msg *message) *match {
 
 				mutex: sync.RWMutex{},
 
-				mid: random_number,
+				mid:       random_number,
+				game_mode: msg.Message,
 
 				broadcast: make(chan *message),
 				join:      make(chan *match_socket),

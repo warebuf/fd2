@@ -58,7 +58,8 @@ type room struct {
 type match struct {
 	mutex sync.RWMutex
 
-	mid uuid.UUID
+	mid       uuid.UUID
+	game_mode string
 
 	broadcast chan *message      // a channel is a thread-safe queue, incoming messages
 	join      chan *match_socket // a channel for clients wishing to join
@@ -705,4 +706,10 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	go ms_write(temp)
 	go ms_read(temp)
+
+	// when a match socket is created, send them a list of all possible matches
+	for _, i := range mid_to_match.match {
+		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode, When: time.Now(), MatchID: i.mid}
+	}
+
 }

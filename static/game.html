@@ -168,7 +168,9 @@
 						console.log(list_of_matches[i].textContent)
 						console.log(list_of_matches[i].id)
 						if(list_of_matches[i].id=="panel_body2") {
-							console.log("test",msg.MatchID)
+							console.log("test")
+							console.log(msg.MatchID)
+							console.log(list_of_matches[i-1].textContent)
 
 							if(list_of_matches[i-1].textContent==msg.MatchID) {
 								console.log("did it work?")

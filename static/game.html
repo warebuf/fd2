@@ -164,13 +164,17 @@
 				}
 				else if(msg.Event == "joinedMatch") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
-					console.log(list_of_matches)
-					console.log(list_of_matches.length)
-					console.log("printing children")
 					for(i=0;i<list_of_matches.length;i++) {
 						console.log(list_of_matches[i].textContent)
 						console.log(list_of_matches[i].id)
-						console.log(list_of_matches[i].className)
+						if(list_of_matches[i].id=="panel_body2") {
+							if(list_of_matches[i-1].textContent==msg.MatchID) {
+								var test = document.createElement("div");
+								test.setAttribute("id","opp")
+								test.appendChild(document.createTextNode(msg.Name));
+								list_of_matches[i-2].appendChild(test)
+							}
+						}
 					}
 				}
 

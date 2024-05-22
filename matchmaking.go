@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"strconv"
 	"sync"
 	"time"
 )
@@ -39,7 +40,7 @@ func ms_read(ms *match_socket) {
 			if msg.Event == "createMatch" {
 				mtch := createMatch(ms, msg)
 				go mtch.run()
-				globalBroadcast(&message{Event: "newMatch", Message: msg.Message, When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
+				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
 				mtch.join <- ms
 
 			}
@@ -64,12 +65,37 @@ func createMatch(ms *match_socket, msg *message) *match {
 		mid_to_match.mutex.RUnlock()
 		if !found {
 
+			fmt.Println(msg.Message)
+			gm := "ffa"
+			num := uint(1)
+			if len(msg.Message) < 4 {
+				gm = "ffa"
+				num = 1
+			} else {
+				if msg.Message[0:3] == "ffa" {
+					gm = "ffa"
+				} else if msg.Message[0:3] == "tea" {
+					gm = "tea"
+				} else if msg.Message[0:3] == "1vx" {
+					gm = "1vx"
+				} else {
+					gm = "ffa"
+				}
+				num_ops, _ := strconv.Atoi(msg.Message[4:])
+				if (num_ops < 100) && (num_ops > 0) {
+					num = uint(num_ops)
+				} else {
+					num = 1
+				}
+			}
+
 			ans = &match{
 
 				mutex: sync.RWMutex{},
 
 				mid:       random_number,
-				game_mode: msg.Message,
+				game_mode: gm,
+				capacity:  num,
 
 				broadcast: make(chan *message),
 				join:      make(chan *match_socket),

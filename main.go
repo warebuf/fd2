@@ -60,6 +60,7 @@ type match struct {
 
 	mid       uuid.UUID
 	game_mode string
+	capacity  uint
 
 	broadcast chan *message      // a channel is a thread-safe queue, incoming messages
 	join      chan *match_socket // a channel for clients wishing to join

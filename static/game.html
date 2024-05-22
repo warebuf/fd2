@@ -165,16 +165,12 @@
 				else if(msg.Event == "joinedMatch") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
 					for(i=0;i<list_of_matches.length;i++) {
-						console.log(list_of_matches[i].textContent)
-						console.log(list_of_matches[i].id)
 						if(list_of_matches[i].textContent==msg.MatchID) {
-							console.log("did it work?")
 							var test = document.createElement("div");
 							test.setAttribute("id","opp")
 							test.appendChild(document.createTextNode(msg.Name));
 							list_of_matches[i-2].appendChild(test)
 						}
-
 					}
 				}
 

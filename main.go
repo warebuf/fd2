@@ -191,6 +191,8 @@ func main() {
 	rid_to_room.mutex = sync.RWMutex{}
 	mid_to_match.match = make(map[uuid.UUID]*match)
 	mid_to_match.mutex = sync.RWMutex{}
+	mmid_to_matchmaking.matchmaking_array = make(map[uuid.UUID]*mmsocket)
+	mmid_to_matchmaking.mutex = sync.RWMutex{}
 
 	// making QUICK LOOKUP data structures
 	roomname_to_rid.name_to_rid = make(map[string]uuid.UUID)
@@ -724,7 +726,6 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 				incoming_message: make(chan *message),
 				open:             true,
 			}
-			fmt.Println(temp)
 			mmid_to_matchmaking.matchmaking_array[random_mmid] = temp
 			mmid_to_matchmaking.mutex.Unlock()
 

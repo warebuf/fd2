@@ -42,7 +42,9 @@ func ms_read(ms *match_socket) {
 				go mtch.run()
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
 				mtch.participant_join <- ms
-
+			} else if msg.Event == "participantJoin" {
+				// get match from matchID
+				// mtch.participant_join <- ms
 			}
 		} else {
 			fmt.Println("error reading from socket")
@@ -166,7 +168,7 @@ func (m *match) run() {
 
 				// if this is the first socket the user has opened for this room, send a join message
 				if check == false {
-					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "joinedMatch", When: time.Now(), MatchID: m.mid}
+					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
 					go func() {
 						ws.m.broadcast <- msg
 					}()

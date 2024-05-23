@@ -37,8 +37,6 @@ function anime() {
 }
 anime()
 
-
-
 function removeB1() {
 
 	// send message to server to create match

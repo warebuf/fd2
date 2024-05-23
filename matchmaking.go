@@ -102,8 +102,9 @@ func createMatch(mm *mmsocket, msg *message) *match {
 				} else {
 					gm = "ffa"
 				}
+				fmt.Println(msg.Message[4:])
 				num_ops, _ := strconv.Atoi(msg.Message[4:])
-				fmt.Println(num_ops)
+
 				if (num_ops < 100) && (num_ops > 0) {
 					num = uint(num_ops)
 				} else {

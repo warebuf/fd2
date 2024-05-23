@@ -716,7 +716,7 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 	for _, i := range mid_to_match.match {
 		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode, When: time.Now(), MatchID: i.mid}
 		for _, j := range i.particiant_uid_to_user {
-			temp.incoming_message <- &message{Name: j.email, Message: "test", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid}
+			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid}
 		}
 	}
 

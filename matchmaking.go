@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-func ms_write(ms *match_socket) {
-	for msg := range ms.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
-		if err := ms.socket.WriteJSON(msg); err != nil {
+func mm_write(mm *mmsocket) {
+	for msg := range mm.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
+		if err := mm.socket.WriteJSON(msg); err != nil {
 			fmt.Println("error writing to socket")
 			break
 		} else {
@@ -19,22 +19,21 @@ func ms_write(ms *match_socket) {
 	}
 }
 
-func ms_read(ms *match_socket) {
+func mm_read(mm *mmsocket) {
 	defer func() {
-		fmt.Printf("read socket closing: %+v\n", ms)
-		if ms.open && (ms.m != nil) {
-			ms.m.leave <- ms
-			fmt.Println("client left the room", ms)
+		fmt.Printf("read socket closing: %+v\n", mm)
+		if mm.open {
+			fmt.Println("client left the room", mm)
 		}
 	}()
 
 	for {
 		var msg *message
-		if err := ms.socket.ReadJSON(&msg); err == nil {
+		if err := mm.socket.ReadJSON(&msg); err == nil {
 			fmt.Printf("JSON: %+v\n", msg)
 
 			msg.When = time.Now()
-			msg.Name = ms.u.email
+			msg.Name = mm.u.email
 			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
@@ -42,7 +41,7 @@ func ms_read(ms *match_socket) {
 
 				fmt.Println("received createMatch")
 
-				mtch := createMatch(ms, msg)
+				mtch := createMatch(mm, msg)
 				go mtch.run()
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
 
@@ -51,7 +50,7 @@ func ms_read(ms *match_socket) {
 						mtch.participant_join <- i
 					}
 				*/
-				mtch.participant_join <- ms
+				mtch.participant_signup <- mm
 
 			} else if msg.Event == "participantJoin" { // user request to join match
 
@@ -62,12 +61,12 @@ func ms_read(ms *match_socket) {
 				mid_to_match.mutex.Unlock()
 
 				if exists {
-					_, check_uid := mtch.participant_uid_to_user[ms.u.uid]
-					_, check_msid := mtch.participant_uid_to_msid_to_match_socket[ms.u.uid][ms.msid]
+					_, check_uid := mtch.participant_uid_to_user[mm.u.uid]
+					_, check_msid := mtch.participant_uid_to_msid_to_match_socket[mm.u.uid][mm.mmid]
 					if (check_uid == true) && (check_msid == true) {
 						fmt.Println("participant ws is already is the match!")
 					} else {
-						mtch.participant_join <- ms // ADD ALL SOCKETS, NOT JUST THE CURRENT ONE
+						mtch.participant_signup <- mm // ADD ALL SOCKETS, NOT JUST THE CURRENT ONE
 					}
 
 				}
@@ -80,7 +79,7 @@ func ms_read(ms *match_socket) {
 	}
 }
 
-func createMatch(ms *match_socket, msg *message) *match {
+func createMatch(mm *mmsocket, msg *message) *match {
 	fmt.Println("called 'createMatch'")
 
 	var ans *match
@@ -147,8 +146,6 @@ func createMatch(ms *match_socket, msg *message) *match {
 			mid_to_match.match[random_number] = ans
 			mid_to_match.mutex.Unlock()
 
-			ms.m = ans
-
 			not_assigned = false
 		}
 	}
@@ -158,6 +155,50 @@ func createMatch(ms *match_socket, msg *message) *match {
 func (m *match) run() {
 	for {
 		select {
+
+		// only add the user, do not add the mmsocket
+		case ws := <-m.participant_signup:
+			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object
+			_, check_mid := ws.u.mid_to_match[m.mid]            // check if the match is to the user object
+			fmt.Println("MID JOIN:", m.mid)
+			fmt.Println("UID JOIN:", ws.u.uid)
+
+			// if the user is not in the match already and we are at capacity
+			if (check_uid == false) && (len(m.participant_uid_to_user) > int(m.capacity)) {
+				fmt.Println("the match is full")
+				msg := &message{Name: ws.u.email, Message: "the match is full", Event: "failedMatchJoin", When: time.Now(), MatchID: m.mid}
+				ws.incoming_message <- msg
+			} else { // add the match socket to the room
+
+				// if user is not in the match object, add the user and create a socket object
+				m.mutex.Lock()
+				if check_uid == false {
+					m.participant_uid_to_user[ws.u.uid] = ws.u
+				}
+				m.mutex.Unlock()
+
+				// if match is not in the user object, add the match and create a match_socket object
+				ws.u.mutex.Lock()
+				if check_mid == false {
+					ws.u.mid_to_match[m.mid] = m
+				}
+				ws.u.mutex.Unlock()
+
+				// if this is the first socket the user has joined this room, send a message to everyone that he's joined
+				if check_uid == false {
+					msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
+					go func() {
+						msid_to_sock.mutex.RLock()
+						for _, j := range msid_to_sock.msid_to_sock {
+							j.incoming_message <- msg
+						}
+						msid_to_sock.mutex.RUnlock()
+					}()
+				}
+
+				fmt.Println("a mmsocket has joined the match")
+				printAllMatchUserWS()
+			}
 		case ws := <-m.participant_join: // joining
 
 			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object

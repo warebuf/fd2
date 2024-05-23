@@ -37,6 +37,8 @@ type user struct {
 
 	mid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	mid_to_match                map[uuid.UUID]*match
+
+	list_of_mmsockets map[uuid.UUID]*mmsocket
 }
 
 type room struct {
@@ -68,6 +70,8 @@ type match struct {
 	participant_join chan *match_socket
 	spectator_join   chan *match_socket // a channel for clients wishing to join
 	leave            chan *match_socket // a channel for clients wishing to leave
+
+	participant_signup chan *mmsocket
 
 	participant_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	participant_uid_to_user                 map[uuid.UUID]*user
@@ -110,6 +114,18 @@ type match_socket struct {
 	open bool
 }
 
+type mmsocket struct {
+	socket *websocket.Conn
+
+	mmid uuid.UUID
+
+	u *user
+
+	incoming_message chan *message // send is a channel on which messages are sent.
+
+	open bool
+}
+
 type message struct {
 	Name    string
 	Message string
@@ -138,9 +154,15 @@ type matchbase struct {
 	mutex sync.RWMutex
 }
 
+type mmbase struct {
+	matchmaking_array map[uuid.UUID]*mmsocket
+	mutex             sync.RWMutex
+}
+
 var uid_to_user userbase
 var rid_to_room roombase
 var mid_to_match matchbase
+var mmid_to_matchmaking mmbase
 
 // QUICK LOOK UP
 type rname_to_rid struct {
@@ -686,33 +708,31 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	// create a socket object for the user
 	not_assigned := true
-	var random_msid uuid.UUID
-	var temp *match_socket
+	var random_mmid uuid.UUID
+	var temp *mmsocket
 	for not_assigned {
-		random_msid = uuid.New()
-		msid_to_sock.mutex.RLock()
-		_, found := msid_to_sock.msid_to_sock[random_msid]
-		msid_to_sock.mutex.RUnlock()
+		random_mmid = uuid.New()
+		mmid_to_matchmaking.mutex.RLock()
+		_, found := mmid_to_matchmaking.matchmaking_array[random_mmid]
+		mmid_to_matchmaking.mutex.RUnlock()
 		if !found {
-			msid_to_sock.mutex.Lock()
-			temp = &match_socket{
-				mutex:            sync.RWMutex{},
+			mmid_to_matchmaking.mutex.Lock()
+			temp = &mmsocket{
 				socket:           sock,
-				msid:             random_msid,
+				mmid:             random_mmid,
 				u:                requesting_user,
-				m:                nil,
 				incoming_message: make(chan *message),
 				open:             true,
 			}
-			msid_to_sock.msid_to_sock[random_msid] = temp
-			msid_to_sock.mutex.Unlock()
+			mmid_to_matchmaking.matchmaking_array[random_mmid] = temp
+			mmid_to_matchmaking.mutex.Unlock()
 
 			not_assigned = false
 		}
 	}
 
-	go ms_write(temp)
-	go ms_read(temp)
+	go mm_write(temp)
+	go mm_read(temp)
 
 	// add the socket to all rooms the user is already in
 	/*

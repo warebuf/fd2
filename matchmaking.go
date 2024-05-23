@@ -22,6 +22,11 @@ func mm_write(mm *mmsocket) {
 func mm_read(mm *mmsocket) {
 	defer func() {
 		fmt.Printf("read socket closing: %+v\n", mm)
+
+		mmid_to_matchmaking.mutex.Lock()
+		delete(mmid_to_matchmaking.matchmaking, mm.mmid)
+		mmid_to_matchmaking.mutex.Unlock()
+
 		if mm.open {
 			fmt.Println("client left the room", mm)
 		}

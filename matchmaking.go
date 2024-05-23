@@ -184,11 +184,11 @@ func (m *match) run() {
 				if check_uid == false {
 					msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
 					go func() {
-						msid_to_sock.mutex.RLock()
-						for _, j := range msid_to_sock.msid_to_sock {
+						mmid_to_matchmaking.mutex.RLock()
+						for _, j := range mmid_to_matchmaking.matchmaking {
 							j.incoming_message <- msg
 						}
-						msid_to_sock.mutex.RUnlock()
+						mmid_to_matchmaking.mutex.RUnlock()
 					}()
 				}
 

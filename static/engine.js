@@ -39,8 +39,6 @@ anime()
 
 function removeB1() {
 
-	console.log("sent")
-
 	// send message to server to create match
 	var e1 = document.getElementById("formatselect").value;
 	var e2 = document.getElementById("opponentselect").value;

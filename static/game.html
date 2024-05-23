@@ -191,7 +191,7 @@
 
 	function sendParticipantJoin(mid) {
 		console.log(mid)
-		//socket.send(JSON.stringify({ "Event": 'participantJoin', "Message": e1+e2, MatchID:"a" }))
+		socket.send(JSON.stringify({ "Event": 'participantJoin', "Message": e1+e2, MatchID:mid }))
 	}
 
 </script>

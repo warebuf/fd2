@@ -43,8 +43,16 @@ func ms_read(ms *match_socket) {
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
 				mtch.participant_join <- ms
 			} else if msg.Event == "participantJoin" {
-				// get match from matchID
-				// mtch.participant_join <- ms
+
+				mid_to_match.mutex.Lock()
+				mtch, exists := mid_to_match.match[msg.MatchID]
+				mid_to_match.mutex.Unlock()
+
+				fmt.Println(mtch, exists)
+				if exists {
+					mtch.participant_join <- ms
+				}
+
 			}
 		} else {
 			fmt.Println("error reading from socket")

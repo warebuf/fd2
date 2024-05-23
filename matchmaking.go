@@ -180,7 +180,7 @@ func (m *match) run() {
 					ws.u.mutex.Unlock()
 
 					// if this is the first socket the user has joined this room, send a message to everyone that he's joined
-					if check_mid == false {
+					if check_uid == false {
 						msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
 						go func() {
 							msid_to_sock.mutex.RLock()

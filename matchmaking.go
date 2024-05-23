@@ -38,17 +38,21 @@ func ms_read(ms *match_socket) {
 			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
 			if msg.Event == "createMatch" {
+
+				fmt.Println("received createMatch")
+
 				mtch := createMatch(ms, msg)
 				go mtch.run()
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
 				mtch.participant_join <- ms
 			} else if msg.Event == "participantJoin" {
 
+				fmt.Println("received participantJoin")
+
 				mid_to_match.mutex.Lock()
 				mtch, exists := mid_to_match.match[msg.MatchID]
 				mid_to_match.mutex.Unlock()
 
-				fmt.Println(mtch, exists)
 				if exists {
 					mtch.participant_join <- ms
 				}

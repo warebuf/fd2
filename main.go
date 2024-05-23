@@ -69,11 +69,11 @@ type match struct {
 	spectator_join   chan *match_socket // a channel for clients wishing to join
 	leave            chan *match_socket // a channel for clients wishing to leave
 
-	participant_uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	participant_uid_to_user                map[uuid.UUID]*user
+	participant_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	participant_uid_to_user                 map[uuid.UUID]*user
 
-	spectator_uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	spectator_uid_to_user                map[uuid.UUID]*user
+	spectator_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	spectator_uid_to_user                 map[uuid.UUID]*user
 
 	message_logs []*message
 

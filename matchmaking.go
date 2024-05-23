@@ -55,7 +55,7 @@ func ms_read(ms *match_socket) {
 
 				if exists {
 					_, check_uid := mtch.participant_uid_to_user[ms.u.uid]
-					_, check_msid := mtch.participant_uid_to_sid_to_match_socket[ms.u.uid][ms.msid]
+					_, check_msid := mtch.participant_uid_to_msid_to_match_socket[ms.u.uid][ms.msid]
 					if (check_uid == true) && (check_msid == true) {
 						fmt.Println("participant ws is already is the match!")
 					} else {
@@ -123,11 +123,11 @@ func createMatch(ms *match_socket, msg *message) *match {
 				spectator_join:   make(chan *match_socket),
 				leave:            make(chan *match_socket),
 
-				participant_uid_to_sid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
-				participant_uid_to_user:                make(map[uuid.UUID]*user),
+				participant_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+				participant_uid_to_user:                 make(map[uuid.UUID]*user),
 
-				spectator_uid_to_sid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
-				spectator_uid_to_user:                make(map[uuid.UUID]*user),
+				spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
 
 				message_logs: make([]*message, 0, 16),
 
@@ -167,9 +167,9 @@ func (m *match) run() {
 				m.mutex.Lock()
 				if check_uid == false {
 					m.participant_uid_to_user[ws.u.uid] = ws.u
-					m.participant_uid_to_sid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
+					m.participant_uid_to_msid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
 				}
-				m.participant_uid_to_sid_to_match_socket[ws.u.uid][ws.msid] = ws
+				m.participant_uid_to_msid_to_match_socket[ws.u.uid][ws.msid] = ws
 				m.mutex.Unlock()
 
 				// if match is not in the user object, add the match and create a match_socket object
@@ -194,6 +194,7 @@ func (m *match) run() {
 				}
 
 				fmt.Println("a socket has joined the match")
+				printAllMatchUserWS()
 			}
 
 		case msg := <-m.broadcast: // forward message to all clients
@@ -204,7 +205,7 @@ func (m *match) run() {
 
 			fmt.Println("sending:", msg)
 
-			for _, i := range m.participant_uid_to_sid_to_match_socket {
+			for _, i := range m.participant_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
 					case j.incoming_message <- msg:
@@ -212,7 +213,7 @@ func (m *match) run() {
 				}
 			}
 
-			for _, i := range m.spectator_uid_to_sid_to_match_socket {
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
 					case j.incoming_message <- msg:
@@ -234,4 +235,17 @@ func globalBroadcast(msg *message) {
 	}
 
 	msid_to_sock.mutex.RUnlock()
+}
+
+func printAllMatchUserWS() {
+	fmt.Println("printing everything")
+	for i, j := range mid_to_match.match {
+		fmt.Println("MID:", i)
+		for k, l := range j.participant_uid_to_msid_to_match_socket {
+			fmt.Println("UID", k)
+			for m, _ := range l {
+				fmt.Println(m)
+			}
+		}
+	}
 }

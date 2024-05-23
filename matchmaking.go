@@ -244,7 +244,7 @@ func printAllMatchUserWS() {
 		for k, l := range j.participant_uid_to_msid_to_match_socket {
 			fmt.Println("UID", k)
 			for m, _ := range l {
-				fmt.Println(m)
+				fmt.Println("MSID", m)
 			}
 		}
 	}

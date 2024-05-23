@@ -56,6 +56,7 @@ func ms_read(ms *match_socket) {
 				if exists {
 					_, check_uid := mtch.participant_uid_to_user[ms.u.uid]
 					_, check_msid := mtch.participant_uid_to_sid_to_match_socket[ms.u.uid][ms.msid]
+					fmt.Println(check_uid, check_msid)
 					if (check_uid == true) && (check_msid == true) {
 						fmt.Println("participant ws is already is the match!")
 					} else {

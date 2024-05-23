@@ -37,6 +37,7 @@ func ms_read(ms *match_socket) {
 			msg.Name = ms.u.email
 			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
+			// user requests to create match
 			if msg.Event == "createMatch" {
 
 				fmt.Println("received createMatch")
@@ -44,8 +45,15 @@ func ms_read(ms *match_socket) {
 				mtch := createMatch(ms, msg)
 				go mtch.run()
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
+
+				/*
+					for _, i := range ms.u.mid_to_match {
+						mtch.participant_join <- i
+					}
+				*/
 				mtch.participant_join <- ms
-			} else if msg.Event == "participantJoin" {
+
+			} else if msg.Event == "participantJoin" { // user request to join match
 
 				fmt.Println("received participantJoin")
 
@@ -59,7 +67,7 @@ func ms_read(ms *match_socket) {
 					if (check_uid == true) && (check_msid == true) {
 						fmt.Println("participant ws is already is the match!")
 					} else {
-						mtch.participant_join <- ms
+						mtch.participant_join <- ms // ADD ALL SOCKETS, NOT JUST THE CURRENT ONE
 					}
 
 				}

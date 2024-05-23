@@ -715,9 +715,11 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 	go ms_read(temp)
 
 	// add the socket to all rooms the user is already in
-	for _, i := range requesting_user.mid_to_match {
-		i.participant_join <- temp
-	}
+	/*
+		for _, i := range requesting_user.mid_to_match {
+			i.participant_join <- temp
+		}
+	*/
 
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range mid_to_match.match {

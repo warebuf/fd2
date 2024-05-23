@@ -213,7 +213,7 @@ func (m *match) run() {
 
 			// if user is in the match object, delete all sockets as well
 			m.mutex.Lock()
-			if check_uid == false {
+			if check_uid == true {
 				delete(m.participant_uid_to_user, ws.u.uid)
 				delete(m.participant_uid_to_msid_to_match_socket, ws.u.uid)
 			}
@@ -221,14 +221,14 @@ func (m *match) run() {
 
 			// if match is not in the user object, add the match and create a match_socket object
 			ws.u.mutex.Lock()
-			if check_mid == false {
+			if check_mid == true {
 				delete(ws.u.mid_to_match, m.mid)
 				delete(ws.u.mid_to_msid_to_match_socket, m.mid)
 			}
 			ws.u.mutex.Unlock()
 
 			// if this is the first socket the user has joined this room, send a message to everyone that he's joined
-			if check_uid == false {
+			if check_uid == true {
 				msg := &message{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), MatchID: m.mid}
 				go func() {
 					mmid_to_matchmaking.mutex.RLock()

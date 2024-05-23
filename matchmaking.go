@@ -44,12 +44,6 @@ func mm_read(mm *mmsocket) {
 				mtch := createMatch(mm, msg)
 				go mtch.run()
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
-
-				/*
-					for _, i := range ms.u.mid_to_match {
-						mtch.participant_join <- i
-					}
-				*/
 				mtch.participant_signup <- mm
 
 			} else if msg.Event == "participantJoin" { // user request to join match
@@ -129,6 +123,8 @@ func createMatch(mm *mmsocket, msg *message) *match {
 				participant_join: make(chan *match_socket),
 				spectator_join:   make(chan *match_socket),
 				leave:            make(chan *match_socket),
+
+				participant_signup: make(chan *mmsocket),
 
 				participant_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				participant_uid_to_user:                 make(map[uuid.UUID]*user),

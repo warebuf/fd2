@@ -724,6 +724,7 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 				incoming_message: make(chan *message),
 				open:             true,
 			}
+			fmt.Println(temp)
 			mmid_to_matchmaking.matchmaking_array[random_mmid] = temp
 			mmid_to_matchmaking.mutex.Unlock()
 

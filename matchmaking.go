@@ -152,16 +152,17 @@ func (m *match) run() {
 		select {
 		case ws := <-m.participant_join: // joining
 
-			if len(m.participant_uid_to_user) > int(m.capacity) {
+			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object
+			_, check_mid := ws.u.mid_to_match[m.mid]            // check if the match is to the user object
+			fmt.Println("MID JOIN:", m.mid)
+			fmt.Println("UID JOIN:", ws.u.uid)
+
+			// if the user is not in the match already and we are at capacity
+			if (check_uid == false) && (len(m.participant_uid_to_user) > int(m.capacity)) {
 				fmt.Println("the match is full")
 				msg := &message{Name: ws.u.email, Message: "the match is full", Event: "failedMatchJoin", When: time.Now(), MatchID: m.mid}
 				ws.incoming_message <- msg
 			} else { // add the match socket to the room
-
-				_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object
-				_, check_mid := ws.u.mid_to_match[m.mid]            // check if the match is to the user object
-				fmt.Println("MID JOIN:", m.mid)
-				fmt.Println("UID JOIN:", ws.u.uid)
 
 				// if user is not in the match object, add the user and create a socket object
 				m.mutex.Lock()
@@ -242,9 +243,9 @@ func printAllMatchUserWS() {
 	for i, j := range mid_to_match.match {
 		fmt.Println("MID:", i)
 		for k, l := range j.participant_uid_to_msid_to_match_socket {
-			fmt.Println("UID", k)
+			fmt.Println("UID:", k)
 			for m, _ := range l {
-				fmt.Println("MSID", m)
+				fmt.Println("MSID:", m)
 			}
 		}
 	}

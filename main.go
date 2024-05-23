@@ -62,12 +62,16 @@ type match struct {
 	game_mode string
 	capacity  uint
 
-	broadcast chan *message      // a channel is a thread-safe queue, incoming messages
-	join      chan *match_socket // a channel for clients wishing to join
-	leave     chan *match_socket // a channel for clients wishing to leave
+	broadcast        chan *message // a channel is a thread-safe queue, incoming messages
+	participant_join chan *match_socket
+	spectator_join   chan *match_socket // a channel for clients wishing to join
+	leave            chan *match_socket // a channel for clients wishing to leave
 
-	uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	uid_to_user                map[uuid.UUID]*user
+	participant_uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	particiant_uid_to_user                 map[uuid.UUID]*user
+
+	spectator_uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	spectator_uid_to_user                map[uuid.UUID]*user
 
 	message_logs []*message
 

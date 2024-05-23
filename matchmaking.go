@@ -56,8 +56,7 @@ func mm_read(mm *mmsocket) {
 
 				if exists {
 					_, check_uid := mtch.participant_uid_to_user[mm.u.uid]
-					_, check_msid := mtch.participant_uid_to_msid_to_match_socket[mm.u.uid][mm.mmid]
-					if (check_uid == true) && (check_msid == true) {
+					if check_uid == true {
 						fmt.Println("participant ws is already is the match!")
 					} else {
 						mtch.participant_signup <- mm // ADD ALL SOCKETS, NOT JUST THE CURRENT ONE

@@ -145,52 +145,55 @@ func (m *match) run() {
 		select {
 		case ws := <-m.participant_join: // joining
 
-			if len(m.particiant_uid_to_user) > int(m.capacity) {
+			if len(m.participant_uid_to_user) > int(m.capacity) {
 				fmt.Println("the match is full")
 				msg := &message{Name: ws.u.email, Message: "the match is full", Event: "failedMatchJoin", When: time.Now(), MatchID: m.mid}
 				ws.incoming_message <- msg
-			} else {
-				// add the match socket to the room
-				m.mutex.RLock()
-				_, check := m.particiant_uid_to_user[ws.u.uid]
-				fmt.Println("UID JOIN:", ws.u.uid)
-				m.mutex.RUnlock()
+			} else { // add the match socket to the room
 
-				m.mutex.Lock()
-				if check == false {
-					m.particiant_uid_to_user[ws.u.uid] = ws.u
-					m.participant_uid_to_sid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
-				}
-				m.participant_uid_to_sid_to_match_socket[ws.u.uid][ws.msid] = ws
-				m.mutex.Unlock()
-
-				// add the match socket to the user object
-				ws.u.mutex.RLock()
-				_, check = ws.u.mid_to_match[m.mid]
+				_, check_uid := m.participant_uid_to_user[ws.u.uid]                          // check if the user is in the match object
+				_, check_msid := m.participant_uid_to_sid_to_match_socket[ws.u.uid][ws.msid] // check if the socket is in the match object
+				_, check_mid := ws.u.mid_to_match[m.mid]                                     // check if the match is to the user object
+				fmt.Println(check_uid, check_msid, check_mid)
 				fmt.Println("MID JOIN:", m.mid)
-				ws.u.mutex.RUnlock()
+				fmt.Println("UID JOIN:", ws.u.uid)
 
-				ws.u.mutex.Lock()
-				if check == false {
-					ws.u.mid_to_match[m.mid] = m
-					ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
+				if check_uid && check_msid && check_mid { // if nothing to add, just skip!
+					fmt.Println("the user is already set up perfectly!")
+				} else {
+					// if user is not in the match object, add the user and create a socket object
+					m.mutex.Lock()
+					if check_uid == false {
+						m.participant_uid_to_user[ws.u.uid] = ws.u
+						m.participant_uid_to_sid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
+					}
+					m.participant_uid_to_sid_to_match_socket[ws.u.uid][ws.msid] = ws
+					m.mutex.Unlock()
+
+					// if match is not in the user object, add the match and create a match_socket object
+					ws.u.mutex.Lock()
+					if check_mid == false {
+						ws.u.mid_to_match[m.mid] = m
+						ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
+					}
+					ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
+					ws.u.mutex.Unlock()
+
+					// if this is the first socket the user has joined this room, send a message to everyone that he's joined
+					if check_mid == false {
+						msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
+						go func() {
+							msid_to_sock.mutex.RLock()
+							for _, j := range msid_to_sock.msid_to_sock {
+								j.incoming_message <- msg
+							}
+							msid_to_sock.mutex.RUnlock()
+						}()
+					}
+
+					fmt.Println("a socket has joined the match")
 				}
-				ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
-				ws.u.mutex.Unlock()
 
-				// if this is the first socket the user has opened for this room, send a join message
-				if check == false {
-					msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
-					go func() {
-						msid_to_sock.mutex.RLock()
-						for _, j := range msid_to_sock.msid_to_sock {
-							j.incoming_message <- msg
-						}
-						msid_to_sock.mutex.RUnlock()
-					}()
-				}
-
-				fmt.Println("a socket has joined the match")
 			}
 
 		case msg := <-m.broadcast: // forward message to all clients

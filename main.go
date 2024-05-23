@@ -70,7 +70,7 @@ type match struct {
 	leave            chan *match_socket // a channel for clients wishing to leave
 
 	participant_uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	particiant_uid_to_user                 map[uuid.UUID]*user
+	participant_uid_to_user                map[uuid.UUID]*user
 
 	spectator_uid_to_sid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	spectator_uid_to_user                map[uuid.UUID]*user
@@ -717,7 +717,7 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range mid_to_match.match {
 		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), MatchID: i.mid}
-		for _, j := range i.particiant_uid_to_user {
+		for _, j := range i.participant_uid_to_user {
 			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid}
 		}
 	}

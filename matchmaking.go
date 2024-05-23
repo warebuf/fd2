@@ -277,14 +277,14 @@ func (m *match) run() {
 
 func globalBroadcast(msg *message) {
 	fmt.Println("global broadcast")
-	msid_to_sock.mutex.RLock()
-	for _, i := range msid_to_sock.msid_to_sock {
+	mmid_to_matchmaking.mutex.RLock()
+	for _, i := range mmid_to_matchmaking.matchmaking {
 		select {
 		case i.incoming_message <- msg:
 		}
 	}
 
-	msid_to_sock.mutex.RUnlock()
+	mmid_to_matchmaking.mutex.RUnlock()
 }
 
 func printAllMatchUserWS() {

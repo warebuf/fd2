@@ -160,6 +160,7 @@
 					div_but3.appendChild(document.createTextNode("Start"));
 					var div_but4 = document.createElement("button");
 					div_but4.setAttribute("id","leave")
+					div_but1.onclick = function() {sendParticipantLeave(msg.MatchID)};
 					div_but4.appendChild(document.createTextNode("Leave"));
 
 					div_footer.appendChild(div_but1)
@@ -182,6 +183,14 @@
 						}
 					}
 				}
+				else if(msg.Event == "participantLeaveSuccess") {
+					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
+					for(i=0;i<list_of_matches.length;i++) {
+						console.log(list_of_matches[i].textContent)
+						//if(list_of_matches[i].textContent==msg.MatchID) {
+						//}
+					}
+				}
 
 
 			}
@@ -190,8 +199,12 @@
 	test()
 
 	function sendParticipantJoin(mid) {
-		console.log("sent particpant join")
+		console.log("sent participant join")
 		socket.send(JSON.stringify({ "Event": 'participantJoin', "Message": "test", MatchID:mid }))
+	}
+	function sendParticipantLeave(mid) {
+		console.log("sent participant leave")
+		socket.send(JSON.stringify({ "Event": 'participantLeave', "Message": "test", MatchID:mid }))
 	}
 
 </script>

@@ -59,12 +59,19 @@ func mm_read(mm *mmsocket) {
 					if check_uid == true {
 						fmt.Println("participant ws is already is the match!")
 					} else {
-						mtch.participant_signup <- mm // ADD ALL SOCKETS, NOT JUST THE CURRENT ONE
+						mtch.participant_signup <- mm
 					}
-
 				}
+			} else if msg.Event == "participantLeave" {
+				mid_to_match.mutex.Lock()
+				mtch, exists := mid_to_match.match[msg.MatchID]
+				mid_to_match.mutex.Unlock()
 
+				if exists {
+					mtch.participant_signout <- mm
+				}
 			}
+
 		} else {
 			fmt.Println("error reading from socket")
 			break
@@ -102,7 +109,6 @@ func createMatch(mm *mmsocket, msg *message) *match {
 				} else {
 					gm = "ffa"
 				}
-				fmt.Println(msg.Message[3:])
 				num_ops, _ := strconv.Atoi(msg.Message[3:])
 
 				if (num_ops < 100) && (num_ops > 0) {
@@ -125,7 +131,8 @@ func createMatch(mm *mmsocket, msg *message) *match {
 				spectator_join:   make(chan *match_socket),
 				leave:            make(chan *match_socket),
 
-				participant_signup: make(chan *mmsocket),
+				participant_signup:  make(chan *mmsocket),
+				participant_signout: make(chan *mmsocket),
 
 				participant_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				participant_uid_to_user:                 make(map[uuid.UUID]*user),
@@ -196,6 +203,45 @@ func (m *match) run() {
 				fmt.Println("a mmsocket has joined the match")
 				printAllMatchUserWS()
 			}
+
+		case ws := <-m.participant_signout:
+
+			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object
+			_, check_mid := ws.u.mid_to_match[m.mid]            // check if the match is to the user object
+			fmt.Println("MID LEAVE:", m.mid)
+			fmt.Println("UID LEAVE:", ws.u.uid)
+
+			// if user is in the match object, delete all sockets as well
+			m.mutex.Lock()
+			if check_uid == false {
+				delete(m.participant_uid_to_user, ws.u.uid)
+				delete(m.participant_uid_to_msid_to_match_socket, ws.u.uid)
+			}
+			m.mutex.Unlock()
+
+			// if match is not in the user object, add the match and create a match_socket object
+			ws.u.mutex.Lock()
+			if check_mid == false {
+				delete(ws.u.mid_to_match, m.mid)
+				delete(ws.u.mid_to_msid_to_match_socket, m.mid)
+			}
+			ws.u.mutex.Unlock()
+
+			// if this is the first socket the user has joined this room, send a message to everyone that he's joined
+			if check_uid == false {
+				msg := &message{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), MatchID: m.mid}
+				go func() {
+					mmid_to_matchmaking.mutex.RLock()
+					for _, j := range mmid_to_matchmaking.matchmaking {
+						j.incoming_message <- msg
+					}
+					mmid_to_matchmaking.mutex.RUnlock()
+				}()
+			}
+
+			fmt.Println("a mmsocket has left the match")
+			printAllMatchUserWS()
+
 		case ws := <-m.participant_join: // joining
 
 			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object

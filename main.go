@@ -71,7 +71,8 @@ type match struct {
 	spectator_join   chan *match_socket // a channel for clients wishing to join
 	leave            chan *match_socket // a channel for clients wishing to leave
 
-	participant_signup chan *mmsocket
+	participant_signup  chan *mmsocket
+	participant_signout chan *mmsocket
 
 	participant_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	participant_uid_to_user                 map[uuid.UUID]*user

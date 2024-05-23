@@ -155,8 +155,8 @@ type matchbase struct {
 }
 
 type mmbase struct {
-	matchmaking_array map[uuid.UUID]*mmsocket
-	mutex             sync.RWMutex
+	matchmaking map[uuid.UUID]*mmsocket
+	mutex       sync.RWMutex
 }
 
 var uid_to_user userbase
@@ -191,7 +191,7 @@ func main() {
 	rid_to_room.mutex = sync.RWMutex{}
 	mid_to_match.match = make(map[uuid.UUID]*match)
 	mid_to_match.mutex = sync.RWMutex{}
-	mmid_to_matchmaking.matchmaking_array = make(map[uuid.UUID]*mmsocket)
+	mmid_to_matchmaking.matchmaking = make(map[uuid.UUID]*mmsocket)
 	mmid_to_matchmaking.mutex = sync.RWMutex{}
 
 	// making QUICK LOOKUP data structures
@@ -715,7 +715,7 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 	for not_assigned {
 		random_mmid = uuid.New()
 		mmid_to_matchmaking.mutex.RLock()
-		_, found := mmid_to_matchmaking.matchmaking_array[random_mmid]
+		_, found := mmid_to_matchmaking.matchmaking[random_mmid]
 		mmid_to_matchmaking.mutex.RUnlock()
 		if !found {
 			mmid_to_matchmaking.mutex.Lock()
@@ -726,7 +726,7 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 				incoming_message: make(chan *message),
 				open:             true,
 			}
-			mmid_to_matchmaking.matchmaking_array[random_mmid] = temp
+			mmid_to_matchmaking.matchmaking[random_mmid] = temp
 			mmid_to_matchmaking.mutex.Unlock()
 
 			not_assigned = false

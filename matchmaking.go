@@ -289,13 +289,11 @@ func globalBroadcast(msg *message) {
 
 func printAllMatchUserWS() {
 	fmt.Println("printing everything")
+
 	for i, j := range mid_to_match.match {
-		fmt.Println("MID:", i)
-		for k, l := range j.participant_uid_to_msid_to_match_socket {
+		fmt.Println("MD:", i)
+		for k, _ := range j.participant_uid_to_user {
 			fmt.Println("UID:", k)
-			for m, _ := range l {
-				fmt.Println("MSID:", m)
-			}
 		}
 	}
 }

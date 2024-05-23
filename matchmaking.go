@@ -182,9 +182,11 @@ func (m *match) run() {
 				if check == false {
 					msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
 					go func() {
-						fmt.Println(2)
-						ws.m.broadcast <- msg
-						fmt.Println(1)
+						msid_to_sock.mutex.RLock()
+						for _, j := range msid_to_sock.msid_to_sock {
+							j.incoming_message <- msg
+						}
+						msid_to_sock.mutex.RUnlock()
 					}()
 				}
 

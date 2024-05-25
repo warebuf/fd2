@@ -671,7 +671,10 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
-	fmt.Println("123", files)
+	fmt.Println("123")
+	for _, file := range files {
+		fmt.Println(file.Name())
+	}
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")

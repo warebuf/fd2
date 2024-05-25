@@ -239,8 +239,10 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	mux.HandleFunc("/matchmaking", matchmakingHandler)
 	mux.HandleFunc("/game", gameHandler)
+	mux.HandleFunc("/matchmaking", matchmakingHandler)
+	mux.HandleFunc("/start", startHandler)
+	mux.HandleFunc("/ingame", ingameHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)
@@ -553,8 +555,6 @@ func lobbyHandler(res http.ResponseWriter, req *http.Request) {
 func createRoomHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("/createRoom")
 
-	fmt.Printf("%+v\n", store)
-
 	session, err := store.Get(req, "session-name")
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -744,5 +744,56 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid}
 		}
 	}
+}
 
+func startHandler(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("/start")
+
+	session, err := store.Get(req, "session-name")
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	u := req.URL
+	parameters, err := url.ParseQuery(u.RawQuery)
+	fmt.Println(parameters)
+
+	if err != nil {
+
+		session.Values["Room_error"] = 2
+		err = session.Save(req, res)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		http.Redirect(res, req, "/game", http.StatusFound)
+	} else {
+		fmt.Println(parameters["room_name"][0]) // vulnerability here, need to check if this exists
+
+		http.Redirect(res, req, "/game", http.StatusFound)
+	}
+
+}
+func ingameHandler(res http.ResponseWriter, req *http.Request) {
+	// Check if user is already authenticated
+	session, err := store.Get(req, "session-name")
+
+	u := req.URL
+	parameters, err2 := url.ParseQuery(u.RawQuery)
+	fmt.Println(parameters)
+
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth && (err2 != nil) {
+		res.Write([]byte("hi2 "))
+	} else if err2 != nil {
+		http.Redirect(res, req, "/game", http.StatusFound)
+	} else {
+		//fmt.Println("User is not authenticated, redirecting to home page")
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+	}
 }

@@ -84,6 +84,8 @@
 
 <body>
 
+<audio src="https://www.bensound.com/bensound-music/bensound-moose.mp3"></audio>
+
 <div id="container">
 
 	<div id="matches"></div>
@@ -157,6 +159,7 @@
 					div_but2.appendChild(document.createTextNode("Spectate"));
 					var div_but3 = document.createElement("button");
 					div_but3.setAttribute("id","start")
+					div_but3.onclick = function() {sendStart(msg.MatchID)};
 					div_but3.appendChild(document.createTextNode("Start"));
 					var div_but4 = document.createElement("button");
 					div_but4.setAttribute("id","leave")
@@ -213,6 +216,21 @@
 		console.log("sent participant leave")
 		socket.send(JSON.stringify({ "Event": 'participantLeave', "Message": "test", MatchID:mid }))
 	}
+	function sendStart(mid) {
+		console.log("sent start")
+		fetch("http://{{.host}}/start/"+mid)
+				.then((response) => response.json())
+				.then((json) => console.log(json));
+
+	}
+
+
+	
+	window.addEventListener("DOMContentLoaded", event => {
+		const audio = document.querySelector("audio");
+		audio.volume = 0.2;
+		audio.play();
+	});
 
 </script>
 </body>

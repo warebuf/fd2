@@ -670,6 +670,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	if err != nil {
 		log.Fatal(err)
 	}
+	fmt.Println(filepath.Glob("/music"))
 	fmt.Println(files)
 
 	// Check if user is already authenticated

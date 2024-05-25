@@ -239,6 +239,9 @@ func main() {
 	fs := http.FileServer(http.Dir("./static"))
 	mux.Handle("/static/", http.StripPrefix("/static/", fs))
 
+	fs2 := http.FileServer(http.Dir("./music"))
+	mux.Handle("/music/", http.StripPrefix("/music/", fs2))
+
 	mux.HandleFunc("/game", gameHandler)
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
 	mux.HandleFunc("/start", startHandler)

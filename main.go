@@ -666,6 +666,12 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 func gameHandler(res http.ResponseWriter, req *http.Request) {
 	//c, _ := req.Cookie("session-name")
 
+	files, err := filepath.Glob("/music")
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(files)
+
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
 	fmt.Println(session)
@@ -779,6 +785,7 @@ func startHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 }
+
 func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")

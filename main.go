@@ -667,7 +667,7 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 func gameHandler(res http.ResponseWriter, req *http.Request) {
 	//c, _ := req.Cookie("session-name")
 
-	files, err := os.ReadDir("/music")
+	files, err := os.ReadDir("./music")
 	if err != nil {
 		log.Fatal(err)
 	}

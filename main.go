@@ -674,8 +674,6 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		log.Fatal(err)
 	}
 	randNum := rand.Intn(len(files))
-	fmt.Println(randNum)
-	fmt.Println(files[randNum])
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
@@ -687,7 +685,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
-		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
+		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "song": files[randNum].Name()}
 		t.Execute(res, data)
 	} else {
 		fmt.Println("User is not authenticated, redirecting to home page")

@@ -84,7 +84,7 @@
 
 <body>
 
-<audio src="/music/emails.mp3"></audio>
+<audio src="/music/emails.mp3" onerror=fack()></audio>
 
 
 
@@ -234,6 +234,10 @@
 		audio.volume = 0.2;
 		audio.play();
 	});
+
+	function fack() {
+		console.log("asd")
+	}
 
 </script>
 </body>

@@ -221,10 +221,10 @@
 	}
 	function sendStart(mid) {
 		console.log("sent start")
-		fetch("http://{{.host}}/start/"+mid)
-				.then((response) => response.json())
-				.then((json) => console.log(json));
-
+		const Http = new XMLHttpRequest();
+		const url='http://{{.host}}/ingame';
+		Http.open("GET", url);
+		Http.send();
 	}
 
 

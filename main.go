@@ -4,7 +4,6 @@ import (
 	"log"
 	"net/http"
 	"net/url"
-	"os"
 	"strconv"
 
 	//"os"
@@ -21,8 +20,6 @@ import (
 	"path/filepath"
 	"sync"
 	"time"
-
-	"math/rand"
 )
 
 type user struct {
@@ -669,11 +666,13 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 func gameHandler(res http.ResponseWriter, req *http.Request) {
 	//c, _ := req.Cookie("session-name")
 
-	files, err := os.ReadDir("./music")
-	if err != nil {
-		log.Fatal(err)
-	}
-	randNum := rand.Intn(len(files))
+	/*
+		files, err := os.ReadDir("./music")
+		/if err != nil {
+			log.Fatal(err)
+		}
+		randNum := rand.Intn(len(files))
+	*/
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")

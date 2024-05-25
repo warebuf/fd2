@@ -84,7 +84,7 @@
 
 <body>
 
-<audio src="/music/emails.mp3" onerror=fack()></audio>
+<audio src="/music/emails.mp3"></audio>
 
 
 
@@ -231,13 +231,10 @@
 
 	window.addEventListener("DOMContentLoaded", event => {
 		const audio = document.querySelector("audio");
-		audio.volume = 1;
+		audio.volume = 0.2;
 		audio.play();
 	});
 
-	function fack() {
-
-	}
 
 </script>
 </body>

@@ -842,7 +842,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		mtch.started = true
 	}
 
-	data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
+	data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "mid": parsed[2]}
 	t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
 	t.Execute(res, data)
 }

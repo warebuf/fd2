@@ -31,14 +31,13 @@ type user struct {
 	nickname     string
 	currency     int
 	admin_status bool
+	bot_status   bool
 
 	rid_to_sid_to_socket map[uuid.UUID]map[uuid.UUID]*socket
 	rid_to_room          map[uuid.UUID]*room
 
 	mid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	mid_to_match                map[uuid.UUID]*match
-
-	list_of_wrsockets map[uuid.UUID]*waitroom_socket
 }
 
 type room struct {
@@ -65,18 +64,23 @@ type match struct {
 	mid       uuid.UUID
 	game_mode string
 	capacity  uint
+	started   bool
 
-	broadcast        chan *message // a channel is a thread-safe queue, incoming messages
-	participant_join chan *match_socket
-	spectator_join   chan *match_socket // a channel for clients wishing to join
-	leave            chan *match_socket // a channel for clients wishing to leave
+	broadcast chan *message // a channel is a thread-safe queue, incoming messages
 
-	participant_waitroom_signup  chan *waitroom_socket
-	participant_waitroom_signout chan *waitroom_socket
+	gamer_join                        chan *match_socket
+	gamer_uid_to_user                 map[uuid.UUID]*user
+	gamer_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	leave                             chan *match_socket // a channel for clients wishing to leave
 
-	participant_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	participant_uid_to_user                 map[uuid.UUID]*user
+	gamer_permission_signup  chan *permission_socket
+	gamer_permission_list    map[uuid.UUID]*user
+	gamer_permission_signout chan *permission_socket
 
+	bot_join  chan *user
+	bot_leave chan *user
+
+	spectator_join                        chan *match_socket // a channel for clients wishing to join
 	spectator_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	spectator_uid_to_user                 map[uuid.UUID]*user
 
@@ -115,10 +119,10 @@ type match_socket struct {
 	open bool
 }
 
-type waitroom_socket struct {
+type permission_socket struct {
 	socket *websocket.Conn
 
-	wrid uuid.UUID
+	pid uuid.UUID
 
 	u *user
 
@@ -155,15 +159,15 @@ type matchbase struct {
 	mutex sync.RWMutex
 }
 
-type wrbase struct {
-	matchmaking map[uuid.UUID]*waitroom_socket
-	mutex       sync.RWMutex
+type permissionbase struct {
+	global map[uuid.UUID]*permission_socket
+	mutex  sync.RWMutex
 }
 
 var uid_to_user userbase
 var rid_to_room roombase
 var mid_to_match matchbase
-var mmid_to_matchmaking wrbase
+var pid_to_permissions permissionbase // global storage of all permission sockets, have a tendency to be ephimeral/disposable since this is the only place they are saved
 
 // QUICK LOOK UP
 type rname_to_rid struct {
@@ -192,8 +196,8 @@ func main() {
 	rid_to_room.mutex = sync.RWMutex{}
 	mid_to_match.match = make(map[uuid.UUID]*match)
 	mid_to_match.mutex = sync.RWMutex{}
-	mmid_to_matchmaking.matchmaking = make(map[uuid.UUID]*waitroom_socket)
-	mmid_to_matchmaking.mutex = sync.RWMutex{}
+	pid_to_permissions.global = make(map[uuid.UUID]*permission_socket)
+	pid_to_permissions.mutex = sync.RWMutex{}
 
 	// making QUICK LOOKUP data structures
 	roomname_to_rid.name_to_rid = make(map[string]uuid.UUID)
@@ -242,10 +246,9 @@ func main() {
 	fs2 := http.FileServer(http.Dir("./music"))
 	mux.Handle("/music/", http.StripPrefix("/music/", fs2))
 
-	mux.HandleFunc("/game", gameHandler)
+	mux.HandleFunc("/waitroom", waitroomHandler)
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
-	mux.HandleFunc("/start", startHandler)
-	mux.HandleFunc("/ingame/", ingameHandler)
+	mux.HandleFunc("/game/", gameHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)
@@ -299,6 +302,7 @@ func loginHandler(res http.ResponseWriter, req *http.Request) {
 			nickname:     "bob",
 			currency:     0,
 			admin_status: false,
+			bot_status:   false,
 
 			rid_to_sid_to_socket: make(map[uuid.UUID]map[uuid.UUID]*socket),
 			rid_to_room:          make(map[uuid.UUID]*room),
@@ -390,6 +394,7 @@ func callbackHandler(res http.ResponseWriter, req *http.Request) {
 		nickname:     "bob",
 		currency:     0,
 		admin_status: false,
+		bot_status:   false,
 
 		rid_to_sid_to_socket: make(map[uuid.UUID]map[uuid.UUID]*socket),
 		rid_to_room:          make(map[uuid.UUID]*room),
@@ -663,10 +668,11 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 	}
 }
 
-func gameHandler(res http.ResponseWriter, req *http.Request) {
+func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 	//c, _ := req.Cookie("session-name")
 
 	/*
+		// plays music in lobby
 		files, err := os.ReadDir("./music")
 		/if err != nil {
 			log.Fatal(err)
@@ -683,7 +689,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
+		t := template.Must(template.ParseFiles(filepath.Join("static", "waitroom.html")))
 		//data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "song": files[randNum].Name()}
 		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
 		t.Execute(res, data)
@@ -699,7 +705,6 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
-	fmt.Println(session)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -723,74 +728,43 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	// create a socket object for the user
 	not_assigned := true
-	var random_wrid uuid.UUID
-	var temp *waitroom_socket
+	var random_pid uuid.UUID
+	var temp *permission_socket
 	for not_assigned {
-		random_wrid = uuid.New()
-		mmid_to_matchmaking.mutex.RLock()
-		_, found := mmid_to_matchmaking.matchmaking[random_wrid]
-		mmid_to_matchmaking.mutex.RUnlock()
+		random_pid = uuid.New()
+		pid_to_permissions.mutex.RLock()
+		_, found := pid_to_permissions.global[random_pid]
+		pid_to_permissions.mutex.RUnlock()
 		if !found {
-			mmid_to_matchmaking.mutex.Lock()
-			temp = &waitroom_socket{
+			temp = &permission_socket{
 				socket:           sock,
-				wrid:             random_wrid,
+				pid:              random_pid,
 				u:                requesting_user,
 				incoming_message: make(chan *message),
 				open:             true,
 			}
-			mmid_to_matchmaking.matchmaking[random_wrid] = temp
-			mmid_to_matchmaking.mutex.Unlock()
+			pid_to_permissions.mutex.Lock()
+			pid_to_permissions.global[random_pid] = temp
+			pid_to_permissions.mutex.Unlock()
 
 			not_assigned = false
 		}
 	}
 
-	go wr_write(temp)
-	go wr_read(temp)
+	go p_write(temp)
+	go p_read(temp)
 
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range mid_to_match.match {
 		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), MatchID: i.mid} // send match
-		for _, j := range i.participant_uid_to_user {
+		for _, j := range i.gamer_permission_list {
 			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid} // send users in match
 		}
 	}
 }
 
-func startHandler(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("/start")
-
-	session, err := store.Get(req, "session-name")
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	u := req.URL
-	parameters, err := url.ParseQuery(u.RawQuery)
-	fmt.Println(parameters)
-
-	if err != nil {
-
-		session.Values["Room_error"] = 2
-		err = session.Save(req, res)
-		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		http.Redirect(res, req, "/game", http.StatusFound)
-	} else {
-		fmt.Println(parameters["room_name"][0]) // vulnerability here, need to check if this exists
-
-		http.Redirect(res, req, "/game", http.StatusFound)
-	}
-
-}
-
-func ingameHandler(res http.ResponseWriter, req *http.Request) {
-	log.Println("/ingame")
+func gameHandler(res http.ResponseWriter, req *http.Request) {
+	log.Println("/game")
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
@@ -798,80 +772,77 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
 	if auth, ok := session.Values["authenticated"].(bool); (!ok) || (!auth) {
 		//fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 		return
 	}
+
+	// parse MID from URL and make sure it exists, if so, fetch the corresponding match object
 	u := req.URL
-
 	parsed := strings.Split(u.Path, `/`)
-
 	if len(parsed) < 3 {
 		fmt.Println("URL is weird/wrong")
-		http.Redirect(res, req, "/game", http.StatusSeeOther)
+		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
 		return
 	}
-
 	mid, err2 := uuid.Parse(parsed[2])
 	mtch, found := mid_to_match.match[mid]
-
-	fmt.Println(mtch)
-
 	if !found || (err2 != nil) {
 		fmt.Println("could not find this MID")
-		http.Redirect(res, req, "/game", http.StatusSeeOther)
+		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
 		return
 	}
 
+	// get UID from cookie, check if the user is on the permission list
 	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
-
-	_, found2 := mtch.participant_uid_to_user[uid]
-
+	_, found2 := mtch.gamer_permission_list[uid]
 	if !found2 {
 		fmt.Println("this user is not in the match, he cannot start it")
-		http.Redirect(res, req, "/game", http.StatusSeeOther)
+		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
 		return
 	}
 
-	// add bots to the match if there is space
-	for len(mtch.participant_uid_to_user) < int(mtch.capacity) {
+	// if the game is not started, then change the start flag and add bots to remaining positions
+	if mtch.started == false {
+		// add bots to the match if there is space
+		for len(mtch.gamer_permission_list) < int(mtch.capacity) {
 
-		not_assigned := true
-		var random_number uuid.UUID
-		for not_assigned {
-			random_number = uuid.New()
-			uid_to_user.mutex.Lock()
-			if _, found := uid_to_user.users[random_number]; !found {
-				uid_to_user.mutex.Unlock()
-				not_assigned = false
-				fmt.Println("assigning UID:", random_number)
+			not_assigned := true
+			var random_number uuid.UUID
+			for not_assigned {
+				random_number = uuid.New()
+				uid_to_user.mutex.Lock()
+				if _, found := uid_to_user.users[random_number]; !found {
+					uid_to_user.mutex.Unlock()
+					not_assigned = false
+					fmt.Println("assigning UID:", random_number)
+				}
 			}
+
+			user_object := &user{
+				mutex: sync.RWMutex{},
+
+				uid:          random_number,
+				email:        "bot@bot.com",
+				nickname:     "BOT",
+				currency:     0,
+				admin_status: false,
+				bot_status:   true,
+
+				rid_to_sid_to_socket: nil,
+				rid_to_room:          nil,
+
+				mid_to_msid_to_match_socket: nil,
+				mid_to_match:                nil,
+			}
+
+			mtch.bot_join <- user_object
+
 		}
-
-		user_object := &user{
-			mutex: sync.RWMutex{},
-
-			uid:          random_number,
-			email:        "bot@bot.com",
-			nickname:     "BOT",
-			currency:     0,
-			admin_status: false,
-
-			rid_to_sid_to_socket: nil,
-			rid_to_room:          nil,
-
-			mid_to_msid_to_match_socket: nil,
-			mid_to_match:                nil,
-		}
-
-		fmt.Println(user_object)
-
 	}
 
 	data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
-	t := template.Must(template.ParseFiles(filepath.Join("static", "ingame.html")))
+	t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
 	t.Execute(res, data)
-
 }

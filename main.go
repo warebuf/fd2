@@ -803,6 +803,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	fmt.Println("got here")
 	// if the game is not started, then change the start flag and add bots to remaining positions
 	if mtch.started == false {
 		// add bots to the match if there is space
@@ -840,6 +841,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 			mtch.bot_join <- user_object
 
 		}
+		mtch.started = true
 	}
 
 	data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}

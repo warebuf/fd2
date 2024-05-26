@@ -248,7 +248,7 @@ func main() {
 
 	mux.HandleFunc("/waitroom", waitroomHandler)
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
-	mux.HandleFunc("/game/", gameHandler)
+	//mux.HandleFunc("/game/", gameHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)

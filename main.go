@@ -794,6 +794,10 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
 
 	u := req.URL
 
@@ -807,19 +811,17 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	mid, err2 := uuid.Parse(parsed[2])
 	mtch, found := mid_to_match.match[mid]
 
-	fmt.Println(mtch, mid, err2, found, len(mid))
+	fmt.Println(mtch)
+	fmt.Println(mid, err2, found, len(mid))
 
 	if !found || (err2 != nil) {
 		fmt.Println("could not find this MID")
 		http.Redirect(res, req, "/game", http.StatusSeeOther)
 	}
 
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		res.Write([]byte("hi2 "))
+		fmt.Println("got here")
+		res.Write([]byte("hi2 " + parsed[2]))
 	} else {
 		//fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)

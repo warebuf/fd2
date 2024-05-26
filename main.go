@@ -798,7 +798,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	u := req.URL
 	fmt.Println(u)
 	parameters, err2 := url.ParseQuery(u.RawQuery)
-	fmt.Println(parameters)
+	fmt.Println(parameters, err2)
 
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)

@@ -823,7 +823,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
 		t := template.Must(template.ParseFiles(filepath.Join("static", "user.html")))
 		t.Execute(res, data)
-		http.Redirect(res, req, u.Path, http.StatusSeeOther)
+		http.Redirect(res, req, "/ingame", http.StatusSeeOther)
 
 	} else {
 		//fmt.Println("User is not authenticated, redirecting to home page")

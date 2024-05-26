@@ -796,12 +796,17 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	session, err := store.Get(req, "session-name")
 
 	u := req.URL
-	fmt.Println(u)
+	fmt.Println(u.Path)
+	fmt.Println(u.Fragment)
+
 	parameters, err2 := url.ParseQuery(u.Path)
 
 	for i, j := range parameters {
 		fmt.Println(i, j)
 	}
+
+	parsed := strings.Split(u.Path, `/`)
+	fmt.Println(parsed)
 
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)

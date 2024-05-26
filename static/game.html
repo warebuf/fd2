@@ -1,11 +1,92 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <title>.</title>
+    <style>
+        * {
+            border: 1px solid pink;
+            margin: 0px;
+            padding: 0px;
+        }
+        body {
+            height:100%;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        #container {
+            position:relative;
+        }
+
+        #test {
+            position: absolute;
+            padding: 0px;
+            text-align: center;
+            max-width: 100%;
+            width: 100%;
+            margin-left:auto;
+            margin-right:auto;
+            top:50%;
+            left:50%;
+            transform:translate(-50%,-50%);
+        }
+
+    </style>
 </head>
+
+
 <body>
-    <p>yoyoyo</p>
-    <p>{{.mid}}</p>
+
+<div id="container">
+
+    <div id="test">
+        <p>{{.mid}}</p>
+    </div>
+
+    <canvas id="myCanvas"></canvas>
+
+</div>
+
+
+
+<script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
+<script src="/static/engine.js"></script>
+
+<script>
+    var socket = null;
+
+    function test() {
+
+        if (!window["WebSocket"]) {
+            alert("Error: Your browser does not support web sockets.")
+        } else {
+            socket = new WebSocket("ws://{{.host}}/ingame");
+            socket.onclose = function() {
+                alert("Connection has been closed.");
+            }
+
+            socket.onmessage = function(e) {
+                var msg = eval('('+e.data+')');
+                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message);
+
+                if(msg.Event == "newMatch") {
+
+                }
+                else if(msg.Event == "participantJoinSuccess") {
+
+                }
+                else if(msg.Event == "participantLeaveSuccess") {
+
+                }
+
+
+            }
+        }
+    }
+    test()
+
+
+
+
+</script>
 </body>
 </html>

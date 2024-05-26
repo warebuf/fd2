@@ -910,4 +910,6 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	go m_write(temp)
 	go m_read(temp)
 
+	mtch.gamer_join <- temp
+
 }

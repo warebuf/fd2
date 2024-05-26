@@ -812,7 +812,6 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	mtch, found := mid_to_match.match[mid]
 
 	fmt.Println(mtch)
-	fmt.Println(mid, err2, found, len(mid))
 
 	if !found || (err2 != nil) {
 		fmt.Println("could not find this MID")
@@ -820,10 +819,12 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		fmt.Println("asdsa", parsed[2])
+		fmt.Println("asdsa")
 		data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
 		t := template.Must(template.ParseFiles(filepath.Join("static", "user.html")))
 		t.Execute(res, data)
+		http.Redirect(res, req, u.Path, http.StatusSeeOther)
+
 	} else {
 		//fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)

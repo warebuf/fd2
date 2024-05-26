@@ -73,10 +73,15 @@ func p_read(p *permission_socket) {
 				mid_to_match.mutex.Unlock()
 
 				if exists {
-					if mtch.started == false {
-						mtch.gamer_permission_signout <- p
+					_, check_uid := mtch.gamer_permission_list[p.u.uid]
+					if check_uid == true {
+						if mtch.started == false {
+							mtch.gamer_permission_signout <- p
+						} else {
+							fmt.Println("cannot leave permission list if match is in progress!")
+						}
 					} else {
-						fmt.Println("cannot leave permission list if match is in progress!")
+						fmt.Println("cannot leave, user isn't even in the room")
 					}
 				}
 			}

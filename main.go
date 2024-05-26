@@ -804,8 +804,8 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	// if the game is not started, then change the start flag and add bots to remaining positions
 	if mtch.started == false {
 		// add bots to the match if there is space
-		for len(mtch.gamer_permission_list) < int(mtch.capacity) {
-			fmt.Println("got here", mtch.capacity, len(mtch.gamer_permission_list))
+		for i := len(mtch.gamer_permission_list); i < int(mtch.capacity); i++ {
+			fmt.Println("got here", len(mtch.gamer_permission_list), mtch.capacity)
 
 			not_assigned := true
 			var random_number uuid.UUID

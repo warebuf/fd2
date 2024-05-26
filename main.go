@@ -864,6 +864,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	mid, err2 := uuid.Parse(parameters["matchid"][0])
 	mtch, err3 := mid_to_match.match[mid]
 	if (err2 != nil) || (err3 == true) {
+		fmt.Println(mid, err2, mtch, err3)
 		fmt.Println("mid does not exist! returning")
 		return
 	}

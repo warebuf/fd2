@@ -797,10 +797,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 
 	u := req.URL
 	fmt.Println(u)
-	fmt.Println("rawQ:", u.RawQuery)
-	fmt.Println("path:", u.Path)
-	fmt.Println("rawPath:", u.RawPath)
-	parameters, err2 := url.ParseQuery(u.RawQuery)
+	parameters, err2 := url.ParseQuery(u.Path)
 
 	fmt.Println(parameters, err2)
 

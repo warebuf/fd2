@@ -59,7 +59,7 @@
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")
         } else {
-            socket = new WebSocket("ws://{{.host}}/ingame");
+            socket = new WebSocket("ws://{{.host}}/ingame?matchid={{.mid}}");
             socket.onclose = function() {
                 alert("Connection has been closed.");
             }

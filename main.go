@@ -248,7 +248,9 @@ func main() {
 
 	mux.HandleFunc("/waitroom", waitroomHandler)
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
+
 	mux.HandleFunc("/game/", gameHandler)
+	mux.HandleFunc("/ingame", ingameHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)
@@ -843,4 +845,69 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
 	t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
 	t.Execute(res, data)
+}
+
+func ingameHandler(res http.ResponseWriter, req *http.Request) {
+	log.Println("/ingame")
+
+	// Check if user is already authenticated
+	session, err := store.Get(req, "session-name")
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// get room object from RID
+	u := req.URL
+	parameters, err := url.ParseQuery(u.RawQuery)
+	fmt.Println(u, parameters, err)
+	mid, err2 := uuid.Parse(parameters["matchid"][0])
+	mtch, err3 := mid_to_match.match[mid]
+	if (err2 != nil) || (err3 == true) {
+		fmt.Println("mid does not exist")
+		return
+	}
+
+	// create a web socket connection
+	var upgrader = &websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
+	sock, err := upgrader.Upgrade(res, req, nil)
+	//sock.SetReadLimit(128000) //have to handle this read limit correctly
+	if err != nil {
+		log.Fatal("ServeHTTP:", err)
+		return
+	}
+
+	// get the user's object from their UUID
+	fmt.Println("UUID:", session.Values["uid"])
+	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
+	uid_to_user.mutex.RLock()
+	requesting_user := uid_to_user.users[uid]
+	uid_to_user.mutex.RUnlock()
+
+	// create a socket object for the user
+	not_assigned := true
+	var random_pid uuid.UUID
+	var temp *match_socket
+	for not_assigned {
+		random_pid = uuid.New()
+		pid_to_permissions.mutex.RLock()
+		_, found := pid_to_permissions.global[random_pid]
+		pid_to_permissions.mutex.RUnlock()
+		if !found {
+			temp = &match_socket{
+				mutex:            sync.RWMutex{},
+				socket:           sock,
+				msid:             random_pid,
+				u:                requesting_user,
+				m:                mtch,
+				incoming_message: make(chan *message),
+				open:             true,
+			}
+			not_assigned = false
+		}
+	}
+
+	go m_write(temp)
+	go m_read(temp)
+
 }

@@ -796,9 +796,8 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	session, err := store.Get(req, "session-name")
 
 	u := req.URL
-	parameters, err2 := url.ParseQuery(u.RawQuery)
+	parameters, err2 := url.ParseQuery(u)
 	fmt.Println(u)
-	fmt.Println(u.RawQuery)
 	fmt.Println(parameters, err2)
 
 	if err != nil {

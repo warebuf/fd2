@@ -798,15 +798,13 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	u := req.URL
 
 	parsed := strings.Split(u.Path, `/`)
-	fmt.Println(parsed)
-	fmt.Println(parsed[1])
 
-	if len(parsed) < 2 {
+	if len(parsed) < 3 {
 		fmt.Println("URL is weird/wrong")
 		http.Redirect(res, req, "/game", http.StatusSeeOther)
 	}
 
-	mid, err2 := uuid.Parse(parsed[1])
+	mid, err2 := uuid.Parse(parsed[2])
 	mtch, found := mid_to_match.match[mid]
 
 	fmt.Println(mtch, mid, err2, found, len(mid))

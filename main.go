@@ -820,8 +820,10 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		fmt.Println("got here")
-		res.Write([]byte("hi2 " + parsed[2]))
+		fmt.Println("asdsa", parsed[2])
+		data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
+		t := template.Must(template.ParseFiles(filepath.Join("static", "user.html")))
+		t.Execute(res, data)
 	} else {
 		//fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)

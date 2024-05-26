@@ -360,9 +360,7 @@ func callbackHandler(res http.ResponseWriter, req *http.Request) {
 	var random_number uuid.UUID
 	for not_assigned {
 		random_number = uuid.New()
-		uid_to_user.mutex.Lock()
 		if _, found := uid_to_user.users[random_number]; !found {
-			uid_to_user.mutex.Unlock()
 			not_assigned = false
 			fmt.Println("assigning UID:", random_number)
 		}
@@ -813,9 +811,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 			var random_number uuid.UUID
 			for not_assigned {
 				random_number = uuid.New()
-				uid_to_user.mutex.Lock()
 				if _, found := uid_to_user.users[random_number]; !found {
-					uid_to_user.mutex.Unlock()
 					not_assigned = false
 					fmt.Println("assigning UID:", random_number)
 				}

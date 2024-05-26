@@ -799,17 +799,17 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 
 	parsed := strings.Split(u.Path, `/`)
 	fmt.Println(parsed)
+	fmt.Println(parsed[1])
 
-	room_id := parsed[1]
 	if len(parsed) < 2 {
 		fmt.Println("URL is weird/wrong")
 		http.Redirect(res, req, "/game", http.StatusSeeOther)
 	}
 
-	mid, err2 := uuid.Parse(room_id)
+	mid, err2 := uuid.Parse(parsed[1])
 	mtch, found := mid_to_match.match[mid]
 
-	fmt.Println(mtch, mid, err2, found)
+	fmt.Println(mtch, mid, err2, found, len(mid))
 
 	if !found || (err2 != nil) {
 		fmt.Println("could not find this MID")

@@ -222,7 +222,7 @@
 	function sendStart(mid) {
 		console.log("sent start")
 		const Http = new XMLHttpRequest();
-		const url='http://{{.host}}/ingame/mid';
+		const url='http://{{.host}}/ingame/' + mid;
 		Http.open("GET", url);
 		Http.send();
 	}

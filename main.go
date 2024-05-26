@@ -245,7 +245,7 @@ func main() {
 	mux.HandleFunc("/game", gameHandler)
 	mux.HandleFunc("/matchmaking", matchmakingHandler)
 	mux.HandleFunc("/start", startHandler)
-	mux.HandleFunc("/ingame", ingameHandler)
+	mux.HandleFunc("/ingame/", ingameHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)

@@ -126,9 +126,9 @@ func createMatch(msg *message) *match {
 				num_ops, _ := strconv.Atoi(msg.Message[3:])
 
 				if (num_ops < 100) && (num_ops > 0) {
-					num = uint(num_ops)
+					num = uint(num_ops) + 1
 				} else {
-					num = 1
+					num = 2
 				}
 			}
 

@@ -799,7 +799,9 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println(u)
 	parameters, err2 := url.ParseQuery(u.Path)
 
-	fmt.Println(parameters, err2)
+	for i, j := range parameters {
+		fmt.Println(i, j)
+	}
 
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)

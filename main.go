@@ -796,26 +796,32 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	session, err := store.Get(req, "session-name")
 
 	u := req.URL
-	fmt.Println(u.Path)
-	fmt.Println(u.Fragment)
-
-	parameters, err2 := url.ParseQuery(u.Path)
-
-	for i, j := range parameters {
-		fmt.Println(i, j)
-	}
 
 	parsed := strings.Split(u.Path, `/`)
 	fmt.Println(parsed)
+
+	room_id := parsed[1]
+	if len(parsed) < 2 {
+		fmt.Println("URL is weird/wrong")
+		http.Redirect(res, req, "/game", http.StatusSeeOther)
+	}
+
+	mid, err2 := uuid.Parse(room_id)
+	mtch, found := mid_to_match.match[mid]
+
+	fmt.Println(mtch, mid, err2, found)
+
+	if !found || (err2 != nil) {
+		fmt.Println("could not find this MID")
+		http.Redirect(res, req, "/game", http.StatusSeeOther)
+	}
 
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	if auth, ok := session.Values["authenticated"].(bool); ok && auth && (err2 != nil) {
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		res.Write([]byte("hi2 "))
-	} else if err2 != nil {
-		http.Redirect(res, req, "/game", http.StatusFound)
 	} else {
 		//fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)

@@ -723,31 +723,31 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	// create a socket object for the user
 	not_assigned := true
-	var random_mmid uuid.UUID
-	var temp *mmsocket
+	var random_wrid uuid.UUID
+	var temp *waitroom_socket
 	for not_assigned {
-		random_mmid = uuid.New()
+		random_wrid = uuid.New()
 		mmid_to_matchmaking.mutex.RLock()
-		_, found := mmid_to_matchmaking.matchmaking[random_mmid]
+		_, found := mmid_to_matchmaking.matchmaking[random_wrid]
 		mmid_to_matchmaking.mutex.RUnlock()
 		if !found {
 			mmid_to_matchmaking.mutex.Lock()
-			temp = &mmsocket{
+			temp = &waitroom_socket{
 				socket:           sock,
-				mmid:             random_mmid,
+				wrid:             random_wrid,
 				u:                requesting_user,
 				incoming_message: make(chan *message),
 				open:             true,
 			}
-			mmid_to_matchmaking.matchmaking[random_mmid] = temp
+			mmid_to_matchmaking.matchmaking[random_wrid] = temp
 			mmid_to_matchmaking.mutex.Unlock()
 
 			not_assigned = false
 		}
 	}
 
-	go mm_write(temp)
-	go mm_read(temp)
+	go wr_write(temp)
+	go wr_read(temp)
 
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range mid_to_match.match {

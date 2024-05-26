@@ -267,14 +267,12 @@ func main() {
 
 func indexHandler(res http.ResponseWriter, req *http.Request) {
 	log.Println("/")
-	log.Println("METHOD", req.Method)
 	t := template.Must(template.ParseFiles(filepath.Join("static", "index.html")))
 	t.Execute(res, nil)
 }
 
 func loginHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("/login (Redirected to Google)")
-	log.Println("METHOD", req.Method)
 
 	session, err := store.Get(req, "session-name")
 	fmt.Println("session values: ", session.Values)

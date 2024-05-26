@@ -223,11 +223,7 @@
 
 
 	function sendStart(mid) {
-		console.log("sent start")
-		const Http = new XMLHttpRequest();
-		var url='http://{{.host}}/ingame/' + mid;
-		Http.open("GET", url);
-		Http.send();
+		window.location.replace('http://{{.host}}/ingame/' + mid);
 	}
 
 

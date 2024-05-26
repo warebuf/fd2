@@ -822,7 +822,6 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		fmt.Println("asdsa")
 		data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
 		t := template.Must(template.ParseFiles(filepath.Join("static", "ingame.html")))
-		fmt.Println(t)
 		t.Execute(res, data)
 
 	} else {

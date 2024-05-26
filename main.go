@@ -803,7 +803,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	fmt.Println("got here")
+	fmt.Println("got here", mtch.capacity, len(mtch.gamer_permission_list))
 	// if the game is not started, then change the start flag and add bots to remaining positions
 	if mtch.started == false {
 		// add bots to the match if there is space

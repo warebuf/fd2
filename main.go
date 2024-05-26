@@ -796,8 +796,12 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	session, err := store.Get(req, "session-name")
 
 	u := req.URL
-	parameters, err2 := url.ParseQuery(u)
 	fmt.Println(u)
+	fmt.Println("rawQ:", u.RawQuery)
+	fmt.Println("path:", u.Path)
+	fmt.Println("rawPath:", u.RawPath)
+	parameters, err2 := url.ParseQuery(u.RawQuery)
+
 	fmt.Println(parameters, err2)
 
 	if err != nil {

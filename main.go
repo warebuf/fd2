@@ -38,7 +38,7 @@ type user struct {
 	mid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	mid_to_match                map[uuid.UUID]*match
 
-	list_of_mmsockets map[uuid.UUID]*mmsocket
+	list_of_wrsockets map[uuid.UUID]*waitroom_socket
 }
 
 type room struct {
@@ -71,8 +71,8 @@ type match struct {
 	spectator_join   chan *match_socket // a channel for clients wishing to join
 	leave            chan *match_socket // a channel for clients wishing to leave
 
-	participant_signup  chan *mmsocket
-	participant_signout chan *mmsocket
+	participant_waitroom_signup  chan *waitroom_socket
+	participant_waitroom_signout chan *waitroom_socket
 
 	participant_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	participant_uid_to_user                 map[uuid.UUID]*user
@@ -115,10 +115,10 @@ type match_socket struct {
 	open bool
 }
 
-type mmsocket struct {
+type waitroom_socket struct {
 	socket *websocket.Conn
 
-	mmid uuid.UUID
+	wrid uuid.UUID
 
 	u *user
 
@@ -155,15 +155,15 @@ type matchbase struct {
 	mutex sync.RWMutex
 }
 
-type mmbase struct {
-	matchmaking map[uuid.UUID]*mmsocket
+type wrbase struct {
+	matchmaking map[uuid.UUID]*waitroom_socket
 	mutex       sync.RWMutex
 }
 
 var uid_to_user userbase
 var rid_to_room roombase
 var mid_to_match matchbase
-var mmid_to_matchmaking mmbase
+var mmid_to_matchmaking wrbase
 
 // QUICK LOOK UP
 type rname_to_rid struct {
@@ -192,7 +192,7 @@ func main() {
 	rid_to_room.mutex = sync.RWMutex{}
 	mid_to_match.match = make(map[uuid.UUID]*match)
 	mid_to_match.mutex = sync.RWMutex{}
-	mmid_to_matchmaking.matchmaking = make(map[uuid.UUID]*mmsocket)
+	mmid_to_matchmaking.matchmaking = make(map[uuid.UUID]*waitroom_socket)
 	mmid_to_matchmaking.mutex = sync.RWMutex{}
 
 	// making QUICK LOOKUP data structures
@@ -751,9 +751,9 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range mid_to_match.match {
-		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), MatchID: i.mid}
+		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), MatchID: i.mid} // send match
 		for _, j := range i.participant_uid_to_user {
-			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid}
+			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid} // send users in match
 		}
 	}
 }
@@ -799,6 +799,11 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	if auth, ok := session.Values["authenticated"].(bool); (!ok) || (!auth) {
+		//fmt.Println("User is not authenticated, redirecting to home page")
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+		return
+	}
 	u := req.URL
 
 	parsed := strings.Split(u.Path, `/`)
@@ -806,6 +811,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	if len(parsed) < 3 {
 		fmt.Println("URL is weird/wrong")
 		http.Redirect(res, req, "/game", http.StatusSeeOther)
+		return
 	}
 
 	mid, err2 := uuid.Parse(parsed[2])
@@ -816,16 +822,56 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	if !found || (err2 != nil) {
 		fmt.Println("could not find this MID")
 		http.Redirect(res, req, "/game", http.StatusSeeOther)
+		return
 	}
 
-	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
-		fmt.Println("asdsa")
-		data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
-		t := template.Must(template.ParseFiles(filepath.Join("static", "ingame.html")))
-		t.Execute(res, data)
+	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
 
-	} else {
-		//fmt.Println("User is not authenticated, redirecting to home page")
-		http.Redirect(res, req, "/", http.StatusSeeOther)
+	_, found2 := mtch.participant_uid_to_user[uid]
+
+	if !found2 {
+		fmt.Println("this user is not in the match, he cannot start it")
+		http.Redirect(res, req, "/game", http.StatusSeeOther)
+		return
 	}
+
+	// add bots to the match if there is space
+	for len(mtch.participant_uid_to_user) < int(mtch.capacity) {
+
+		not_assigned := true
+		var random_number uuid.UUID
+		for not_assigned {
+			random_number = uuid.New()
+			uid_to_user.mutex.Lock()
+			if _, found := uid_to_user.users[random_number]; !found {
+				uid_to_user.mutex.Unlock()
+				not_assigned = false
+				fmt.Println("assigning UID:", random_number)
+			}
+		}
+
+		user_object := &user{
+			mutex: sync.RWMutex{},
+
+			uid:          random_number,
+			email:        "bot@bot.com",
+			nickname:     "BOT",
+			currency:     0,
+			admin_status: false,
+
+			rid_to_sid_to_socket: nil,
+			rid_to_room:          nil,
+
+			mid_to_msid_to_match_socket: nil,
+			mid_to_match:                nil,
+		}
+
+		fmt.Println(user_object)
+
+	}
+
+	data := map[string]string{"email": session.Values["Email"].(string), "mid": parsed[2]}
+	t := template.Must(template.ParseFiles(filepath.Join("static", "ingame.html")))
+	t.Execute(res, data)
+
 }

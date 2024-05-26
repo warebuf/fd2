@@ -8,9 +8,9 @@ import (
 	"time"
 )
 
-func mm_write(mm *mmsocket) {
-	for msg := range mm.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
-		if err := mm.socket.WriteJSON(msg); err != nil {
+func wr_write(wr *waitroom_socket) {
+	for msg := range wr.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
+		if err := wr.socket.WriteJSON(msg); err != nil {
 			fmt.Println("error writing to socket")
 			break
 		} else {
@@ -19,26 +19,26 @@ func mm_write(mm *mmsocket) {
 	}
 }
 
-func mm_read(mm *mmsocket) {
+func wr_read(wr *waitroom_socket) {
 	defer func() {
-		fmt.Printf("read socket closing: %+v\n", mm)
+		fmt.Printf("read socket closing: %+v\n", wr)
 
 		mmid_to_matchmaking.mutex.Lock()
-		delete(mmid_to_matchmaking.matchmaking, mm.mmid)
+		delete(mmid_to_matchmaking.matchmaking, wr.wrid)
 		mmid_to_matchmaking.mutex.Unlock()
 
-		if mm.open {
-			fmt.Println("client left the room", mm)
+		if wr.open {
+			fmt.Println("client left the room", wr)
 		}
 	}()
 
 	for {
 		var msg *message
-		if err := mm.socket.ReadJSON(&msg); err == nil {
+		if err := wr.socket.ReadJSON(&msg); err == nil {
 			fmt.Printf("JSON: %+v\n", msg)
 
 			msg.When = time.Now()
-			msg.Name = mm.u.email
+			msg.Name = wr.u.email
 			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
@@ -46,10 +46,10 @@ func mm_read(mm *mmsocket) {
 
 				fmt.Println("received createMatch")
 
-				mtch := createMatch(mm, msg)
+				mtch := createMatch(wr, msg)
 				go mtch.run()
 				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // when a room is created, send it to all sockets (not just sockets in room)
-				mtch.participant_signup <- mm
+				mtch.participant_waitroom_signup <- wr
 
 			} else if msg.Event == "participantJoin" { // user request to join match
 
@@ -60,11 +60,11 @@ func mm_read(mm *mmsocket) {
 				mid_to_match.mutex.Unlock()
 
 				if exists {
-					_, check_uid := mtch.participant_uid_to_user[mm.u.uid]
+					_, check_uid := mtch.participant_uid_to_user[wr.u.uid]
 					if check_uid == true {
 						fmt.Println("participant ws is already is the match!")
 					} else {
-						mtch.participant_signup <- mm
+						mtch.participant_waitroom_signup <- wr
 					}
 				}
 			} else if msg.Event == "participantLeave" {
@@ -73,7 +73,7 @@ func mm_read(mm *mmsocket) {
 				mid_to_match.mutex.Unlock()
 
 				if exists {
-					mtch.participant_signout <- mm
+					mtch.participant_waitroom_signout <- wr
 				}
 			}
 
@@ -84,7 +84,7 @@ func mm_read(mm *mmsocket) {
 	}
 }
 
-func createMatch(mm *mmsocket, msg *message) *match {
+func createMatch(mm *waitroom_socket, msg *message) *match {
 	fmt.Println("called 'createMatch'")
 
 	var ans *match
@@ -136,8 +136,8 @@ func createMatch(mm *mmsocket, msg *message) *match {
 				spectator_join:   make(chan *match_socket),
 				leave:            make(chan *match_socket),
 
-				participant_signup:  make(chan *mmsocket),
-				participant_signout: make(chan *mmsocket),
+				participant_waitroom_signup:  make(chan *waitroom_socket),
+				participant_waitroom_signout: make(chan *waitroom_socket),
 
 				participant_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				participant_uid_to_user:                 make(map[uuid.UUID]*user),
@@ -166,7 +166,7 @@ func (m *match) run() {
 		select {
 
 		// only add the user, do not add the mmsocket
-		case ws := <-m.participant_signup:
+		case ws := <-m.participant_waitroom_signup: // joining the waitroom for matchmaking
 			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object
 			_, check_mid := ws.u.mid_to_match[m.mid]            // check if the match is to the user object
 			fmt.Println("MID JOIN:", m.mid)
@@ -209,7 +209,7 @@ func (m *match) run() {
 				printAllMatchUserWS()
 			}
 
-		case ws := <-m.participant_signout:
+		case ws := <-m.participant_waitroom_signout: // leaving the waitroom for matchmaking
 
 			_, check_uid := m.participant_uid_to_user[ws.u.uid] // check if the user is in the match object
 			_, check_mid := ws.u.mid_to_match[m.mid]            // check if the match is to the user object

@@ -790,10 +790,13 @@ func startHandler(res http.ResponseWriter, req *http.Request) {
 }
 
 func ingameHandler(res http.ResponseWriter, req *http.Request) {
+	log.Println("/ingame")
+
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
 
 	u := req.URL
+	fmt.Println(u)
 	parameters, err2 := url.ParseQuery(u.RawQuery)
 	fmt.Println(parameters)
 

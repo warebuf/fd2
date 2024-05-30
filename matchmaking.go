@@ -310,24 +310,19 @@ func (m *match) run() {
 			ws.m.mutex.Unlock()
 			rid_to_room.mutex.Unlock()
 
+			// broadcast to all users of the room that the user has left
+			if check == false {
+				msg := &message{Name: ws.u.email, Message: "x left the chat", Event: "left", When: time.Now()}
+				m.broadcast <- msg
+				fmt.Println("left the game")
+			}
+
 			// remove/take care of socket object
 			ws.u = nil
 			ws.m = nil
 			close(ws.incoming_message)
 			ws.socket.Close()
 			ws.open = false
-
-			// broadcast to all users of the room that the user has left
-			go func(m *match, c bool, email string) {
-
-				fmt.Println("left the game")
-
-				if c == false {
-					msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
-					m.broadcast <- msg
-				}
-
-			}(m, check, ws.u.email)
 
 			fmt.Println("a socket has left the match")
 			printAllMatchUserWS()

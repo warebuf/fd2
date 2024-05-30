@@ -42,6 +42,8 @@
         <p>{{.mid}}</p>
     </div>
 
+    <ul id="messages"></ul>
+
     <canvas id="myCanvas"></canvas>
 
 </div>
@@ -56,6 +58,8 @@
 
     function test() {
 
+        var messages = $("#messages");
+
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")
         } else {
@@ -68,17 +72,18 @@
                 var msg = eval('('+e.data+')');
                 console.log(msg.Event, msg.Name, msg.MatchID, msg.Message);
 
-                if(msg.Event == "newMatch") {
+                var msg_date = msg.When.substring(0,10);
+                var msg_time = msg.When.substring(11,19);
 
+                if(msg.Event == 'entered') {
+                    messages.append(
+                        $('<li>').append(
+                            $('<span>').text(msg_date + ' '),
+                            $('<span>').text(msg_time + ' '),
+                            $('<span>').text(msg.Name + ' has entered the chat!'),
+                        )
+                    );
                 }
-                else if(msg.Event == "participantJoinSuccess") {
-
-                }
-                else if(msg.Event == "participantLeaveSuccess") {
-
-                }
-
-
             }
         }
     }

@@ -26,7 +26,7 @@ function anime() {
     //c.fillStyle = 'black';
     //ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
     c.fillStyle = 'blue';
-    ctx.fillText(start,0, 0);
+    ctx.fillText(start,100, 100);
 }
 anime()
 

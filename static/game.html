@@ -78,12 +78,12 @@
                 if(msg.Event == 'entered') {
                     var li = document.createElement("li");
                     li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game'));
-                    ul.appendChild(li);
+                    messages.appendChild(li);
                 }
                 else if(msg.Event == 'left') {
                     var li = document.createElement("li");
                     li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game'));
-                    ul.appendChild(li);
+                    messages.appendChild(li);
                 }
             }
         }

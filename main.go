@@ -913,7 +913,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	// check if the user is on the permission list
 	_, check_uid := mtch.gamer_permission_list[requesting_user.uid]
 
-	if check_uid != false {
+	if check_uid == false {
 		fmt.Println("UID cannot join! Not on permission list")
 	} else {
 		mtch.gamer_join <- temp

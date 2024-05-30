@@ -182,9 +182,7 @@ func (m *match) run() {
 		// only add the user, do not add the mmsocket
 		case ws := <-m.gamer_permission_signup: // joining the waitroom for matchmaking
 			_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
-			_, check_mid := ws.u.mid_to_match[m.mid]          // check if the match is to the user object
-			fmt.Println("MID JOIN:", m.mid)
-			fmt.Println("UID JOIN:", ws.u.uid)
+			fmt.Println("gamer_permission_signup", ws.u.uid)
 
 			// if the user is not in the match already and we are at capacity
 			if (check_uid == false) && (len(m.gamer_permission_list) > int(m.capacity)) {

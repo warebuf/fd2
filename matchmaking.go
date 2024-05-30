@@ -282,6 +282,10 @@ func (m *match) run() {
 			m.gamer_uid_to_msid_to_match_socket[ws.u.uid][ws.msid] = ws
 			m.mutex.Unlock()
 
+			for i, j := range ws.u.mid_to_msid_to_match_socket {
+				fmt.Print(i, j)
+			}
+
 			// if match is not in the user object, add the match and create a match_socket object
 			ws.u.mutex.Lock()
 			if check_mid == false {

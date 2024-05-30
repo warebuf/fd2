@@ -221,25 +221,14 @@ func (m *match) run() {
 
 			} else {
 				_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
-				_, check_mid := ws.u.mid_to_match[m.mid]          // check if the match is to the user object
-				fmt.Println("MID LEAVE:", m.mid)
-				fmt.Println("UID LEAVE:", ws.u.uid)
+				fmt.Println("gamer_permission_signout", ws.u.uid)
 
 				// if user is in the match object, delete all sockets as well
 				m.mutex.Lock()
 				if check_uid == true {
 					delete(m.gamer_permission_list, ws.u.uid)
-					delete(m.gamer_uid_to_msid_to_match_socket, ws.u.uid)
 				}
 				m.mutex.Unlock()
-
-				// if match is not in the user object, add the match and create a match_socket object
-				ws.u.mutex.Lock()
-				if check_mid == true {
-					delete(ws.u.mid_to_match, m.mid)
-					delete(ws.u.mid_to_msid_to_match_socket, m.mid)
-				}
-				ws.u.mutex.Unlock()
 
 				// if this is the first socket the user has joined this room, send a message to everyone that he's joined
 				if check_uid == true {

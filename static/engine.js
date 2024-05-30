@@ -22,7 +22,7 @@ function anime() {
     window.requestAnimationFrame(anime);
     let start = Date.now().toLocaleString('en-CH');
     c.fillStyle = 'black';
-    c.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
+    ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
     //c.fillStyle = 'white';
     //c.fillText(start,(c.width/2) - (c.measureText(start).width/2), c.height/2);
     //ctx.clearRect(0,0,innerWidth,innerHeight);

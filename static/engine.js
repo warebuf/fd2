@@ -20,20 +20,9 @@ var dy = 4;
 var radius = 30;
 function anime() {
     window.requestAnimationFrame(anime);
+    let start = Date.now().toLocaleString('en-CH');
+    console.log(start)
     //ctx.clearRect(0,0,innerWidth,innerHeight);
-    ctx.beginPath();
-    ctx.arc(x,y,radius,0,Math.PI*2,false);
-    ctx.strokeStyle='blue';
-    ctx.stroke();
-
-    if (x + radius > c.width || x - radius < 0) {
-        dx = -dx;
-    }
-    if (y + radius > c.height || y - radius < 0) {
-        dy = -dy;
-    }
-    x += dx;
-    y += dy;
 }
 anime()
 

@@ -21,7 +21,10 @@ var radius = 30;
 function anime() {
     window.requestAnimationFrame(anime);
     let start = Date.now().toLocaleString('en-CH');
-    console.log("start",start)
+    c.fillStyle = 'black';
+    c.fillRect((c.width/2)-(c.measureText(start).width/2),(c.height/2)-c.measureText('M').width,c.measureText(start).width,c.measureText('M').width);
+    c.fillStyle = 'white';
+    c.fillText(start,(c.width/2) - (c.measureText(start).width/2), c.height/2);
     //ctx.clearRect(0,0,innerWidth,innerHeight);
 }
 anime()

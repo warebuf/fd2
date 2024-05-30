@@ -275,7 +275,8 @@ func (m *match) run() {
 
 			// if user is not in the match object, add the user and create a socket object
 			m.mutex.Lock()
-			if check_uid == false {
+			if check_uid == true {
+				fmt.Println("got in here")
 				m.gamer_uid_to_user[ws.u.uid] = ws.u
 				m.gamer_uid_to_msid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
 			}
@@ -289,7 +290,8 @@ func (m *match) run() {
 
 			// if match is not in the user object, add the match and create a match_socket object
 			ws.u.mutex.Lock()
-			if check_mid == false {
+			if check_mid == true {
+				fmt.Println("got in here2")
 				ws.u.mid_to_match[m.mid] = m
 				ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
 			}

@@ -71,7 +71,7 @@ type match struct {
 	gamer_join                        chan *match_socket
 	gamer_uid_to_user                 map[uuid.UUID]*user
 	gamer_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	leave                             chan *match_socket // a channel for clients wishing to leave
+	gamer_leave                       chan *match_socket // a channel for clients wishing to leave
 
 	gamer_permission_signup  chan *permission_socket
 	gamer_permission_list    map[uuid.UUID]*user

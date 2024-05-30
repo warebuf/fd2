@@ -146,7 +146,7 @@ func createMatch(msg *message) *match {
 				gamer_join:                        make(chan *match_socket),
 				gamer_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				gamer_uid_to_user:                 make(map[uuid.UUID]*user),
-				leave:                             make(chan *match_socket),
+				gamer_leave:                       make(chan *match_socket),
 
 				gamer_permission_signup:  make(chan *permission_socket),
 				gamer_permission_list:    make(map[uuid.UUID]*user),
@@ -272,6 +272,41 @@ func (m *match) run() {
 			ws.u.mutex.Unlock()
 
 			fmt.Println("a socket has joined the match")
+			printAllMatchUserWS()
+
+		case ws := <-m.gamer_leave: // leaving
+			fmt.Println("a socket has left the room")
+
+			// remove mid from user object
+			uid_to_user.mutex.Lock()
+			ws.u.mutex.Lock()
+			delete(ws.u.mid_to_msid_to_match_socket[ws.m.mid], ws.msid)
+			if len(ws.u.rid_to_sid_to_socket[ws.m.mid]) == 0 {
+				delete(ws.u.mid_to_msid_to_match_socket, ws.m.mid)
+				delete(ws.u.mid_to_match, ws.m.mid)
+			}
+			ws.u.mutex.Unlock()
+			uid_to_user.mutex.Unlock()
+
+			// remove uid from match object
+			rid_to_room.mutex.Lock()
+			ws.m.mutex.Lock()
+			delete(ws.m.gamer_uid_to_msid_to_match_socket[ws.u.uid], ws.msid)
+			if len(ws.m.gamer_uid_to_msid_to_match_socket[ws.u.uid]) == 0 {
+				delete(ws.m.gamer_uid_to_msid_to_match_socket, ws.u.uid)
+				delete(ws.m.gamer_uid_to_user, ws.u.uid)
+			}
+			ws.m.mutex.Unlock()
+			rid_to_room.mutex.Unlock()
+
+			// remove/take care of socket object
+			ws.u = nil
+			ws.m = nil
+			close(ws.incoming_message)
+			ws.socket.Close()
+			ws.open = false
+
+			fmt.Println("a socket has left the match")
 			printAllMatchUserWS()
 
 		case u := <-m.bot_join:

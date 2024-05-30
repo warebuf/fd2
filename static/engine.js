@@ -25,7 +25,7 @@ function anime() {
     let start = Date.now().toLocaleString('en-CH');
     ctx.font = '12px Arial';
 
-    c.fillStyle = 'black';
+    ctx.fillStyle = 'black';
     ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
     ctx.fillStyle = 'blue';
     ctx.fillText(start,100, 100);

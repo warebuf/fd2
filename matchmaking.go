@@ -345,7 +345,7 @@ func (m *match) run() {
 			}()
 
 			go func(m *match, email string) {
-				msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
+				msg := &message{Name: email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 				m.broadcast <- msg
 				fmt.Println("bot has joined the game")
 			}(m, u.email)

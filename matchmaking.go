@@ -200,13 +200,6 @@ func (m *match) run() {
 				}
 				m.mutex.Unlock()
 
-				// if match is not in the user object, add the match and create a match_socket object
-				ws.u.mutex.Lock()
-				if check_mid == false {
-					ws.u.mid_to_match[m.mid] = m
-				}
-				ws.u.mutex.Unlock()
-
 				// if this is the first socket the user has joined this room, send a message to everyone that he's joined
 				if check_uid == false {
 					msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}

@@ -21,7 +21,7 @@ func p_write(p *permission_socket) {
 
 func p_read(p *permission_socket) {
 	defer func() {
-		fmt.Printf("read socket closing: %+v\n", p)
+		fmt.Printf("read socket closing")
 
 		pid_to_permissions.mutex.Lock()
 		delete(pid_to_permissions.global, p.pid)
@@ -63,6 +63,12 @@ func p_read(p *permission_socket) {
 					_, check_uid := mtch.gamer_permission_list[p.u.uid]
 					if check_uid == true {
 						fmt.Println("participant ws is already is the match!")
+					} else if mtch.started == true {
+						fmt.Println("match has already started, of course you can't join")
+					} else if len(mtch.gamer_permission_list) > int(mtch.capacity) {
+						fmt.Println("the match is full")
+						msg := &message{Name: p.u.email, Message: "the match is full", Event: "failedMatchJoin", When: time.Now(), MatchID: mtch.mid}
+						p.incoming_message <- msg
 					} else {
 						mtch.gamer_permission_signup <- p
 					}
@@ -184,67 +190,54 @@ func (m *match) run() {
 			_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
 			fmt.Println("gamer_permission_signup", ws.u.uid)
 
-			// if the user is not in the match already and we are at capacity
-			if (check_uid == false) && (len(m.gamer_permission_list) > int(m.capacity)) {
-				fmt.Println("the match is full")
-				msg := &message{Name: ws.u.email, Message: "the match is full", Event: "failedMatchJoin", When: time.Now(), MatchID: m.mid}
-				ws.incoming_message <- msg
-			} else { // add the match socket to the room
-
-				// if user is not in the match object, add the user and create a socket object
-				m.mutex.Lock()
-				if check_uid == false {
-					m.gamer_permission_list[ws.u.uid] = ws.u
-				}
-				m.mutex.Unlock()
-
-				// if this is the first socket the user has joined this room, send a message to everyone that he's joined
-				if check_uid == false {
-					msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
-					go func() {
-						pid_to_permissions.mutex.RLock()
-						for _, j := range pid_to_permissions.global {
-							j.incoming_message <- msg
-						}
-						pid_to_permissions.mutex.RUnlock()
-					}()
-				}
-
-				fmt.Println("a mmsocket has joined the match")
-				printAllMatchUserWS()
+			// if user is not in the match object, add the user and create a socket object
+			m.mutex.Lock()
+			if check_uid == false {
+				m.gamer_permission_list[ws.u.uid] = ws.u
 			}
+			m.mutex.Unlock()
+
+			// if this is the first socket the user has joined this room, send a message to everyone that he's joined
+			if check_uid == false {
+				msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
+				go func() {
+					pid_to_permissions.mutex.RLock()
+					for _, j := range pid_to_permissions.global {
+						j.incoming_message <- msg
+					}
+					pid_to_permissions.mutex.RUnlock()
+				}()
+			}
+
+			fmt.Println("a mmsocket has joined the match")
+			printAllMatchUserWS()
 
 		case ws := <-m.gamer_permission_signout: // leaving the waitroom for matchmaking
 
-			// cannot leave the permission list, the match has already started
-			if m.started == true {
+			_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
+			fmt.Println("gamer_permission_signout", ws.u.uid)
 
-			} else {
-				_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
-				fmt.Println("gamer_permission_signout", ws.u.uid)
-
-				// if user is in the match object, delete all sockets as well
-				m.mutex.Lock()
-				if check_uid == true {
-					delete(m.gamer_permission_list, ws.u.uid)
-				}
-				m.mutex.Unlock()
-
-				// if this is the first socket the user has joined this room, send a message to everyone that he's joined
-				if check_uid == true {
-					msg := &message{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), MatchID: m.mid}
-					go func() {
-						pid_to_permissions.mutex.RLock()
-						for _, j := range pid_to_permissions.global {
-							j.incoming_message <- msg
-						}
-						pid_to_permissions.mutex.RUnlock()
-					}()
-				}
-
-				fmt.Println("a mmsocket has left the match")
-				printAllMatchUserWS()
+			// if user is in the match object, delete all sockets as well
+			m.mutex.Lock()
+			if check_uid == true {
+				delete(m.gamer_permission_list, ws.u.uid)
 			}
+			m.mutex.Unlock()
+
+			// if this is the first socket the user has joined this room, send a message to everyone that he's joined
+			if check_uid == true {
+				msg := &message{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), MatchID: m.mid}
+				go func() {
+					pid_to_permissions.mutex.RLock()
+					for _, j := range pid_to_permissions.global {
+						j.incoming_message <- msg
+					}
+					pid_to_permissions.mutex.RUnlock()
+				}()
+			}
+
+			fmt.Println("a mmsocket has left the match")
+			printAllMatchUserWS()
 
 		case ws := <-m.gamer_join: // joining
 

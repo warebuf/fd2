@@ -23,10 +23,12 @@ function anime() {
     ctx.clearRect(0,0,innerWidth,innerHeight);
 
     let start = Date.now().toLocaleString('en-CH');
+    ctx.font = '12px Arial';
+
     c.fillStyle = 'black';
-    c.fillRect((canvas.width/2)-(c.measureText(start).width/2),(canvas.height/2)-c.measureText('M').width,c.measureText(start).width,c.measureText('M').width);
-    c.fillStyle = 'white';
-    c.fillText(start,(canvas.width/2) - (c.measureText(start).width/2), canvas.height/2);
+    ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
+    ctx.fillStyle = 'blue';
+    ctx.fillText(start,100, 100);
 
 }
 anime()

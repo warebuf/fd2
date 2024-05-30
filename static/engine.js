@@ -21,7 +21,7 @@ var radius = 30;
 function anime() {
     window.requestAnimationFrame(anime);
     let start = Date.now().toLocaleString('en-CH');
-    console.log(start)
+    console.log("start",start)
     //ctx.clearRect(0,0,innerWidth,innerHeight);
 }
 anime()

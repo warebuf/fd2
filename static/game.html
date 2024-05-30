@@ -58,7 +58,7 @@
 
     function test() {
 
-        var messages = $("#messages");
+        var messages = document.getElementById("messages")
 
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")
@@ -76,22 +76,14 @@
                 var msg_time = msg.When.substring(11,19);
 
                 if(msg.Event == 'entered') {
-                    messages.append(
-                        $('<li>').append(
-                            $('<span>').text(msg_date + ' '),
-                            $('<span>').text(msg_time + ' '),
-                            $('<span>').text(msg.Name + ' has entered the game'),
-                        )
-                    );
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game'));
+                    ul.appendChild(li);
                 }
                 else if(msg.Event == 'left') {
-                    messages.append(
-                        $('<li>').append(
-                            $('<span>').text(msg_date + ' '),
-                            $('<span>').text(msg_time + ' '),
-                            $('<span>').text(msg.Name + ' has left the game'),
-                        )
-                    );
+                    var li = document.createElement("li");
+                    li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game'));
+                    ul.appendChild(li);
                 }
             }
         }

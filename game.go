@@ -18,7 +18,8 @@ func m_write(m *match_socket) {
 
 func m_read(m *match_socket) {
 	defer func() {
-		fmt.Printf("read socket closing: %+v\n", m)
+		fmt.Printf("read socket closing")
+		m.m.gamer_leave <- m
 
 		if m.open {
 			fmt.Println("client left the room", m)

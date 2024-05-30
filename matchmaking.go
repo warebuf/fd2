@@ -264,11 +264,29 @@ func (m *match) run() {
 			ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
 			ws.u.mutex.Unlock()
 
+			go func(m []*message, w *match_socket, c bool, email string) {
+
+				fmt.Println("joined the game")
+
+				for i, j := range m {
+					w.incoming_message <- j
+					fmt.Println(i, j.Message)
+				}
+
+				if c == false {
+					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
+					w.m.broadcast <- msg
+				}
+
+			}(m.message_logs, ws, check_uid, ws.u.email)
+
 			fmt.Println("a socket has joined the match")
 			printAllMatchUserWS()
 
 		case ws := <-m.gamer_leave: // leaving
 			fmt.Println("a socket has left the room")
+
+			check := (len(ws.u.rid_to_sid_to_socket[ws.m.mid]) == 0)
 
 			// remove mid from user object
 			uid_to_user.mutex.Lock()
@@ -299,6 +317,18 @@ func (m *match) run() {
 			ws.socket.Close()
 			ws.open = false
 
+			// broadcast to all users of the room that the user has left
+			go func(m *match, c bool, email string) {
+
+				fmt.Println("left the game")
+
+				if c == false {
+					msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
+					m.broadcast <- msg
+				}
+
+			}(m, check, ws.u.email)
+
 			fmt.Println("a socket has left the match")
 			printAllMatchUserWS()
 
@@ -319,6 +349,12 @@ func (m *match) run() {
 				pid_to_permissions.mutex.RUnlock()
 			}()
 
+			go func(m *match, email string) {
+				msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
+				m.broadcast <- msg
+				fmt.Println("bot has joined the game")
+			}(m, u.email)
+
 			fmt.Println("added a bot")
 
 		case u := <-m.bot_leave:
@@ -328,6 +364,12 @@ func (m *match) run() {
 			delete(m.gamer_uid_to_user, u.uid)
 			//delete(m.gamer_uid_to_msid_to_match_socket, u.uid)
 			m.mutex.Unlock()
+
+			go func(m *match, email string) {
+				msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
+				m.broadcast <- msg
+				fmt.Println("bot has left the game")
+			}(m, u.email)
 
 			fmt.Println("removed a bot")
 

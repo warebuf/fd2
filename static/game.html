@@ -80,7 +80,16 @@
                         $('<li>').append(
                             $('<span>').text(msg_date + ' '),
                             $('<span>').text(msg_time + ' '),
-                            $('<span>').text(msg.Name + ' has entered the chat!'),
+                            $('<span>').text(msg.Name + ' has entered the game'),
+                        )
+                    );
+                }
+                else if(msg.Event == 'left') {
+                    messages.append(
+                        $('<li>').append(
+                            $('<span>').text(msg_date + ' '),
+                            $('<span>').text(msg_time + ' '),
+                            $('<span>').text(msg.Name + ' has left the game'),
                         )
                     );
                 }

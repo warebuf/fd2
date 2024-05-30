@@ -27,7 +27,8 @@ function anime() {
 
     ctx.fillStyle = 'black';
     ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = 'yellow';
+    console.log((c.width/2) - (ctx.measureText(start).width/2), c.height/2)
     ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), c.height/2);
 
 }

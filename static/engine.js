@@ -20,7 +20,7 @@ var dy = 4;
 var radius = 30;
 function anime() {
     window.requestAnimationFrame(anime);
-    ctx.fillStyle = 'grey';
+    ctx.fillStyle = '#888888';
     ctx.clearRect(0,0,innerWidth,innerHeight);
 
     let start = Date.now().toLocaleString('en-CH');

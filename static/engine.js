@@ -20,8 +20,9 @@ var dy = 4;
 var radius = 30;
 function anime() {
     window.requestAnimationFrame(anime);
-    ctx.fillStyle = 'red';
-    ctx.clearRect(0,0,innerWidth,innerHeight);
+    ctx.fillStyle = '#888888';
+    //ctx.clearRect(0,0,innerWidth,innerHeight);
+    ctx.fillRect(0,0,innerWidth,innerHeight);
 
     let start = Date.now().toLocaleString('en-CH');
     ctx.font = '12px Arial';

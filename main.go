@@ -2,8 +2,10 @@ package main
 
 import (
 	"log"
+	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 
 	//"os"
@@ -66,7 +68,8 @@ type match struct {
 	capacity  uint
 	started   bool
 
-	broadcast chan *message // a channel is a thread-safe queue, incoming messages
+	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
+	prio_broadcast chan *message // gets priority over normal broadcast ^
 
 	gamer_join                        chan *match_socket
 	gamer_uid_to_user                 map[uuid.UUID]*user
@@ -83,6 +86,9 @@ type match struct {
 	spectator_join                        chan *match_socket // a channel for clients wishing to join
 	spectator_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
 	spectator_uid_to_user                 map[uuid.UUID]*user
+
+	ticker         *time.Ticker
+	type_of_ticker int
 
 	message_logs []*message
 
@@ -671,14 +677,12 @@ func deleteRoomHandler(res http.ResponseWriter, req *http.Request) {
 func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 	//c, _ := req.Cookie("session-name")
 
-	/*
-		// plays music in lobby
-		files, err := os.ReadDir("./music")
-		/if err != nil {
-			log.Fatal(err)
-		}
-		randNum := rand.Intn(len(files))
-	*/
+	// plays music in lobby
+	files, err := os.ReadDir("./music")
+	if err != nil {
+		log.Fatal(err)
+	}
+	randNum := rand.Intn(len(files))
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
@@ -690,8 +694,8 @@ func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		t := template.Must(template.ParseFiles(filepath.Join("static", "waitroom.html")))
-		//data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "song": files[randNum].Name()}
-		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
+		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "song": files[randNum].Name()}
+		//data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
 		t.Execute(res, data)
 	} else {
 		fmt.Println("User is not authenticated, redirecting to home page")
@@ -803,43 +807,38 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// if the game is not started, then change the start flag and add bots to remaining positions
-	if mtch.started == false {
-		// add bots to the match if there is space
-		for i := len(mtch.gamer_permission_list); i < int(mtch.capacity); i++ {
-			fmt.Println("got here", len(mtch.gamer_permission_list), mtch.capacity)
+	// if there is space left in the permission_list, then add bots to remaining positions
+	for i := len(mtch.gamer_permission_list); i < int(mtch.capacity); i++ {
 
-			not_assigned := true
-			var random_number uuid.UUID
-			for not_assigned {
-				random_number = uuid.New()
-				if _, found := uid_to_user.users[random_number]; !found {
-					not_assigned = false
-					fmt.Println("assigning UID:", random_number)
-				}
+		not_assigned := true
+		var random_number uuid.UUID
+		for not_assigned {
+			random_number = uuid.New()
+			if _, found := uid_to_user.users[random_number]; !found {
+				not_assigned = false
+				fmt.Println("assigning bot UID:", random_number)
 			}
-
-			user_object := &user{
-				mutex: sync.RWMutex{},
-
-				uid:          random_number,
-				email:        "bot@bot.com",
-				nickname:     "BOT",
-				currency:     0,
-				admin_status: false,
-				bot_status:   true,
-
-				rid_to_sid_to_socket: nil,
-				rid_to_room:          nil,
-
-				mid_to_msid_to_match_socket: nil,
-				mid_to_match:                nil,
-			}
-
-			mtch.bot_join <- user_object
-
 		}
-		mtch.started = true
+
+		user_object := &user{
+			mutex: sync.RWMutex{},
+
+			uid:          random_number,
+			email:        "bot@bot.com",
+			nickname:     "BOT",
+			currency:     0,
+			admin_status: false,
+			bot_status:   true,
+
+			rid_to_sid_to_socket: nil,
+			rid_to_room:          nil,
+
+			mid_to_msid_to_match_socket: nil,
+			mid_to_match:                nil,
+		}
+
+		mtch.bot_join <- user_object
+
 	}
 
 	data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "mid": parsed[2]}
@@ -914,6 +913,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	_, check_uid := mtch.gamer_permission_list[requesting_user.uid]
 
 	if check_uid == false {
+		// this is where you add them to spectator mode, unless it is a private match, which is a feature far far far into the future
 		fmt.Println("UID cannot join! Not on permission list")
 	} else {
 		mtch.gamer_join <- temp

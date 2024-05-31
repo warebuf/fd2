@@ -147,7 +147,8 @@ func createMatch(msg *message) *match {
 				capacity:  num,
 				started:   false,
 
-				broadcast: make(chan *message),
+				broadcast:      make(chan *message),
+				prio_broadcast: make(chan *message),
 
 				gamer_join:                        make(chan *match_socket),
 				gamer_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
@@ -164,6 +165,10 @@ func createMatch(msg *message) *match {
 				spectator_join:                        make(chan *match_socket),
 				spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
+
+				// NOTE, TICKER IS NOT INITIALIZED UNTIL THE MATCH BEGINS (ALL USERS ARE CONNECTED)
+				ticker:         nil,
+				type_of_ticker: 0,
 
 				message_logs: make([]*message, 0, 16),
 
@@ -183,6 +188,43 @@ func createMatch(msg *message) *match {
 
 func (m *match) run() {
 	for {
+		// in theory, a user could consume the room with broadcasts or join/leaves, such that they delay the ticker, gaining themselves more time, therefore we give priority to the ticker
+		// giving priority means that even if the client spams the room, the ticker broadcast will end up at worst, 2nd in the broadcast channel queue
+		// I would think there is a better way to do this
+		// NOTE, A NIL CHANNEL WILL NEVER BE SELECTED
+		select {
+		case <-m.ticker.C:
+			fmt.Println("ticker has ticked")
+			continue
+
+		case msg := <-m.prio_broadcast: // sends important messages to clients at worst 2nd in the broadcast channel queue
+
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+			continue
+
+		default:
+		}
+
 		select {
 
 		// only add the user, do not add the mmsocket
@@ -211,6 +253,7 @@ func (m *match) run() {
 
 			fmt.Println("a mmsocket has joined the match")
 			printAllMatchUserWS()
+			continue
 
 		case ws := <-m.gamer_permission_signout: // leaving the waitroom for matchmaking
 
@@ -238,6 +281,7 @@ func (m *match) run() {
 
 			fmt.Println("a mmsocket has left the match")
 			printAllMatchUserWS()
+			continue
 
 		case ws := <-m.gamer_join: // joining
 
@@ -264,7 +308,7 @@ func (m *match) run() {
 			ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
 			ws.u.mutex.Unlock()
 
-			go func(m []*message, w *match_socket, c bool, email string) {
+			go func(m []*message, w *match_socket, c bool, email string) { // has to be concurrent because broadcast would be blocked
 
 				fmt.Println("joined the game")
 
@@ -277,11 +321,21 @@ func (m *match) run() {
 					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 					w.m.broadcast <- msg
 				}
+				if (len(ws.m.gamer_uid_to_user) == int(ws.m.capacity)) && (ws.m.started == false) {
+					ws.m.started = true
+					fmt.Println("started the match countdown from the player")
+					ws.m.type_of_ticker = 0
+					timein := time.Now().Add(time.Second * 30).String()
+					ws.m.ticker = time.NewTicker(30000 * time.Millisecond)                                             //begin a ticker for 30s
+					msg := &message{Name: ws.u.email, Message: timein, Event: "startMatchCountdown", When: time.Now()} //broadcast when the match is going to start
+					w.m.prio_broadcast <- msg
+				}
 
 			}(m.message_logs, ws, check_uid, ws.u.email)
 
 			fmt.Println("a socket has joined the match")
 			printAllMatchUserWS()
+			continue
 
 		case ws := <-m.gamer_leave: // leaving
 			fmt.Println("a socket has left the room")
@@ -326,6 +380,7 @@ func (m *match) run() {
 
 			fmt.Println("a socket has left the match")
 			printAllMatchUserWS()
+			continue
 
 		case u := <-m.bot_join:
 
@@ -348,9 +403,19 @@ func (m *match) run() {
 				msg := &message{Name: email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 				m.broadcast <- msg
 				fmt.Println("bot has joined the game")
+				if (len(m.gamer_uid_to_user) == int(m.capacity)) && (m.started == false) {
+					m.started = true
+					fmt.Println("started the match countdown from the player")
+					m.type_of_ticker = 0
+					timein := time.Now().Add(time.Second * 30).String()
+					m.ticker = time.NewTicker(30000 * time.Millisecond)                                             //begin a ticker for 30s
+					msg := &message{Name: u.email, Message: timein, Event: "startMatchCountdown", When: time.Now()} //broadcast when the match is going to start
+					m.prio_broadcast <- msg
+				}
 			}(m, u.email)
 
 			fmt.Println("added a bot")
+			continue
 
 		case u := <-m.bot_leave:
 
@@ -367,6 +432,11 @@ func (m *match) run() {
 			}(m, u.email)
 
 			fmt.Println("removed a bot")
+			continue
+
+		case <-m.ticker.C:
+			fmt.Println("ticker has ticked")
+			continue
 
 		case msg := <-m.broadcast: // forward message to all clients
 
@@ -391,8 +461,33 @@ func (m *match) run() {
 					}
 				}
 			}
+			continue
+		case msg := <-m.prio_broadcast: // sends important messages to clients first
 
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+			continue
 		}
+
 	}
 }
 

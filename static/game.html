@@ -98,6 +98,9 @@
                     li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game'));
                     messages.appendChild(li);
                 }
+                else if(msg.Event == 'startMatchCountdown') {
+                    console.log(msg.Message)
+                }
             }
         }
     }

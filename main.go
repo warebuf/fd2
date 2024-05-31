@@ -24,6 +24,16 @@ import (
 	"time"
 )
 
+/*
+notes:
+- dont like how its possible for the match will begin in 30s message to appear before the join message
+- perhaps broadcast is the wrong way to go
+
+- sting cleanup
+
+- cookie management
+*/
+
 type user struct {
 	mutex sync.RWMutex
 

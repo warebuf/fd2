@@ -166,8 +166,7 @@ func createMatch(msg *message) *match {
 				spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
 
-				// NOTE, TICKER IS NOT INITIALIZED UNTIL THE MATCH BEGINS (ALL USERS ARE CONNECTED)
-				ticker:         nil,
+				ticker:         time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
 				type_of_ticker: 0,
 
 				message_logs: make([]*message, 0, 16),
@@ -191,7 +190,6 @@ func (m *match) run() {
 		// in theory, a user could consume the room with broadcasts or join/leaves, such that they delay the ticker, gaining themselves more time, therefore we give priority to the ticker
 		// giving priority means that even if the client spams the room, the ticker broadcast will end up at worst, 2nd in the broadcast channel queue
 		// I would think there is a better way to do this
-		// NOTE, A NIL CHANNEL WILL NEVER BE SELECTED
 		select {
 		case <-m.ticker.C:
 			fmt.Println("ticker has ticked")

@@ -204,7 +204,6 @@ func (m *match) run() {
 				timein := time.Now().Add(time.Second * 10).UTC().String()
 				m.ticker = time.NewTicker(10000 * time.Millisecond)               //begin a ticker for 10s, but the client will show 30s
 				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
-				m.prio_broadcast <- msg
 				go func() { m.prio_broadcast <- msg }()
 			}
 

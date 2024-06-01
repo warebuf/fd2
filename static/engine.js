@@ -46,7 +46,7 @@ function anime() {
         ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),10,ctx.measureText(start).width,ctx.measureText('M').width);
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
-        ctx.fillText(startCount - start.replaceAll("’",""),(c.width/2) - (ctx.measureText(start).width/2), 100);
+        ctx.fillText(startCount - start.replaceAll("’",""),(c.width/2) - (ctx.measureText(start).width/2), 20);
     }
 
 }

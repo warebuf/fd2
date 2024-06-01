@@ -923,7 +923,8 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 	go m_read(temp)
 
 	// start communication to sync clocks
-	msg := &message{Event: "clockSyncRequest", Message: time.Now().String(), When: time.Now()}
+	temp.system_time = time.Now()
+	msg := &message{Event: "clockSyncRequest", Message: temp.system_time.String(), When: time.Now()}
 	temp.incoming_message <- msg
 
 	// check if the user is on the permission list

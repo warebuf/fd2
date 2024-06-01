@@ -40,7 +40,6 @@ function anime() {
     ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), 100);
     //ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), c.height/2);
 
-    // try printing start time
     if(startCount != null) {
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
@@ -48,6 +47,8 @@ function anime() {
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
+
+        console.log(remaining_time, typeof(remaining_time))
     }
 
 }

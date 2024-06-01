@@ -90,7 +90,7 @@
                 var msg_date = msg.When.substring(0,10);
                 var msg_time = msg.When.substring(11,19);
 
-                if(msg.Event == 'clockSyncResquest') {
+                if(msg.Event == 'clockSyncRequest') {
                     console.log("recieve time", receive_time)
                     console.log("actual time", msg.When)
                 }

@@ -83,13 +83,18 @@
             }
 
             socket.onmessage = function(e) {
+                var receive_time = Date.now().toLocaleString('en-CH')
                 var msg = eval('('+e.data+')');
                 console.log(msg.Event, msg.Name, msg.MatchID, msg.Message);
 
                 var msg_date = msg.When.substring(0,10);
                 var msg_time = msg.When.substring(11,19);
 
-                if(msg.Event == 'entered') {
+                if(msg.Event == 'clockSyncResquest') {
+                    console.log(receive_time)
+                    console.log(msg.When)
+                }
+                else if(msg.Event == 'entered') {
                     var li = document.createElement("li");
                     li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game'));
                     messages.appendChild(li);

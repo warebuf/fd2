@@ -130,6 +130,9 @@ type match_socket struct {
 	u *user
 	m *match
 
+	user_time   time.Time
+	system_time time.Time
+
 	incoming_message chan *message // send is a channel on which messages are sent.
 
 	open bool
@@ -918,6 +921,10 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 
 	go m_write(temp)
 	go m_read(temp)
+
+	// start communication to sync clocks
+	msg := &message{Event: "clockSyncRequest", When: time.Now()}
+	temp.incoming_message <- msg
 
 	// check if the user is on the permission list
 	_, check_uid := mtch.gamer_permission_list[requesting_user.uid]

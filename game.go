@@ -41,12 +41,9 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "taptap" {
 				fmt.Println("got a tap tap")
 			} else if msg.Event == "clockSyncResponse" {
-				fmt.Println(msg.Message)
 				test, _ := strconv.ParseInt(msg.Message, 10, 64)
-				fmt.Println("test", test)
-				fmt.Println("test2", time.UnixMilli(test))
 				m.user_time = time.UnixMilli(test)
-				fmt.Print(m.system_time, m.user_time)
+				fmt.Print(m.system_time, m.user_time, m.system_time.Sub(m.user_time))
 			}
 
 		} else {

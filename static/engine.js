@@ -47,7 +47,8 @@ function anime() {
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
         ctx.fillText(startCount,(c.width/2) - (ctx.measureText(start).width/2), 20);
-        console.log(startCount, start)
+        console.log(1, startCount, start)
+        console.log(2, startCount, str.replace("'",""))
 
     }
 

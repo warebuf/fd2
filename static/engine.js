@@ -9,7 +9,18 @@ const ctx = c.getContext("2d");
 c.width = document.body.clientWidth;
 c.height = document.body.clientHeight;
 
-window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame || window.webkitRequestAnimationFrame || function(f){return setTimeout(f, 1000/60)};
+// shim layer with setTimeout fallback
+window.requestAnimFrame = (function(){
+    return  window.requestAnimationFrame       ||
+        window.webkitRequestAnimationFrame ||
+        window.mozRequestAnimationFrame    ||
+        window.oRequestAnimationFrame      ||
+        window.msRequestAnimationFrame     ||
+        function( callback ){
+            window.setTimeout(callback, 1000 / 60);
+        };
+})();
+
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
 
 
@@ -19,7 +30,7 @@ var dx = 4;
 var dy = 4;
 var radius = 30;
 function anime() {
-    window.requestAnimationFrame(anime);
+    window.requestAnimFrame(anime);
     ctx.fillStyle = '#696969';
     //ctx.clearRect(0,0,innerWidth,innerHeight);
     ctx.fillRect(0,0,innerWidth,innerHeight);
@@ -27,13 +38,20 @@ function anime() {
     let start = Date.now().toLocaleString('en-CH');
     ctx.font = '12px Arial';
 
+    // print the current time
     ctx.fillStyle = 'black';
-    console.log(ctx.measureText('M').width)
     ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),90,ctx.measureText(start).width,ctx.measureText('M').width);
     //ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
     ctx.fillStyle = 'white';
     ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), 100);
     //ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), c.height/2);
+
+    // try printing start time
+    if(startCount != null) {
+        ctx.fillStyle = 'black';
+        ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),10,ctx.measureText(start).width,ctx.measureText('M').width);
+
+    }
 
 }
 anime()

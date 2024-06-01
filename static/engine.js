@@ -50,6 +50,7 @@ function anime() {
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
 
+        // need to change it so that it not only sends ur input when time expires, but sends it if you disconnect
         if(remaining_time<=0 && once) {
             socket.send(JSON.stringify({ "Event": 'timeUpMsg', "Message": "test" }))
             once = false
@@ -59,4 +60,10 @@ function anime() {
 }
 anime()
 
+window.addEventListener('keydown', function (e) {
+    if(e.key === 'Enter') {
+        console.log("enter pressed")
+    }
+
+})
 

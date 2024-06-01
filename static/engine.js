@@ -23,6 +23,8 @@ window.requestAnimFrame = (function(){
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
 
+var once = true
+
 function anime() {
     window.requestAnimFrame(anime);
     ctx.fillStyle = '#696969';
@@ -48,8 +50,9 @@ function anime() {
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
 
-        if(remaining_time<=0) {
+        if(remaining_time<=0 && once) {
             socket.send(JSON.stringify({ "Event": 'timeUpMsg', "Message": "test" }))
+            once = false
         }
     }
 

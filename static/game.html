@@ -100,8 +100,6 @@
                     messages.appendChild(li);
                 }
                 else if(msg.Event == 'startMatchCountdown') {
-                    console.log(1, msg.Message)
-                    console.log(2, Date.parse(msg.Message))
                     startCount = Date.parse(msg.Message)
                 }
             }

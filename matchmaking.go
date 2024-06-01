@@ -523,7 +523,7 @@ func (m *match) run() {
 					if (amended_msg.Event == "startMatchCountdown") || (amended_msg.Event == "turn") {
 						msInt, _ := strconv.ParseInt(amended_msg.Message, 10, 64)
 						amended_msg.Message = time.UnixMilli(msInt).Add(j.system_time.Sub(j.user_time)).UTC().String()
-						fmt.Println(amended_msg.Message)
+						fmt.Println("amended msg", amended_msg.Message)
 					}
 					select {
 					case j.incoming_message <- amended_msg:
@@ -537,7 +537,7 @@ func (m *match) run() {
 					if (amended_msg.Event == "startMatchCountdown") || (amended_msg.Event == "turn") {
 						msInt, _ := strconv.ParseInt(amended_msg.Message, 10, 64)
 						amended_msg.Message = time.UnixMilli(msInt).Add(j.system_time.Sub(j.user_time)).UTC().String()
-						fmt.Println(amended_msg.Message)
+						fmt.Println("amended msg", amended_msg.Message)
 					}
 					select {
 					case j.incoming_message <- amended_msg:

@@ -200,9 +200,7 @@ func (m *match) run() {
 				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
 				go func() {
 					m.prio_broadcast <- msg
-					fmt.Println("got here3")
 				}()
-				fmt.Println("got here1")
 			} else {
 				fmt.Println("tick tock on the clock, put the party on stop")
 				timein := time.Now().Add(time.Second * 10).UTC().String()
@@ -210,9 +208,7 @@ func (m *match) run() {
 				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
 				go func() {
 					m.prio_broadcast <- msg
-					fmt.Println("got here4")
 				}()
-				fmt.Println("got here2")
 			}
 
 			continue
@@ -463,9 +459,7 @@ func (m *match) run() {
 				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
 				go func() {
 					m.prio_broadcast <- msg
-					fmt.Println("got here31")
 				}()
-				fmt.Println("got here11")
 			} else {
 				fmt.Println("tick tock on the clock, put the party on stop")
 				timein := time.Now().Add(time.Second * 10).UTC().String()
@@ -473,9 +467,7 @@ func (m *match) run() {
 				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
 				go func() {
 					m.prio_broadcast <- msg
-					fmt.Println("got here41")
 				}()
-				fmt.Println("got here21")
 			}
 			continue
 

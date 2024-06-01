@@ -28,6 +28,7 @@ function anime() {
     ctx.font = '12px Arial';
 
     ctx.fillStyle = 'black';
+    console.log(ctx.measureText('M').width)
     ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),100,ctx.measureText(start).width,ctx.measureText('M').width);
     //ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
     ctx.fillStyle = 'white';

@@ -191,7 +191,8 @@ func (m *match) run() {
 		// giving priority means that even if the client spams the room, the ticker broadcast will end up at worst, 2nd in the broadcast channel queue
 		// I would think there is a better way to do this
 		select {
-		case <-m.ticker.C:
+		case c := <-m.ticker.C:
+			fmt.Println(c)
 			if m.type_of_ticker == 0 {
 				fmt.Println("ticker has ticked, the game has started")
 				m.type_of_ticker = 1
@@ -450,7 +451,8 @@ func (m *match) run() {
 			fmt.Println("removed a bot")
 			continue
 
-		case <-m.ticker.C:
+		case c := <-m.ticker.C:
+			fmt.Println(c)
 			if m.type_of_ticker == 0 {
 				fmt.Println("ticker has ticked, the game has started")
 				m.type_of_ticker = 1

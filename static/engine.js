@@ -48,9 +48,8 @@ function anime() {
         ctx.fillStyle = 'white';
         ctx.fillText(startCount,(c.width/2) - (ctx.measureText(start).width/2), 20);
         console.log(0, start)
-        console.log(1, start.replace("’",""))
-        console.log(2, start.replace("’","").replace("’",""))
-
+        console.log(1, start.replaceAll("’",""))
+        
 
     }
 

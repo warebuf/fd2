@@ -83,7 +83,7 @@
             }
 
             socket.onmessage = function(e) {
-                var receive_time = Date.now().toLocaleString('en-CH')
+                var receive_time = Date.now()
                 var msg = eval('('+e.data+')');
                 console.log(msg.Event, msg.Name, msg.MatchID, msg.Message);
 
@@ -92,8 +92,7 @@
 
                 if(msg.Event == 'clockSyncRequest') {
                     console.log("recieve time", receive_time)
-                    console.log("actual time", msg.When.toLocaleString('en-CH'))
-                    console.log('test', Date.now())
+                    console.log("actual time", msg.When)
                 }
                 else if(msg.Event == 'entered') {
                     var li = document.createElement("li");

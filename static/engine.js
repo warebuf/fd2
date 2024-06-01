@@ -25,6 +25,15 @@ window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAni
 
 var once = true
 
+
+window.addEventListener('keydown', function (e) {
+    if(e.key === 'Enter') {
+        console.log("enter pressed")
+    }
+
+})
+
+
 function anime() {
     window.requestAnimFrame(anime);
     ctx.fillStyle = '#696969';
@@ -59,11 +68,4 @@ function anime() {
 
 }
 anime()
-
-window.addEventListener('keydown', function (e) {
-    if(e.key === 'Enter') {
-        console.log("enter pressed")
-    }
-
-})
 

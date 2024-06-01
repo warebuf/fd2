@@ -93,6 +93,8 @@
                 if(msg.Event == 'clockSyncRequest') {
                     console.log("recieve time", receive_time)
                     console.log("actual time", msg.When)
+                    console.log("test", Date.parse(msg.When))
+                    console.log("test2", Date.parse(msg.Message))
                 }
                 else if(msg.Event == 'entered') {
                     var li = document.createElement("li");

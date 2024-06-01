@@ -40,7 +40,8 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "taptap" {
 				fmt.Println("got a tap tap")
 			} else if msg.Event == "clockSyncResponse" {
-				fmt.Println("aaaaaa")
+				fmt.Println(msg.Message)
+				//m.user_time =
 			}
 
 		} else {

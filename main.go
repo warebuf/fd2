@@ -912,6 +912,8 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 				msid:             random_pid,
 				u:                requesting_user,
 				m:                mtch,
+				system_time:      time.Time{},
+				user_time:        time.Time{},
 				incoming_message: make(chan *message),
 				open:             true,
 			}

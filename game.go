@@ -43,7 +43,7 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "clockSyncResponse" {
 				test, _ := strconv.ParseInt(msg.Message, 10, 64)
 				m.user_time = time.UnixMilli(test)
-				fmt.Println("dif", m.system_time, m.user_time, m.system_time.Sub(m.user_time))
+				fmt.Println("dif", m.system_time.Sub(m.user_time))
 			}
 
 		} else {

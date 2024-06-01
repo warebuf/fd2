@@ -23,12 +23,6 @@ window.requestAnimFrame = (function(){
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
 
-
-var x = 200;
-var y = 200;
-var dx = 4;
-var dy = 4;
-var radius = 30;
 function anime() {
     window.requestAnimFrame(anime);
     ctx.fillStyle = '#696969';
@@ -50,7 +44,8 @@ function anime() {
     if(startCount != null) {
         ctx.fillStyle = 'black';
         ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),10,ctx.measureText(start).width,ctx.measureText('M').width);
-
+        ctx.fillStyle = 'white';
+        ctx.fillText(startCount,(c.width/2) - (ctx.measureText(start).width/2), 10);
     }
 
 }

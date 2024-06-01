@@ -94,6 +94,8 @@
                     console.log("recieve time", receive_time)
                     console.log("actual time", Date.parse(msg.When))
                     console.log("dif", Date.parse(msg.When) - receive_time)
+                    socket.send(JSON.stringify({ "Event": 'clockSyncResponse', "Message": Date.parse(msg.When) - receive_time }))
+
                 }
                 else if(msg.Event == 'entered') {
                     var li = document.createElement("li");

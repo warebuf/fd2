@@ -42,11 +42,12 @@ function anime() {
 
     // try printing start time
     if(startCount != null) {
+        remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
-        ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),10,ctx.measureText(start).width,ctx.measureText('M').width);
+        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),10,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
-        ctx.fillText(startCount - start.replaceAll("’",""),(c.width/2) - (ctx.measureText(start).width/2), 20);
+        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
     }
 
 }

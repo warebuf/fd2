@@ -48,7 +48,7 @@ function anime() {
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
 
-        console.log(remaining_time, typeof(remaining_time))
+        console.log(remaining_time, remaining_time<0)
     }
 
 }

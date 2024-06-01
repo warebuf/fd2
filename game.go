@@ -38,6 +38,8 @@ func m_read(m *match_socket) {
 			// user requests to create match
 			if msg.Event == "createMatch" {
 			}
+			else if msg.Event == "taptap" {
+			}
 
 		} else {
 			fmt.Println("error reading from socket")

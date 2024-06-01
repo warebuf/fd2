@@ -192,7 +192,20 @@ func (m *match) run() {
 		// I would think there is a better way to do this
 		select {
 		case <-m.ticker.C:
-			fmt.Println("ticker has ticked")
+			if m.type_of_ticker == 0 {
+				fmt.Println("ticker has ticked, the game has started")
+				m.type_of_ticker = 1
+				timein := time.Now().Add(time.Second * 10).UTC().String()
+				m.ticker = time.NewTicker(10000 * time.Millisecond)               //begin a ticker for 10s, but the client will show 30s
+				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
+				m.prio_broadcast <- msg
+			} else {
+				timein := time.Now().Add(time.Second * 10).UTC().String()
+				m.ticker = time.NewTicker(10000 * time.Millisecond)               //begin a ticker for 10s, but the client will show 30s
+				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
+				m.prio_broadcast <- msg
+			}
+
 			continue
 
 		case msg := <-m.prio_broadcast: // sends important messages to clients at worst 2nd in the broadcast channel queue
@@ -406,7 +419,7 @@ func (m *match) run() {
 					fmt.Println("started the match countdown from the player")
 					m.type_of_ticker = 0
 					timein := time.Now().Add(time.Second * 30).String()
-					m.ticker = time.NewTicker(30000 * time.Millisecond)                                             //begin a ticker for 30s
+					m.ticker = time.NewTicker(35000 * time.Millisecond)                                             //begin a ticker for 30s
 					msg := &message{Name: u.email, Message: timein, Event: "startMatchCountdown", When: time.Now()} //broadcast when the match is going to start
 					m.prio_broadcast <- msg
 				}
@@ -433,7 +446,19 @@ func (m *match) run() {
 			continue
 
 		case <-m.ticker.C:
-			fmt.Println("ticker has ticked")
+			if m.type_of_ticker == 0 {
+				fmt.Println("ticker has ticked, the game has started")
+				m.type_of_ticker = 1
+				timein := time.Now().Add(time.Second * 10).UTC().String()
+				m.ticker = time.NewTicker(10000 * time.Millisecond)               //begin a ticker for 10s, but the client will show 30s
+				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
+				m.prio_broadcast <- msg
+			} else {
+				timein := time.Now().Add(time.Second * 10).UTC().String()
+				m.ticker = time.NewTicker(10000 * time.Millisecond)               //begin a ticker for 10s, but the client will show 30s
+				msg := &message{Message: timein, Event: "turn", When: time.Now()} //broadcast when the match is going to start
+				m.prio_broadcast <- msg
+			}
 			continue
 
 		case msg := <-m.broadcast: // forward message to all clients

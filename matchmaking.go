@@ -323,7 +323,7 @@ func (m *match) run() {
 					ws.m.started = true
 					fmt.Println("started the match countdown from the player")
 					ws.m.type_of_ticker = 0
-					timein := time.Now().Add(time.Second * 30).String()
+					timein := time.Now().Add(time.Second * 30).UTC().String()
 					ws.m.ticker = time.NewTicker(30000 * time.Millisecond)                                             //begin a ticker for 30s
 					msg := &message{Name: ws.u.email, Message: timein, Event: "startMatchCountdown", When: time.Now()} //broadcast when the match is going to start
 					w.m.prio_broadcast <- msg

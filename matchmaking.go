@@ -463,8 +463,8 @@ func (m *match) run() {
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					fmt.Println(j.user_time.Sub(j.system_time))
-					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).String()
+					fmt.Println(j.system_time.Sub(j.user_time))
+					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
 					select {
 					case j.incoming_message <- msg:
 					}

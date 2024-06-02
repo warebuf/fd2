@@ -453,9 +453,10 @@ func (m *match) run() {
 
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					fmt.Println(j.user_time.Sub(j.system_time))
-					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).String()
-					fmt.Println(msg.Message)
+					fmt.Println(j.system_time.Sub(j.user_time))
+					temp_init_time := init_time
+					msg.Message = temp_init_time.Add(j.system_time.Sub(j.user_time)).String()
+					fmt.Println(temp_init_time, init_time)
 					select {
 					case j.incoming_message <- msg:
 					}

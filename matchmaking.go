@@ -229,7 +229,7 @@ func (m *match) run() {
 				}()
 			}
 
-			fmt.Println("a mmsocket has joined the match")
+			fmt.Println("a psocket has finished permission_signup")
 			printAllMatchUserWS()
 			continue
 
@@ -257,7 +257,7 @@ func (m *match) run() {
 				}()
 			}
 
-			fmt.Println("a mmsocket has left the match")
+			fmt.Println("a psocket has finished permission_signout")
 			printAllMatchUserWS()
 			continue
 
@@ -455,6 +455,7 @@ func (m *match) run() {
 				for _, j := range i {
 					fmt.Println(j.user_time.Sub(j.system_time))
 					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).String()
+					fmt.Println(msg.Message)
 					select {
 					case j.incoming_message <- msg:
 					}

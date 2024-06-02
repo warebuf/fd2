@@ -456,7 +456,8 @@ func (m *match) run() {
 					fmt.Println(j.system_time.Sub(j.user_time))
 					temp_init_time := init_time
 					msg.Message = temp_init_time.Add(j.system_time.Sub(j.user_time)).String()
-					fmt.Println(temp_init_time, init_time)
+					fmt.Println(init_time)
+					fmt.Println(temp_init_time)
 					select {
 					case j.incoming_message <- msg:
 					}

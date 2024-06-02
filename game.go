@@ -44,6 +44,29 @@ func m_read(m *match_socket) {
 				test, _ := strconv.ParseInt(msg.Message, 10, 64)
 				m.user_time = time.UnixMilli(test)
 				fmt.Println("dif", m.system_time.Sub(m.user_time))
+
+				if len(m.m.gamer_uid_to_user) == int(m.m.capacity) {
+					allset := true
+					for i, j := range m.m.gamer_uid_to_msid_to_match_socket {
+						if uid_to_user.users[i].bot_status == true {
+
+						} else {
+							for _, l := range j {
+								fmt.Println(l.msid)
+								if (l.user_time == time.Time{}) {
+									allset = false
+									break
+								}
+							}
+						}
+						if allset == false {
+							break
+						}
+					}
+					if allset == true {
+						m.m.start_ticker <- true
+					}
+				}
 			}
 
 		} else {

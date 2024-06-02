@@ -115,7 +115,9 @@ func createMatch(msg *message) *match {
 
 			fmt.Println(msg.Message)
 			gm := "ffa"
+
 			num := uint(1)
+			sd := uint(2)
 			if len(msg.Message) < 4 {
 				gm = "ffa"
 				num = 1
@@ -136,6 +138,14 @@ func createMatch(msg *message) *match {
 				} else {
 					num = 2
 				}
+
+				if gm == "ffa" {
+					sd = num
+				} else if gm == "tea" {
+					sd = 2
+				} else if gm == "1vx" {
+					sd = 2
+				}
 			}
 
 			ans = &match{
@@ -145,6 +155,7 @@ func createMatch(msg *message) *match {
 				mid:       random_number,
 				game_mode: gm,
 				capacity:  num,
+				sides:     sd,
 				started:   false,
 
 				broadcast:      make(chan *message),
@@ -168,6 +179,7 @@ func createMatch(msg *message) *match {
 
 				ticker:         time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
 				type_of_ticker: 0,
+				start_ticker:   make(chan bool),
 
 				message_logs: make([]*message, 0, 16),
 
@@ -182,11 +194,15 @@ func createMatch(msg *message) *match {
 			not_assigned = false
 		}
 	}
+
 	return ans
 }
 
 func (m *match) run() {
 	for {
+
+		// dont forget to give timer priority
+
 		select {
 
 		// only add the user, do not add the mmsocket
@@ -270,24 +286,49 @@ func (m *match) run() {
 			ws.u.mid_to_msid_to_match_socket[m.mid][ws.msid] = ws
 			ws.u.mutex.Unlock()
 
-			go func(m []*message, w *match_socket, c bool, email string) { // has to be concurrent because broadcast would be blocked
+			fmt.Println("joined the game")
 
-				fmt.Println("joined the game")
+			// send the joined user a list of all historic messages
+			for i, j := range m.message_logs {
+				ws.incoming_message <- j
+				fmt.Println(i, j.Message)
+			}
 
-				for i, j := range m {
-					w.incoming_message <- j
-					fmt.Println(i, j.Message)
+			// let all participants know that a new user has joined
+			if check_uid == false {
+				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
+
+				m.mutex.Lock()
+				m.message_logs = append(m.message_logs, msg)
+				m.mutex.Unlock()
+
+				fmt.Println("sending:", msg)
+
+				for _, i := range m.gamer_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
 				}
 
-				if c == false {
-					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
-					w.m.broadcast <- msg
+				for _, i := range m.spectator_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
 				}
-
-			}(m.message_logs, ws, check_uid, ws.u.email)
+			}
 
 			fmt.Println("a socket has joined the match")
 			printAllMatchUserWS()
+
+			// start communication to sync clocks
+			ws.system_time = time.Now()
+			msg := &message{Event: "clockSyncRequest", Message: ws.system_time.String(), When: time.Now()}
+			ws.incoming_message <- msg
+
 			continue
 
 		case ws := <-m.gamer_leave: // leaving
@@ -343,20 +384,37 @@ func (m *match) run() {
 			//m.gamer_uid_to_msid_to_match_socket[u.uid] = make(map[uuid.UUID]*match_socket)
 			m.mutex.Unlock()
 
+			// send to all permission sockets that this bot has joined the permission list
 			msg := &message{Name: u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
-			go func() {
-				pid_to_permissions.mutex.RLock()
-				for _, j := range pid_to_permissions.global {
-					j.incoming_message <- msg
-				}
-				pid_to_permissions.mutex.RUnlock()
-			}()
+			pid_to_permissions.mutex.RLock()
+			for _, j := range pid_to_permissions.global {
+				j.incoming_message <- msg
+			}
+			pid_to_permissions.mutex.RUnlock()
 
-			go func(m *match, email string) {
-				msg := &message{Name: email, Message: "x entered the chat", Event: "entered", When: time.Now()}
-				m.broadcast <- msg
-				fmt.Println("bot has joined the game")
-			}(m, u.email)
+			msg = &message{Name: u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+			fmt.Println("bot has joined the game")
 
 			fmt.Println("added a bot")
 			continue
@@ -378,7 +436,41 @@ func (m *match) run() {
 			fmt.Println("removed a bot")
 			continue
 
-		case <-m.ticker.C:
+		case <-m.ticker.C: // ticker goes off
+			fmt.Println("ticker went off")
+
+		case <-m.start_ticker:
+			init_time := time.Now().Add(30 * time.Second)
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), MatchID: m.mid}
+			m.ticker = time.NewTicker(30 * time.Second) //will tick in 30 s
+
+			// send ticker to everyone
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					fmt.Println(j.user_time.Sub(j.system_time))
+					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					fmt.Println(j.user_time.Sub(j.system_time))
+					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+			continue
 
 		case msg := <-m.broadcast: // forward message to all clients
 

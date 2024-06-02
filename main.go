@@ -70,13 +70,23 @@ type room struct {
 	open chan bool
 }
 
+type hero struct {
+	position  float64
+	direction int
+	health    int
+	speed     int
+}
+
 type match struct {
 	mutex sync.RWMutex
 
 	mid       uuid.UUID
 	game_mode string
+	sides     uint
 	capacity  uint
 	started   bool
+
+	heroes map[uuid.UUID]*hero
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^
@@ -99,6 +109,7 @@ type match struct {
 
 	ticker         *time.Ticker
 	type_of_ticker int
+	start_ticker   chan bool
 
 	message_logs []*message
 
@@ -923,11 +934,6 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 
 	go m_write(temp)
 	go m_read(temp)
-
-	// start communication to sync clocks
-	temp.system_time = time.Now()
-	msg := &message{Event: "clockSyncRequest", Message: temp.system_time.String(), When: time.Now()}
-	temp.incoming_message <- msg
 
 	// check if the user is on the permission list
 	_, check_uid := mtch.gamer_permission_list[requesting_user.uid]

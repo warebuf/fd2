@@ -86,6 +86,7 @@ type match struct {
 	capacity  uint
 	started   bool
 
+	turn   map[uuid.UUID]bool
 	heroes map[uuid.UUID]*hero
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages

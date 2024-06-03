@@ -158,6 +158,9 @@ func createMatch(msg *message) *match {
 				sides:     sd,
 				started:   false,
 
+				turn:   make(map[uuid.UUID]bool),
+				heroes: make(map[uuid.UUID]*hero),
+
 				broadcast:      make(chan *message),
 				prio_broadcast: make(chan *message),
 
@@ -392,13 +395,12 @@ func (m *match) run() {
 			}
 			pid_to_permissions.mutex.RUnlock()
 
-			msg = &message{Name: u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
+			// send to all match sockets that the bot has entered the match
+			msg = &message{Name: u.email, Message: "x entered the match", Event: "entered", When: time.Now()}
 			m.mutex.Lock()
 			m.message_logs = append(m.message_logs, msg)
 			m.mutex.Unlock()
-
 			fmt.Println("sending:", msg)
-
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
@@ -406,7 +408,6 @@ func (m *match) run() {
 					}
 				}
 			}
-
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
@@ -415,6 +416,31 @@ func (m *match) run() {
 				}
 			}
 			fmt.Println("bot has joined the game")
+
+			// check if everyone is set up to begin the game countdown
+			if len(m.gamer_uid_to_user) == int(m.capacity) {
+				allset := true
+				for i, j := range m.gamer_uid_to_msid_to_match_socket {
+					if uid_to_user.users[i].bot_status == true {
+
+					} else {
+						for _, l := range j {
+							fmt.Println(l.msid)
+							if (l.user_time == time.Time{}) {
+								allset = false
+								break
+							}
+						}
+					}
+					if allset == false {
+						break
+					}
+				}
+				if allset == true {
+					fmt.Println("started gamecountdown from bot join")
+					m.start_ticker <- true
+				}
+			}
 
 			fmt.Println("added a bot")
 			continue

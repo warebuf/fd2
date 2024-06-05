@@ -503,7 +503,11 @@ func (m *match) run() {
 				} else if m.game_mode == "1vx" {
 					team_int = 1
 				}
-				client_int = len(m.team_client_hero[team_int])
+				if len(m.team_client_hero) > team_int {
+					client_int = len(m.team_client_hero[team_int])
+				} else {
+					fmt.Println("got some weird team assignment going on")
+				}
 
 			}
 

@@ -87,7 +87,8 @@ type match struct {
 	started   bool
 
 	turn   map[uuid.UUID]bool
-	heroes map[uuid.UUID]*hero
+	heroes map[uuid.UUID][]*hero
+	teams  [][]uuid.UUID
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^

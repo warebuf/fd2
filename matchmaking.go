@@ -159,7 +159,8 @@ func createMatch(msg *message) *match {
 				started:   false,
 
 				turn:   make(map[uuid.UUID]bool),
-				heroes: make(map[uuid.UUID]*hero),
+				heroes: make(map[uuid.UUID][]*hero),
+				teams:  make([][]uuid.UUID, sd),
 
 				broadcast:      make(chan *message),
 				prio_broadcast: make(chan *message),
@@ -188,6 +189,7 @@ func createMatch(msg *message) *match {
 
 				open: make(chan bool),
 			}
+
 			fmt.Println("created MID:", random_number)
 
 			mid_to_match.mutex.Lock()
@@ -196,6 +198,7 @@ func createMatch(msg *message) *match {
 
 			not_assigned = false
 		}
+
 	}
 
 	return ans
@@ -466,6 +469,68 @@ func (m *match) run() {
 			fmt.Println("ticker went off")
 
 		case <-m.start_ticker:
+
+			// add each user to a side, create their hero objects
+			if m.game_mode == "ffa" {
+
+				for i := 0; i < int(m.sides); i++ {
+					m.teams = append(m.teams, make([]uuid.UUID, 0, 1))
+				}
+
+				x := 0
+				for i, j := range m.gamer_uid_to_user {
+					m.teams[x] = append(m.teams[x], j.uid)
+					x++
+
+					m.turn[i] = true
+					m.heroes[i] = make([]*hero, 0, 5)
+				}
+
+				fmt.Println(m.turn)
+				fmt.Println(m.teams)
+				fmt.Println(m.heroes)
+			} else if m.game_mode == "tea" { // TODO: need to balance teams eventually by player/bot
+				for i := 0; i < int(m.sides); i++ {
+					m.teams = append(m.teams, make([]uuid.UUID, 0, 1))
+				}
+
+				x := 0
+				for i, j := range m.gamer_uid_to_user {
+					m.teams[x] = append(m.teams[x], j.uid)
+					if x == 0 {
+						x = 1
+					} else {
+						x = 0
+					}
+
+					m.turn[i] = true
+					m.heroes[i] = make([]*hero, 0, 5)
+				}
+
+				fmt.Println(m.turn)
+				fmt.Println(m.teams)
+				fmt.Println(m.heroes)
+			} else if m.game_mode == "1vx" { // TODO: need to make sure the 1vx is player v all
+				for i := 0; i < int(m.sides); i++ {
+					m.teams = append(m.teams, make([]uuid.UUID, 0, 1))
+				}
+
+				x := 0
+				for i, j := range m.gamer_uid_to_user {
+					m.teams[x] = append(m.teams[x], j.uid)
+					if x == 0 {
+						x = 1
+					}
+
+					m.turn[i] = true
+					m.heroes[i] = make([]*hero, 0, 5)
+				}
+
+				fmt.Println(m.turn)
+				fmt.Println(m.teams)
+				fmt.Println(m.heroes)
+			}
+
 			init_time := time.Now().Add(30 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), MatchID: m.mid}
 			m.ticker = time.NewTicker(31 * time.Second) //will tick in 30 s

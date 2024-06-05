@@ -45,7 +45,8 @@ func m_read(m *match_socket) {
 				m.user_time = time.UnixMilli(test)
 				fmt.Println("dif", m.system_time.Sub(m.user_time))
 
-				if len(m.m.gamer_uid_to_user) == int(m.m.capacity) {
+				// check if room is full, if it is than start the game timer
+				if m.m.started == false && len(m.m.gamer_uid_to_user) == int(m.m.capacity) {
 					allset := true
 					for i, j := range m.m.gamer_uid_to_msid_to_match_socket {
 						if uid_to_user.users[i].bot_status == true {
@@ -64,6 +65,7 @@ func m_read(m *match_socket) {
 						}
 					}
 					if allset == true {
+						m.m.started = true
 						m.m.start_ticker <- true
 					}
 				}

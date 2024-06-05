@@ -478,6 +478,7 @@ func (m *match) run() {
 			team_int := 0
 			client_int := 0
 			for i, _ := range m.gamer_uid_to_user {
+				fmt.Println("TC", team_int, client_int)
 				m.uuid_to_int[i] = client_int
 				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
 

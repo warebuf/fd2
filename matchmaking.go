@@ -484,6 +484,16 @@ func (m *match) run() {
 
 					m.turn[i] = true
 					m.heroes[i] = make([]*hero, 0, 5)
+
+					for y := 0; y < 5; y++ {
+						temp := &hero{
+							position:  0,
+							direction: 0,
+							health:    100,
+							speed:     100,
+						}
+						m.heroes[i] = append(m.heroes[i], temp)
+					}
 				}
 
 				fmt.Println(m.turn)
@@ -505,6 +515,17 @@ func (m *match) run() {
 
 					m.turn[i] = true
 					m.heroes[i] = make([]*hero, 0, 5)
+
+					for y := 0; y < 5; y++ {
+						temp := &hero{
+							position:  0,
+							direction: 0,
+							health:    100,
+							speed:     100,
+						}
+						m.heroes[i] = append(m.heroes[i], temp)
+					}
+
 				}
 
 				fmt.Println(m.turn)
@@ -524,6 +545,16 @@ func (m *match) run() {
 
 					m.turn[i] = true
 					m.heroes[i] = make([]*hero, 0, 5)
+
+					for y := 0; y < 5; y++ {
+						temp := &hero{
+							position:  0,
+							direction: 0,
+							health:    100,
+							speed:     100,
+						}
+						m.heroes[i] = append(m.heroes[i], temp)
+					}
 				}
 
 				fmt.Println(m.turn)

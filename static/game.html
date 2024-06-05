@@ -55,8 +55,6 @@
         <p>{{.mid}}</p>
     </div>
 
-    <ul id="messages"></ul>
-
     <canvas id="myCanvas"></canvas>
 
 </div>
@@ -95,14 +93,10 @@
                     socket.send(JSON.stringify({ "Event": 'clockSyncResponse', "Message": receive_time.toString() }))
                 }
                 else if(msg.Event == 'entered') {
-                    var li = document.createElement("li");
-                    li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game'));
-                    messages.appendChild(li);
+                    console.log(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
                 }
                 else if(msg.Event == 'left') {
-                    var li = document.createElement("li");
-                    li.appendChild(document.createTextNode(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game'));
-                    messages.appendChild(li);
+                    console.log(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
                 }
                 else if(msg.Event == 'startMatchCountdown') {
                     startCount = Date.parse(msg.Message)

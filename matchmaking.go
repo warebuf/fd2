@@ -562,6 +562,25 @@ func (m *match) run() {
 				fmt.Println(m.heroes)
 			}
 
+			msg1 := &message{Event: "game_state_init", Turn: m.turn, Heroes: m.heroes, Teams: m.teams, When: time.Now(), MatchID: m.mid}
+
+			// send everyone the match details
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg1:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg1:
+					}
+				}
+			}
+
 			init_time := time.Now().Add(30 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), MatchID: m.mid}
 			m.ticker = time.NewTicker(31 * time.Second) //will tick in 30 s

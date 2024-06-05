@@ -169,6 +169,11 @@ type message struct {
 	When    time.Time
 	Event   string
 	MatchID uuid.UUID
+
+	// game state stuff
+	Turn   map[uuid.UUID]bool
+	Heroes map[uuid.UUID][]*hero
+	Teams  [][]uuid.UUID
 }
 
 // Global Variables - Utility

@@ -469,6 +469,7 @@ func (m *match) run() {
 
 		case <-m.start_ticker:
 
+			// creating the game state here
 			// create each team
 			for i := 0; i < int(m.sides); i++ {
 				m.team_client_hero = append(m.team_client_hero, make([][]*hero, 0, 1))
@@ -478,7 +479,6 @@ func (m *match) run() {
 			team_int := 0
 			client_int := 0
 			for i, _ := range m.gamer_uid_to_user {
-				fmt.Println("TC", team_int, client_int)
 				m.uuid_to_team_int[i] = pair{team_int, client_int}
 				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
 
@@ -505,18 +505,12 @@ func (m *match) run() {
 				}
 				if len(m.team_client_hero) > team_int {
 					client_int = len(m.team_client_hero[team_int])
-				} else {
-					fmt.Println("got some weird team assignment going on")
 				}
-
 			}
-
-			fmt.Println(m.uuid_to_team_int)
-			fmt.Println(m.team_client_hero)
 
 			msg1 := &message{Event: "game_state", TCH: m.team_client_hero, When: time.Now(), MatchID: m.mid}
 
-			// send everyone the match details
+			// send everyone the game state
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {

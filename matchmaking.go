@@ -158,9 +158,8 @@ func createMatch(msg *message) *match {
 				sides:     sd,
 				started:   false,
 
-				turn:   make(map[uuid.UUID]bool),
-				heroes: make(map[uuid.UUID][]*hero),
-				teams:  make([][]uuid.UUID, sd),
+				team_client_hero: make([][][]*hero, 0, 0),
+				uuid_to_int:      make(map[uuid.UUID]int),
 
 				broadcast:      make(chan *message),
 				prio_broadcast: make(chan *message),
@@ -470,99 +469,49 @@ func (m *match) run() {
 
 		case <-m.start_ticker:
 
-			// add each user to a side, create their hero objects
-			if m.game_mode == "ffa" {
-
-				for i := 0; i < int(m.sides); i++ {
-					m.teams = append(m.teams, make([]uuid.UUID, 0, 1))
-				}
-
-				x := 0
-				for i, j := range m.gamer_uid_to_user {
-					m.teams[x] = append(m.teams[x], j.uid)
-					x++
-
-					m.turn[i] = true
-					m.heroes[i] = make([]*hero, 0, 5)
-
-					for y := 0; y < 5; y++ {
-						temp := &hero{
-							position:  0,
-							direction: 0,
-							health:    100,
-							speed:     100,
-						}
-						m.heroes[i] = append(m.heroes[i], temp)
-					}
-				}
-
-				fmt.Println(m.turn)
-				fmt.Println(m.teams)
-				fmt.Println(m.heroes)
-			} else if m.game_mode == "tea" { // TODO: need to balance teams eventually by player/bot
-				for i := 0; i < int(m.sides); i++ {
-					m.teams = append(m.teams, make([]uuid.UUID, 0, 1))
-				}
-
-				x := 0
-				for i, j := range m.gamer_uid_to_user {
-					m.teams[x] = append(m.teams[x], j.uid)
-					if x == 0 {
-						x = 1
-					} else {
-						x = 0
-					}
-
-					m.turn[i] = true
-					m.heroes[i] = make([]*hero, 0, 5)
-
-					for y := 0; y < 5; y++ {
-						temp := &hero{
-							position:  0,
-							direction: 0,
-							health:    100,
-							speed:     100,
-						}
-						m.heroes[i] = append(m.heroes[i], temp)
-					}
-
-				}
-
-				fmt.Println(m.turn)
-				fmt.Println(m.teams)
-				fmt.Println(m.heroes)
-			} else if m.game_mode == "1vx" { // TODO: need to make sure the 1vx is player v all
-				for i := 0; i < int(m.sides); i++ {
-					m.teams = append(m.teams, make([]uuid.UUID, 0, 1))
-				}
-
-				x := 0
-				for i, j := range m.gamer_uid_to_user {
-					m.teams[x] = append(m.teams[x], j.uid)
-					if x == 0 {
-						x = 1
-					}
-
-					m.turn[i] = true
-					m.heroes[i] = make([]*hero, 0, 5)
-
-					for y := 0; y < 5; y++ {
-						temp := &hero{
-							position:  0,
-							direction: 0,
-							health:    100,
-							speed:     100,
-						}
-						m.heroes[i] = append(m.heroes[i], temp)
-					}
-				}
-
-				fmt.Println(m.turn)
-				fmt.Println(m.teams)
-				fmt.Println(m.heroes)
+			// create each team
+			for i := 0; i < int(m.sides); i++ {
+				m.team_client_hero = append(m.team_client_hero, make([][]*hero, 0, 1))
 			}
 
-			msg1 := &message{Event: "game_state_init", Turn: m.turn, Heroes: m.heroes, Teams: m.teams, When: time.Now(), MatchID: m.mid}
+			// assign clients and heroes to each team
+			team_int := 0
+			client_int := 0
+			for i, _ := range m.gamer_uid_to_user {
+				m.uuid_to_int[i] = client_int
+				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
+
+				for y := 0; y < 5; y++ {
+					temp := &hero{
+						position:  0,
+						direction: 0,
+						health:    100,
+						speed:     100,
+					}
+					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
+				}
+
+				if m.game_mode == "ffa" {
+					team_int++
+					client_int++
+				} else if m.game_mode == "tea" {
+					if team_int == 0 {
+						team_int = 1
+					} else {
+						team_int = 0
+					}
+					client_int++
+				} else if m.game_mode == "1vx" {
+					team_int = 1
+					client_int++
+				}
+
+			}
+
+			fmt.Println(m.uuid_to_int)
+			fmt.Println(m.team_client_hero)
+
+			msg1 := &message{Event: "game_state", TCH: m.team_client_hero, When: time.Now(), MatchID: m.mid}
 
 			// send everyone the match details
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {

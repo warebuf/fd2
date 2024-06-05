@@ -86,9 +86,9 @@ type match struct {
 	capacity  uint
 	started   bool
 
-	turn   map[uuid.UUID]bool
-	heroes map[uuid.UUID][]*hero
-	teams  [][]uuid.UUID
+	// each client is represented as an int
+	team_client_hero [][][]*hero
+	uuid_to_int      map[uuid.UUID]int
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^
@@ -171,9 +171,7 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	Turn   map[uuid.UUID]bool
-	Heroes map[uuid.UUID][]*hero
-	Teams  [][]uuid.UUID
+	TCH [][][]*hero
 }
 
 // Global Variables - Utility

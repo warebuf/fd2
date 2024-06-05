@@ -507,7 +507,7 @@ func (m *match) run() {
 
 			}
 
-			fmt.Println(m.uuid_to_int)
+			fmt.Println(m.uuid_to_team_int)
 			fmt.Println(m.team_client_hero)
 
 			msg1 := &message{Event: "game_state", TCH: m.team_client_hero, When: time.Now(), MatchID: m.mid}

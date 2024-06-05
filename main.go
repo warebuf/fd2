@@ -34,6 +34,10 @@ notes:
 - cookie management
 */
 
+type pair struct {
+	a, b int
+}
+
 type user struct {
 	mutex sync.RWMutex
 
@@ -88,7 +92,7 @@ type match struct {
 
 	// each client is represented as an int
 	team_client_hero [][][]*hero
-	uuid_to_int      map[uuid.UUID]int
+	uuid_to_team_int map[uuid.UUID]pair
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^

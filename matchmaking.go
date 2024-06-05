@@ -159,7 +159,7 @@ func createMatch(msg *message) *match {
 				started:   false,
 
 				team_client_hero: make([][][]*hero, 0, 0),
-				uuid_to_int:      make(map[uuid.UUID]int),
+				uuid_to_team_int: make(map[uuid.UUID]pair),
 
 				broadcast:      make(chan *message),
 				prio_broadcast: make(chan *message),
@@ -479,7 +479,7 @@ func (m *match) run() {
 			client_int := 0
 			for i, _ := range m.gamer_uid_to_user {
 				fmt.Println("TC", team_int, client_int)
-				m.uuid_to_int[i] = client_int
+				m.uuid_to_team_int[i] = pair{team_int, client_int}
 				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
 
 				for y := 0; y < 5; y++ {
@@ -494,18 +494,16 @@ func (m *match) run() {
 
 				if m.game_mode == "ffa" {
 					team_int++
-					client_int++
 				} else if m.game_mode == "tea" {
 					if team_int == 0 {
 						team_int = 1
 					} else {
 						team_int = 0
 					}
-					client_int++
 				} else if m.game_mode == "1vx" {
 					team_int = 1
-					client_int++
 				}
+				client_int = len(m.team_client_hero[team_int])
 
 			}
 

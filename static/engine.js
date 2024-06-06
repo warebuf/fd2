@@ -138,9 +138,9 @@ function drawStats() {
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
-                ctx.fillText(i + " " + ((match_data[current_state][i][j][k].Health > 0) ? "active" : "rip") + " " + match_data[current_state][i][j][k].Direction + " " + Math.round(match_data[current_state][i][j][k].Position + " " + '-'), 50, (i * 400) + 50 + (j * 70));
+                ctx.fillText(i + " " +j + " " + k + " " + ((match_data[current_state][i][j][k].Health > 0) ? "active" : "rip") + " " + match_data[current_state][i][j][k].Direction + " " + Math.round(match_data[current_state][i][j][k].Position + " " + '-'), 50, (i * 400) + 50 + (j * 70));
                 //c.fillText("H: " + client_t[i][j].h.health + " L: " + client_t[i][j].l.health + " R: " + client_t[i][j].r.health + " B: " + client_t[i][j].b.health, 50, (i * 400) + 70 + (j * 70));
-                ctx.fillText(match_data[current_state][i][j][k].Speed, 50, (i * 400) + 90 + (j * 70));
+                //ctx.fillText(match_data[current_state][i][j][k].Speed, 50, (i * 400) + 90 + (j * 70));
             }
         }
     }

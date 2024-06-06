@@ -140,7 +140,6 @@ function drawStats() {
 
     ctx.fillText("H HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 135, 60);
     ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 300, 60);
-    ctx.fillText("R HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 600, 60);
     ctx.fillText("B HP DEF DOG SPD ACCL ANTI END WEI", 800, 60);
 
 

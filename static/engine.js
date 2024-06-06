@@ -70,6 +70,7 @@ function anime() {
     if (match_data.length > 0) {
         drawPos()
         drawState()
+        drawStats()
     }
 
 }

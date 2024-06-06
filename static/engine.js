@@ -138,6 +138,13 @@ function drawStats() {
     ctx.fillText("HP", 135, 60);
     ctx.fillText("D POS ACT", 155, 60);
 
+    ctx.fillText("H HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 200, 60);
+    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 250, 60);
+    ctx.fillText("R HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 300, 60);
+    ctx.fillText("B HP DEF DOG SPD ACCL ANTI END WEI", 350, 60);
+
+
+
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {

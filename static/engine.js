@@ -104,25 +104,25 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(225, (i * 400) + 50 + (j * 70), 5, 5);
+                ctx.fillRect(225, ((i+j)*60) + 50 + (k*10), 5, 5);
                 if (true) {
                     c.fillStyle = 'green';
                 } else {
                     c.fillStyle = 'red';
                 }
-                ctx.fillRect(220, (i * 400) + 55 + (j * 70), 5, 7); // make it 270,5,7 OR 269,6,4
+                ctx.fillRect(220, ((i+j)*60) + 50 + (k*10), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(230, (i * 400) + 55 + (j * 70), 5, 7);
+                ctx.fillRect(230, ((i+j)*60) + 50 + (k*10), 5, 7);
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     c.fillStyle = 'red';
                 }
-                ctx.fillRect(225, (i * 400) + 60 + (j * 70), 5, 7);
+                ctx.fillRect(225, ((i+j)*60) + 50 + (k*10), 5, 7);
             }
         }
     }

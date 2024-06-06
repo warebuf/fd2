@@ -87,7 +87,7 @@ function drawPos() {
                         Math.round(match_data[current_state][i][j][k].Position)) +
                         (match_data[current_state][i][j][k].Direction ? '>' : '<') +
                         road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
-                    ctx.fillText(road, 250, ((i+j)*115) + 55 + (k*20));
+                    ctx.fillText(road, 250, ((i+j)*115) + 57 + (k*20));
                 }
             }
 

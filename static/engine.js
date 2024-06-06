@@ -134,14 +134,14 @@ function drawState() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-    ctx.fillText("T C H", 95, 60);
-    ctx.fillText("HP", 135, 60);
-    ctx.fillText("D POS ACT", 155, 60);
+    ctx.fillText("T C H", 50, 60);
+    ctx.fillText("HP", 90, 60);
+    ctx.fillText("D POS ACT", 110, 60);
 
     ctx.fillText("H HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 200, 60);
-    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 250, 60);
-    ctx.fillText("R HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 300, 60);
-    ctx.fillText("B HP DEF DOG SPD ACCL ANTI END WEI", 350, 60);
+    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 300, 60);
+    ctx.fillText("R HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 400, 60);
+    ctx.fillText("B HP DEF DOG SPD ACCL ANTI END WEI", 500, 60);
 
 
 

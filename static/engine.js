@@ -139,7 +139,7 @@ function drawStats() {
     ctx.fillText("D POS ACT", 70, 60);
 
     ctx.fillText("H HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 135, 60);
-    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 300, 60);
+    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 500, 60);
     ctx.fillText("B HP DEF DOG SPD ACCL ANTI END WEI", 800, 60);
 
 

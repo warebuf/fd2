@@ -67,6 +67,29 @@ function anime() {
         }
     }
 
+    if (match_data.length > 0) {
+        drawPos()
+    }
+
 }
 anime()
 
+function drawPos() {
+    ctx.font = '11px monospace';
+    ctx.fillStyle = 'white';
+    for(let i = 0; i < match_data[current_state].length; i++) { // team
+        for(let j = 0; j < match_data[current_state][i].length; j++) { // client
+            for(let k = 0; k < match_data[current_state][i][j].length; k++) {
+                if(match_data[current_state][i][j][k].Health > 0) {
+                    let road = 'o' + "-".repeat(99) + 'x';
+                    road = road.substring(0,
+                        Math.round(match_data[current_state][i][j][k].Position)) +
+                        (match_data[current_state][i][j][k].Direction ? '>' : '<') +
+                        road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
+                    ctx.fillText(road, 250, (i*400) + 50 + (j*70));
+                }
+            }
+
+        }
+    }
+}

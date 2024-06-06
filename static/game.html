@@ -51,6 +51,7 @@
     var socket = null;
     var startCount = null;
     var match_data = new Array();
+    var current_state = -1;
 
     function test() {
 
@@ -101,9 +102,9 @@
                         }
                     }
 
-                    console.log(md)
                     match_data.push(md)
                     console.log(match_data)
+                    current_state = match_data.length-1
 
                 }
             }

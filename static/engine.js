@@ -100,7 +100,7 @@ function drawState() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 if (match_data[current_state][i][j][k].Health > 0) {
-                    ctx.fillStyle = 'green';
+                    ctx.fillStyle = 'orange';
                 } else {
                     ctx.fillStyle = 'red';
                 }
@@ -112,13 +112,13 @@ function drawState() {
                 }
                 ctx.fillRect(220, ((i+j)*60) + 50 + (k*10), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (true) {
-                    ctx.fillStyle = 'green';
+                    ctx.fillStyle = 'blue';
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(230, ((i+j)*60) + 50 + (k*10), 5, 7);
                 if (true) {
-                    ctx.fillStyle = 'green';
+                    ctx.fillStyle = 'pink';
                 } else {
                     c.fillStyle = 'red';
                 }

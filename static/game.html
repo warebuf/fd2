@@ -88,7 +88,12 @@
                     startCount = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'game_state') {
-                    
+                    var temp = msg.TCH;
+                    for (i = 0; i < len(temp); i++) {
+                        for (j = 0; j < len(temp[i]); j++) {
+                            console.log(temp[i][j])
+                        }
+                    }
                 }
             }
         }

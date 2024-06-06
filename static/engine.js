@@ -99,7 +99,7 @@ function drawState() {
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
-                if (match_data[current_state][i][j].Health > 0) {
+                if (match_data[current_state][i][j][k].Health > 0) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';

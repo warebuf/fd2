@@ -71,11 +71,12 @@ type room struct {
 	open chan bool
 }
 
+// NOTE: FOR SOME REASON ONLY CONVERTS TO JSON IF CAPITALIZED
 type hero struct {
-	position  float64
-	direction int
-	health    int
-	speed     int
+	Position  float64
+	Direction int
+	Health    int
+	Speed     int
 }
 
 type match struct {

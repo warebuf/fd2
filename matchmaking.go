@@ -488,10 +488,10 @@ func (m *match) run() {
 
 				for y := 0; y < 5; y++ {
 					temp := &hero{
-						position:  0,
-						direction: 0,
-						health:    100,
-						speed:     100,
+						Position:  0,
+						Direction: 0,
+						Health:    100,
+						Speed:     100,
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, err := json.Marshal(temp)

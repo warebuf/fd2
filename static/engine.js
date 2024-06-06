@@ -134,7 +134,7 @@ function drawState() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-    ctx.fillText("T C H HP <-> POS ACT", 115, 50);
+    ctx.fillText("T C H HP <-> POS ACT", 115, 40);
 
 
     for(let i = 0; i < match_data[current_state].length; i++) {

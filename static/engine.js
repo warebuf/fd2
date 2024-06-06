@@ -132,8 +132,8 @@ function drawState() {
 
 
 function drawStats() {
-    c.font = '11px monospace';
-    c.fillStyle = 'white'
+    ctx.font = '11px monospace';
+    ctx.fillStyle = 'white'
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {

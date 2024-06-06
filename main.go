@@ -26,11 +26,8 @@ import (
 
 /*
 notes:
-- dont like how its possible for the match will begin in 30s message to appear before the join message
-- perhaps broadcast is the wrong way to go
 
-- sting cleanup
-
+- string cleanup
 - cookie management
 */
 
@@ -92,6 +89,7 @@ type match struct {
 
 	// each client is represented as an int
 	team_client_hero [][][]*hero
+	TCH_JSON         [][][]string
 	uuid_to_team_int map[uuid.UUID]pair
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
@@ -175,7 +173,7 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	TCH [][][]*hero
+	TCH [][][]string
 }
 
 // Global Variables - Utility

@@ -104,7 +104,7 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(225, ((i+j)*60) + 45 + (k*10), 5, 5);
+                ctx.fillRect(225, ((i+j)*60) + 46 + (k*10), 5, 5);
                 if (true) {
                     c.fillStyle = 'green';
                 } else {

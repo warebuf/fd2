@@ -122,7 +122,7 @@ function drawState() {
                 } else {
                     c.fillStyle = 'red';
                 }
-                ctx.fillRect(225, ((i+j)*150) + 50 + (k*20), 5, 7);
+                ctx.fillRect(225, ((i+j)*150) + 55 + (k*20), 5, 7);
             }
         }
     }

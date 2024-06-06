@@ -138,9 +138,9 @@ function drawStats() {
     ctx.fillText("HP", 50, 60);
     ctx.fillText("D POS ACT", 70, 60);
 
-    ctx.fillText("H HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 135, 60);
-    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEI", 400, 60);
-    ctx.fillText("B HP DEF DOG SPD ACCL ANTI END WEI", 800, 60);
+    ctx.fillText("H HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 135, 60);
+    ctx.fillText("L HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 400, 60);
+    ctx.fillText("B HP DEF DOG SPD ACCL ANTI ENDU WEIGHT", 800, 60);
 
 
 

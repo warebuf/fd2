@@ -105,7 +105,7 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(225, ((i+j)*115) + 66 + (k*20), 5, 5);
+                ctx.fillRect(225, ((i+j)*115) + 56 + (k*20), 5, 5);
                 if (true) {
                     c.fillStyle = 'green';
                 } else {
@@ -134,7 +134,7 @@ function drawState() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-    ctx.fillText("T C H HP <-> POS ACT", 100, 50);
+    ctx.fillText("T C H  HP <-> POS ACT", 100, 50);
 
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {

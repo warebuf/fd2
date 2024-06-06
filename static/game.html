@@ -50,7 +50,7 @@
 <script>
     var socket = null;
     var startCount = null;
-    var match_data = null;
+    var match_data = new Array();
 
     function test() {
 
@@ -96,13 +96,14 @@
                         for (j = 0; j < temp[i].length; j++) {
                             md[i][j] = new Array();
                             for (k = 0; k < temp[i][j].length; k++ ){
-                                console.log(temp[i][j][k])
                                 md[i][j][k] = JSON.parse(temp[i][j][k]);
                             }
                         }
                     }
 
                     console.log(md)
+                    match_data.push(md)
+                    console.log(match_data)
 
                 }
             }

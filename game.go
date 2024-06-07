@@ -45,7 +45,7 @@ func m_read(m *match_socket) {
 				m.user_time = time.UnixMilli(test)
 				fmt.Println("dif", m.system_time.Sub(m.user_time))
 
-				// check if room is full, if it is than start the game timer
+				// check if room is full and game hasn't started, if so, start the countdown start timer
 				if m.m.started == false && len(m.m.gamer_uid_to_user) == int(m.m.capacity) {
 					allset := true
 					for i, j := range m.m.gamer_uid_to_msid_to_match_socket {
@@ -68,6 +68,8 @@ func m_read(m *match_socket) {
 						m.m.started = true
 						m.m.start_ticker <- true
 					}
+				} else if m.m.started == true {
+					m.incoming_message <- &message{Event: "game_state", TCH: m.m.TCH_JSON, When: time.Now(), MatchID: m.m.mid}
 				}
 			}
 

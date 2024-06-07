@@ -130,7 +130,7 @@ function drawState() {
 
                 if ((i == my_team) && (j == my_int)) {
                     ctx.fillStyle = 'yellow';
-                    ctx.fillRect(1052, ((i+j)*115) + 78 + (k*20), 1, 1);
+                    ctx.fillRect(1052, ((i+j)*115) + 78 + (k*20), 10, 10);
                 }
             }
         }

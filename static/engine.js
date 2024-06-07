@@ -151,7 +151,7 @@ function drawStats() {
                 ctx.fillText(match_data[current_state][i][j][k].Direction + "  " + match_data[current_state][i][j][k].Position + "   -", 70, ((i+j)*115) + 82 + (k*20))
 
                 ctx.fillText("0 0 0 0 0 0 0 0 0 0", 135, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 80 + (k*20))
                 ctx.fillText("0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 87 + (k*20))
                 ctx.fillText("0 0 0 0 0 0 0 0 0 0", 665, ((i+j)*115) + 82 + (k*20))
 

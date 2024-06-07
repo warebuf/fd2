@@ -79,6 +79,7 @@ anime()
 function drawPos() {
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
+    ctx.textAlign = "left";
     for(let i = 0; i < match_data[current_state].length; i++) { // team
         for(let j = 0; j < match_data[current_state][i].length; j++) { // client
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
@@ -97,6 +98,7 @@ function drawPos() {
 }
 
 function drawState() {
+    ctx.textAlign = "left";
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {

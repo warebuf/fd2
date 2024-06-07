@@ -468,7 +468,8 @@ func (m *match) run() {
 
 		case <-m.ticker.C: // ticker goes off
 
-			var timer1_length, timer2_length
+			var timer1_length time.Duration
+			var timer2_length time.Duration
 
 			if m.type_of_ticker == 0 {
 				fmt.Println("ticker went off 0")

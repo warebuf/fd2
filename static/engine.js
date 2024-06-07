@@ -155,7 +155,7 @@ function drawStats() {
 
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(110, 45);
+    ctx.moveTo(108, 45);
     ctx.lineTo(355, 45);
     ctx.stroke();
     ctx.fillText("HP", 120, 60) // H HP
@@ -169,6 +169,11 @@ function drawStats() {
     ctx.fillText("USE", 320, 60) // H USE
     ctx.fillText("WGH", 345, 60) // H WEIGHT
 
+    ctx.lineWidth = 0.1;
+    ctx.strokeStyle = "white";
+    ctx.moveTo(400, 45);
+    ctx.lineTo(635, 45);
+    ctx.stroke();
     ctx.fillText("HP", 400, 60) // ARM HP
     ctx.fillText("ATK", 425, 60) // ARM ATK
     ctx.fillText("DEF", 450, 60) // ARM DEF
@@ -180,6 +185,11 @@ function drawStats() {
     ctx.fillText("USE", 600, 60) // ARM USE
     ctx.fillText("WGT", 625, 60) // ARM WEIGHT
 
+    ctx.lineWidth = 0.1;
+    ctx.strokeStyle = "white";
+    ctx.moveTo(660, 45);
+    ctx.lineTo(1020, 45);
+    ctx.stroke();
     ctx.fillText("HP", 660, 60) // LEG HP
     ctx.fillText("ATK", 685, 60) // LEG ATK
     ctx.fillText("DEF", 710, 60) // LEG DEF

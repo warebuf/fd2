@@ -153,6 +153,7 @@ function drawStats() {
     ctx.fillText("POS", 70, 60);
     ctx.fillText("ACT", 95, 60);
 
+    ctx.fillText("HEAD", 234, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(113, 45);
@@ -169,6 +170,7 @@ function drawStats() {
     ctx.fillText("USE", 320, 60) // H USE
     ctx.fillText("WGH", 345, 60) // H WEIGHT
 
+    ctx.fillText("ARMS", 513, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(392, 45);
@@ -185,6 +187,7 @@ function drawStats() {
     ctx.fillText("USE", 600, 60) // ARM USE
     ctx.fillText("WGT", 625, 60) // ARM WEIGHT
 
+    ctx.fillText("LEGS", 836, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(652, 45);

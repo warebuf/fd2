@@ -141,7 +141,7 @@ function drawStats() {
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 50);
-    ctx.lineTo(50, 50);
+    ctx.lineTo(55, 50);
     ctx.stroke();
 
     ctx.textAlign = "left";

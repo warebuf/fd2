@@ -155,8 +155,8 @@ function drawStats() {
 
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(110, 45);
-    ctx.lineTo(350, 45);
+    ctx.moveTo(115, 45);
+    ctx.lineTo(355, 45);
     ctx.stroke();
     ctx.fillText("HP", 120, 60) // H HP
     ctx.fillText("ATK", 145, 60) // H ATK

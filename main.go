@@ -78,6 +78,7 @@ type hero struct {
 	Direction int
 	Health    int
 	Speed     int
+	Move      int
 }
 
 type match struct {

@@ -535,6 +535,7 @@ func (m *match) run() {
 						Direction: 0,
 						Health:    100,
 						Speed:     100,
+						Move:      -1,
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)

@@ -132,6 +132,21 @@ function drawState() {
                     ctx.fillStyle = 'yellow';
                     ctx.fillRect(1052, ((i+j)*115) + 78 + (k*20), 1, 1);
                 }
+
+                if(on_off == "1") {
+
+                    if (match_data[current_state][i][j][k].Move == -1 &&
+                        match_data[current_state][i][j][k].Health > 0 &&
+                        match_data[current_state][i][j][k].Position == 0 &&
+                        match_data[current_state][i][j][k].Direction == 0
+                    ){
+                        ctx.fillStyle = 'white'
+                        ctx.textAlign = "center";
+                        ctx.fillText("*", 1025, ((i+j)*115) + 82 + (k*20));
+                    }
+
+                    // also draw arrow for current unit
+                }
             }
         }
     }

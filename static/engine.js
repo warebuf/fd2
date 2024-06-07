@@ -146,8 +146,8 @@ function drawStats() {
     ctx.textAlign = "left";
     ctx.fillText("T C H D", 10, 60);
     ctx.textAlign = "center";
-    ctx.fillText("POS", 50, 60);
-    ctx.fillText("ACT", 75, 60);
+    ctx.fillText("POS", 75, 60);
+    ctx.fillText("ACT", 100, 60);
 
     ctx.fillText("HP", 110, 60) // H HP
     ctx.fillText("ATK", 135, 60) // H ATK

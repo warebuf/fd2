@@ -139,6 +139,18 @@ function drawStats() {
 
     ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 115, 60);
     ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 375, 60);
+
+    ctx.fillText("HP", 110, 115) // H HP
+    ctx.fillText("ATK", 135, 115) // H ATK
+    ctx.fillText("DEF", 160, 115) // H DEF
+    ctx.fillText("ACC", 185, 115) // H ACC
+    ctx.fillText("CRIT", 210, 115) // H CRIT
+    ctx.fillText("MOBI", 235, 115) // H MOBI
+    ctx.fillText("CD", 260, 115) // H CD
+    ctx.fillText("CLU", 285, 115) // H CLU
+    ctx.fillText("USE", 310, 115) // H USE
+    ctx.fillText("WEIGHT", 335, 115) // H WEIGHT
+
     ctx.fillText("HP DEF DOG SPD ACCL ANTI ENDU WEIGHT", 675, 60);
 
 
@@ -172,17 +184,17 @@ function drawStats() {
                 ctx.fillText("0/0", 600, ((i+j)*115) + 77 + (k*20)) // L USE
                 ctx.fillText("100", 625, ((i+j)*115) + 77 + (k*20)) // L WEIGHT
 
-                ctx.fillText("R", 375, ((i+j)*115) + 87 + (k*20)) // L L
-                ctx.fillText("100", 400, ((i+j)*115) + 87 + (k*20)) // L HP
-                ctx.fillText("100", 425, ((i+j)*115) + 87 + (k*20)) // L ATK
-                ctx.fillText("100", 450, ((i+j)*115) + 87 + (k*20)) // L DEF
-                ctx.fillText("100", 475, ((i+j)*115) + 87 + (k*20)) // L ACC
-                ctx.fillText("100", 500, ((i+j)*115) + 87 + (k*20)) // L CRIT
-                ctx.fillText("100", 525, ((i+j)*115) + 87 + (k*20)) // L MOBI
-                ctx.fillText("100", 550, ((i+j)*115) + 87 + (k*20)) // L CD
-                ctx.fillText("100", 575, ((i+j)*115) + 87 + (k*20)) // L CLU
-                ctx.fillText("0/0", 600, ((i+j)*115) + 87 + (k*20)) // L USE
-                ctx.fillText("100", 625, ((i+j)*115) + 87 + (k*20)) // L WEIGHT
+                ctx.fillText("R", 375, ((i+j)*115) + 87 + (k*20))   // R L
+                ctx.fillText("100", 400, ((i+j)*115) + 87 + (k*20)) // R HP
+                ctx.fillText("100", 425, ((i+j)*115) + 87 + (k*20)) // R ATK
+                ctx.fillText("100", 450, ((i+j)*115) + 87 + (k*20)) // R DEF
+                ctx.fillText("100", 475, ((i+j)*115) + 87 + (k*20)) // R ACC
+                ctx.fillText("100", 500, ((i+j)*115) + 87 + (k*20)) // R CRIT
+                ctx.fillText("100", 525, ((i+j)*115) + 87 + (k*20)) // R MOBI
+                ctx.fillText("100", 550, ((i+j)*115) + 87 + (k*20)) // R CD
+                ctx.fillText("100", 575, ((i+j)*115) + 87 + (k*20)) // R CLU
+                ctx.fillText("0/0", 600, ((i+j)*115) + 87 + (k*20)) // R USE
+                ctx.fillText("100", 625, ((i+j)*115) + 87 + (k*20)) // R WEIGHT
 
 
                 ctx.fillText("0   0 0 0 0 0 0 0 0 0", 675, ((i+j)*115) + 82 + (k*20))

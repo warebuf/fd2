@@ -138,16 +138,16 @@ function drawStats() {
     ctx.fillText("POS ACT", 60, 60);
 
 
-    ctx.fillText("HP", 110, 115) // H HP
-    ctx.fillText("ATK", 135, 115) // H ATK
-    ctx.fillText("DEF", 160, 115) // H DEF
-    ctx.fillText("ACC", 185, 115) // H ACC
-    ctx.fillText("CRIT", 210, 115) // H CRIT
-    ctx.fillText("MOBI", 235, 115) // H MOBI
-    ctx.fillText("CD", 260, 115) // H CD
-    ctx.fillText("CLU", 285, 115) // H CLU
-    ctx.fillText("USE", 310, 115) // H USE
-    ctx.fillText("WEIGHT", 335, 115) // H WEIGHT
+    ctx.fillText("HP", 110, 60) // H HP
+    ctx.fillText("ATK", 135, 60) // H ATK
+    ctx.fillText("DEF", 160, 60) // H DEF
+    ctx.fillText("ACC", 185, 60) // H ACC
+    ctx.fillText("CRIT", 210, 60) // H CRIT
+    ctx.fillText("MOBI", 235, 60) // H MOBI
+    ctx.fillText("CD", 260, 60) // H CD
+    ctx.fillText("CLU", 285, 60) // H CLU
+    ctx.fillText("USE", 310, 60) // H USE
+    ctx.fillText("WEIGHT", 335, 60) // H WEIGHT
 
     ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 375, 60);
 

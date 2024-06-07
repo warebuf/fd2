@@ -155,7 +155,7 @@ function drawStats() {
 
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(108, 45);
+    ctx.moveTo(110, 45);
     ctx.lineTo(355, 45);
     ctx.stroke();
     ctx.fillText("HP", 120, 60) // H HP
@@ -171,7 +171,7 @@ function drawStats() {
 
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(400, 45);
+    ctx.moveTo(395, 45);
     ctx.lineTo(635, 45);
     ctx.stroke();
     ctx.fillText("HP", 400, 60) // ARM HP
@@ -187,7 +187,7 @@ function drawStats() {
 
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(660, 45);
+    ctx.moveTo(650, 45);
     ctx.lineTo(1020, 45);
     ctx.stroke();
     ctx.fillText("HP", 660, 60) // LEG HP

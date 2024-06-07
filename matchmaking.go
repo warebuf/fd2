@@ -526,7 +526,6 @@ func (m *match) run() {
 			client_int := 0
 			for i, _ := range m.gamer_uid_to_user {
 				m.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)}
-				fmt.Println(m.uuid_to_team_int[i].a, m.uuid_to_team_int[i].b, m.uuid_to_team_int[i].ab)
 				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
 				m.TCH_JSON[team_int] = append(m.TCH_JSON[team_int], make([]string, 0, 5))
 

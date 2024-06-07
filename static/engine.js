@@ -88,7 +88,7 @@ function drawPos() {
                         Math.round(match_data[current_state][i][j][k].Position)) +
                         (match_data[current_state][i][j][k].Direction ? '>' : '<') +
                         road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
-                    ctx.fillText(road, 350, ((i+j)*115) + 82 + (k*20));
+                    ctx.fillText(road, 950, ((i+j)*115) + 82 + (k*20));
                 }
             }
 
@@ -105,25 +105,25 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(325, ((i+j)*115) + 71 + (k*20), 5, 5);
+                ctx.fillRect(925, ((i+j)*115) + 71 + (k*20), 5, 5);
                 if (true) {
                     c.fillStyle = 'green';
                 } else {
                     c.fillStyle = 'red';
                 }
-                ctx.fillRect(320, ((i+j)*115) + 76 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
+                ctx.fillRect(920, ((i+j)*115) + 76 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(330, ((i+j)*115) + 76 + (k*20), 5, 7);
+                ctx.fillRect(930, ((i+j)*115) + 76 + (k*20), 5, 7);
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     c.fillStyle = 'red';
                 }
-                ctx.fillRect(325, ((i+j)*115) + 81 + (k*20), 5, 7);
+                ctx.fillRect(925, ((i+j)*115) + 81 + (k*20), 5, 7);
             }
         }
     }
@@ -148,7 +148,7 @@ function drawStats() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Health, 10, ((i+j)*115) + 82 + (k*20));
-                ctx.fillText(match_data[current_state][i][j][k].Direction + "  " + match_data[current_state][i][j][k].Position + "  -", 135, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(match_data[current_state][i][j][k].Direction + "  " + match_data[current_state][i][j][k].Position + "  -", 50, ((i+j)*115) + 82 + (k*20))
                 //c.fillText("H: " + client_t[i][j].h.health + " L: " + client_t[i][j].l.health + " R: " + client_t[i][j].r.health + " B: " + client_t[i][j].b.health, 50, (i * 400) + 70 + (j * 70));
                 //ctx.fillText(match_data[current_state][i][j][k].Speed, 50, (i * 400) + 90 + (j * 70));
             }

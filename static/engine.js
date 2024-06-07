@@ -162,9 +162,20 @@ function drawStats() {
     ctx.fillText("CD", 550, 60) // ARM CD
     ctx.fillText("CLU", 575, 60) // ARM CLU
     ctx.fillText("USE", 600, 60) // ARM USE
-    ctx.fillText("WGH", 625, 60) // ARM WEIGHT
+    ctx.fillText("WGT", 625, 60) // ARM WEIGHT
 
-
+    ctx.fillText("HP", 700, 60) // LEG HP
+    ctx.fillText("ATK", 725, 60) // LEG ATK
+    ctx.fillText("DEF", 750, 60) // LEG DEF
+    ctx.fillText("ACC", 775, 60) // LEG ACC
+    ctx.fillText("CRT", 800, 60) // LEG CRIT
+    ctx.fillText("MOB", 825, 60) // LEG MOBI
+    ctx.fillText("DOG", 850, 60) // LEG DOG
+    ctx.fillText("SPE", 875, 60) // LEG SPE
+    ctx.fillText("ACL", 900, 60) // LEG CRIT
+    ctx.fillText("ANT", 925, 60) // LEG MOBI
+    ctx.fillText("END", 950, 60) // LEG CD
+    ctx.fillText("WEI", 975, 60) // LEG CLU
 
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {

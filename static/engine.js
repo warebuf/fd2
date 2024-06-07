@@ -149,16 +149,16 @@ function drawStats() {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.fillText(match_data[current_state][i][j][k].Position + "   -", 65, ((i+j)*115) + 82 + (k*20))
 
-                ctx.fillText("100", 115, ((i+j)*115) + 82 + (k*20)) // H HP
-                ctx.fillText("100", 130, ((i+j)*115) + 82 + (k*20)) // H ATK
-                ctx.fillText("100", 145, ((i+j)*115) + 82 + (k*20)) // H DEF
-                ctx.fillText("100", 160, ((i+j)*115) + 82 + (k*20)) // H ACC
-                ctx.fillText("100", 175, ((i+j)*115) + 82 + (k*20)) // H CRIT
-                ctx.fillText("100", 190, ((i+j)*115) + 82 + (k*20)) // H MOBI
-                ctx.fillText("100", 215, ((i+j)*115) + 82 + (k*20)) // H CD
-                ctx.fillText("100", 230, ((i+j)*115) + 82 + (k*20)) // H CLU
-                ctx.fillText("0/0", 245, ((i+j)*115) + 82 + (k*20)) // H USE
-                ctx.fillText("100", 260, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
+                ctx.fillText("100", 110, ((i+j)*115) + 82 + (k*20)) // H HP
+                ctx.fillText("100", 140, ((i+j)*115) + 82 + (k*20)) // H ATK
+                ctx.fillText("100", 170, ((i+j)*115) + 82 + (k*20)) // H DEF
+                ctx.fillText("100", 200, ((i+j)*115) + 82 + (k*20)) // H ACC
+                ctx.fillText("100", 230, ((i+j)*115) + 82 + (k*20)) // H CRIT
+                ctx.fillText("100", 260, ((i+j)*115) + 82 + (k*20)) // H MOBI
+                ctx.fillText("100", 290, ((i+j)*115) + 82 + (k*20)) // H CD
+                ctx.fillText("100", 320, ((i+j)*115) + 82 + (k*20)) // H CLU
+                ctx.fillText("0/0", 350, ((i+j)*115) + 82 + (k*20)) // H USE
+                ctx.fillText("100", 380, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
                 ctx.fillText("L 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 77 + (k*20))
                 ctx.fillText("R 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 87 + (k*20))

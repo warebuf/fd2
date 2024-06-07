@@ -92,6 +92,7 @@
                     startCount = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'game_state') {
+                    console.log(msg.Message)
                     var temp_string = msg.Message.split(";")
                     my_team = parseInt(temp_string[0])
                     my_int = parseInt(temp_string[1])

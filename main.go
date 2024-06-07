@@ -33,6 +33,7 @@ notes:
 
 type pair struct {
 	a, b int
+	ab   string // format: a;b
 }
 
 type user struct {

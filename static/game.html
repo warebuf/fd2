@@ -51,6 +51,8 @@
     var startCount = null;
     var match_data = new Array();
     var current_state = -1;
+    var my_team = -1;
+    var my_int = -1;
 
     function test() {
 
@@ -90,6 +92,10 @@
                     startCount = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'game_state') {
+                    var temp_string = msg.Message.split(";")
+                    my_team = parseInt(temp_string[0])
+                    my_int = parseInt(temp_string[1])
+
                     var temp = msg.TCH;
                     var md = new Array();
                     for (i = 0; i < temp.length; i++) {

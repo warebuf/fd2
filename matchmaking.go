@@ -525,7 +525,7 @@ func (m *match) run() {
 			team_int := 0
 			client_int := 0
 			for i, _ := range m.gamer_uid_to_user {
-				m.uuid_to_team_int[i] = pair{team_int, client_int}
+				m.uuid_to_team_int[i] = pair{team_int, client_int, string(team_int) + ";" + string(client_int)}
 				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
 				m.TCH_JSON[team_int] = append(m.TCH_JSON[team_int], make([]string, 0, 5))
 
@@ -558,13 +558,11 @@ func (m *match) run() {
 				}
 			}
 
-			msg1 := &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}
-
 			// send everyone the game state
-			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+			for k, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
-					case j.incoming_message <- msg1:
+					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, When: time.Now(), MatchID: m.mid}:
 					}
 				}
 			}
@@ -572,7 +570,7 @@ func (m *match) run() {
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
-					case j.incoming_message <- msg1:
+					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
 					}
 				}
 			}

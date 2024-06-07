@@ -467,7 +467,49 @@ func (m *match) run() {
 			continue
 
 		case <-m.ticker.C: // ticker goes off
-			fmt.Println("ticker went off")
+
+			var timer1_length, timer2_length
+
+			if m.type_of_ticker == 0 {
+				fmt.Println("ticker went off 0")
+				timer1_length = time.Second * 60
+				timer2_length = time.Second * 61
+				m.type_of_ticker = 1
+			} else if m.type_of_ticker == 1 {
+				fmt.Println("ticker went off 1")
+				timer1_length = time.Second * 30
+				timer2_length = time.Second * 31
+				m.type_of_ticker = 1
+			}
+
+			init_time := time.Now().Add(timer1_length)
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), MatchID: m.mid}
+			m.ticker = time.NewTicker(timer2_length) //will tick in 30 s
+
+			// send ticker to everyone
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
 
 		case <-m.start_ticker:
 
@@ -537,6 +579,7 @@ func (m *match) run() {
 			init_time := time.Now().Add(30 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), MatchID: m.mid}
 			m.ticker = time.NewTicker(31 * time.Second) //will tick in 30 s
+			m.type_of_ticker = 0
 
 			// send ticker to everyone
 			m.mutex.Lock()

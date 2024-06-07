@@ -142,7 +142,7 @@ function drawState() {
                     ){
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
-                        ctx.fillText("*", 1025, ((i+j)*115) + 82 + (k*20));
+                        ctx.fillText("*", 35, ((i+j)*115) + 82 + (k*20));
                     }
 
                     // also draw arrow for current unit

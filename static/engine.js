@@ -185,7 +185,6 @@ function drawStats() {
                 ctx.fillText("100", 625, ((i+j)*115) + 87 + (k*20)) // L WEIGHT
 
 
-                ctx.fillText("R 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 87 + (k*20))
                 ctx.fillText("0   0 0 0 0 0 0 0 0 0", 675, ((i+j)*115) + 82 + (k*20))
 
 

@@ -138,6 +138,9 @@ function drawStats() {
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
 
+    ctx.moveTo(0, 0);
+    ctx.lineTo(300, 150);
+    ctx.stroke();
     ctx.fillText("T C H D", 10, 60);
     ctx.fillText("POS", 50, 60);
     ctx.fillText("ACT", 75, 60);

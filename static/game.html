@@ -89,7 +89,7 @@
                     startCount = Date.parse(msg.Message)
                     once = true
                     on_off = msg.Status
-                    console.log(on_off)
+                    console.log(on_off, typeof(on_off))
                 }
                 else if(msg.Event == 'turn') {
                     startCount = Date.parse(msg.Message)

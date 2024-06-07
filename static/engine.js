@@ -134,26 +134,25 @@ function drawState() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-    ctx.fillText("T C H", 10, 60);
-    ctx.fillText("HP", 50, 60);
-    ctx.fillText("D POS ACT", 70, 60);
+    ctx.fillText("T C H D", 10, 60);
+    ctx.fillText("POS ACT", 55, 60);
 
     ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 135, 60);
-    ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 405, 60);
-    ctx.fillText("HP DEF DOG SPD ACCL ANTI ENDU WEIGHT", 670, 60);
+    ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 410, 60);
+    ctx.fillText("HP DEF DOG SPD ACCL ANTI ENDU WEIGHT", 675, 60);
 
 
 
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
-                ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Health, 10, ((i+j)*115) + 82 + (k*20));
-                ctx.fillText(match_data[current_state][i][j][k].Direction + "  " + match_data[current_state][i][j][k].Position + "   -", 70, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
+                ctx.fillText(match_data[current_state][i][j][k].Position + "   -", 55, ((i+j)*115) + 82 + (k*20))
 
                 ctx.fillText("0 0 0 0 0 0 0 0 0 0", 135, ((i+j)*115) + 82 + (k*20))
                 ctx.fillText("L 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 77 + (k*20))
                 ctx.fillText("R 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 87 + (k*20))
-                ctx.fillText("0   0 0 0 0 0 0 0 0 0", 670, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("0   0 0 0 0 0 0 0 0 0", 675, ((i+j)*115) + 82 + (k*20))
 
 
                 //c.fillText("H: " + client_t[i][j].h.health + " L: " + client_t[i][j].l.health + " R: " + client_t[i][j].r.health + " B: " + client_t[i][j].b.health, 50, (i * 400) + 70 + (j * 70));

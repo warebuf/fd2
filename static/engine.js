@@ -133,6 +133,7 @@ function drawState() {
 
 function drawStats() {
     ctx.fillStyle = 'white'
+    ctx.textAlign = "center";
 
     ctx.fillText("T C H D", 10, 60);
     ctx.fillText("POS ACT", 60, 60);

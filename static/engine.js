@@ -136,14 +136,16 @@ function drawState() {
 
 function drawStats() {
     ctx.fillStyle = 'white'
-    ctx.textAlign = "center";
+
 
     ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 60);
     ctx.lineTo(80, 60);
     ctx.stroke();
+    ctx.textAlign = "left";
     ctx.fillText("T C H D", 10, 60);
+    ctx.textAlign = "center";
     ctx.fillText("POS", 50, 60);
     ctx.fillText("ACT", 75, 60);
 
@@ -188,7 +190,9 @@ function drawStats() {
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
+                ctx.textAlign = "left";
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
+                ctx.textAlign = "center";
                 ctx.fillText(match_data[current_state][i][j][k].Position, 50, ((i+j)*115) + 82 + (k*20))
                 ctx.fillText("-", 75, ((i+j)*115) + 82 + (k*20))
 

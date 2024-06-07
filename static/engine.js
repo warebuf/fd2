@@ -224,11 +224,22 @@ function drawStats() {
                 ctx.fillText("100", 625, ((i+j)*115) + 87 + (k*20)) // R WEIGHT
 
 
-                ctx.fillText("0   0 0 0 0 0 0 0 0 0", 675, ((i+j)*115) + 82 + (k*20))
-
-
-                //c.fillText("H: " + client_t[i][j].h.health + " L: " + client_t[i][j].l.health + " R: " + client_t[i][j].r.health + " B: " + client_t[i][j].b.health, 50, (i * 400) + 70 + (j * 70));
-                //ctx.fillText(match_data[current_state][i][j][k].Speed, 50, (i * 400) + 90 + (j * 70));
+                ctx.fillText("100", 660, ((i+j)*115) + 82 + (k*20)) // LEG HP
+                ctx.fillText("100", 685, ((i+j)*115) + 82 + (k*20)) // LEG ATK
+                ctx.fillText("100", 710, ((i+j)*115) + 82 + (k*20)) // LEG DEF
+                ctx.fillText("100", 735, ((i+j)*115) + 82 + (k*20)) // LEG ACC
+                ctx.fillText("100", 760, ((i+j)*115) + 82 + (k*20)) // LEG CRIT
+                ctx.fillText("100", 785, ((i+j)*115) + 82 + (k*20)) // LEG MOBI
+                ctx.fillText("100", 810, ((i+j)*115) + 82 + (k*20)) // LEG CD
+                ctx.fillText("100", 835, ((i+j)*115) + 82 + (k*20)) // LEG  CLU
+                ctx.fillText("0/0", 860, ((i+j)*115) + 82 + (k*20)) // LEG USE
+                ctx.fillText("100", 885, ((i+j)*115) + 82 + (k*20)) // LEG WEIGHT
+                ctx.fillText("100", 910, ((i+j)*115) + 82 + (k*20)) // LEG DOG
+                ctx.fillText("100", 935, ((i+j)*115) + 82 + (k*20)) // LEG SPE
+                ctx.fillText("100", 960, ((i+j)*115) + 82 + (k*20)) // LEG CRIT
+                ctx.fillText("100", 985, ((i+j)*115) + 82 + (k*20)) // LEG MOBI
+                ctx.fillText("100", 1010, ((i+j)*115) + 82 + (k*20)) // LEG CD
+                
             }
         }
     }

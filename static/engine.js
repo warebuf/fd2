@@ -153,6 +153,16 @@ function drawStats() {
     ctx.fillText("USE", 310, 60) // H USE
     ctx.fillText("WGH", 335, 60) // H WEIGHT
 
+    ctx.fillText("HP", 400, 60) // ARM HP
+    ctx.fillText("ATK", 425, 60) // ARM ATK
+    ctx.fillText("DEF", 450, 60) // ARM DEF
+    ctx.fillText("ACC", 475, 60) // ARM ACC
+    ctx.fillText("CRT", 500, 60) // ARM CRIT
+    ctx.fillText("MOB", 525, 60) // ARM MOBI
+    ctx.fillText("CD", 550, 60) // ARM CD
+    ctx.fillText("CLU", 575, 60) // ARM CLU
+    ctx.fillText("USE", 600, 60) // ARM USE
+    ctx.fillText("WGH", 625, 60) // ARM WEIGHT
 
 
 

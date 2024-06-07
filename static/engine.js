@@ -137,7 +137,7 @@ function drawStats() {
     ctx.fillText("T C H D", 10, 60);
     ctx.fillText("POS ACT", 60, 60);
 
-    ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 135, 60);
+    ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 115, 60);
     ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 410, 60);
     ctx.fillText("HP DEF DOG SPD ACCL ANTI ENDU WEIGHT", 675, 60);
 
@@ -147,9 +147,9 @@ function drawStats() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
-                ctx.fillText(match_data[current_state][i][j][k].Position + "   -", 63, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(match_data[current_state][i][j][k].Position + "   -", 65, ((i+j)*115) + 82 + (k*20))
 
-                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 135, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 115, ((i+j)*115) + 82 + (k*20))
                 ctx.fillText("L 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 77 + (k*20))
                 ctx.fillText("R 0 0 0 0 0 0 0 0 0 0", 398, ((i+j)*115) + 87 + (k*20))
                 ctx.fillText("0   0 0 0 0 0 0 0 0 0", 675, ((i+j)*115) + 82 + (k*20))

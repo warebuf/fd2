@@ -142,17 +142,13 @@ function drawStats() {
     ctx.fillText("ATK", 135, 60) // H ATK
     ctx.fillText("DEF", 160, 60) // H DEF
     ctx.fillText("ACC", 185, 60) // H ACC
-    ctx.fillText("CRIT", 210, 60) // H CRIT
-    ctx.fillText("MOBI", 235, 60) // H MOBI
+    ctx.fillText("CRT", 210, 60) // H CRT
+    ctx.fillText("MOB", 235, 60) // H MOB
     ctx.fillText("CD", 260, 60) // H CD
     ctx.fillText("CLU", 285, 60) // H CLU
     ctx.fillText("USE", 310, 60) // H USE
-    ctx.fillText("WEIGHT", 335, 60) // H WEIGHT
+    ctx.fillText("WGH", 335, 60) // H WEIGHT
 
-    ctx.fillText("HP ATK DEF ACC CRIT MOBI CD CLU USE WEIGHT", 375, 60);
-
-
-    ctx.fillText("HP DEF DOG SPD ACCL ANTI ENDU WEIGHT", 675, 60);
 
 
 

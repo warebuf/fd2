@@ -175,7 +175,8 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	TCH [][][]string
+	TCH    [][][]string
+	Status string
 }
 
 // Global Variables - Utility

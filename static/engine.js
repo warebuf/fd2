@@ -110,9 +110,9 @@ function drawState() {
                 }
                 ctx.fillRect(1050, ((i+j)*115) + 71 + (k*20), 5, 5);
                 if (true) {
-                    c.fillStyle = 'green';
+                    ctx.fillStyle = 'green';
                 } else {
-                    c.fillStyle = 'red';
+                    ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(1045, ((i+j)*115) + 76 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (true) {
@@ -124,9 +124,14 @@ function drawState() {
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
-                    c.fillStyle = 'red';
+                    ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(1050, ((i+j)*115) + 81 + (k*20), 5, 7);
+
+                if ((i == my_team) && (j == my_int)) {
+                    ctx.fillStyle = 'yellow';
+                    ctx.fillRect(1052, ((i+j)*115) + 78 + (k*20), 1, 1);
+                }
             }
         }
     }

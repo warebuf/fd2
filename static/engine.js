@@ -174,12 +174,11 @@ function drawStats() {
     ctx.fillText("CLU", 835, 60) // LEG  CLU
     ctx.fillText("USE", 760, 60) // LEG USE
     ctx.fillText("WGT", 785, 60) // LEG WEIGHT
-
-    ctx.fillText("DOG", 910, 60) // LEG DOG
-    ctx.fillText("SPE", 935, 60) // LEG SPE
-    ctx.fillText("ACL", 960, 60) // LEG CRIT
-    ctx.fillText("ANT", 985, 60) // LEG MOBI
-    ctx.fillText("END", 1010, 60) // LEG CD
+    ctx.fillText("DOG", 810, 60) // LEG DOG
+    ctx.fillText("SPE", 835, 60) // LEG SPE
+    ctx.fillText("ACL", 860, 60) // LEG CRIT
+    ctx.fillText("ANT", 885, 60) // LEG MOBI
+    ctx.fillText("END", 910, 60) // LEG CD
 
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {

@@ -198,20 +198,20 @@ function drawStats() {
                 ctx.textAlign = "left";
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
-                ctx.fillText(match_data[current_state][i][j][k].Position, 50, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText("-", 75, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(match_data[current_state][i][j][k].Position, 70, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("-", 95, ((i+j)*115) + 82 + (k*20))
 
 
-                ctx.fillText("100", 110, ((i+j)*115) + 82 + (k*20)) // H HP
-                ctx.fillText("100", 135, ((i+j)*115) + 82 + (k*20)) // H ATK
-                ctx.fillText("100", 160, ((i+j)*115) + 82 + (k*20)) // H DEF
-                ctx.fillText("100", 185, ((i+j)*115) + 82 + (k*20)) // H ACC
-                ctx.fillText("100", 210, ((i+j)*115) + 82 + (k*20)) // H CRIT
-                ctx.fillText("100", 235, ((i+j)*115) + 82 + (k*20)) // H MOBI
-                ctx.fillText("100", 260, ((i+j)*115) + 82 + (k*20)) // H CD
-                ctx.fillText("100", 285, ((i+j)*115) + 82 + (k*20)) // H CLU
-                ctx.fillText("0/0", 310, ((i+j)*115) + 82 + (k*20)) // H USE
-                ctx.fillText("100", 335, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
+                ctx.fillText("100", 120, ((i+j)*115) + 82 + (k*20)) // H HP
+                ctx.fillText("100", 145, ((i+j)*115) + 82 + (k*20)) // H ATK
+                ctx.fillText("100", 170, ((i+j)*115) + 82 + (k*20)) // H DEF
+                ctx.fillText("100", 195, ((i+j)*115) + 82 + (k*20)) // H ACC
+                ctx.fillText("100", 220, ((i+j)*115) + 82 + (k*20)) // H CRIT
+                ctx.fillText("100", 245, ((i+j)*115) + 82 + (k*20)) // H MOBI
+                ctx.fillText("100", 270, ((i+j)*115) + 82 + (k*20)) // H CD
+                ctx.fillText("100", 295, ((i+j)*115) + 82 + (k*20)) // H CLU
+                ctx.fillText("0/0", 320, ((i+j)*115) + 82 + (k*20)) // H USE
+                ctx.fillText("100", 345, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
                 ctx.fillText("L", 375, ((i+j)*115) + 77 + (k*20)) // L L
                 ctx.fillText("99", 400, ((i+j)*115) + 77 + (k*20)) // L HP

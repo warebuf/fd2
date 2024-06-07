@@ -139,8 +139,8 @@ function drawStats() {
     ctx.textAlign = "center";
 
     ctx.fillText("T C H D", 10, 60);
-    ctx.fillText("POS", 60, 60);
-    ctx.fillText("ACT", 85, 60);
+    ctx.fillText("POS", 50, 60);
+    ctx.fillText("ACT", 75, 60);
 
     ctx.fillText("HP", 110, 60) // H HP
     ctx.fillText("ATK", 135, 60) // H ATK
@@ -184,8 +184,8 @@ function drawStats() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
-                ctx.fillText(match_data[current_state][i][j][k].Position, 60, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText("-", 85, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(match_data[current_state][i][j][k].Position, 50, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("-", 75, ((i+j)*115) + 82 + (k*20))
 
 
                 ctx.fillText("100", 110, ((i+j)*115) + 82 + (k*20)) // H HP

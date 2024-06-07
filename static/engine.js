@@ -138,7 +138,7 @@ function drawStats() {
     ctx.fillStyle = 'white'
 
 
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 60);
     ctx.lineTo(80, 60);

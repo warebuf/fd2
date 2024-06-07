@@ -150,9 +150,9 @@ function drawStats() {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Health, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.fillText(match_data[current_state][i][j][k].Direction + "  " + match_data[current_state][i][j][k].Position + "   -", 70, ((i+j)*115) + 82 + (k*20))
 
-                ctx.fillText("0   0 0 0 0 0 0 0 0 0", 135, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText("0   0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 77 + (k*20))
-                ctx.fillText("0   0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 87 + (k*20))
+                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 135, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("L 0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 77 + (k*20))
+                ctx.fillText("R 0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 87 + (k*20))
                 ctx.fillText("0   0 0 0 0 0 0 0 0 0", 665, ((i+j)*115) + 82 + (k*20))
 
 

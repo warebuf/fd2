@@ -161,14 +161,14 @@ function drawStats() {
                 ctx.fillText("100", 335, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
                 ctx.fillText("L", 375, ((i+j)*115) + 77 + (k*20)) // L L
-                ctx.fillText("100", 400, ((i+j)*115) + 77 + (k*20)) // L HP
-                ctx.fillText("100", 425, ((i+j)*115) + 77 + (k*20)) // L ATK
-                ctx.fillText("100", 450, ((i+j)*115) + 77 + (k*20)) // L DEF
-                ctx.fillText("100", 475, ((i+j)*115) + 77 + (k*20)) // L ACC
-                ctx.fillText("100", 500, ((i+j)*115) + 77 + (k*20)) // L CRIT
-                ctx.fillText("100", 525, ((i+j)*115) + 77 + (k*20)) // L MOBI
-                ctx.fillText("100", 550, ((i+j)*115) + 77 + (k*20)) // L CD
-                ctx.fillText("100", 575, ((i+j)*115) + 77 + (k*20)) // L CLU
+                ctx.fillText("99", 400, ((i+j)*115) + 77 + (k*20)) // L HP
+                ctx.fillText("9", 425, ((i+j)*115) + 77 + (k*20)) // L ATK
+                ctx.fillText("99", 450, ((i+j)*115) + 77 + (k*20)) // L DEF
+                ctx.fillText("9", 475, ((i+j)*115) + 77 + (k*20)) // L ACC
+                ctx.fillText("99", 500, ((i+j)*115) + 77 + (k*20)) // L CRIT
+                ctx.fillText("9", 525, ((i+j)*115) + 77 + (k*20)) // L MOBI
+                ctx.fillText("99", 550, ((i+j)*115) + 77 + (k*20)) // L CD
+                ctx.fillText("9", 575, ((i+j)*115) + 77 + (k*20)) // L CLU
                 ctx.fillText("0/0", 600, ((i+j)*115) + 77 + (k*20)) // L USE
                 ctx.fillText("100", 625, ((i+j)*115) + 77 + (k*20)) // L WEIGHT
 

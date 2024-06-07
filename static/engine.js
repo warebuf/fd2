@@ -138,6 +138,7 @@ function drawStats() {
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
 
+    ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 60);
     ctx.lineTo(80, 60);

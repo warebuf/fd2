@@ -139,7 +139,7 @@ function drawStats() {
 
 
     ctx.textAlign = "center";
-    ctx.fillText("PROFILE", 32.5, 40);
+    ctx.fillText("UNIT", 32.5, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 45);
@@ -153,16 +153,17 @@ function drawStats() {
     ctx.fillText("POS", 70, 60);
     ctx.fillText("ACT", 95, 60);
 
-    ctx.fillText("HP", 110, 60) // H HP
-    ctx.fillText("ATK", 135, 60) // H ATK
-    ctx.fillText("DEF", 160, 60) // H DEF
-    ctx.fillText("ACC", 185, 60) // H ACC
-    ctx.fillText("CRT", 210, 60) // H CRT
-    ctx.fillText("MOB", 235, 60) // H MOB
-    ctx.fillText("CD", 260, 60) // H CD
-    ctx.fillText("CLU", 285, 60) // H CLU
-    ctx.fillText("USE", 310, 60) // H USE
-    ctx.fillText("WGH", 335, 60) // H WEIGHT
+
+    ctx.fillText("HP", 120, 60) // H HP
+    ctx.fillText("ATK", 145, 60) // H ATK
+    ctx.fillText("DEF", 170, 60) // H DEF
+    ctx.fillText("ACC", 195, 60) // H ACC
+    ctx.fillText("CRT", 220, 60) // H CRT
+    ctx.fillText("MOB", 245, 60) // H MOB
+    ctx.fillText("CD", 270, 60) // H CD
+    ctx.fillText("CLU", 295, 60) // H CLU
+    ctx.fillText("USE", 320, 60) // H USE
+    ctx.fillText("WGH", 345, 60) // H WEIGHT
 
     ctx.fillText("HP", 400, 60) // ARM HP
     ctx.fillText("ATK", 425, 60) // ARM ATK

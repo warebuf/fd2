@@ -139,7 +139,7 @@ function drawStats() {
 
 
     ctx.textAlign = "center";
-    ctx.fillText("UNIT", 31, 40);
+    ctx.fillText("UNIT", 58, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 45);

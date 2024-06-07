@@ -153,7 +153,11 @@ function drawStats() {
     ctx.fillText("POS", 70, 60);
     ctx.fillText("ACT", 95, 60);
 
-
+    ctx.lineWidth = 0.1;
+    ctx.strokeStyle = "white";
+    ctx.moveTo(120, 45);
+    ctx.lineTo(360, 45);
+    ctx.stroke();
     ctx.fillText("HP", 120, 60) // H HP
     ctx.fillText("ATK", 145, 60) // H ATK
     ctx.fillText("DEF", 170, 60) // H DEF

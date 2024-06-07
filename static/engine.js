@@ -139,7 +139,7 @@ function drawStats() {
 
 
     ctx.textAlign = "center";
-    ctx.fillText("PROFILE", 32.5, 30);
+    ctx.fillText("PROFILE", 32.5, 35);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(10, 45);

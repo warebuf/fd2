@@ -148,10 +148,13 @@ function drawStats() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Health, 10, ((i+j)*115) + 82 + (k*20));
-                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 70, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(match_data[current_state][i][j][k].Direction + "  " + match_data[current_state][i][j][k].Position + "   -", 70, ((i+j)*115) + 82 + (k*20))
+
+                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 135, ((i+j)*115) + 82 + (k*20))
                 ctx.fillText("0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 410, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText("0 0 0 0 0 0 0 0 0 0", 400, ((i+j)*115) + 87 + (k*20))
                 ctx.fillText("0 0 0 0 0 0 0 0 0 0", 665, ((i+j)*115) + 82 + (k*20))
+
 
                 //c.fillText("H: " + client_t[i][j].h.health + " L: " + client_t[i][j].l.health + " R: " + client_t[i][j].r.health + " B: " + client_t[i][j].b.health, 50, (i * 400) + 70 + (j * 70));
                 //ctx.fillText(match_data[current_state][i][j][k].Speed, 50, (i * 400) + 90 + (j * 70));

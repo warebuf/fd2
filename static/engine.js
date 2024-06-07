@@ -45,6 +45,7 @@ function anime() {
     ctx.font = '12px Arial';
 
     // print the current time
+    ctx.textAlign = "left";
     ctx.fillStyle = 'black';
     ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),10,ctx.measureText(start).width,ctx.measureText('M').width);
     //ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);

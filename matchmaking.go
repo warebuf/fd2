@@ -183,7 +183,7 @@ func createMatch(msg *message) *match {
 				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
 
 				ticker:         time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
-				type_of_ticker: 0,
+				type_of_ticker: "null",
 				start_ticker:   make(chan bool),
 
 				message_logs: make([]*message, 0, 16),
@@ -471,16 +471,17 @@ func (m *match) run() {
 			var timer1_length time.Duration
 			var timer2_length time.Duration
 
-			if m.type_of_ticker == 0 {
-				fmt.Println("ticker went off 0")
+			if m.type_of_ticker == "Pregame" {
+				fmt.Println("ticker went off pregame")
 				timer1_length = time.Second * 60
 				timer2_length = time.Second * 61
-				m.type_of_ticker = 1
-			} else if m.type_of_ticker == 1 {
+				m.type_of_ticker = "Turn 0"
+			} else if m.type_of_ticker[0:4] == "Turn" {
 				fmt.Println("ticker went off 1")
 				timer1_length = time.Second * 30
 				timer2_length = time.Second * 31
-				m.type_of_ticker = 1
+				num, _ := strconv.Atoi(m.type_of_ticker[5:])
+				m.type_of_ticker = "Turn" + strconv.Itoa(num+1)
 			}
 
 			init_time := time.Now().Add(timer1_length)
@@ -577,9 +578,9 @@ func (m *match) run() {
 			}
 
 			init_time := time.Now().Add(30 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "0", MatchID: m.mid}
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "Pregame", MatchID: m.mid}
 			m.ticker = time.NewTicker(31 * time.Second) //will tick in 30 s
-			m.type_of_ticker = 0
+			m.type_of_ticker = "Pregame"
 
 			// send ticker to everyone
 			m.mutex.Lock()

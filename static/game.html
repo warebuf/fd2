@@ -100,7 +100,7 @@
     var current_state = -1;
     var my_team = -1;
     var my_int = -1;
-    var on_off = "-1";
+    var status = "null";
 
     var indexer_t = 0;
     var indexer_u = 0;
@@ -139,7 +139,7 @@
                 else if(msg.Event == 'startMatchCountdown') {
                     startCount = Date.parse(msg.Message)
                     once = true
-                    on_off = msg.Status
+                    status = msg.Status
                 }
                 else if(msg.Event == 'turn') {
                     startCount = Date.parse(msg.Message)

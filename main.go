@@ -115,7 +115,7 @@ type match struct {
 	spectator_uid_to_user                 map[uuid.UUID]*user
 
 	ticker         *time.Ticker
-	type_of_ticker int
+	type_of_ticker string
 	start_ticker   chan bool
 
 	message_logs []*message

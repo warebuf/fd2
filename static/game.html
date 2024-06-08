@@ -51,7 +51,7 @@
 
         switch (e.key) {
             case "ArrowLeft":
-                console.log("l", indexer_t_max, indexer_u_max, indexer_b_max)
+                console.log("l")
                 break;
             case "ArrowRight":
                 console.log("r")
@@ -62,6 +62,24 @@
                 break;
             case "ArrowDown":
                 console.log("d")
+
+                if(match_data.length>0){
+                    indexer_b++;
+                    if(indexer_b>=5){
+                        indexer_b=0
+                        indexer_u++
+                        if(indexer_u>=match_data[0][indexer_t][indexer_u].length) {
+                            indexer_u = 0
+                            indexer_t++
+                            if (indexer_t >= match_data[0][indexer_t].length) {
+                                indexer_t=0
+                            }
+                        }
+                    }
+                }
+
+                console.log(indexer_t,indexer_u,indexer_b)
+
                 break;
         }
 
@@ -76,11 +94,8 @@
     var on_off = "-1";
 
     var indexer_t = 0;
-    var indexer_t_max = 0;
     var indexer_u = 0;
-    var indexer_u_max = 0;
     var indexer_b = 0;
-    var indexer_b_max = 5;
 
     function test() {
 
@@ -135,11 +150,6 @@
                                 md[i][j][k] = JSON.parse(temp[i][j][k]);
                             }
                         }
-                    }
-
-                    if((temp.length>0) && (indexer_t_max==0)) {
-                        indexer_t_max = temp.length
-                        indexer_u_max = temp[0].length
                     }
 
                     match_data.push(md)

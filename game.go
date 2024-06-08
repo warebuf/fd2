@@ -69,7 +69,7 @@ func m_read(m *match_socket) {
 						m.m.start_ticker <- true
 					}
 				} else if m.m.started == true {
-					m.incoming_message <- &message{Event: "game_state", TCH: m.m.TCH_JSON, When: time.Now(), MatchID: m.m.mid}
+					m.incoming_message <- &message{Event: "game_state", TCH: m.m.TCH_JSON, Status: m.m.type_of_ticker, When: time.Now(), MatchID: m.m.mid}
 				}
 			}
 

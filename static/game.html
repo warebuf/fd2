@@ -47,6 +47,25 @@
 <script src="/static/engine.js"></script>
 
 <script>
+    document.onkeydown = function (e) {
+
+        switch (e.key) {
+            case "ArrowLeft":
+                console.log("l")
+                break;
+            case "ArrowRight":
+                console.log("r")
+                break;
+            case "ArrowUp":
+                console.log("u")
+                break;
+            case "ArrowDown":
+                console.log("d")
+                break;
+        }
+
+    }
+
     var socket = null;
     var startCount = null;
     var match_data = new Array();

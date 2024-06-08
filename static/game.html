@@ -58,11 +58,23 @@
                 break;
             case "ArrowUp":
                 console.log("u")
-
+                if(match_data.length>0){
+                    indexer_b--;
+                    if(indexer_b<0){
+                        indexer_b=4
+                        indexer_u--
+                        if(indexer_u<0) {
+                            indexer_u = match_data[0][0].length-1
+                            indexer_t++
+                            if (indexer_t<0) {
+                                indexer_t=match_data[0].length-1
+                            }
+                        }
+                    }
+                }
                 break;
             case "ArrowDown":
                 console.log("d")
-
                 if(match_data.length>0){
                     indexer_b++;
                     if(indexer_b>=5){
@@ -77,9 +89,6 @@
                         }
                     }
                 }
-
-                console.log(indexer_t,indexer_u,indexer_b)
-
                 break;
         }
 

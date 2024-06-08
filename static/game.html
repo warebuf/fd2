@@ -94,44 +94,48 @@
                 console.log('w')
                 if(
                     match_data.length > 0 &&
+                    status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'w' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'UP' }))
                 }
                 break;
             case 'a':
                 console.log('a')
                 if(
                     match_data.length > 0 &&
+                    status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'a' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'LEFT' }))
                 }
                 break;
             case 's':
                 console.log('s')
                 if(
                     match_data.length > 0 &&
+                    status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 's' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'DOWN' }))
                 }
                 break;
             case 'd':
                 console.log('d')
                 if(
                     match_data.length > 0 &&
+                    status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'd' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'RIGHT' }))
                 }
                 break
         }

@@ -137,7 +137,7 @@ function drawState() {
                     ctx.fillStyle = 'white'
                     ctx.textAlign = "center";
                     console.log(35, )
-                    ctx.fillText("*", 1040,  ((i+j)*115) + 82 + (k*20));
+                    ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
                     if (match_data[current_state][i][j][k].Move == -1 &&
                         match_data[current_state][i][j][k].Health > 0 &&
                         match_data[current_state][i][j][k].Position == 0 &&

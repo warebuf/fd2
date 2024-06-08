@@ -143,10 +143,9 @@ function drawState() {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
-                            if(pick == 0) {
-                                ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
-                            } else {
-                                ctx.fillText("?", 1035,  ((i+j)*115) + 82 + (k*20));
+                            ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
+                            if (pick==1){
+                                ctx.fillText("?", 1052,  ((i+j)*115) + 82 + (k*20));
                             }
 
                         } else {

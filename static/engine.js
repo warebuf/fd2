@@ -162,11 +162,11 @@ function drawState() {
 function drawTurn() {
     ctx.textAlign = "left";
     ctx.fillStyle = 'black';
-    ctx.fillRect(1000,10,ctx.measureText(status).width,ctx.measureText('M').width);
+    ctx.fillRect(1200,10,ctx.measureText(status).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "left";
-    ctx.fillText(status,1000, 20);
+    ctx.fillText(status,1200, 20);
 }
 
 function drawStats() {

@@ -92,15 +92,47 @@
                 break;
             case 'w':
                 console.log('w')
+                if(
+                    match_data.length > 0 &&
+                    indexer_t == my_team &&
+                    indexer_u == my_int &&
+                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                ) {
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'w' }))
+                }
                 break;
             case 'a':
                 console.log('a')
+                if(
+                    match_data.length > 0 &&
+                    indexer_t == my_team &&
+                    indexer_u == my_int &&
+                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                ) {
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'a' }))
+                }
                 break;
             case 's':
                 console.log('s')
+                if(
+                    match_data.length > 0 &&
+                    indexer_t == my_team &&
+                    indexer_u == my_int &&
+                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                ) {
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 's' }))
+                }
                 break;
             case 'd':
                 console.log('d')
+                if(
+                    match_data.length > 0 &&
+                    indexer_t == my_team &&
+                    indexer_u == my_int &&
+                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                ) {
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'd' }))
+                }
                 break
         }
 

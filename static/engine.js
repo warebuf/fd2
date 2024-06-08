@@ -133,8 +133,7 @@ function drawState() {
                     ctx.fillRect(1052, ((i+j)*115) + 78 + (k*20), 1, 1);
                 }
 
-                console.log(on_off=="1")
-                if(on_off == "1") {
+                if(on_off == 1) {
                     ctx.fillStyle = 'white'
                     ctx.textAlign = "center";
                     ctx.fillText("*", 35, ((i+j)*115) + 82 + (k*20));

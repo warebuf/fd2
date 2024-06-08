@@ -134,7 +134,7 @@ function drawState() {
                     ctx.fillRect(1052, ((i+j)*115) + 78 + (k*20), 1, 1);
                 }
 
-                if(status.substring(0,4) == "Turn") {
+                if(status.substring(0,4) == "TURN") {
                     if (match_data[current_state][i][j][k].Move == -1 &&
                         match_data[current_state][i][j][k].Health > 0 &&
                         match_data[current_state][i][j][k].Position == 0 &&

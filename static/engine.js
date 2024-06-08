@@ -141,7 +141,12 @@ function drawState() {
                     ){
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
-                        ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
+                        if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
+                            ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
+                        } else {
+                            ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
+                        }
+
                     }
 
                     // also draw arrow for current unit

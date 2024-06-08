@@ -476,7 +476,7 @@ func (m *match) run() {
 				timer1_length = time.Second * 60
 				timer2_length = time.Second * 61
 				m.type_of_ticker = "TURN 0"
-			} else if m.type_of_ticker[0:4] == "Turn" {
+			} else if m.type_of_ticker[0:4] == "TURN" {
 				fmt.Println("ticker went off 1")
 				timer1_length = time.Second * 30
 				timer2_length = time.Second * 31

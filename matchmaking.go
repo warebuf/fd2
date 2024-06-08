@@ -475,13 +475,13 @@ func (m *match) run() {
 				fmt.Println("ticker went off pregame")
 				timer1_length = time.Second * 60
 				timer2_length = time.Second * 61
-				m.type_of_ticker = "Turn 0"
+				m.type_of_ticker = "TURN 0"
 			} else if m.type_of_ticker[0:4] == "Turn" {
 				fmt.Println("ticker went off 1")
 				timer1_length = time.Second * 30
 				timer2_length = time.Second * 31
 				num, _ := strconv.Atoi(m.type_of_ticker[5:])
-				m.type_of_ticker = "Turn" + strconv.Itoa(num+1)
+				m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
 			}
 
 			init_time := time.Now().Add(timer1_length)

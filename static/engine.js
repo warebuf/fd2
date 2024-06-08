@@ -134,6 +134,7 @@ function drawState() {
                 }
 
                 if(on_off == "1") {
+                    console.log("asdasd")
                     ctx.fillStyle = 'white'
                     ctx.textAlign = "center";
                     ctx.fillText("*", 35, ((i+j)*115) + 82 + (k*20));

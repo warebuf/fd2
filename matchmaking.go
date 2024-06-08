@@ -471,7 +471,7 @@ func (m *match) run() {
 			var timer1_length time.Duration
 			var timer2_length time.Duration
 
-			if m.type_of_ticker == "Pregame" {
+			if m.type_of_ticker == "PREGAME" {
 				fmt.Println("ticker went off pregame")
 				timer1_length = time.Second * 60
 				timer2_length = time.Second * 61
@@ -485,7 +485,7 @@ func (m *match) run() {
 			}
 
 			init_time := time.Now().Add(timer1_length)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "1", MatchID: m.mid}
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length) //will tick in 30 s
 
 			// send ticker to everyone
@@ -578,9 +578,9 @@ func (m *match) run() {
 			}
 
 			init_time := time.Now().Add(30 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "Pregame", MatchID: m.mid}
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
 			m.ticker = time.NewTicker(31 * time.Second) //will tick in 30 s
-			m.type_of_ticker = "Pregame"
+			m.type_of_ticker = "PREGAME"
 
 			// send ticker to everyone
 			m.mutex.Lock()

@@ -51,13 +51,14 @@
 
         switch (e.key) {
             case "ArrowLeft":
-                console.log("l")
+                console.log("l", indexer_t_max, indexer_u_max, indexer_b_max)
                 break;
             case "ArrowRight":
                 console.log("r")
                 break;
             case "ArrowUp":
                 console.log("u")
+
                 break;
             case "ArrowDown":
                 console.log("d")
@@ -75,8 +76,11 @@
     var on_off = "-1";
 
     var indexer_t = 0;
+    var indexer_t_max = 0;
     var indexer_u = 0;
+    var indexer_u_max = 0;
     var indexer_b = 0;
+    var indexer_b_max = 5;
 
     function test() {
 
@@ -112,7 +116,6 @@
                     startCount = Date.parse(msg.Message)
                     once = true
                     on_off = msg.Status
-                    console.log(on_off, typeof(on_off), 1, typeof(1), "1", typeof("1"))
                 }
                 else if(msg.Event == 'turn') {
                     startCount = Date.parse(msg.Message)
@@ -132,6 +135,11 @@
                                 md[i][j][k] = JSON.parse(temp[i][j][k]);
                             }
                         }
+                    }
+
+                    if((temp.length>0) && (indexer_t_max==0)) {
+                        indexer_t_max = temp.length
+                        indexer_u_max = temp[0].length
                     }
 
                     match_data.push(md)

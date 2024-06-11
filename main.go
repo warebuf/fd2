@@ -178,6 +178,11 @@ type message struct {
 	// game state stuff
 	TCH    [][][]string
 	Status string
+
+	// should add the user's TCH
+	Team_index   int
+	Client_index int
+	Hero_index   int
 }
 
 // Global Variables - Utility

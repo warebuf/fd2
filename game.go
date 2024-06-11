@@ -38,8 +38,16 @@ func m_read(m *match_socket) {
 
 			// user requests to create match
 			if msg.Event == "createMatch" {
-			} else if msg.Event == "taptap" {
-				fmt.Println("got a tap tap")
+			} else if msg.Event == "act" {
+				fmt.Println("got act")
+				// check if UID == given T,C,H
+				fmt.Println(msg.Team_index, msg.Client_index, msg.Hero_index)
+
+				if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
+					// SET MOVE
+					// SET DIRECTION?
+					// IF READY, CALCULATE NEXT POSITION
+				}
 			} else if msg.Event == "clockSyncResponse" {
 				test, _ := strconv.ParseInt(msg.Message, 10, 64)
 				m.user_time = time.UnixMilli(test)

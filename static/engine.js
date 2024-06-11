@@ -23,16 +23,6 @@ window.requestAnimFrame = (function(){
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
 
-
-
-window.addEventListener('keydown', function (e) {
-    if(e.key === 'Enter') {
-        console.log("enter pressed")
-        socket.send(JSON.stringify({ "Event": 'taptap', "Message": "taptap" }))
-    }
-
-})
-
 var once = true
 
 function anime() {

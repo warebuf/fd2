@@ -51,13 +51,13 @@
 
         switch (e.key) {
             case "ArrowLeft":
-                console.log("l")
+                console.log("ArrowLeft")
                 break;
             case "ArrowRight":
-                console.log("r")
+                console.log("ArrowRight")
                 break;
             case "ArrowUp":
-                console.log("u")
+                console.log("ArrowUp")
                 if(match_data.length>0){
                     indexer_b--;
                     if(indexer_b<0){
@@ -74,7 +74,7 @@
                 }
                 break;
             case "ArrowDown":
-                console.log("d")
+                console.log("ArrowDown")
                 if(match_data.length>0){
                     indexer_b++;
                     if(indexer_b>=5){
@@ -99,7 +99,7 @@
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'UP' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'HEAD', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
                 }
                 break;
             case 'a':
@@ -111,7 +111,7 @@
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'LEFT' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'LARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
                 }
                 break;
             case 's':
@@ -123,7 +123,7 @@
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'DOWN' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'BOTTOM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
                 }
                 break;
             case 'd':
@@ -135,7 +135,7 @@
                     indexer_u == my_int &&
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'RIGHT' }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
                 }
                 break
         }
@@ -194,7 +194,7 @@
                 }
                 else if(msg.Event == 'game_state') {
                     status = msg.Status
-                    
+
                     var temp_string = msg.Message.split(";")
                     my_team = parseInt(temp_string[0])
                     my_int = parseInt(temp_string[1])

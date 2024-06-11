@@ -42,6 +42,10 @@ func m_read(m *match_socket) {
 				fmt.Println("got act")
 				// check if UID == given T,C,H
 				fmt.Println(msg.Team_index, msg.Client_index, msg.Hero_index)
+				if m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
+					fmt.Println("test123 act")
+
+				}
 
 				if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 					// SET MOVE

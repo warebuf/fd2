@@ -544,7 +544,7 @@ func (m *match) run() {
 						Position:  0,
 						Direction: 0,
 						Health:    100,
-						Speed:     rand.Intn(10) * 10,
+						Speed:     rand.Intn(100),
 						Move:      -1,
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)

@@ -652,7 +652,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if (m.team_client_hero[i][j][k].Move < 0) && (m.team_client_hero[i][j][k].Bot == true) {
+						if (m.team_client_hero[i][j][k].Position == 0) && (m.team_client_hero[i][j][k].Direction == 0) && (m.team_client_hero[i][j][k].Move < 0) && (m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)
 							m.team_client_hero[i][j][k].Direction = 1
 						}
@@ -684,7 +684,9 @@ func (m *match) run() {
 			}
 			fmt.Println("min", min_units.num)
 
-			was_atk := false
+			has_atks := false
+			has_cmds := false
+
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -695,6 +697,7 @@ func (m *match) run() {
 								new_pos := float64(m.team_client_hero[i][j][k].Position) - (min_units.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
 								if new_pos <= 0 {
 									new_pos = 0
+									has_cmds = true
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 
@@ -702,7 +705,7 @@ func (m *match) run() {
 								new_pos := float64(m.team_client_hero[i][j][k].Position) + (min_units.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
 								if new_pos >= 100 {
 									new_pos = 100
-									was_atk = true
+									has_atks = true
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 							}
@@ -712,7 +715,7 @@ func (m *match) run() {
 			}
 
 			// simulate all attacks
-			if was_atk {
+			if has_atks {
 				for i := 0; i < len(m.team_client_hero); i++ {
 					for j := 0; j < len(m.team_client_hero[i]); j++ {
 						for k := 0; k < len(m.team_client_hero[i][j]); k++ {
@@ -760,6 +763,10 @@ func (m *match) run() {
 					case j.incoming_message <- msg:
 					}
 				}
+			}
+
+			if has_cmds == false {
+				go func() { m.simulate <- true }()
 			}
 
 		}

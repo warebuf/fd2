@@ -189,6 +189,8 @@ func createMatch(msg *message) *match {
 				message_logs: make([]*message, 0, 16),
 
 				open: make(chan bool),
+
+				simulate: make(chan bool),
 			}
 
 			fmt.Println("created MID:", random_number)
@@ -632,6 +634,118 @@ func (m *match) run() {
 				}
 			}
 			continue
+
+		case <-m.simulate:
+			m.ticker.Stop()
+
+			// calculate min unit of time to action
+			min := rounder6{num: 9223372036854775807} //9,223,372,036,854,775,807 (9 quintillion)
+
+			for i := 0; i < len(m.team_client_hero); i++ {
+				for j := 0; j < len(m.team_client_hero[i]); j++ {
+					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+						if m.team_client_hero[i][j][k].Health > 0 {
+							if m.team_client_hero[i][j][k].Direction == 0 {
+								units_of_time := convertIntToRounder6(m.team_client_hero[i][j][k].Position / float64(m.team_client_hero[i][j][k].Speed))
+								if units_of_time.num < min.num {
+									min = units_of_time
+								}
+							} else if m.team_client_hero[i][j][k].Direction == 1 {
+								units_of_time := convertIntToRounder6((100 - m.team_client_hero[i][j][k].Position) / float64(m.team_client_hero[i][j][k].Speed))
+								if units_of_time.num < min.num {
+									min = units_of_time
+								}
+							}
+						}
+					}
+				}
+			}
+			// calculate all positions
+			for i := 0; i < len(m.team_client_hero); i++ {
+				for j := 0; j < len(m.team_client_hero[i]); j++ {
+					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+						if m.team_client_hero[i][j][k].Health > 0 {
+							if m.team_client_hero[i][j][k].Direction == 0 {
+
+								new_pos := float64(m.team_client_hero[i][j][k].Position) - (min.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
+								if new_pos < 0 {
+									new_pos = 0
+								}
+								m.team_client_hero[i][j][k].Position = new_pos
+
+							} else if m.team_client_hero[i][j][k].Direction == 1 {
+								new_pos := float64(m.team_client_hero[i][j][k].Position) + (min.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
+								if new_pos > 100 {
+									new_pos = 0
+								}
+								m.team_client_hero[i][j][k].Position = new_pos
+							}
+						}
+					}
+				}
+			}
+
+			// convert game state to JSON
+			for i := 0; i < len(m.team_client_hero); i++ {
+				for j := 0; j < len(m.team_client_hero[i]); j++ {
+					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+						marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
+						fmt.Println(string(marshalled))
+						m.TCH_JSON[i][j][k] = string(marshalled)
+					}
+				}
+			}
+
+			// send updated positions to everyone
+			for k, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, When: time.Now(), MatchID: m.mid}:
+					}
+				}
+			}
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
+					}
+				}
+			}
+
+			// send new timer to everyone
+			timer1_length := time.Second * 30
+			timer2_length := time.Second * 31
+			num, _ := strconv.Atoi(m.type_of_ticker[5:])
+			m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
+
+			init_time := time.Now().Add(timer1_length)
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			m.ticker = time.NewTicker(timer2_length) //will tick in 30 s
+
+			// send ticker to everyone
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
 
 		}
 

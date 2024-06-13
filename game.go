@@ -39,19 +39,44 @@ func m_read(m *match_socket) {
 			// user requests to create match
 			if msg.Event == "createMatch" {
 			} else if msg.Event == "act" {
-				fmt.Println("got act")
-				// check if UID == given T,C,H
-				fmt.Println(msg.Team_index, msg.Client_index, msg.Hero_index)
-				if m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
-					fmt.Println("test123 act")
+				fmt.Println("received act")
+
+				// check if the match has started and the action is to a user's own bot
+				if m.m.started == true && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
+					// check if the bot is alive
+					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Health > 100 && m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move < 0 {
+						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
+
+							if msg.Message == "HEAD" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 0
+							} else if msg.Message == "LARM" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 1
+							} else if msg.Message == "RARM" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 2
+							} else if msg.Message == "BOTTOM" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
+							}
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Direction = 1
+
+							// check if all bots have commands, if so, calculate next position
+							sim_check := true
+							for i := 0; i < len(m.m.team_client_hero); i++ {
+								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
+									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
+										if m.m.team_client_hero[i][j][k].Move < 0 {
+											sim_check = false
+										}
+									}
+								}
+							}
+							if sim_check == true {
+								m.m.simulate <- true
+							}
+						}
+					}
 
 				}
 
-				if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
-					// SET MOVE
-					// SET DIRECTION?
-					// IF READY, CALCULATE NEXT POSITION
-				}
 			} else if msg.Event == "clockSyncResponse" {
 				test, _ := strconv.ParseInt(msg.Message, 10, 64)
 				m.user_time = time.UnixMilli(test)

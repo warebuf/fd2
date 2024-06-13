@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"math"
 	"math/rand"
 	"net/http"
 	"net/url"
@@ -30,6 +31,18 @@ notes:
 - string cleanup
 - cookie management
 */
+
+type rounder6 struct {
+	num int64
+}
+
+func convertIntToRounder6(a float64) rounder6 {
+	return rounder6{num: int64(math.Ceil(a * 1000000))}
+}
+
+func (r rounder6) convertRoundertoFloat64() float64 {
+	return float64(r.num) / float64(1000000)
+}
 
 type pair struct {
 	a, b int
@@ -121,6 +134,8 @@ type match struct {
 	message_logs []*message
 
 	open chan bool
+
+	simulate chan bool
 }
 
 type socket struct {

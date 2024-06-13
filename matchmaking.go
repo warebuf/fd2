@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"math/rand"
 	"strconv"
 	"sync"
 	"time"
@@ -646,6 +647,18 @@ func (m *match) run() {
 			fmt.Println("SIMULATE")
 
 			m.ticker.Stop()
+
+			// give all bots an action
+			for i := 0; i < len(m.team_client_hero); i++ {
+				for j := 0; j < len(m.team_client_hero[i]); j++ {
+					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+						if (m.team_client_hero[i][j][k].Move < 0) && (m.team_client_hero[i][j][k].Bot == true) {
+							m.team_client_hero[i][j][k].Move = rand.Intn(4)
+							m.team_client_hero[i][j][k].Direction = 1
+						}
+					}
+				}
+			}
 
 			// calculate min unit of time to action
 			min_units := rounder6{num: 9223372036854775807} //9,223,372,036,854,775,807 (9 quintillion)

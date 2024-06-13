@@ -685,32 +685,7 @@ func (m *match) run() {
 				}
 			}
 
-			// convert game state to JSON
-			for i := 0; i < len(m.team_client_hero); i++ {
-				for j := 0; j < len(m.team_client_hero[i]); j++ {
-					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
-						fmt.Println(string(marshalled))
-						m.TCH_JSON[i][j][k] = string(marshalled)
-					}
-				}
-			}
-
-			// send updated positions to everyone
-			for k, i := range m.gamer_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					select {
-					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, When: time.Now(), MatchID: m.mid}:
-					}
-				}
-			}
-			for _, i := range m.spectator_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					select {
-					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
-					}
-				}
-			}
+			m.sharepos()
 
 			// send new timer to everyone
 			timer1_length := time.Second * 30
@@ -771,6 +746,35 @@ func printAllMatchUserWS() {
 		fmt.Println("MID:", i)
 		for k, l := range j.gamer_uid_to_user {
 			fmt.Println("UID:", k, l.email)
+		}
+	}
+}
+
+func (m *match) sharepos() {
+	// convert game state to JSON
+	for i := 0; i < len(m.team_client_hero); i++ {
+		for j := 0; j < len(m.team_client_hero[i]); j++ {
+			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+				marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
+				fmt.Println(string(marshalled))
+				m.TCH_JSON[i][j][k] = string(marshalled)
+			}
+		}
+	}
+
+	// send updated positions to everyone
+	for k, i := range m.gamer_uid_to_msid_to_match_socket {
+		for _, j := range i {
+			select {
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, When: time.Now(), MatchID: m.mid}:
+			}
+		}
+	}
+	for _, i := range m.spectator_uid_to_msid_to_match_socket {
+		for _, j := range i {
+			select {
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
+			}
 		}
 	}
 }

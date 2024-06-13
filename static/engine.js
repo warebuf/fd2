@@ -151,11 +151,11 @@ function drawState() {
 function drawTurn() {
     ctx.textAlign = "left";
     ctx.fillStyle = 'black';
-    ctx.fillRect(1200,10,ctx.measureText(status).width,ctx.measureText('M').width);
+    ctx.fillRect(10,10,ctx.measureText(status).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "left";
-    ctx.fillText(status,1200, 20);
+    ctx.fillText(status,10, 20);
 }
 
 function drawStats() {
@@ -240,7 +240,12 @@ function drawStats() {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
                 ctx.fillText(match_data[current_state][i][j][k].Position, 70, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText(match_data[current_state][i][j][k].Move, 95, ((i+j)*115) + 82 + (k*20))
+                temp = '-'
+                if(match_data[current_state][i][j][k].Move==0){temp='H'}
+                else if(match_data[current_state][i][j][k].Move==1){temp='L'}
+                else if(match_data[current_state][i][j][k].Move==2){temp='R'}
+                else if(match_data[current_state][i][j][k].Move==3){temp='B'}
+                ctx.fillText(temp, 95, ((i+j)*115) + 82 + (k*20))
 
                 ctx.fillText("100", 120, ((i+j)*115) + 82 + (k*20)) // H HP
                 ctx.fillText("100", 145, ((i+j)*115) + 82 + (k*20)) // H ATK

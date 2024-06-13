@@ -58,8 +58,6 @@ func m_read(m *match_socket) {
 							}
 							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Direction = 1
 
-							m.m.sharepos()
-
 							// check if all bots have commands, if so, calculate next position
 							sim_check := true
 							for i := 0; i < len(m.m.team_client_hero); i++ {
@@ -73,6 +71,8 @@ func m_read(m *match_socket) {
 							}
 							if sim_check == true {
 								m.m.simulate <- true
+							} else {
+								m.m.sharepos()
 							}
 						}
 					}

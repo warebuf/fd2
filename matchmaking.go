@@ -686,6 +686,7 @@ func (m *match) run() {
 
 			has_atks := false
 			has_cmds := false
+			only_bot_cmds := true
 
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
@@ -698,6 +699,9 @@ func (m *match) run() {
 								if new_pos <= 0 {
 									new_pos = 0
 									has_cmds = true
+									if m.team_client_hero[i][j][k].Bot == false {
+										only_bot_cmds = false
+									}
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 
@@ -706,6 +710,7 @@ func (m *match) run() {
 								if new_pos >= 100 {
 									new_pos = 100
 									has_atks = true
+									only_bot_cmds = false
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 							}
@@ -765,7 +770,7 @@ func (m *match) run() {
 				}
 			}
 
-			if has_cmds == false {
+			if (has_cmds == false) || (only_bot_cmds == true) {
 				go func() { m.simulate <- true }()
 			}
 

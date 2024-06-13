@@ -32,16 +32,13 @@ notes:
 - cookie management
 */
 
-type rounder3 struct {
-	num int64
+func round(num float64) int {
+	return int(num + math.Copysign(0.5, num))
 }
 
-func convertIntToRounder3(a float64) rounder3 {
-	return rounder3{num: int64(math.Ceil(a * 1000))}
-}
-
-func (r rounder3) convertRoundertoFloat64() float64 {
-	return float64(r.num) / float64(1000)
+func toFixed(num float64, precision int) float64 {
+	output := math.Pow(10, float64(precision))
+	return float64(round(num*output)) / output
 }
 
 type pair struct {

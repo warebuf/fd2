@@ -716,7 +716,6 @@ func (m *match) run() {
 								if new_pos >= 100 {
 									new_pos = 100
 									has_atks = true
-									only_bot_cmds = false
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 							}

@@ -668,12 +668,18 @@ func (m *match) run() {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
-								units_of_time := convertIntToRounder6(m.team_client_hero[i][j][k].Position / float64(m.team_client_hero[i][j][k].Speed))
+								units_of_time := rounder6{num: 0}
+								if m.team_client_hero[i][j][k].Speed != 0 {
+									units_of_time = convertIntToRounder6(m.team_client_hero[i][j][k].Position / float64(m.team_client_hero[i][j][k].Speed))
+								}
 								if units_of_time.num < min_units.num {
 									min_units = units_of_time
 								}
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								units_of_time := convertIntToRounder6((100 - m.team_client_hero[i][j][k].Position) / float64(m.team_client_hero[i][j][k].Speed))
+								units_of_time := rounder6{num: 0}
+								if m.team_client_hero[i][j][k].Speed != 0 {
+									units_of_time = convertIntToRounder6((100 - m.team_client_hero[i][j][k].Position) / float64(m.team_client_hero[i][j][k].Speed))
+								}
 								if units_of_time.num < min_units.num {
 									min_units = units_of_time
 								}

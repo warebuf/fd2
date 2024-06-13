@@ -777,6 +777,7 @@ func (m *match) run() {
 			}
 
 			if (has_cmds == false) || (only_bot_cmds == true) {
+				fmt.Println("concurrent SIMULATE called")
 				go func() { m.simulate <- true }()
 			}
 

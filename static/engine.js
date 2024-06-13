@@ -135,7 +135,14 @@ function drawState() {
                             ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
 
                         } else {
-                            ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
+                            if((indexer_t==i) && (indexer_u==j) && (match_data[current_state][indexer_t][indexer_u][indexer_b].Position != 0)) {
+                                indexer_b = k;
+                                ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
+                            }
+                            else {
+                                ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
+                            }
+
                         }
 
                     }

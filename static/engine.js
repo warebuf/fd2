@@ -27,7 +27,7 @@ var once = true
 
 function anime() {
     window.requestAnimFrame(anime);
-    ctx.fillStyle = '#303030';
+    ctx.fillStyle = '#202020';
     //ctx.clearRect(0,0,innerWidth,innerHeight);
     ctx.fillRect(0,0,innerWidth,innerHeight);
 

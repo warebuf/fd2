@@ -661,25 +661,25 @@ func (m *match) run() {
 			}
 
 			// calculate min unit of time to action
-			min_units := 999999.9 //9,223,372,036,854,775,807 (9 quintillion)
+			min_units := 999999.99 //9,223,372,036,854,775,807 (9 quintillion)
 
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
-								units_of_time := 999999.9
+								units_of_time := 999999.99
 								if m.team_client_hero[i][j][k].Speed != 0 {
-									units_of_time = toFixed(m.team_client_hero[i][j][k].Position/float64(m.team_client_hero[i][j][k].Speed), 2)
+									units_of_time = toFixed(m.team_client_hero[i][j][k].Position/float64(m.team_client_hero[i][j][k].Speed), 3)
 								}
 								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Speed, units_of_time)
 								if units_of_time < min_units {
 									min_units = units_of_time
 								}
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								units_of_time := 999999.9
+								units_of_time := 999999.99
 								if m.team_client_hero[i][j][k].Speed != 0 {
-									units_of_time = toFixed((100-m.team_client_hero[i][j][k].Position)/float64(m.team_client_hero[i][j][k].Speed), 2)
+									units_of_time = toFixed((100-m.team_client_hero[i][j][k].Position)/float64(m.team_client_hero[i][j][k].Speed), 3)
 								}
 								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Speed, units_of_time)
 								if units_of_time < min_units {
@@ -703,7 +703,7 @@ func (m *match) run() {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 
-								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].Speed)), 2)
+								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].Speed)), 3)
 								if new_pos <= 0.01 {
 									new_pos = 0
 									has_cmds = true
@@ -714,7 +714,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position = new_pos
 
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].Speed)), 2)
+								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].Speed)), 3)
 								if new_pos >= 99.99 {
 									new_pos = 100
 									has_atks = true

@@ -684,6 +684,7 @@ func (m *match) run() {
 			}
 			fmt.Println("min", min_units.num)
 
+			was_atk := false
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -692,17 +693,32 @@ func (m *match) run() {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 
 								new_pos := float64(m.team_client_hero[i][j][k].Position) - (min_units.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
-								if new_pos < 0 {
+								if new_pos <= 0 {
 									new_pos = 0
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
 								new_pos := float64(m.team_client_hero[i][j][k].Position) + (min_units.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
-								if new_pos > 100 {
-									new_pos = 0
+								if new_pos >= 100 {
+									new_pos = 100
+									was_atk = true
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
+							}
+						}
+					}
+				}
+			}
+
+			// simulate all attacks
+			if was_atk {
+				for i := 0; i < len(m.team_client_hero); i++ {
+					for j := 0; j < len(m.team_client_hero[i]); j++ {
+						for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+							if (m.team_client_hero[i][j][k].Direction == 1) && (m.team_client_hero[i][j][k].Position == 100) {
+								m.team_client_hero[i][j][k].Direction = 0
+								m.team_client_hero[i][j][k].Move = -1
 							}
 						}
 					}

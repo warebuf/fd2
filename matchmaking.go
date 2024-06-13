@@ -642,6 +642,9 @@ func (m *match) run() {
 			continue
 
 		case <-m.simulate:
+
+			fmt.Println("SIMULATE")
+
 			m.ticker.Stop()
 
 			// calculate min unit of time to action

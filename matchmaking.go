@@ -751,6 +751,7 @@ func printAllMatchUserWS() {
 }
 
 func (m *match) sharepos() {
+	fmt.Println("sharepos")
 	// convert game state to JSON
 	for i := 0; i < len(m.team_client_hero); i++ {
 		for j := 0; j < len(m.team_client_hero[i]); j++ {

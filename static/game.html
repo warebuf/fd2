@@ -138,6 +138,37 @@
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'HEAD', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+
+                    found = false;
+                    for(i=0;i<match_data[0].length;i++) {
+                        for(j=0;j<match_data[0][0].length;j++) {
+                            for(k=0;k<match_data[0][0][0].length;k++) {
+                                indexer_b++
+                                if(indexer_b>=5){
+                                    indexer_b=0;
+                                    indexer_u++;
+                                    if(indexer_u>=match_data[0][0].length) {
+                                        indexer_u=0;
+                                        indexer_t++;
+                                        if(indexer_t>=match_data[0].length) {
+                                            indexer_t=0
+                                        }
+                                    }
+                                }
+
+                                if(match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                    found=true
+                                    break
+                                }
+                            }
+                            if(found==true){
+                                break
+                            }
+                        }
+                        if(found==true){
+                            break
+                        }
+                    }
                 }
                 break;
             case 'a':
@@ -150,6 +181,37 @@
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'LARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+
+                    found = false;
+                    for(i=0;i<match_data[0].length;i++) {
+                        for(j=0;j<match_data[0][0].length;j++) {
+                            for(k=0;k<match_data[0][0][0].length;k++) {
+                                indexer_b++
+                                if(indexer_b>=5){
+                                    indexer_b=0;
+                                    indexer_u++;
+                                    if(indexer_u>=match_data[0][0].length) {
+                                        indexer_u=0;
+                                        indexer_t++;
+                                        if(indexer_t>=match_data[0].length) {
+                                            indexer_t=0
+                                        }
+                                    }
+                                }
+
+                                if(match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                    found=true
+                                    break
+                                }
+                            }
+                            if(found==true){
+                                break
+                            }
+                        }
+                        if(found==true){
+                            break
+                        }
+                    }
                 }
                 break;
             case 's':
@@ -162,6 +224,37 @@
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'BOTTOM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+
+                    found = false;
+                    for(i=0;i<match_data[0].length;i++) {
+                        for(j=0;j<match_data[0][0].length;j++) {
+                            for(k=0;k<match_data[0][0][0].length;k++) {
+                                indexer_b++
+                                if(indexer_b>=5){
+                                    indexer_b=0;
+                                    indexer_u++;
+                                    if(indexer_u>=match_data[0][0].length) {
+                                        indexer_u=0;
+                                        indexer_t++;
+                                        if(indexer_t>=match_data[0].length) {
+                                            indexer_t=0
+                                        }
+                                    }
+                                }
+
+                                if(match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                    found=true
+                                    break
+                                }
+                            }
+                            if(found==true){
+                                break
+                            }
+                        }
+                        if(found==true){
+                            break
+                        }
+                    }
                 }
                 break;
             case 'd':
@@ -174,6 +267,37 @@
                     match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+
+                    found = false;
+                    for(i=0;i<match_data[0].length;i++) {
+                        for(j=0;j<match_data[0][0].length;j++) {
+                            for(k=0;k<match_data[0][0][0].length;k++) {
+                                indexer_b++
+                                if(indexer_b>=5){
+                                    indexer_b=0;
+                                    indexer_u++;
+                                    if(indexer_u>=match_data[0][0].length) {
+                                        indexer_u=0;
+                                        indexer_t++;
+                                        if(indexer_t>=match_data[0].length) {
+                                            indexer_t=0
+                                        }
+                                    }
+                                }
+
+                                if(match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                    found=true
+                                    break
+                                }
+                            }
+                            if(found==true){
+                                break
+                            }
+                        }
+                        if(found==true){
+                            break
+                        }
+                    }
                 }
                 break
         }

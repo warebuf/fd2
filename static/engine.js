@@ -134,18 +134,18 @@ function drawState() {
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
 
-                        } else {
-                            if((match_data[current_state][indexer_t][indexer_u][indexer_b].Move >= 0) && (match_data[current_state][indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
-                                indexer_t = i;
-                                indexer_u = j;
-                                indexer_b = k;
-                                ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
-                            }
-                            else {
-                                ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
-                            }
-
                         }
+                        else if((match_data[current_state][indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
+                            indexer_t = i;
+                            indexer_u = j;
+                            indexer_b = k;
+                            ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
+                        }
+                        else {
+                            ctx.fillText("*", 1035,  ((i+j)*115) + 82 + (k*20));
+                        }
+
+
 
                     }
                 }

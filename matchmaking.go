@@ -533,7 +533,7 @@ func (m *match) run() {
 				m.TCH_JSON[team_int] = append(m.TCH_JSON[team_int], make([]string, 0, 5))
 
 				is_bot := false
-				if uid_to_user.users[i].bot_status == true {
+				if m.gamer_permission_list[i].bot_status == true {
 					is_bot = true
 				}
 

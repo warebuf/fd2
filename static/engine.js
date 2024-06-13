@@ -135,7 +135,9 @@ function drawState() {
                             ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
 
                         } else {
-                            if((indexer_t==i) && (indexer_u==j) && (match_data[current_state][indexer_t][indexer_u][indexer_b].Position != 0)) {
+                            if((my_team==i) && (my_int==j) && (match_data[current_state][indexer_t][indexer_u][indexer_b].Position != 0)) {
+                                indexer_t = i;
+                                indexer_u = j;
                                 indexer_b = k;
                                 ctx.fillText("->", 1035,  ((i+j)*115) + 82 + (k*20));
                             }

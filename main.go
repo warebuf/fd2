@@ -87,6 +87,7 @@ type room struct {
 
 // NOTE: FOR SOME REASON ONLY CONVERTS TO JSON IF CAPITALIZED
 type hero struct {
+	Bot       bool
 	Position  float64
 	Direction int
 	Health    int

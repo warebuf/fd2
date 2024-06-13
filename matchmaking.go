@@ -532,8 +532,14 @@ func (m *match) run() {
 				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
 				m.TCH_JSON[team_int] = append(m.TCH_JSON[team_int], make([]string, 0, 5))
 
+				is_bot := false
+				if uid_to_user.users[i].bot_status == true {
+					is_bot = true
+				}
+
 				for y := 0; y < 5; y++ {
 					temp := &hero{
+						Bot:       is_bot,
 						Position:  0,
 						Direction: 0,
 						Health:    100,

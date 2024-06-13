@@ -65,7 +65,7 @@ func m_read(m *match_socket) {
 							for i := 0; i < len(m.m.team_client_hero); i++ {
 								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
 									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
-										if m.m.team_client_hero[i][j][k].Move < 0 {
+										if m.m.team_client_hero[i][j][k].Bot == false && m.m.team_client_hero[i][j][k].Move < 0 {
 											sim_check = false
 										}
 									}

@@ -586,9 +586,9 @@ func (m *match) run() {
 				}
 			}
 
-			init_time := time.Now().Add(3 * time.Second)
+			init_time := time.Now().Add(1 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
-			m.ticker = time.NewTicker(4 * time.Second) //will tick in 30 s
+			m.ticker = time.NewTicker(2 * time.Second) //will tick in 30 s
 			m.type_of_ticker = "PREGAME"
 
 			// send ticker to everyone

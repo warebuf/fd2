@@ -544,7 +544,7 @@ func (m *match) run() {
 						Position:  0,
 						Direction: 0,
 						Health:    100,
-						Speed:     100,
+						Speed:     rand.Intn(100),
 						Move:      -1,
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
@@ -586,9 +586,9 @@ func (m *match) run() {
 				}
 			}
 
-			init_time := time.Now().Add(5 * time.Second)
+			init_time := time.Now().Add(3 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
-			m.ticker = time.NewTicker(6 * time.Second) //will tick in 30 s
+			m.ticker = time.NewTicker(4 * time.Second) //will tick in 30 s
 			m.type_of_ticker = "PREGAME"
 
 			// send ticker to everyone

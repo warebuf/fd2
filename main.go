@@ -32,16 +32,16 @@ notes:
 - cookie management
 */
 
-type rounder6 struct {
+type rounder3 struct {
 	num int64
 }
 
-func convertIntToRounder6(a float64) rounder6 {
-	return rounder6{num: int64(math.Ceil(a * 1000000))}
+func convertIntToRounder3(a float64) rounder3 {
+	return rounder3{num: int64(math.Ceil(a * 1000))}
 }
 
-func (r rounder6) convertRoundertoFloat64() float64 {
-	return float64(r.num) / float64(1000000)
+func (r rounder3) convertRoundertoFloat64() float64 {
+	return float64(r.num) / float64(1000)
 }
 
 type pair struct {

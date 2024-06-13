@@ -661,24 +661,24 @@ func (m *match) run() {
 			}
 
 			// calculate min unit of time to action
-			min_units := rounder6{num: 9223372036854775807} //9,223,372,036,854,775,807 (9 quintillion)
+			min_units := rounder3{num: 9223372036854775807} //9,223,372,036,854,775,807 (9 quintillion)
 
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
-								units_of_time := rounder6{num: 0}
+								units_of_time := rounder3{num: 0}
 								if m.team_client_hero[i][j][k].Speed != 0 {
-									units_of_time = convertIntToRounder6(m.team_client_hero[i][j][k].Position / float64(m.team_client_hero[i][j][k].Speed))
+									units_of_time = convertIntToRounder3(m.team_client_hero[i][j][k].Position / float64(m.team_client_hero[i][j][k].Speed))
 								}
 								if units_of_time.num < min_units.num {
 									min_units = units_of_time
 								}
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								units_of_time := rounder6{num: 0}
+								units_of_time := rounder3{num: 0}
 								if m.team_client_hero[i][j][k].Speed != 0 {
-									units_of_time = convertIntToRounder6((100 - m.team_client_hero[i][j][k].Position) / float64(m.team_client_hero[i][j][k].Speed))
+									units_of_time = convertIntToRounder3((100 - m.team_client_hero[i][j][k].Position) / float64(m.team_client_hero[i][j][k].Speed))
 								}
 								if units_of_time.num < min_units.num {
 									min_units = units_of_time

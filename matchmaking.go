@@ -476,13 +476,13 @@ func (m *match) run() {
 
 			if m.type_of_ticker == "PREGAME" {
 				fmt.Println("ticker went off pregame")
-				timer1_length = time.Second * 60
-				timer2_length = time.Second * 61
+				timer1_length = time.Second * 300
+				timer2_length = time.Second * 301
 				m.type_of_ticker = "TURN 0"
 			} else if m.type_of_ticker[0:4] == "TURN" {
 				fmt.Println("ticker went off 1")
-				timer1_length = time.Second * 30
-				timer2_length = time.Second * 31
+				timer1_length = time.Second * 120
+				timer2_length = time.Second * 121
 				num, _ := strconv.Atoi(m.type_of_ticker[5:])
 				m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
 			}
@@ -743,8 +743,8 @@ func (m *match) run() {
 			m.sharepos()
 
 			// send new timer to everyone
-			timer1_length := time.Second * 30
-			timer2_length := time.Second * 31
+			timer1_length := time.Second * 120
+			timer2_length := time.Second * 121
 			num, _ := strconv.Atoi(m.type_of_ticker[5:])
 			m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
 

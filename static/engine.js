@@ -239,7 +239,7 @@ function drawStats() {
                 ctx.textAlign = "left";
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
-                ctx.fillText((Math.round(match_data[current_state][i][j][k].Position * 100) / 100).toFixed(2), 70, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText((Math.round(match_data[current_state][i][j][k].Position * 100) / 100).toFixed(1), 70, ((i+j)*115) + 82 + (k*20))
                 temp = '-'
                 if(match_data[current_state][i][j][k].Move==0){temp='H'}
                 else if(match_data[current_state][i][j][k].Move==1){temp='L'}

@@ -69,6 +69,7 @@ func m_read(m *match_socket) {
 									}
 								}
 							}
+							fmt.Println("sim_check", sim_check)
 							if sim_check == true {
 								m.m.simulate <- true
 							} else {

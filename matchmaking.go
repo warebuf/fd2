@@ -648,7 +648,7 @@ func (m *match) run() {
 			m.ticker.Stop()
 
 			// calculate min unit of time to action
-			min := rounder6{num: 9223372036854775807} //9,223,372,036,854,775,807 (9 quintillion)
+			min_units := rounder6{num: 9223372036854775807} //9,223,372,036,854,775,807 (9 quintillion)
 
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -656,19 +656,21 @@ func (m *match) run() {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 								units_of_time := convertIntToRounder6(m.team_client_hero[i][j][k].Position / float64(m.team_client_hero[i][j][k].Speed))
-								if units_of_time.num < min.num {
-									min = units_of_time
+								if units_of_time.num < min_units.num {
+									min_units = units_of_time
 								}
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
 								units_of_time := convertIntToRounder6((100 - m.team_client_hero[i][j][k].Position) / float64(m.team_client_hero[i][j][k].Speed))
-								if units_of_time.num < min.num {
-									min = units_of_time
+								if units_of_time.num < min_units.num {
+									min_units = units_of_time
 								}
 							}
 						}
 					}
 				}
 			}
+			fmt.Println("min", min_units.num)
+
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -676,14 +678,14 @@ func (m *match) run() {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 
-								new_pos := float64(m.team_client_hero[i][j][k].Position) - (min.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
+								new_pos := float64(m.team_client_hero[i][j][k].Position) - (min_units.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
 								if new_pos < 0 {
 									new_pos = 0
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								new_pos := float64(m.team_client_hero[i][j][k].Position) + (min.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
+								new_pos := float64(m.team_client_hero[i][j][k].Position) + (min_units.convertRoundertoFloat64() * float64(m.team_client_hero[i][j][k].Speed))
 								if new_pos > 100 {
 									new_pos = 0
 								}

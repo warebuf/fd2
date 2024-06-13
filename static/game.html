@@ -78,9 +78,9 @@
                 if(match_data.length>0){
 
                     found = false;
-                    for(i=0;i<len(match_data[0]);i++) {
-                        for(j=0;j<len(match_data[0][0]);j++) {
-                            for(k=0;k<len(match_data[0][0][0]);k++) {
+                    for(i=0;i<match_data[0].length;i++) {
+                        for(j=0;j<match_data[0][0].length;j++) {
+                            for(k=0;k<match_data[0][0][0].length;k++) {
                                 console.log(i,j,k)
                                 indexer_b++
                                 if(indexer_b>=5){

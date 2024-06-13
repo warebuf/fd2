@@ -148,8 +148,6 @@ function drawState() {
                         }
 
                     }
-
-                    // also draw arrow for current unit
                 }
             }
         }

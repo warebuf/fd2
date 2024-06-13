@@ -241,7 +241,7 @@ function drawStats() {
                 ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
                 ctx.fillText(match_data[current_state][i][j][k].Position, 70, ((i+j)*115) + 82 + (k*20))
-                ctx.fillText("-", 95, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(match_data[current_state][i][j][k].Move, 95, ((i+j)*115) + 82 + (k*20))
 
 
                 ctx.fillText("100", 120, ((i+j)*115) + 82 + (k*20)) // H HP

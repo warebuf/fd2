@@ -767,7 +767,7 @@ func (m *match) sharepos() {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

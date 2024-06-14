@@ -346,14 +346,14 @@
                     console.log(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
                     event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
                     if(event_log.length >= 5) {
-                        event_log.pop()
+                        event_log.shift()
                     }
                 }
                 else if(msg.Event == 'left') {
                     console.log(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
                     event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
                     if(event_log.length >= 5) {
-                        event_log.pop()
+                        event_log.shift()
                     }
                 }
                 else if(msg.Event == 'startMatchCountdown') {

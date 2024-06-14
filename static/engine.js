@@ -293,7 +293,7 @@ function drawStats() {
                 ctx.fillText("0/0", 860, ((i+j)*115) + 82 + (k*20)) // LEG USE
                 ctx.fillText("100", 885, ((i+j)*115) + 82 + (k*20)) // LEG WEIGHT
                 ctx.fillText("100", 910, ((i+j)*115) + 82 + (k*20)) // LEG DOG
-                ctx.fillText(match_data[current_state][i][j][k].Speed, 935, ((i+j)*115) + 82 + (k*20)) // LEG SPE
+                ctx.fillText(match_data[current_state][i][j][k].B.SPD, 935, ((i+j)*115) + 82 + (k*20)) // LEG SPE
                 ctx.fillText("100", 960, ((i+j)*115) + 82 + (k*20)) // LEG CRIT
                 ctx.fillText("100", 985, ((i+j)*115) + 82 + (k*20)) // LEG MOBI
                 ctx.fillText("100", 1010, ((i+j)*115) + 82 + (k*20)) // LEG CD

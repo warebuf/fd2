@@ -346,20 +346,20 @@
                 }
                 else if(msg.Event == 'entered') {
                     event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
-                    if(event_log.length >= 5) {
+                    if(event_log.length >= 10) {
                         event_log.shift()
                     }
                 }
                 else if(msg.Event == 'left') {
                     event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
-                    if(event_log.length >= 5) {
+                    if(event_log.length >= 10) {
                         event_log.shift()
                     }
                 }
                 else if(msg.Event == 'unitsOfTime') {
                     event_log.push(msg.Message + ' units of time has passed')
                     units_of_time+parseFloat(msg.Message)
-                    if(event_log.length >= 5) {
+                    if(event_log.length >= 10) {
                         event_log.shift()
                     }
                 }

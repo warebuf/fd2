@@ -539,6 +539,77 @@ func (m *match) run() {
 				}
 
 				for y := 0; y < 5; y++ {
+
+					h := head{
+						SERIAL: 0,
+
+						HP:          100,
+						ATK:         0,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						MOB:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      0,
+					}
+
+					larm := arm{
+						SERIAL: 0,
+
+						HP:          100,
+						ATK:         0,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						MOB:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      0,
+					}
+
+					rarm := arm{
+						SERIAL: 0,
+
+						HP:          100,
+						ATK:         0,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						MOB:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      0,
+					}
+
+					btm := bottom{
+						SERIAL: 0,
+
+						HP:          100,
+						ATK:         0,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						MOB:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      0,
+
+						DOG: 0,
+						SPD: 0,
+						ACL: 0,
+						ANT: 0,
+						END: 0,
+					}
+
 					temp := &hero{
 						Bot:       is_bot,
 						Position:  0,
@@ -546,6 +617,10 @@ func (m *match) run() {
 						Health:    100,
 						Speed:     rand.Intn(10) * 10,
 						Move:      -1,
+						H:         h,
+						L:         larm,
+						R:         rarm,
+						B:         btm,
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)

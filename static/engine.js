@@ -227,7 +227,7 @@ function drawStats() {
     ctx.fillText("USE", 860, 60) // LEG USE
     ctx.fillText("WGT", 885, 60) // LEG WEIGHT
     ctx.fillText("DOG", 910, 60) // LEG DOG
-    ctx.fillText("SPE", 935, 60) // LEG SPE
+    ctx.fillText("SPD", 935, 60) // LEG SPE
     ctx.fillText("ACL", 960, 60) // LEG CRIT
     ctx.fillText("ANT", 985, 60) // LEG MOBI
     ctx.fillText("END", 1010, 60) // LEG CD

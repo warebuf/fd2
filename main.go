@@ -82,6 +82,61 @@ type room struct {
 	open chan bool
 }
 
+type head struct {
+	SERIAL int
+
+	HP          int
+	ATK         int
+	DEF         int
+	ACC         int
+	CRT         int
+	MOB         int
+	CD          int
+	CLU         int
+	Use_current int
+	Use_outof   int
+	Weight      int
+}
+
+type arm struct {
+	SERIAL int
+	LORR   bool
+
+	HP          int
+	ATK         int
+	DEF         int
+	ACC         int
+	CRT         int
+	MOB         int
+	CD          int
+	CLU         int
+	Use_current int
+	Use_outof   int
+	Weight      int
+}
+
+type bottom struct {
+	SERIAL int
+
+	HP          int
+	ATK         int
+	DEF         int
+	ACC         int
+	CRT         int
+	MOB         int
+	CD          int
+	CLU         int
+	Use_current int
+	Use_outof   int
+	Weight      int
+
+	DOG int
+	SPD int
+	ACL int
+	ANT int
+	END int
+}
+
 // NOTE: FOR SOME REASON ONLY CONVERTS TO JSON IF CAPITALIZED
 type hero struct {
 	Bot       bool
@@ -90,6 +145,11 @@ type hero struct {
 	Health    int
 	Speed     int
 	Move      int
+
+	H head
+	L arm
+	R arm
+	B bottom
 }
 
 type match struct {

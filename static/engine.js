@@ -193,11 +193,11 @@ function drawStats() {
     ctx.fillText("WGH", a1 +(25*10), 60) // H WEIGHT
 
     a2 = 300
-    ctx.fillText("ARMS", 513, 40);
+    ctx.fillText("ARMS", a2+(200/2), 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(a2, 45);
-    ctx.lineTo(a2+300, 45);
+    ctx.moveTo(a2-5, 45);
+    ctx.lineTo(a2+200, 45);
     ctx.stroke();
     ctx.fillText("S#", a2 +(25*0), 60) // H HP
     ctx.fillText("HP", a2 +(25*1), 60) // ARM HP
@@ -212,10 +212,10 @@ function drawStats() {
     ctx.fillText("WGT", a2 +(25*10), 60) // ARM WEIGHT
 
     a3 = 575
-    ctx.fillText("LEGS", 836, 40);
+    ctx.fillText("LEGS", a3+(400/2), 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(a3, 45);
+    ctx.moveTo(a3-5, 45);
     ctx.lineTo(a3+400, 45);
     ctx.stroke();
     ctx.fillText("S#", a3 +(25*0), 60) // LEG HP

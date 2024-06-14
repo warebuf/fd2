@@ -558,6 +558,7 @@ func (m *match) run() {
 
 					larm := arm{
 						SERIAL: 0,
+						LORR:   false,
 
 						HP:          100,
 						ATK:         0,
@@ -574,6 +575,7 @@ func (m *match) run() {
 
 					rarm := arm{
 						SERIAL: 0,
+						LORR:   true,
 
 						HP:          100,
 						ATK:         0,
@@ -604,7 +606,7 @@ func (m *match) run() {
 						Weight:      0,
 
 						DOG: 0,
-						SPD: 0,
+						SPD: rand.Intn(10) * 10,
 						ACL: 0,
 						ANT: 0,
 						END: 0,
@@ -624,7 +626,8 @@ func (m *match) run() {
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)
-					fmt.Println("marshalled:", string(marshalled))
+					//fmt.Println(string(marshalled))
+					fmt.Println(temp.Position)
 					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 

@@ -239,9 +239,8 @@ function drawStats() {
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
-                ctx.textAlign = "left";
-                ctx.fillText(match_data[current_state][i][j][k].Direction, a0+(0*25), ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
+                ctx.fillText(match_data[current_state][i][j][k].Direction, a0+(0*25), ((i+j)*115) + 82 + (k*20));
                 ctx.fillText((Math.round(match_data[current_state][i][j][k].Position * 100) / 100).toFixed(1), a0+(1*25), ((i+j)*115) + 82 + (k*20))
                 temp = '-'
                 if(match_data[current_state][i][j][k].Move==0){temp='H'}

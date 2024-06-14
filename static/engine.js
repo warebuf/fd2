@@ -211,7 +211,7 @@ function drawStats() {
     ctx.fillText("USE", a2 +(25*9), 60) // ARM USE
     ctx.fillText("WGT", a2 +(25*10), 60) // ARM WEIGHT
 
-    a3 = 600
+    a3 = 575
     ctx.fillText("LEGS", 836, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";

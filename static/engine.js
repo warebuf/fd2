@@ -161,8 +161,8 @@ function drawTurn() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-    y0 = 40
-    y1 = 80
+    y0 = 60
+    y1 = 100
 
     a0 = 975
     ctx.textAlign = "center";

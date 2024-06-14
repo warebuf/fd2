@@ -35,12 +35,6 @@ function anime() {
 
     if(startCount != null) {
         ctx.textAlign = "center";
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        time_string = units_of_time+" UNITS OF TIME"
-        ctx.fillText(time_string,c.width/2, 30);
-
-        ctx.textAlign = "center";
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
         ctx.fillRect(c.width/2,45,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
@@ -164,6 +158,13 @@ function drawTurn() {
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
     ctx.fillText(status,c.width/2, 20);
+
+    ctx.textAlign = "center";
+    ctx.font = '11px monospace';
+    ctx.fillStyle = 'white';
+    time_string = units_of_time+" UNITS OF TIME"
+    ctx.fillText(time_string,c.width/2, 40);
+
 }
 
 function drawStats() {

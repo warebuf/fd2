@@ -37,10 +37,10 @@ function anime() {
     if(startCount != null) {
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
-        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),30,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),20,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '12px Arial';
         ctx.fillStyle = 'white';
-        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 40);
+        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 30);
 
         // need to change it so that it not only sends ur input when time expires, but sends it if you disconnect
         if(remaining_time<=0 && once) {
@@ -147,12 +147,12 @@ function drawState() {
 }
 
 function drawTurn() {
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.fillStyle = 'black';
     ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),10,ctx.measureText(status).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
     ctx.fillText(status,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
 }
 

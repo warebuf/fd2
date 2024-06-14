@@ -177,11 +177,11 @@ function drawStats() {
     ctx.fillText("ACT", 1010, 60);
 
     a1 = 10
-    ctx.fillText("HEAD", a1+(275/2), 40);
+    ctx.fillText("HEAD", a1+(260/2), 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(a1-5, 45);
-    ctx.lineTo(a1+275, 45);
+    ctx.lineTo(a1+260, 45);
     ctx.stroke();
     ctx.fillText("#", a1 +(25*0), 60) // H HP
     ctx.fillText("HP", a1 +(25*1), 60) // H HP

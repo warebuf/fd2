@@ -889,6 +889,9 @@ func printAllMatchUserWS() {
 
 func (m *match) sharepos() {
 	fmt.Println("sharepos")
+
+	// have to hide moves of everyone who is not on your team
+
 	// convert game state to JSON
 	for i := 0; i < len(m.team_client_hero); i++ {
 		for j := 0; j < len(m.team_client_hero[i]); j++ {

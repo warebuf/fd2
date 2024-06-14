@@ -246,40 +246,40 @@ function drawStats() {
                 else if(match_data[current_state][i][j][k].Move==3){temp='B'}
                 ctx.fillText(temp, 95, ((i+j)*115) + 82 + (k*20))
 
-                ctx.fillText("100", 120, ((i+j)*115) + 82 + (k*20)) // H HP
-                ctx.fillText("100", 145, ((i+j)*115) + 82 + (k*20)) // H ATK
-                ctx.fillText("100", 170, ((i+j)*115) + 82 + (k*20)) // H DEF
-                ctx.fillText("100", 195, ((i+j)*115) + 82 + (k*20)) // H ACC
-                ctx.fillText("100", 220, ((i+j)*115) + 82 + (k*20)) // H CRIT
-                ctx.fillText("100", 245, ((i+j)*115) + 82 + (k*20)) // H MOBI
-                ctx.fillText("100", 270, ((i+j)*115) + 82 + (k*20)) // H CD
-                ctx.fillText("100", 295, ((i+j)*115) + 82 + (k*20)) // H CLU
-                ctx.fillText("0/0", 320, ((i+j)*115) + 82 + (k*20)) // H USE
-                ctx.fillText("100", 345, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
+                ctx.fillText(match_data[current_state][i][j][k].L.HP, 120, ((i+j)*115) + 82 + (k*20)) // H HP
+                ctx.fillText(match_data[current_state][i][j][k].L.ATK, 145, ((i+j)*115) + 82 + (k*20)) // H ATK
+                ctx.fillText(match_data[current_state][i][j][k].L.DEF, 170, ((i+j)*115) + 82 + (k*20)) // H DEF
+                ctx.fillText(match_data[current_state][i][j][k].L.ACC, 195, ((i+j)*115) + 82 + (k*20)) // H ACC
+                ctx.fillText(match_data[current_state][i][j][k].L.CRT, 220, ((i+j)*115) + 82 + (k*20)) // H CRIT
+                ctx.fillText(match_data[current_state][i][j][k].L.MOB, 245, ((i+j)*115) + 82 + (k*20)) // H MOBI
+                ctx.fillText(match_data[current_state][i][j][k].L.CD, 270, ((i+j)*115) + 82 + (k*20)) // H CD
+                ctx.fillText(match_data[current_state][i][j][k].L.CLU, 295, ((i+j)*115) + 82 + (k*20)) // H CLU
+                ctx.fillText(match_data[current_state][i][j][k].H.Use_current+"/"+match_data[current_state][i][j][k].H.Use_outof, 320, ((i+j)*115) + 82 + (k*20)) // H USE
+                ctx.fillText(match_data[current_state][i][j][k].H.Weight, 345, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
                 ctx.fillText("L", 375, ((i+j)*115) + 77 + (k*20)) // L L
-                ctx.fillText("99", 400, ((i+j)*115) + 77 + (k*20)) // L HP
-                ctx.fillText("9", 425, ((i+j)*115) + 77 + (k*20)) // L ATK
-                ctx.fillText("99", 450, ((i+j)*115) + 77 + (k*20)) // L DEF
-                ctx.fillText("9", 475, ((i+j)*115) + 77 + (k*20)) // L ACC
-                ctx.fillText("99", 500, ((i+j)*115) + 77 + (k*20)) // L CRIT
-                ctx.fillText("9", 525, ((i+j)*115) + 77 + (k*20)) // L MOBI
-                ctx.fillText("99", 550, ((i+j)*115) + 77 + (k*20)) // L CD
-                ctx.fillText("9", 575, ((i+j)*115) + 77 + (k*20)) // L CLU
-                ctx.fillText("0/0", 600, ((i+j)*115) + 77 + (k*20)) // L USE
-                ctx.fillText("100", 625, ((i+j)*115) + 77 + (k*20)) // L WEIGHT
+                ctx.fillText(match_data[current_state][i][j][k].L.HP, 400, ((i+j)*115) + 77 + (k*20)) // L HP
+                ctx.fillText(match_data[current_state][i][j][k].L.ATK, 425, ((i+j)*115) + 77 + (k*20)) // L ATK
+                ctx.fillText(match_data[current_state][i][j][k].L.DEF, 450, ((i+j)*115) + 77 + (k*20)) // L DEF
+                ctx.fillText(match_data[current_state][i][j][k].L.ACC, 475, ((i+j)*115) + 77 + (k*20)) // L ACC
+                ctx.fillText(match_data[current_state][i][j][k].L.CRT, 500, ((i+j)*115) + 77 + (k*20)) // L CRIT
+                ctx.fillText(match_data[current_state][i][j][k].L.MOB, 525, ((i+j)*115) + 77 + (k*20)) // L MOBI
+                ctx.fillText(match_data[current_state][i][j][k].L.CD, 550, ((i+j)*115) + 77 + (k*20)) // L CD
+                ctx.fillText(match_data[current_state][i][j][k].L.CLU, 575, ((i+j)*115) + 77 + (k*20)) // L CLU
+                ctx.fillText(match_data[current_state][i][j][k].L.Use_current+"/"+match_data[current_state][i][j][k].L.Use_outof, 600, ((i+j)*115) + 77 + (k*20)) // L USE
+                ctx.fillText(match_data[current_state][i][j][k].L.Weight, 625, ((i+j)*115) + 77 + (k*20)) // L WEIGHT
 
                 ctx.fillText("R", 375, ((i+j)*115) + 87 + (k*20))   // R L
-                ctx.fillText("100", 400, ((i+j)*115) + 87 + (k*20)) // R HP
-                ctx.fillText("100", 425, ((i+j)*115) + 87 + (k*20)) // R ATK
-                ctx.fillText("100", 450, ((i+j)*115) + 87 + (k*20)) // R DEF
-                ctx.fillText("100", 475, ((i+j)*115) + 87 + (k*20)) // R ACC
-                ctx.fillText("100", 500, ((i+j)*115) + 87 + (k*20)) // R CRIT
-                ctx.fillText("100", 525, ((i+j)*115) + 87 + (k*20)) // R MOBI
-                ctx.fillText("100", 550, ((i+j)*115) + 87 + (k*20)) // R CD
-                ctx.fillText("100", 575, ((i+j)*115) + 87 + (k*20)) // R CLU
-                ctx.fillText("0/0", 600, ((i+j)*115) + 87 + (k*20)) // R USE
-                ctx.fillText("100", 625, ((i+j)*115) + 87 + (k*20)) // R WEIGHT
+                ctx.fillText(match_data[current_state][i][j][k].R.HP, 400, ((i+j)*115) + 87 + (k*20)) // R HP
+                ctx.fillText(match_data[current_state][i][j][k].R.ATK, 425, ((i+j)*115) + 87 + (k*20)) // R ATK
+                ctx.fillText(match_data[current_state][i][j][k].R.DEF, 450, ((i+j)*115) + 87 + (k*20)) // R DEF
+                ctx.fillText(match_data[current_state][i][j][k].R.ACC, 475, ((i+j)*115) + 87 + (k*20)) // R ACC
+                ctx.fillText(match_data[current_state][i][j][k].R.CRT, 500, ((i+j)*115) + 87 + (k*20)) // R CRIT
+                ctx.fillText(match_data[current_state][i][j][k].R.MOB, 525, ((i+j)*115) + 87 + (k*20)) // R MOBI
+                ctx.fillText(match_data[current_state][i][j][k].R.CD, 550, ((i+j)*115) + 87 + (k*20)) // R CD
+                ctx.fillText(match_data[current_state][i][j][k].R.CLU, 575, ((i+j)*115) + 87 + (k*20)) // R CLU
+                ctx.fillText(match_data[current_state][i][j][k].R.Use_current+"/"+match_data[current_state][i][j][k].R.Use_outof, 600, ((i+j)*115) + 87 + (k*20)) // R USE
+                ctx.fillText(match_data[current_state][i][j][k].R.Weight, 625, ((i+j)*115) + 87 + (k*20)) // R WEIGHT
 
 
                 ctx.fillText(match_data[current_state][i][j][k].B.HP, 660, ((i+j)*115) + 82 + (k*20)) // LEG HP

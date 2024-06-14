@@ -358,7 +358,7 @@
                 }
                 else if(msg.Event == 'unitsOfTime') {
                     event_log.push(parseFloat(msg.Message).toFixed(3) + ' time units')
-                    units_of_time=units_of_time+parseFloat(msg.Message.toFixed(3))
+                    units_of_time=units_of_time+parseFloat(parseFloat(msg.Message).toFixed(3))
                     if(event_log.length >= 10) {
                         event_log.shift()
                     }

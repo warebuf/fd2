@@ -176,22 +176,23 @@ function drawStats() {
     ctx.fillText("POS", 985, 60);
     ctx.fillText("ACT", 1010, 60);
 
+    a1 = 10
     ctx.fillText("HEAD", 234, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(113, 45);
     ctx.lineTo(355, 45);
     ctx.stroke();
-    ctx.fillText("HP", 10, 60) // H HP
-    ctx.fillText("ATK", 35, 60) // H ATK
-    ctx.fillText("DEF", 60, 60) // H DEF
-    ctx.fillText("ACC", 85, 60) // H ACC
-    ctx.fillText("CRT", 110, 60) // H CRT
-    ctx.fillText("MOB", 135, 60) // H MOB
-    ctx.fillText("CD", 160, 60) // H CD
-    ctx.fillText("CLU", 185, 60) // H CLU
-    ctx.fillText("USE", 210, 60) // H USE
-    ctx.fillText("WGH", 235, 60) // H WEIGHT
+    ctx.fillText("HP", a1, 60) // H HP
+    ctx.fillText("ATK", a1 +(25*1), 60) // H ATK
+    ctx.fillText("DEF", a1 +(25*2), 60) // H DEF
+    ctx.fillText("ACC", a1 +(25*3), 60) // H ACC
+    ctx.fillText("CRT", a1 +(25*4), 60) // H CRT
+    ctx.fillText("MOB", a1 +(25*5), 60) // H MOB
+    ctx.fillText("CD", a1 +(25*6), 60) // H CD
+    ctx.fillText("CLU", a1 +(25*7), 60) // H CLU
+    ctx.fillText("USE", a1 +(25*8), 60) // H USE
+    ctx.fillText("WGH", a1 +(25*9), 60) // H WEIGHT
 
     ctx.fillText("ARMS", 513, 40);
     ctx.lineWidth = 0.1;
@@ -246,16 +247,16 @@ function drawStats() {
                 else if(match_data[current_state][i][j][k].Move==3){temp='B'}
                 ctx.fillText(temp, 1010, ((i+j)*115) + 82 + (k*20))
 
-                ctx.fillText(match_data[current_state][i][j][k].L.HP, 120, ((i+j)*115) + 82 + (k*20)) // H HP
-                ctx.fillText(match_data[current_state][i][j][k].L.ATK, 145, ((i+j)*115) + 82 + (k*20)) // H ATK
-                ctx.fillText(match_data[current_state][i][j][k].L.DEF, 170, ((i+j)*115) + 82 + (k*20)) // H DEF
-                ctx.fillText(match_data[current_state][i][j][k].L.ACC, 195, ((i+j)*115) + 82 + (k*20)) // H ACC
-                ctx.fillText(match_data[current_state][i][j][k].L.CRT, 220, ((i+j)*115) + 82 + (k*20)) // H CRIT
-                ctx.fillText(match_data[current_state][i][j][k].L.MOB, 245, ((i+j)*115) + 82 + (k*20)) // H MOBI
-                ctx.fillText(match_data[current_state][i][j][k].L.CD, 270, ((i+j)*115) + 82 + (k*20)) // H CD
-                ctx.fillText(match_data[current_state][i][j][k].L.CLU, 295, ((i+j)*115) + 82 + (k*20)) // H CLU
-                ctx.fillText(match_data[current_state][i][j][k].H.Use_current+"/"+match_data[current_state][i][j][k].H.Use_outof, 320, ((i+j)*115) + 82 + (k*20)) // H USE
-                ctx.fillText(match_data[current_state][i][j][k].H.Weight, 345, ((i+j)*115) + 82 + (k*20)) // H WEIGHT
+                ctx.fillText(match_data[current_state][i][j][k].L.HP, a1, ((i+j)*115) + 82 + (k*20)) // H HP
+                ctx.fillText(match_data[current_state][i][j][k].L.ATK, a1 +(25*1), ((i+j)*115) + 82 + (k*20)) // H ATK
+                ctx.fillText(match_data[current_state][i][j][k].L.DEF, a1 +(25*2), ((i+j)*115) + 82 + (k*20)) // H DEF
+                ctx.fillText(match_data[current_state][i][j][k].L.ACC, a1 +(25*3), ((i+j)*115) + 82 + (k*20)) // H ACC
+                ctx.fillText(match_data[current_state][i][j][k].L.CRT, a1 +(25*4), ((i+j)*115) + 82 + (k*20)) // H CRIT
+                ctx.fillText(match_data[current_state][i][j][k].L.MOB, a1 +(25*5), ((i+j)*115) + 82 + (k*20)) // H MOBI
+                ctx.fillText(match_data[current_state][i][j][k].L.CD, a1 +(25*6), ((i+j)*115) + 82 + (k*20)) // H CD
+                ctx.fillText(match_data[current_state][i][j][k].L.CLU, a1 +(25*7), ((i+j)*115) + 82 + (k*20)) // H CLU
+                ctx.fillText(match_data[current_state][i][j][k].H.Use_current+"/"+match_data[current_state][i][j][k].H.Use_outof, a1 +(25*8), ((i+j)*115) + 82 + (k*20)) // H USE
+                ctx.fillText(match_data[current_state][i][j][k].H.Weight, a1 +(25*9), ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
                 ctx.fillText("L", 375, ((i+j)*115) + 77 + (k*20)) // L L
                 ctx.fillText(match_data[current_state][i][j][k].L.HP, 400, ((i+j)*115) + 77 + (k*20)) // L HP

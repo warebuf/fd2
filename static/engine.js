@@ -160,21 +160,18 @@ function drawTurn() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-
+    a0 = 960
     ctx.textAlign = "center";
-    ctx.fillText("UNIT", 58, 40);
+    ctx.fillText("UNIT", a0+(105/2), 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(10, 45);
+    ctx.moveTo(960, 45);
     ctx.lineTo(105, 45);
     ctx.stroke();
-
-    ctx.textAlign = "left";
-    ctx.fillText("D", 960, 60);
-
     ctx.textAlign = "center";
-    ctx.fillText("POS", 985, 60);
-    ctx.fillText("ACT", 1010, 60);
+    ctx.fillText("D", a0 +(25*0), 60);
+    ctx.fillText("POS", a0 +(25*1), 60);
+    ctx.fillText("ACT", a0 +(25*2), 60);
 
     a1 = 10
     ctx.fillText("HEAD", a1+(260/2), 40);
@@ -183,7 +180,7 @@ function drawStats() {
     ctx.moveTo(a1-5, 45);
     ctx.lineTo(a1+260, 45);
     ctx.stroke();
-    ctx.fillText("#", a1 +(25*0), 60) // H HP
+    ctx.fillText("S#", a1 +(25*0), 60) // H HP
     ctx.fillText("HP", a1 +(25*1), 60) // H HP
     ctx.fillText("ATK", a1 +(25*2), 60) // H ATK
     ctx.fillText("DEF", a1 +(25*3), 60) // H DEF

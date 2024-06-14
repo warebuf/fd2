@@ -153,7 +153,7 @@ function drawTurn() {
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "left";
-    ctx.fillText(status,10, 20);
+    ctx.fillText(status,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
 }
 
 function drawStats() {

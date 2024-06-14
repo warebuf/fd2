@@ -37,10 +37,10 @@ function anime() {
         ctx.textAlign = "center";
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
-        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),10,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),25,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
+        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 35);
 
         // need to change it so that it not only sends ur input when time expires, but sends it if you disconnect
         if(remaining_time<=0 && once) {
@@ -54,6 +54,7 @@ function anime() {
         drawState()
         drawStats()
         drawTurn()
+        drawLog()
     }
 
 }
@@ -149,11 +150,11 @@ function drawState() {
 function drawTurn() {
     ctx.textAlign = "center";
     ctx.fillStyle = 'black';
-    ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),25,ctx.measureText(status).width,ctx.measureText('M').width);
+    ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),10,ctx.measureText(status).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
-    ctx.fillText(status,(c.width/2) - (ctx.measureText(remaining_time).width/2), 35);
+    ctx.fillText(status,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
 }
 
 function drawStats() {
@@ -299,5 +300,16 @@ function drawStats() {
                 
             }
         }
+    }
+}
+
+function drawLog() {
+    for(i =0; i<len(event_log);i++) {
+        ctx.textAlign = "left";
+        ctx.fillStyle = 'black';
+        ctx.fillRect((c.width/2)-(ctx.measureText(event_log[i]).width/2),10 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.fillText(event_log[i],(c.width/2) - (ctx.measureText(remaining_time).width/2), 20 + (10*i));
     }
 }

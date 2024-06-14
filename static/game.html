@@ -316,6 +316,8 @@
     var indexer_u = 0;
     var indexer_b = 0;
 
+    var event_log = []
+
     function test() {
 
         var messages = document.getElementById("messages")
@@ -362,6 +364,7 @@
                     my_int = parseInt(temp_string[1])
                     indexer_t = my_team
                     indexer_u = my_int
+                    indexer_b = 0
 
                     var temp = msg.TCH;
                     var md = new Array();

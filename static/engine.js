@@ -35,7 +35,8 @@ function anime() {
 
     if(startCount != null) {
 
-        ctx.fillText(units_of_time+" UNITS OF TIME",(c.width/2) - (ctx.measureText(remaining_time).width/2), 25);
+        time_string = units_of_time+" UNITS OF TIME"
+        ctx.fillText(time_string,(c.width/2) - (ctx.measureText(time_string).width/2), 25);
 
         ctx.textAlign = "center";
         remaining_time = startCount - start.replaceAll("’","")

@@ -236,15 +236,15 @@ function drawStats() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 ctx.textAlign = "left";
-                ctx.fillText(match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
+                ctx.fillText(match_data[current_state][i][j][k].Direction, 960, ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
-                ctx.fillText((Math.round(match_data[current_state][i][j][k].Position * 100) / 100).toFixed(1), 70, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText((Math.round(match_data[current_state][i][j][k].Position * 100) / 100).toFixed(1), 985, ((i+j)*115) + 82 + (k*20))
                 temp = '-'
                 if(match_data[current_state][i][j][k].Move==0){temp='H'}
                 else if(match_data[current_state][i][j][k].Move==1){temp='L'}
                 else if(match_data[current_state][i][j][k].Move==2){temp='R'}
                 else if(match_data[current_state][i][j][k].Move==3){temp='B'}
-                ctx.fillText(temp, 95, ((i+j)*115) + 82 + (k*20))
+                ctx.fillText(temp, 1010, ((i+j)*115) + 82 + (k*20))
 
                 ctx.fillText(match_data[current_state][i][j][k].L.HP, 120, ((i+j)*115) + 82 + (k*20)) // H HP
                 ctx.fillText(match_data[current_state][i][j][k].L.ATK, 145, ((i+j)*115) + 82 + (k*20)) // H ATK

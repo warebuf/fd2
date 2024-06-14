@@ -170,11 +170,11 @@ function drawStats() {
     ctx.stroke();
 
     ctx.textAlign = "left";
-    ctx.fillText("T C H D", 10, 60);
+    ctx.fillText("D", 960, 60);
 
     ctx.textAlign = "center";
-    ctx.fillText("POS", 70, 60);
-    ctx.fillText("ACT", 95, 60);
+    ctx.fillText("POS", 985, 60);
+    ctx.fillText("ACT", 1010, 60);
 
     ctx.fillText("HEAD", 234, 40);
     ctx.lineWidth = 0.1;
@@ -236,7 +236,7 @@ function drawStats() {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 ctx.textAlign = "left";
-                ctx.fillText(i + " " +j + " " + k + " " + match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
+                ctx.fillText(match_data[current_state][i][j][k].Direction, 10, ((i+j)*115) + 82 + (k*20));
                 ctx.textAlign = "center";
                 ctx.fillText((Math.round(match_data[current_state][i][j][k].Position * 100) / 100).toFixed(1), 70, ((i+j)*115) + 82 + (k*20))
                 temp = '-'

@@ -828,7 +828,7 @@ func (m *match) run() {
 			init_time := time.Now().Add(timer1_length)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length) //will tick in 30 s
-			msg2 := &message{Event: "unitsOfTime", When: time.Now(), Message: strconv.FormatFloat(min_units, 'E', -1, 64)}
+			msg2 := &message{Event: "unitsOfTime", When: time.Now(), Message: strconv.FormatFloat(min_units, 'E', 3, 64)}
 
 			// send ticker to everyone
 			m.mutex.Lock()

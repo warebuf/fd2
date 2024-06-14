@@ -192,22 +192,24 @@ function drawStats() {
     ctx.fillText("USE", a1 +(25*9), 60) // H USE
     ctx.fillText("WGH", a1 +(25*10), 60) // H WEIGHT
 
+    a2 = 400
     ctx.fillText("ARMS", 513, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(392, 45);
     ctx.lineTo(635, 45);
     ctx.stroke();
-    ctx.fillText("HP", 400, 60) // ARM HP
-    ctx.fillText("ATK", 425, 60) // ARM ATK
-    ctx.fillText("DEF", 450, 60) // ARM DEF
-    ctx.fillText("ACC", 475, 60) // ARM ACC
-    ctx.fillText("CRT", 500, 60) // ARM CRIT
-    ctx.fillText("MOB", 525, 60) // ARM MOBI
-    ctx.fillText("CD", 550, 60) // ARM CD
-    ctx.fillText("CLU", 575, 60) // ARM CLU
-    ctx.fillText("USE", 600, 60) // ARM USE
-    ctx.fillText("WGT", 625, 60) // ARM WEIGHT
+    ctx.fillText("S#", a2 +(25*0), 60) // H HP
+    ctx.fillText("HP", a2 +(25*1), 60) // ARM HP
+    ctx.fillText("ATK", a2 +(25*2), 60) // ARM ATK
+    ctx.fillText("DEF", a2 +(25*3), 60) // ARM DEF
+    ctx.fillText("ACC", a2 +(25*4), 60) // ARM ACC
+    ctx.fillText("CRT", a2 +(25*5), 60) // ARM CRIT
+    ctx.fillText("MOB", a2 +(25*6), 60) // ARM MOBI
+    ctx.fillText("CD", a2 +(25*7), 60) // ARM CD
+    ctx.fillText("CLU", a2 +(25*8), 60) // ARM CLU
+    ctx.fillText("USE", a2 +(25*9), 60) // ARM USE
+    ctx.fillText("WGT", a2 +(25*10), 60) // ARM WEIGHT
 
     ctx.fillText("LEGS", 836, 40);
     ctx.lineWidth = 0.1;
@@ -257,29 +259,31 @@ function drawStats() {
                 ctx.fillText(match_data[current_state][i][j][k].H.Use_current+"/"+match_data[current_state][i][j][k].H.Use_outof, a1 +(25*9), ((i+j)*115) + 82 + (k*20)) // H USE
                 ctx.fillText(match_data[current_state][i][j][k].H.Weight, a1 +(25*10), ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
-                ctx.fillText("L", 375, ((i+j)*115) + 77 + (k*20)) // L L
-                ctx.fillText(match_data[current_state][i][j][k].L.HP, 400, ((i+j)*115) + 77 + (k*20)) // L HP
-                ctx.fillText(match_data[current_state][i][j][k].L.ATK, 425, ((i+j)*115) + 77 + (k*20)) // L ATK
-                ctx.fillText(match_data[current_state][i][j][k].L.DEF, 450, ((i+j)*115) + 77 + (k*20)) // L DEF
-                ctx.fillText(match_data[current_state][i][j][k].L.ACC, 475, ((i+j)*115) + 77 + (k*20)) // L ACC
-                ctx.fillText(match_data[current_state][i][j][k].L.CRT, 500, ((i+j)*115) + 77 + (k*20)) // L CRIT
-                ctx.fillText(match_data[current_state][i][j][k].L.MOB, 525, ((i+j)*115) + 77 + (k*20)) // L MOBI
-                ctx.fillText(match_data[current_state][i][j][k].L.CD, 550, ((i+j)*115) + 77 + (k*20)) // L CD
-                ctx.fillText(match_data[current_state][i][j][k].L.CLU, 575, ((i+j)*115) + 77 + (k*20)) // L CLU
-                ctx.fillText(match_data[current_state][i][j][k].L.Use_current+"/"+match_data[current_state][i][j][k].L.Use_outof, 600, ((i+j)*115) + 77 + (k*20)) // L USE
-                ctx.fillText(match_data[current_state][i][j][k].L.Weight, 625, ((i+j)*115) + 77 + (k*20)) // L WEIGHT
+                ctx.fillText("L", a2 -(25*1), ((i+j)*115) + 77 + (k*20)) // L L
+                ctx.fillText(match_data[current_state][i][j][k].L.SERIAL, a2 +(25*0), ((i+j)*115) + 77 + (k*20)) // H HP
+                ctx.fillText(match_data[current_state][i][j][k].L.HP, a2 +(25*1), ((i+j)*115) + 77 + (k*20)) // L HP
+                ctx.fillText(match_data[current_state][i][j][k].L.ATK, a2 +(25*2), ((i+j)*115) + 77 + (k*20)) // L ATK
+                ctx.fillText(match_data[current_state][i][j][k].L.DEF, a2 +(25*3), ((i+j)*115) + 77 + (k*20)) // L DEF
+                ctx.fillText(match_data[current_state][i][j][k].L.ACC, a2 +(25*4), ((i+j)*115) + 77 + (k*20)) // L ACC
+                ctx.fillText(match_data[current_state][i][j][k].L.CRT, a2 +(25*5), ((i+j)*115) + 77 + (k*20)) // L CRIT
+                ctx.fillText(match_data[current_state][i][j][k].L.MOB, a2 +(25*6), ((i+j)*115) + 77 + (k*20)) // L MOBI
+                ctx.fillText(match_data[current_state][i][j][k].L.CD, a2 +(25*7), ((i+j)*115) + 77 + (k*20)) // L CD
+                ctx.fillText(match_data[current_state][i][j][k].L.CLU, a2 +(25*8), ((i+j)*115) + 77 + (k*20)) // L CLU
+                ctx.fillText(match_data[current_state][i][j][k].L.Use_current+"/"+match_data[current_state][i][j][k].L.Use_outof, a2 +(25*9), ((i+j)*115) + 77 + (k*20)) // L USE
+                ctx.fillText(match_data[current_state][i][j][k].L.Weight, a2 +(25*10), ((i+j)*115) + 77 + (k*20)) // L WEIGHT
 
-                ctx.fillText("R", 375, ((i+j)*115) + 87 + (k*20))   // R L
-                ctx.fillText(match_data[current_state][i][j][k].R.HP, 400, ((i+j)*115) + 87 + (k*20)) // R HP
-                ctx.fillText(match_data[current_state][i][j][k].R.ATK, 425, ((i+j)*115) + 87 + (k*20)) // R ATK
-                ctx.fillText(match_data[current_state][i][j][k].R.DEF, 450, ((i+j)*115) + 87 + (k*20)) // R DEF
-                ctx.fillText(match_data[current_state][i][j][k].R.ACC, 475, ((i+j)*115) + 87 + (k*20)) // R ACC
-                ctx.fillText(match_data[current_state][i][j][k].R.CRT, 500, ((i+j)*115) + 87 + (k*20)) // R CRIT
-                ctx.fillText(match_data[current_state][i][j][k].R.MOB, 525, ((i+j)*115) + 87 + (k*20)) // R MOBI
-                ctx.fillText(match_data[current_state][i][j][k].R.CD, 550, ((i+j)*115) + 87 + (k*20)) // R CD
-                ctx.fillText(match_data[current_state][i][j][k].R.CLU, 575, ((i+j)*115) + 87 + (k*20)) // R CLU
-                ctx.fillText(match_data[current_state][i][j][k].R.Use_current+"/"+match_data[current_state][i][j][k].R.Use_outof, 600, ((i+j)*115) + 87 + (k*20)) // R USE
-                ctx.fillText(match_data[current_state][i][j][k].R.Weight, 625, ((i+j)*115) + 87 + (k*20)) // R WEIGHT
+                ctx.fillText("R", a2 -(25*1), ((i+j)*115) + 87 + (k*20))   // R L
+                ctx.fillText(match_data[current_state][i][j][k].R.SERIAL, a2 +(25*0), ((i+j)*115) + 87 + (k*20)) // H HP
+                ctx.fillText(match_data[current_state][i][j][k].R.HP, a2 +(25*1), ((i+j)*115) + 87 + (k*20)) // R HP
+                ctx.fillText(match_data[current_state][i][j][k].R.ATK, a2 +(25*2), ((i+j)*115) + 87 + (k*20)) // R ATK
+                ctx.fillText(match_data[current_state][i][j][k].R.DEF, a2 +(25*3), ((i+j)*115) + 87 + (k*20)) // R DEF
+                ctx.fillText(match_data[current_state][i][j][k].R.ACC, a2 +(25*4), ((i+j)*115) + 87 + (k*20)) // R ACC
+                ctx.fillText(match_data[current_state][i][j][k].R.CRT, a2 +(25*5), ((i+j)*115) + 87 + (k*20)) // R CRIT
+                ctx.fillText(match_data[current_state][i][j][k].R.MOB, a2 +(25*6), ((i+j)*115) + 87 + (k*20)) // R MOBI
+                ctx.fillText(match_data[current_state][i][j][k].R.CD, a2 +(25*7), ((i+j)*115) + 87 + (k*20)) // R CD
+                ctx.fillText(match_data[current_state][i][j][k].R.CLU, a2 +(25*8), ((i+j)*115) + 87 + (k*20)) // R CLU
+                ctx.fillText(match_data[current_state][i][j][k].R.Use_current+"/"+match_data[current_state][i][j][k].R.Use_outof, a2 +(25*9), ((i+j)*115) + 87 + (k*20)) // R USE
+                ctx.fillText(match_data[current_state][i][j][k].R.Weight, a2 +(25*10), ((i+j)*115) + 87 + (k*20)) // R WEIGHT
 
 
                 ctx.fillText(match_data[current_state][i][j][k].B.HP, 660, ((i+j)*115) + 82 + (k*20)) // LEG HP

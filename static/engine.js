@@ -304,7 +304,7 @@ function drawStats() {
 }
 
 function drawLog() {
-    for(i =0; i<len(event_log);i++) {
+    for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.fillStyle = 'black';
         ctx.fillRect((c.width/2)-(ctx.measureText(event_log[i]).width/2),10 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);

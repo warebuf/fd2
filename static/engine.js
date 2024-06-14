@@ -42,6 +42,8 @@ function anime() {
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 35);
 
+        ctx.fillText(units_of_time+" UNITS OF TIME",(c.width/2) - (ctx.measureText(remaining_time).width/2), 45);
+
         // need to change it so that it not only sends ur input when time expires, but sends it if you disconnect
         if(remaining_time<=0 && once) {
             socket.send(JSON.stringify({ "Event": 'timeUpMsg', "Message": "test" }))

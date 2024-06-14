@@ -34,15 +34,16 @@ function anime() {
     let start = Date.now().toLocaleString('en-CH');
 
     if(startCount != null) {
+
+        ctx.fillText(units_of_time+" UNITS OF TIME",(c.width/2) - (ctx.measureText(remaining_time).width/2), 25);
+
         ctx.textAlign = "center";
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
-        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),25,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),45,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 35);
-
-        ctx.fillText(units_of_time+" UNITS OF TIME",(c.width/2) - (ctx.measureText(remaining_time).width/2), 45);
+        ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 55);
 
         // need to change it so that it not only sends ur input when time expires, but sends it if you disconnect
         if(remaining_time<=0 && once) {

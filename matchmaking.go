@@ -624,7 +624,7 @@ func (m *match) run() {
 					}
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)
-					fmt.Println(string(marshalled))
+					fmt.Println("marshalled:", string(marshalled))
 					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 

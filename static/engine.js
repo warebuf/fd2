@@ -34,7 +34,8 @@ function anime() {
     let start = Date.now().toLocaleString('en-CH');
 
     if(startCount != null) {
-
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
         time_string = units_of_time+" UNITS OF TIME"
         ctx.fillText(time_string,(c.width/2) - (ctx.measureText(time_string).width/2), 25);
 

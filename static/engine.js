@@ -259,7 +259,7 @@ function drawStats() {
                 ctx.fillText(match_data[current_state][i][j][k].H.Use_current+"/"+match_data[current_state][i][j][k].H.Use_outof, a1 +(25*9), ((i+j)*115) + 82 + (k*20)) // H USE
                 ctx.fillText(match_data[current_state][i][j][k].H.Weight, a1 +(25*10), ((i+j)*115) + 82 + (k*20)) // H WEIGHT
 
-                ctx.fillText("L", a2 -(25*1), ((i+j)*115) + 77 + (k*20)) // L L
+                ctx.fillText("L", a2 -(10*1), ((i+j)*115) + 77 + (k*20)) // L L
                 ctx.fillText(match_data[current_state][i][j][k].L.SERIAL, a2 +(25*0), ((i+j)*115) + 77 + (k*20)) // H HP
                 ctx.fillText(match_data[current_state][i][j][k].L.HP, a2 +(25*1), ((i+j)*115) + 77 + (k*20)) // L HP
                 ctx.fillText(match_data[current_state][i][j][k].L.ATK, a2 +(25*2), ((i+j)*115) + 77 + (k*20)) // L ATK
@@ -272,7 +272,7 @@ function drawStats() {
                 ctx.fillText(match_data[current_state][i][j][k].L.Use_current+"/"+match_data[current_state][i][j][k].L.Use_outof, a2 +(25*9), ((i+j)*115) + 77 + (k*20)) // L USE
                 ctx.fillText(match_data[current_state][i][j][k].L.Weight, a2 +(25*10), ((i+j)*115) + 77 + (k*20)) // L WEIGHT
 
-                ctx.fillText("R", a2 -(25*1), ((i+j)*115) + 87 + (k*20))   // R L
+                ctx.fillText("R", a2 -(10*1), ((i+j)*115) + 87 + (k*20))   // R L
                 ctx.fillText(match_data[current_state][i][j][k].R.SERIAL, a2 +(25*0), ((i+j)*115) + 87 + (k*20)) // H HP
                 ctx.fillText(match_data[current_state][i][j][k].R.HP, a2 +(25*1), ((i+j)*115) + 87 + (k*20)) // R HP
                 ctx.fillText(match_data[current_state][i][j][k].R.ATK, a2 +(25*2), ((i+j)*115) + 87 + (k*20)) // R ATK

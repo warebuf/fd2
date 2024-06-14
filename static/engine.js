@@ -307,9 +307,9 @@ function drawLog() {
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.fillStyle = 'black';
-        ctx.fillRect((c.width/2)-(ctx.measureText(event_log[i]).width/2),10 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.fillRect(1000,10 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.fillText(event_log[i],(c.width/2) - (ctx.measureText(remaining_time).width/2), 20 + (10*i));
+        ctx.fillText(event_log[i],1000, 20 + (10*i));
     }
 }

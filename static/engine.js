@@ -162,7 +162,7 @@ function drawTurn() {
     ctx.textAlign = "center";
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
-    time_string = units_of_time+" UNITS OF TIME"
+    time_string = units_of_time+"s"
     ctx.fillText(time_string,c.width/2, 35);
 
 }

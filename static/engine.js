@@ -163,7 +163,7 @@ function drawTurn() {
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
     time_string = units_of_time+" UNITS OF TIME"
-    ctx.fillText(time_string,c.width/2, 40);
+    ctx.fillText(time_string,c.width/2, 35);
 
 }
 

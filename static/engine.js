@@ -73,7 +73,7 @@ function drawPos() {
                         Math.round(match_data[current_state][i][j][k].Position)) +
                         (match_data[current_state][i][j][k].Direction ? '>' : '<') +
                         road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
-                    ctx.fillText(road, 1100, ((i+j)*115) + 82 + (k*20));
+                    ctx.fillText(road, 1075, ((i+j)*115) + 82 + (k*20));
                 }
             }
 
@@ -82,7 +82,7 @@ function drawPos() {
 }
 
 function drawState() {
-    x0 = 1075
+    x0 = 1050
     ctx.textAlign = "left";
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {

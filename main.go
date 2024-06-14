@@ -143,7 +143,6 @@ type hero struct {
 	Position  float64
 	Direction int
 	Health    int
-	Speed     int
 	Move      int
 
 	H head

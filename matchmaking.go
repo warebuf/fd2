@@ -617,7 +617,6 @@ func (m *match) run() {
 						Position:  0,
 						Direction: 0,
 						Health:    100,
-						Speed:     rand.Intn(10) * 10,
 						Move:      -1,
 						H:         h,
 						L:         larm,
@@ -627,7 +626,7 @@ func (m *match) run() {
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)
 					//fmt.Println(string(marshalled))
-					fmt.Println(temp.Position)
+					fmt.Println(temp.Position, temp.Direction, temp.H.HP)
 					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 
@@ -747,19 +746,19 @@ func (m *match) run() {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 								units_of_time := 999999.99
-								if m.team_client_hero[i][j][k].Speed != 0 {
-									units_of_time = toFixed(m.team_client_hero[i][j][k].Position/float64(m.team_client_hero[i][j][k].Speed), 3)
+								if m.team_client_hero[i][j][k].B.SPD != 0 {
+									units_of_time = toFixed(m.team_client_hero[i][j][k].Position/float64(m.team_client_hero[i][j][k].B.SPD), 3)
 								}
-								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Speed, units_of_time)
+								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
 								if units_of_time < min_units {
 									min_units = units_of_time
 								}
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
 								units_of_time := 999999.99
-								if m.team_client_hero[i][j][k].Speed != 0 {
-									units_of_time = toFixed((100-m.team_client_hero[i][j][k].Position)/float64(m.team_client_hero[i][j][k].Speed), 3)
+								if m.team_client_hero[i][j][k].B.SPD != 0 {
+									units_of_time = toFixed((100-m.team_client_hero[i][j][k].Position)/float64(m.team_client_hero[i][j][k].B.SPD), 3)
 								}
-								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Speed, units_of_time)
+								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
 								if units_of_time < min_units {
 									min_units = units_of_time
 								}
@@ -781,7 +780,7 @@ func (m *match) run() {
 						if m.team_client_hero[i][j][k].Health > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 
-								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].Speed)), 3)
+								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
 								if new_pos <= 0.01 {
 									new_pos = 0
 									has_cmds = true
@@ -792,7 +791,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position = new_pos
 
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].Speed)), 3)
+								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
 								if new_pos >= 99.99 {
 									new_pos = 100
 									has_atks = true

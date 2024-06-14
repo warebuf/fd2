@@ -182,16 +182,16 @@ function drawStats() {
     ctx.moveTo(113, 45);
     ctx.lineTo(355, 45);
     ctx.stroke();
-    ctx.fillText("HP", 5, 60) // H HP
-    ctx.fillText("ATK", 30, 60) // H ATK
-    ctx.fillText("DEF", 55, 60) // H DEF
-    ctx.fillText("ACC", 80, 60) // H ACC
-    ctx.fillText("CRT", 105, 60) // H CRT
-    ctx.fillText("MOB", 130, 60) // H MOB
-    ctx.fillText("CD", 155, 60) // H CD
-    ctx.fillText("CLU", 180, 60) // H CLU
-    ctx.fillText("USE", 205, 60) // H USE
-    ctx.fillText("WGH", 230, 60) // H WEIGHT
+    ctx.fillText("HP", 10, 60) // H HP
+    ctx.fillText("ATK", 35, 60) // H ATK
+    ctx.fillText("DEF", 60, 60) // H DEF
+    ctx.fillText("ACC", 85, 60) // H ACC
+    ctx.fillText("CRT", 110, 60) // H CRT
+    ctx.fillText("MOB", 135, 60) // H MOB
+    ctx.fillText("CD", 160, 60) // H CD
+    ctx.fillText("CLU", 185, 60) // H CLU
+    ctx.fillText("USE", 210, 60) // H USE
+    ctx.fillText("WGH", 235, 60) // H WEIGHT
 
     ctx.fillText("ARMS", 513, 40);
     ctx.lineWidth = 0.1;

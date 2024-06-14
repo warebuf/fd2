@@ -73,7 +73,7 @@ function drawPos() {
                         Math.round(match_data[current_state][i][j][k].Position)) +
                         (match_data[current_state][i][j][k].Direction ? '>' : '<') +
                         road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
-                    ctx.fillText(road, 1085, ((i+j)*115) + 82 + (k*20));
+                    ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
                 }
             }
 
@@ -83,6 +83,8 @@ function drawPos() {
 
 function drawState() {
     x0 = 1060
+    y0 = 100
+
     ctx.textAlign = "left";
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
@@ -92,29 +94,29 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0, ((i+j)*115) + 71 + (k*20), 5, 5);
+                ctx.fillRect(x0, ((i+j)*115) + y0-9 + (k*20), 5, 5);
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0-5, ((i+j)*115) + 76 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
+                ctx.fillRect(x0-5, ((i+j)*115) + y0-4 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0+5, ((i+j)*115) + 76 + (k*20), 5, 7);
+                ctx.fillRect(x0+5, ((i+j)*115) + y0-4 + (k*20), 5, 7);
                 if (true) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0, ((i+j)*115) + 81 + (k*20), 5, 7);
+                ctx.fillRect(x0, ((i+j)*115) + y0+1 + (k*20), 5, 7);
 
                 if ((i == my_team) && (j == my_int)) {
                     ctx.fillStyle = 'yellow';
-                    ctx.fillRect(x0+2, ((i+j)*115) + 78 + (k*20), 1, 1);
+                    ctx.fillRect(x0+2, ((i+j)*115) + y0-2 + (k*20), 1, 1);
                 }
 
                 if(status.substring(0,4) == "TURN") {
@@ -125,17 +127,17 @@ function drawState() {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
-                            ctx.fillText("->", x0-15,  ((i+j)*115) + 82 + (k*20));
+                            ctx.fillText("->", x0-15,  ((i+j)*115) + y0+2 + (k*20));
 
                         }
                         else if((match_data[current_state][indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
-                            ctx.fillText("->", x0-15,  ((i+j)*115) + 82 + (k*20));
+                            ctx.fillText("->", x0-15,  ((i+j)*115) + y0+2 + (k*20));
                         }
                         else {
-                            ctx.fillText("*", x0-15,  ((i+j)*115) + 82 + (k*20));
+                            ctx.fillText("*", x0-15,  ((i+j)*115) + y0+2 + (k*20));
                         }
 
 

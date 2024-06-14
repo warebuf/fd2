@@ -165,8 +165,8 @@ function drawStats() {
     ctx.fillText("UNIT", a0+(105/2), 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(960, 45);
-    ctx.lineTo(105, 45);
+    ctx.moveTo(a0-5, 45);
+    ctx.lineTo(a0+105, 45);
     ctx.stroke();
     ctx.textAlign = "center";
     ctx.fillText("D", a0 +(25*0), 60);
@@ -196,8 +196,8 @@ function drawStats() {
     ctx.fillText("ARMS", 513, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(392, 45);
-    ctx.lineTo(635, 45);
+    ctx.moveTo(a2, 45);
+    ctx.lineTo(a2+300, 45);
     ctx.stroke();
     ctx.fillText("S#", a2 +(25*0), 60) // H HP
     ctx.fillText("HP", a2 +(25*1), 60) // ARM HP
@@ -215,8 +215,8 @@ function drawStats() {
     ctx.fillText("LEGS", 836, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
-    ctx.moveTo(652, 45);
-    ctx.lineTo(1020, 45);
+    ctx.moveTo(a3, 45);
+    ctx.lineTo(a3+400, 45);
     ctx.stroke();
     ctx.fillText("S#", a3 +(25*0), 60) // LEG HP
     ctx.fillText("HP", a3 +(25*1), 60) // LEG HP

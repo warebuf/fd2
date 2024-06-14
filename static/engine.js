@@ -34,15 +34,6 @@ function anime() {
     let start = Date.now().toLocaleString('en-CH');
     ctx.font = '12px Arial';
 
-    // print the current time
-    ctx.textAlign = "left";
-    ctx.fillStyle = 'black';
-    ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),10,ctx.measureText(start).width,ctx.measureText('M').width);
-    //ctx.fillRect((c.width/2)-(ctx.measureText(start).width/2),(c.height/2)-ctx.measureText('M').width,ctx.measureText(start).width,ctx.measureText('M').width);
-    ctx.fillStyle = 'white';
-    ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), 20);
-    //ctx.fillText(start,(c.width/2) - (ctx.measureText(start).width/2), c.height/2);
-
     if(startCount != null) {
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
@@ -158,7 +149,7 @@ function drawState() {
 function drawTurn() {
     ctx.textAlign = "left";
     ctx.fillStyle = 'black';
-    ctx.fillRect(10,10,ctx.measureText(status).width,ctx.measureText('M').width);
+    ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),10,ctx.measureText(status).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "left";

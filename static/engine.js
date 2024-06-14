@@ -32,14 +32,13 @@ function anime() {
     ctx.fillRect(0,0,innerWidth,innerHeight);
 
     let start = Date.now().toLocaleString('en-CH');
-    ctx.font = '12px Arial';
 
     if(startCount != null) {
         ctx.textAlign = "center";
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
         ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),25,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
-        ctx.font = '12px Arial';
+        ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,(c.width/2) - (ctx.measureText(remaining_time).width/2), 35);
 

@@ -192,7 +192,7 @@ function drawStats() {
     ctx.fillText("USE", a1 +(25*9), 60) // H USE
     ctx.fillText("WGH", a1 +(25*10), 60) // H WEIGHT
 
-    a2 = 400
+    a2 = 300
     ctx.fillText("ARMS", 513, 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";

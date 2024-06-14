@@ -160,7 +160,7 @@ function drawTurn() {
 function drawStats() {
     ctx.fillStyle = 'white'
 
-    a0 = 960
+    a0 = 975
     ctx.textAlign = "center";
     ctx.fillText("UNIT", a0+(105/2), 40);
     ctx.lineWidth = 0.1;

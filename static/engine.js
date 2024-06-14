@@ -163,11 +163,11 @@ function drawStats() {
 
     a0 = 975
     ctx.textAlign = "center";
-    ctx.fillText("UNIT", a0+(105/2), 40);
+    ctx.fillText("UNIT", a0+(60/2), 40);
     ctx.lineWidth = 0.1;
     ctx.strokeStyle = "white";
     ctx.moveTo(a0-5, 45);
-    ctx.lineTo(a0+105, 45);
+    ctx.lineTo(a0+60, 45);
     ctx.stroke();
     ctx.textAlign = "center";
     ctx.fillText("D", a0 +(25*0), 60);

@@ -159,11 +159,11 @@ function drawState() {
 function drawTurn() {
     ctx.textAlign = "center";
     ctx.fillStyle = 'black';
-    ctx.fillRect((c.width/2)-(ctx.measureText(remaining_time).width/2),10,ctx.measureText(status).width,ctx.measureText('M').width);
+    ctx.fillRect(c.width/2,10,ctx.measureText(status).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
-    ctx.fillText(status,(c.width/2) - (ctx.measureText(remaining_time).width/2), 20);
+    ctx.fillText(status,c.width/2, 20);
 }
 
 function drawStats() {

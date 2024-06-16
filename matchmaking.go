@@ -553,7 +553,7 @@ func (m *match) run() {
 						CLU:         0,
 						Use_current: 0,
 						Use_outof:   0,
-						Weight:      0,
+						Weight:      1,
 					}
 
 					larm := arm{
@@ -570,7 +570,7 @@ func (m *match) run() {
 						CLU:         0,
 						Use_current: 0,
 						Use_outof:   0,
-						Weight:      0,
+						Weight:      1,
 					}
 
 					rarm := arm{
@@ -587,7 +587,7 @@ func (m *match) run() {
 						CLU:         0,
 						Use_current: 0,
 						Use_outof:   0,
-						Weight:      0,
+						Weight:      1,
 					}
 
 					btm := bottom{
@@ -603,7 +603,7 @@ func (m *match) run() {
 						CLU:         0,
 						Use_current: 0,
 						Use_outof:   0,
-						Weight:      0,
+						Weight:      1,
 
 						DOG: 0,
 						SPD: rand.Intn(10) * 10,

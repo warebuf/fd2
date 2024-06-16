@@ -803,19 +803,25 @@ func (m *match) run() {
 				}
 			}
 
+			check_gameover := true
+
 			// simulate all attacks
 			if has_atks {
 				for i := 0; i < len(m.team_client_hero); i++ {
 					for j := 0; j < len(m.team_client_hero[i]); j++ {
 						for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 							if (m.team_client_hero[i][j][k].Direction == 1) && (m.team_client_hero[i][j][k].Position == 100) {
-								close_attack(m.team_client_hero, i, j, k)
+								check_gameover = close_attack(m.team_client_hero, i, j, k)
 								m.team_client_hero[i][j][k].Direction = 0
 								m.team_client_hero[i][j][k].Move = -1
 							}
 						}
 					}
 				}
+			}
+
+			if check_gameover {
+				// do something special
 			}
 
 			m.sharepos()
@@ -925,7 +931,7 @@ func (m *match) sharepos() {
 	}
 }
 
-func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
+func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) bool {
 
 	fmt.Println("called close attack")
 
@@ -939,15 +945,22 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
 		if i != atk_t {
 			for j := 0; j < len(state[i]); j++ {
 				for k := 0; k < len(state[i][j]); k++ {
-					if 100-state[i][j][k].Position < closest {
-						closest = 100 - state[i][j][k].Position
-						closest_i = i
-						closest_j = j
-						closest_k = k
+					if state[i][j][k].H.HP > 0 {
+						if 100-state[i][j][k].Position < closest {
+							closest = 100 - state[i][j][k].Position
+							closest_i = i
+							closest_j = j
+							closest_k = k
+						}
 					}
 				}
 			}
 		}
+	}
+
+	if closest == 999999.99 {
+		fmt.Println("no more enemies to attack")
+		return false
 	}
 
 	// attack closest enemy
@@ -984,4 +997,21 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
 	} else {
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
 	}
+
+	// TODO: instead could do a counter at the beginning, and if it's the last kill, return true, otherwise return false
+	// check if game over
+	gameover_check := true
+	for i := 0; i < len(state); i++ {
+		if i != atk_t {
+			for j := 0; j < len(state[i]); j++ {
+				for k := 0; k < len(state[i][j]); k++ {
+					if state[i][j][k].H.HP > 0 {
+						gameover_check = false
+					}
+				}
+			}
+		}
+	}
+
+	return gameover_check
 }

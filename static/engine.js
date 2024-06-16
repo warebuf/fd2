@@ -69,9 +69,19 @@ function drawPos() {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
                 if(match_data[current_state][i][j][k].Health > 0) {
                     let road = 'o' + "-".repeat(99) + 'x';
+
+                    symbol = '?'
+                    if(match_data[current_state][i][j][k].H.HP <= 0) {
+                        symbol = '+'
+                    } else if(match_data[current_state][i][j][k].Direction == 0) {
+                        symbol = '<'
+                    } else if(match_data[current_state][i][j][k].Direction == 1) {
+                        symbol = '>'
+                    }
+
                     road = road.substring(0,
                         Math.round(match_data[current_state][i][j][k].Position)) +
-                        (match_data[current_state][i][j][k].Direction ? '>' : '<') +
+                        symbol +
                         road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
                     ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
                 }

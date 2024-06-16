@@ -809,6 +809,7 @@ func (m *match) run() {
 					for j := 0; j < len(m.team_client_hero[i]); j++ {
 						for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 							if (m.team_client_hero[i][j][k].Direction == 1) && (m.team_client_hero[i][j][k].Position == 100) {
+								close_attack(m.team_client_hero, i, j, k)
 								m.team_client_hero[i][j][k].Direction = 0
 								m.team_client_hero[i][j][k].Move = -1
 							}
@@ -921,5 +922,62 @@ func (m *match) sharepos() {
 			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
 			}
 		}
+	}
+}
+
+func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
+
+	closest := 999999.99
+	closest_i := -1
+	closest_j := -1
+	closest_k := -1
+
+	// calculate closest enemy
+	for i := 0; i < len(state); i++ {
+		if i != atk_t {
+			for j := 0; j < len(state[i]); j++ {
+				for k := 0; k < len(state[i][j]); k++ {
+					if 100-state[i][j][k].Position < closest {
+						closest = 100 - state[i][j][k].Position
+						closest_i = i
+						closest_j = j
+						closest_k = k
+					}
+				}
+			}
+		}
+	}
+
+	// attack closest enemy
+	dmg := 100
+	hweight := 0
+	lweight := 0
+	rweight := 0
+	bweight := 0
+
+	if state[closest_i][closest_j][closest_k].B.HP > 0 {
+		hweight = int(100 * (state[closest_i][closest_j][closest_k].H.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+	}
+	if state[closest_i][closest_j][closest_k].B.HP > 0 {
+		lweight = int(100 * (state[closest_i][closest_j][closest_k].L.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+	}
+	if state[closest_i][closest_j][closest_k].B.HP > 0 {
+		rweight = int(100 * (state[closest_i][closest_j][closest_k].R.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+	}
+	if state[closest_i][closest_j][closest_k].B.HP > 0 {
+		bweight = int(100 * (state[closest_i][closest_j][closest_k].B.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+	}
+
+	random_number := rand.Intn(hweight + lweight + rweight + bweight)
+	fmt.Println(hweight, lweight, rweight, bweight, random_number)
+
+	if random_number < hweight {
+		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
+	} else if random_number < lweight {
+		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
+	} else if random_number < rweight {
+		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
+	} else {
+		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
 	}
 }

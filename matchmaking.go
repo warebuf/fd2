@@ -927,6 +927,8 @@ func (m *match) sharepos() {
 
 func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
 
+	fmt.Println("called close attack")
+
 	closest := 999999.99
 	closest_i := -1
 	closest_j := -1

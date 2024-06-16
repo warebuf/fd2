@@ -977,9 +977,9 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
 
 	if random_number < hweight {
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
-	} else if random_number < lweight {
+	} else if random_number < hweight+lweight {
 		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
-	} else if random_number < rweight {
+	} else if random_number < hweight+lweight+rweight {
 		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
 	} else {
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg

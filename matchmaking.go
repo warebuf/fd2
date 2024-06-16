@@ -983,10 +983,9 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) bool {
 		bweight = int(100 * (float64(state[closest_i][closest_j][closest_k].B.Weight) / float64(state[closest_i][closest_j][closest_k].H.Weight+state[closest_i][closest_j][closest_k].L.Weight+state[closest_i][closest_j][closest_k].R.Weight+state[closest_i][closest_j][closest_k].B.Weight)))
 	}
 
-	fmt.Println(hweight, lweight, rweight, bweight, hweight+lweight+rweight+bweight)
-	fmt.Printf("%T\n", hweight+lweight+rweight+bweight)
 	random_number := rand.Intn(hweight + lweight + rweight + bweight)
 	fmt.Println(hweight, lweight, rweight, bweight, random_number)
+	fmt.Println(atk_t, atk_u, atk_b, "v", closest_i, closest_j, closest_k)
 
 	if random_number < hweight {
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg

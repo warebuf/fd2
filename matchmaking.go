@@ -743,7 +743,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if m.team_client_hero[i][j][k].Health > 0 {
+						if m.team_client_hero[i][j][k].H.HP > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 								units_of_time := 999999.99
 								if m.team_client_hero[i][j][k].B.SPD != 0 {
@@ -777,7 +777,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if m.team_client_hero[i][j][k].Health > 0 {
+						if m.team_client_hero[i][j][k].H.HP > 0 {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 
 								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)

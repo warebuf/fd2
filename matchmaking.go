@@ -955,6 +955,8 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
 	rweight := int(0)
 	bweight := int(0)
 
+	fmt.Println(state[closest_i][closest_j][closest_k].H)
+
 	if state[closest_i][closest_j][closest_k].H.HP > 0 {
 		hweight = int(100 * (state[closest_i][closest_j][closest_k].H.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
 	}

@@ -955,22 +955,17 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) {
 	rweight := int(0)
 	bweight := int(0)
 
-	fmt.Println(state[closest_i][closest_j][closest_k].H, state[closest_i][closest_j][closest_k].H.HP)
-
 	if state[closest_i][closest_j][closest_k].H.HP > 0 {
-		fmt.Println(state[closest_i][closest_j][closest_k].H.Weight)
-		fmt.Println(state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)
-		fmt.Println(state[closest_i][closest_j][closest_k].H.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight))
-		hweight = int(100 * (state[closest_i][closest_j][closest_k].H.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+		hweight = int(100 * (float64(state[closest_i][closest_j][closest_k].H.Weight) / float64(state[closest_i][closest_j][closest_k].H.Weight+state[closest_i][closest_j][closest_k].L.Weight+state[closest_i][closest_j][closest_k].R.Weight+state[closest_i][closest_j][closest_k].B.Weight)))
 	}
 	if state[closest_i][closest_j][closest_k].L.HP > 0 {
-		lweight = int(100 * (state[closest_i][closest_j][closest_k].L.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+		lweight = int(100 * (float64(state[closest_i][closest_j][closest_k].L.Weight) / float64(state[closest_i][closest_j][closest_k].H.Weight+state[closest_i][closest_j][closest_k].L.Weight+state[closest_i][closest_j][closest_k].R.Weight+state[closest_i][closest_j][closest_k].B.Weight)))
 	}
 	if state[closest_i][closest_j][closest_k].R.HP > 0 {
-		rweight = int(100 * (state[closest_i][closest_j][closest_k].R.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+		rweight = int(100 * (float64(state[closest_i][closest_j][closest_k].R.Weight) / float64(state[closest_i][closest_j][closest_k].H.Weight+state[closest_i][closest_j][closest_k].L.Weight+state[closest_i][closest_j][closest_k].R.Weight+state[closest_i][closest_j][closest_k].B.Weight)))
 	}
 	if state[closest_i][closest_j][closest_k].B.HP > 0 {
-		bweight = int(100 * (state[closest_i][closest_j][closest_k].B.Weight / (state[closest_i][closest_j][closest_k].H.Weight + state[closest_i][closest_j][closest_k].L.Weight + state[closest_i][closest_j][closest_k].R.Weight + state[closest_i][closest_j][closest_k].B.Weight)))
+		bweight = int(100 * (float64(state[closest_i][closest_j][closest_k].B.Weight) / float64(state[closest_i][closest_j][closest_k].H.Weight+state[closest_i][closest_j][closest_k].L.Weight+state[closest_i][closest_j][closest_k].R.Weight+state[closest_i][closest_j][closest_k].B.Weight)))
 	}
 
 	fmt.Println(hweight, lweight, rweight, bweight, hweight+lweight+rweight+bweight)

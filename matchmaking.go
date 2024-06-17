@@ -816,6 +816,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Move = -1
 
 								if len(enemy) > 0 {
+									fmt.Println("SENDING ATTACK_EVENT")
 									enemies_exist = 1
 									msg := &message{Event: "attack_event", Message: "close", Attacker: []int{i, j, k}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
 

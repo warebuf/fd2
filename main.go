@@ -248,13 +248,18 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	TCH    [][][]string
-	Status string
+	TCH      [][][]string
+	Status   string
+	isAttack int
 
 	// should add the user's TCH
 	Team_index   int
 	Client_index int
 	Hero_index   int
+
+	Attacker []int
+	Defender [][]int
+	Damage   [][]string
 }
 
 // Global Variables - Utility

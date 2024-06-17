@@ -803,28 +803,49 @@ func (m *match) run() {
 				}
 			}
 
-			check_gameover := true
-
+			enemies_exist := 0
 			// simulate all attacks
 			if has_atks {
 				for i := 0; i < len(m.team_client_hero); i++ {
 					for j := 0; j < len(m.team_client_hero[i]); j++ {
 						for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 							if (m.team_client_hero[i][j][k].Direction == 1) && (m.team_client_hero[i][j][k].Position == 100) {
-								check_gameover = close_attack(m.team_client_hero, i, j, k)
+								enemy := closest_enemies(m.team_client_hero, i, j, k)
+								dmg_list := close_attack(m.team_client_hero, i, j, k, enemy)
 								m.team_client_hero[i][j][k].Direction = 0
 								m.team_client_hero[i][j][k].Move = -1
+
+								if len(enemy) > 0 {
+									enemies_exist = 1
+									msg := &message{Event: "attack_event", Message: "close", Attacker: []int{i, j, k}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
+
+									for _, i := range m.gamer_uid_to_msid_to_match_socket {
+										for _, j := range i {
+											select {
+											case j.incoming_message <- msg:
+											}
+										}
+									}
+
+									for _, i := range m.spectator_uid_to_msid_to_match_socket {
+										for _, j := range i {
+											select {
+											case j.incoming_message <- msg:
+											}
+										}
+									}
+								}
 							}
 						}
 					}
 				}
 			}
 
-			if check_gameover {
-				// do something special
-			}
+			m.sharepos(enemies_exist)
 
-			m.sharepos()
+			if game_over_check(m.team_client_hero) {
+				// have to handle a game over
+			}
 
 			// send new timer to everyone
 			timer1_length := time.Second * 120
@@ -886,7 +907,6 @@ func globalBroadcast(msg *message) {
 
 	pid_to_permissions.mutex.RUnlock()
 }
-
 func printAllMatchUserWS() {
 	fmt.Println("printing everything")
 
@@ -898,7 +918,7 @@ func printAllMatchUserWS() {
 	}
 }
 
-func (m *match) sharepos() {
+func (m *match) sharepos(isAttack int) {
 	fmt.Println("sharepos")
 
 	// have to hide moves of everyone who is not on your team
@@ -918,27 +938,24 @@ func (m *match) sharepos() {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid, isAttack: isAttack}:
 			}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid, isAttack: isAttack}:
 			}
 		}
 	}
 }
 
-func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) bool {
+func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 
-	fmt.Println("called close attack")
+	ans := [][]int{}
 
 	closest := 999999.99
-	closest_i := -1
-	closest_j := -1
-	closest_k := -1
 
 	// calculate closest enemy
 	for i := 0; i < len(state); i++ {
@@ -946,11 +963,12 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) bool {
 			for j := 0; j < len(state[i]); j++ {
 				for k := 0; k < len(state[i][j]); k++ {
 					if state[i][j][k].H.HP > 0 {
-						if 100-state[i][j][k].Position < closest {
+						if 100-state[i][j][k].Position == closest {
 							closest = 100 - state[i][j][k].Position
-							closest_i = i
-							closest_j = j
-							closest_k = k
+							ans = append(ans, []int{i, j, k})
+						} else if 100-state[i][j][k].Position < closest {
+							closest = 100 - state[i][j][k].Position
+							ans = append([][]int{}, []int{i, j, k})
 						}
 					}
 				}
@@ -958,17 +976,29 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) bool {
 		}
 	}
 
-	if closest == 999999.99 {
+	return ans
+}
+func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]int) [][]string {
+
+	fmt.Println("called close attack")
+
+	if len(def) == 0 {
 		fmt.Println("no more enemies to attack")
-		return false
+		return [][]string{}
 	}
 
-	// attack closest enemy
+	closest_i := def[0][0]
+	closest_j := def[0][1]
+	closest_k := def[0][2]
+
+	// attack first closest enemy
 	dmg := 100
 	hweight := int(0)
 	lweight := int(0)
 	rweight := int(0)
 	bweight := int(0)
+
+	dmg_list := [][]string{}
 
 	if state[closest_i][closest_j][closest_k].H.HP > 0 {
 		hweight = int(100 * (float64(state[closest_i][closest_j][closest_k].H.Weight) / float64(state[closest_i][closest_j][closest_k].H.Weight+state[closest_i][closest_j][closest_k].L.Weight+state[closest_i][closest_j][closest_k].R.Weight+state[closest_i][closest_j][closest_k].B.Weight)))
@@ -989,28 +1019,44 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int) bool {
 
 	if random_number < hweight {
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
+		dmg_list = append(dmg_list, []string{"H;100"})
 	} else if random_number < hweight+lweight {
 		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
+		dmg_list = append(dmg_list, []string{"L;100"})
 	} else if random_number < hweight+lweight+rweight {
 		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
+		dmg_list = append(dmg_list, []string{"R;100"})
 	} else {
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
+		dmg_list = append(dmg_list, []string{"B;100"})
 	}
 
-	// TODO: instead could do a counter at the beginning, and if it's the last kill, return true, otherwise return false
-	// check if game over
-	gameover_check := true
+	return dmg_list
+}
+func game_over_check(state [][][]*hero) bool {
+
+	// check all teams, if there are two+ teams with alive heroes, then it is not game over
+	counter := 0
 	for i := 0; i < len(state); i++ {
-		if i != atk_t {
-			for j := 0; j < len(state[i]); j++ {
-				for k := 0; k < len(state[i][j]); k++ {
-					if state[i][j][k].H.HP > 0 {
-						gameover_check = false
-					}
+		at_least_one_alive := false
+		for j := 0; j < len(state[i]); j++ {
+			for k := 0; k < len(state[i][k]); k++ {
+				if state[i][j][k].H.HP > 0 {
+					at_least_one_alive = true
+					break
 				}
+			}
+			if at_least_one_alive == true {
+				break
+			}
+		}
+		if at_least_one_alive == true {
+			counter++
+			if counter >= 2 {
+				return false
 			}
 		}
 	}
 
-	return gameover_check
+	return true
 }

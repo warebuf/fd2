@@ -1041,7 +1041,7 @@ func game_over_check(state [][][]*hero) bool {
 	for i := 0; i < len(state); i++ {
 		at_least_one_alive := false
 		for j := 0; j < len(state[i]); j++ {
-			for k := 0; k < len(state[i][k]); k++ {
+			for k := 0; k < len(state[i][j]); k++ {
 				if state[i][j][k].H.HP > 0 {
 					at_least_one_alive = true
 					break

@@ -769,9 +769,10 @@ func (m *match) run() {
 			}
 			fmt.Println("min", min_units)
 
-			has_atks := false
 			has_cmds := false
 			only_bot_cmds := true
+
+			list_of_attackers := [][]int{}
 
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
@@ -794,7 +795,7 @@ func (m *match) run() {
 								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
 								if new_pos >= 99.99 {
 									new_pos = 100
-									has_atks = true
+									list_of_attackers = append(list_of_attackers, []int{i, j, k})
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 							}
@@ -805,37 +806,30 @@ func (m *match) run() {
 
 			enemies_exist := 0
 			// simulate all attacks
-			if has_atks {
-				for i := 0; i < len(m.team_client_hero); i++ {
-					for j := 0; j < len(m.team_client_hero[i]); j++ {
-						for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-							if (m.team_client_hero[i][j][k].Direction == 1) && (m.team_client_hero[i][j][k].Position == 100) {
-								enemy := closest_enemies(m.team_client_hero, i, j, k)
-								dmg_list := close_attack(m.team_client_hero, i, j, k, enemy)
-								m.team_client_hero[i][j][k].Direction = 0
-								m.team_client_hero[i][j][k].Move = -1
 
-								if len(enemy) > 0 {
-									fmt.Println("SENDING ATTACK_EVENT")
-									enemies_exist = 1
-									msg := &message{Event: "attack_event", Message: "close", Attacker: []int{i, j, k}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
+			for i := 0; i < len(list_of_attackers); i++ {
+				enemy := closest_enemies(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2])
+				dmg_list := close_attack(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2], enemy)
+				m.team_client_hero[list_of_attackers[i][0]][list_of_attackers[i][1]][list_of_attackers[i][2]].Direction = 0
+				m.team_client_hero[list_of_attackers[i][0]][list_of_attackers[i][1]][list_of_attackers[i][2]].Move = -1
 
-									for _, i := range m.gamer_uid_to_msid_to_match_socket {
-										for _, j := range i {
-											select {
-											case j.incoming_message <- msg:
-											}
-										}
-									}
+				if len(enemy) > 0 {
+					fmt.Println("SENDING ATTACK_EVENT")
+					enemies_exist = 1
+					msg := &message{Event: "attack_event", Message: "close", Attacker: []int{list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2]}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
 
-									for _, i := range m.spectator_uid_to_msid_to_match_socket {
-										for _, j := range i {
-											select {
-											case j.incoming_message <- msg:
-											}
-										}
-									}
-								}
+					for _, i := range m.gamer_uid_to_msid_to_match_socket {
+						for _, j := range i {
+							select {
+							case j.incoming_message <- msg:
+							}
+						}
+					}
+
+					for _, i := range m.spectator_uid_to_msid_to_match_socket {
+						for _, j := range i {
+							select {
+							case j.incoming_message <- msg:
 							}
 						}
 					}

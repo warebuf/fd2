@@ -388,8 +388,7 @@ func (m *match) run() {
 			fmt.Println("a socket has left the match")
 
 			// if empty now, delete match, clear all users and global variables of objects related to this match
-			fmt.Println("size of gamer_uid_to_msid_to_match_socket", len(m.gamer_uid_to_msid_to_match_socket))
-			if len(m.gamer_uid_to_msid_to_match_socket) == 0 {
+			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
 				delete(mid_to_match.match, m.mid)
 				globalBroadcast(&message{Event: "removeMatch", Message: "0"}) // let everyone know there is a new room
 				break

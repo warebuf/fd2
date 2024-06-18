@@ -299,9 +299,8 @@ func (m *match) run() {
 			fmt.Println("joined the game")
 
 			// send the joined user a list of all historic messages
-			for i, j := range m.message_logs {
+			for _, j := range m.message_logs {
 				ws.incoming_message <- j
-				fmt.Println(i, j.Message)
 			}
 
 			// let all participants know that a new user has joined
@@ -432,7 +431,6 @@ func (m *match) run() {
 
 					} else {
 						for _, l := range j {
-							fmt.Println(l.msid)
 							if (l.user_time == time.Time{}) {
 								allset = false
 								break
@@ -626,7 +624,6 @@ func (m *match) run() {
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)
 					//fmt.Println(string(marshalled))
-					fmt.Println(temp.Position, temp.Direction, temp.H.HP)
 					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 
@@ -928,7 +925,7 @@ func (m *match) sharepos(isAttack int) {
 		for j := 0; j < len(m.team_client_hero[i]); j++ {
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 				marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
-				fmt.Println(string(marshalled))
+				//fmt.Println(string(marshalled))
 				m.TCH_JSON[i][j][k] = string(marshalled)
 			}
 		}

@@ -841,6 +841,23 @@ func (m *match) run() {
 				has_cmds = true
 				only_bot_cmds = false
 
+				msg := &message{Event: "game_over"}
+
+				for _, i := range m.gamer_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
+				}
+
+				for _, i := range m.spectator_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
+				}
 			}
 
 			// send new timer to everyone

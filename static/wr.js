@@ -74,7 +74,7 @@ function removeB2() {
 	
 	document.getElementById("container").insertAdjacentHTML('beforeend',
 		"<div id=\"opponent\"> <label>Choose Number of Opponent:</label> <select id=\"opponentselect\"> " +
-		"			<option value=\"2\">2</option>" +
+		"			<option value=\"1\">1</option>" +
 		"			<option value=\"3\">3</option>" +
 		"			<option value=\"9\">9</option>" +
 		"			<option value=\"99\">99</option>" +

@@ -23,7 +23,7 @@ func p_write(p *permission_socket) {
 
 func p_read(p *permission_socket) {
 	defer func() {
-		fmt.Printf("read socket closing")
+		fmt.Println("read psocket closing")
 
 		pid_to_permissions.mutex.Lock()
 		delete(pid_to_permissions.global, p.pid)
@@ -209,20 +209,6 @@ func createMatch(msg *message) *match {
 	return ans
 }
 
-func deleteMatch() {
-	fmt.Println("deleting the match")
-
-	// remove all permission sockets from global variables
-
-	// remove match from all users
-	// remove match from all global variables
-
-	// delete match itself
-
-	// let all existing psockets know that the match does not exist anymore
-
-}
-
 func (m *match) run() {
 	for {
 
@@ -404,7 +390,9 @@ func (m *match) run() {
 			// if empty now, delete match, clear all users and global variables of objects related to this match
 			fmt.Println("size of gamer_uid_to_msid_to_match_socket", len(m.gamer_uid_to_msid_to_match_socket))
 			if len(m.gamer_uid_to_msid_to_match_socket) == 0 {
-				deleteMatch()
+				delete(mid_to_match.match, m.mid)
+				globalBroadcast(&message{Event: "removeMatch", Message: "0"}) // let everyone know there is a new room
+				break
 			} else {
 				printAllMatchUserWS()
 			}
@@ -941,6 +929,8 @@ func (m *match) run() {
 		}
 
 	}
+
+	fmt.Println("got out of infinite for loop")
 }
 
 func globalBroadcast(msg *message) {

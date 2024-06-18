@@ -210,6 +210,16 @@ func createMatch(msg *message) *match {
 }
 
 func deleteMatch() {
+	fmt.Println("deleting the match")
+
+	// remove all permission sockets from global variables
+
+	// remove match from all users
+	// remove match from all global variables
+
+	// delete match itself
+
+	// let all existing psockets know that the match does not exist anymore
 
 }
 
@@ -260,7 +270,7 @@ func (m *match) run() {
 			}
 			m.mutex.Unlock()
 
-			// if this is the first socket the user has joined this room, send a message to everyone that he's joined
+			// if this is the first socket the user has left the room, send a message to everyone that he's joined
 			if check_uid == true {
 				msg := &message{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), MatchID: m.mid}
 				go func() {
@@ -393,8 +403,11 @@ func (m *match) run() {
 
 			// if empty now, delete match, clear all users and global variables of objects related to this match
 			fmt.Println("size of gamer_uid_to_msid_to_match_socket", len(m.gamer_uid_to_msid_to_match_socket))
-
-			printAllMatchUserWS()
+			if len(m.gamer_uid_to_msid_to_match_socket) == 0 {
+				deleteMatch()
+			} else {
+				printAllMatchUserWS()
+			}
 			continue
 
 		case u := <-m.bot_join:

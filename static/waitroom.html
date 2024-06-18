@@ -208,6 +208,7 @@
 					for(i=0;i<list_of_matches.length;i++) {
 						console.log(i, list_of_matches[i])
 						console.log(i, list_of_matches[i].textContent)
+						console.log(msg.Message, typeof(msg.Message))
 						if(list_of_matches[i].textContent==msg.Message) {
 							list_of_matches[i-2].remove();
 							break;

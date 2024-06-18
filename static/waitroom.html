@@ -205,10 +205,13 @@
 				}
 				else if(msg.Event == "removeMatch") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
-					var next_instance = false;
 					for(i=0;i<list_of_matches.length;i++) {
 						console.log(i, list_of_matches[i])
 						console.log(i, list_of_matches[i].textContent)
+						if(list_of_matches[i].textContent==msg.Message) {
+							list_of_matches[i-2].remove();
+							break;
+						}
 					}
 				}
 

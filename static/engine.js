@@ -72,7 +72,7 @@ function drawPos() {
 
                     symbol = '?'
                     if(match_data[current_state][i][j][k].H.HP <= 0) {
-                        symbol = '+'
+                        symbol = 'T'
                     } else if(match_data[current_state][i][j][k].Direction == 0) {
                         symbol = '<'
                     } else if(match_data[current_state][i][j][k].Direction == 1) {

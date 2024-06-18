@@ -33,7 +33,12 @@ function anime() {
 
     let start = Date.now().toLocaleString('en-CH');
 
-    if(startCount != null) {
+    if(game_over == true) {
+        ctx.textAlign = "center";
+        ctx.fillStyle = 'red';
+        ctx.fillRect((c.width/2)-(ctx.measureText("GAMEOVER").width/2),40,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
+    }
+    else if(startCount != null) {
         ctx.textAlign = "center";
         remaining_time = startCount - start.replaceAll("’","")
         ctx.fillStyle = 'black';
@@ -169,25 +174,11 @@ function drawTurn() {
     ctx.textAlign = "center";
     ctx.fillText(status,c.width/2, 20);
 
-
-    if(game_over==true) {
-        ctx.textAlign = "center";
-        ctx.fillStyle = 'red';
-        ctx.fillRect(c.width/2,35,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
-
-        ctx.textAlign = "center";
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        ctx.fillText("GAMEOVER",c.width/2, 35);
-
-    } else {
-        ctx.textAlign = "center";
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        time_string = units_of_time+"s"
-        ctx.fillText(time_string,c.width/2, 35);
-    }
-
+    ctx.textAlign = "center";
+    ctx.font = '11px monospace';
+    ctx.fillStyle = 'white';
+    time_string = units_of_time+"s"
+    ctx.fillText(time_string,c.width/2, 35);
 }
 
 function drawStats() {

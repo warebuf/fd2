@@ -44,7 +44,6 @@ function removeB1() {
 	var e2 = document.getElementById("opponentselect").value;
 	socket.send(JSON.stringify({ "Event": 'createMatch', "Message": e1+e2 }))
 
-
 	var button = document.getElementById("b1");
 	button.remove();
 	var menu1 = document.getElementById("opponent");
@@ -59,7 +58,7 @@ function removeB1() {
 function removeB2() {
 	var button = document.getElementById("b2");
 	button.remove();
-	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Connect to a Match</button>");
+	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Create a Match</button>");
 
 	document.getElementById("container").insertAdjacentHTML('beforeend',
 		"<div id=\"format\">\n" +

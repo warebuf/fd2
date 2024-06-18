@@ -746,7 +746,7 @@ func (m *match) run() {
 								if m.team_client_hero[i][j][k].B.SPD != 0 {
 									units_of_time = toFixed(m.team_client_hero[i][j][k].Position/float64(m.team_client_hero[i][j][k].B.SPD), 3)
 								}
-								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
+								//fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
 								if units_of_time < min_units {
 									min_units = units_of_time
 								}
@@ -755,7 +755,7 @@ func (m *match) run() {
 								if m.team_client_hero[i][j][k].B.SPD != 0 {
 									units_of_time = toFixed((100-m.team_client_hero[i][j][k].Position)/float64(m.team_client_hero[i][j][k].B.SPD), 3)
 								}
-								fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
+								//fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
 								if units_of_time < min_units {
 									min_units = units_of_time
 								}

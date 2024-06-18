@@ -442,7 +442,7 @@ func (m *match) run() {
 						break
 					}
 				}
-				if allset == true {
+				if allset == true && m.ended == false {
 					fmt.Println("started gamecountdown from bot join")
 					m.start_ticker <- true
 				}
@@ -847,6 +847,9 @@ func (m *match) run() {
 				has_cmds = true
 				only_bot_cmds = false
 
+				m.ended = true
+				m.ticker.Stop()
+
 				msg := &message{Event: "game_over"}
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
@@ -864,10 +867,6 @@ func (m *match) run() {
 						}
 					}
 				}
-
-				m.ended = true
-
-				close(m.simulate)
 
 			}
 

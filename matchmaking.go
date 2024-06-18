@@ -305,7 +305,7 @@ func (m *match) run() {
 			}
 
 			if m.ended == true {
-				ws.incoming_message <- &message{Event: "game_over"}
+				ws.incoming_message <- &message{Event: "game_over", Message: m.mid.String()}
 			}
 
 			// let all participants know that a new user has joined
@@ -861,7 +861,7 @@ func (m *match) run() {
 				m.ended = true
 				m.ticker.Stop()
 
-				msg := &message{Event: "game_over"}
+				msg := &message{Event: "game_over", Message: m.mid.String()}
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {

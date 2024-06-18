@@ -99,25 +99,25 @@ function drawState() {
     for(let i = 0; i < match_data[current_state].length; i++) {
         for(let j = 0; j < match_data[current_state][i].length; j++) {
             for(let k = 0; k < match_data[current_state][i][j].length; k++) {
-                if (match_data[current_state][i][j][k].Health > 0) {
+                if (match_data[current_state][i][j][k].H.HP > 0) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0, ((i+j)*115) + y0-9 + (k*20), 5, 5);
-                if (true) {
+                if (match_data[current_state][i][j][k].L.HP > 0) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0-5, ((i+j)*115) + y0-4 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
-                if (true) {
+                if (match_data[current_state][i][j][k].R.HP > 0) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0+5, ((i+j)*115) + y0-4 + (k*20), 5, 7);
-                if (true) {
+                if (match_data[current_state][i][j][k].B.HP > 0) {
                     ctx.fillStyle = 'green';
                 } else {
                     ctx.fillStyle = 'red';

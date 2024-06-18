@@ -209,6 +209,10 @@ func createMatch(msg *message) *match {
 	return ans
 }
 
+func deleteMatch() {
+
+}
+
 func (m *match) run() {
 	for {
 
@@ -381,8 +385,11 @@ func (m *match) run() {
 			close(ws.incoming_message)
 			ws.socket.Close()
 			ws.open = false
-
 			fmt.Println("a socket has left the match")
+
+			// if empty now, delete match, clear all users and global variables of objects related to this match
+			fmt.Println("size of gamer_uid_to_msid_to_match_socket", len(m.gamer_uid_to_msid_to_match_socket))
+
 			printAllMatchUserWS()
 			continue
 
@@ -940,7 +947,6 @@ func printAllMatchUserWS() {
 		}
 	}
 }
-
 func (m *match) sharepos(attackLogPop int) {
 	fmt.Println("sharepos")
 
@@ -973,7 +979,6 @@ func (m *match) sharepos(attackLogPop int) {
 		}
 	}
 }
-
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 
 	ans := [][]int{}

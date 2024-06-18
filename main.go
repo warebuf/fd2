@@ -248,9 +248,9 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	TCH      [][][]string
-	Status   string
-	IsAttack int
+	TCH          [][][]string
+	Status       string
+	AttackLogPop int
 
 	// should add the user's TCH
 	Team_index   int

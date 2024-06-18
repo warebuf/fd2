@@ -770,6 +770,7 @@ func (m *match) run() {
 			only_bot_cmds := true
 
 			list_of_attackers := [][]int{}
+			num_total_attacks := 0
 
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
@@ -801,9 +802,7 @@ func (m *match) run() {
 				}
 			}
 
-			enemies_exist := 0
 			// simulate all attacks
-
 			for i := 0; i < len(list_of_attackers); i++ {
 				enemy := closest_enemies(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2])
 				dmg_list := close_attack(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2], enemy)
@@ -812,7 +811,7 @@ func (m *match) run() {
 
 				if len(enemy) > 0 {
 					fmt.Println("SENDING ATTACK_EVENT")
-					enemies_exist = 1
+					num_total_attacks += 1
 					msg := &message{Event: "attack_event", Message: "close", Attacker: []int{list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2]}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
 
 					for _, i := range m.gamer_uid_to_msid_to_match_socket {
@@ -833,7 +832,7 @@ func (m *match) run() {
 				}
 			}
 
-			m.sharepos(enemies_exist)
+			m.sharepos(num_total_attacks)
 
 			if game_over_check(m.team_client_hero) {
 				// have to handle a game over
@@ -915,7 +914,7 @@ func printAllMatchUserWS() {
 	}
 }
 
-func (m *match) sharepos(isAttack int) {
+func (m *match) sharepos(attackLogPop int) {
 	fmt.Println("sharepos")
 
 	// have to hide moves of everyone who is not on your team

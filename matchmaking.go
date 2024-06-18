@@ -305,7 +305,7 @@ func (m *match) run() {
 			}
 
 			if m.ended == true {
-				ws.incoming_message <- &message{Event: "game_over", Message: m.mid.String()}
+				ws.incoming_message <- &message{Event: "game_over"}
 			}
 
 			// let all participants know that a new user has joined
@@ -390,7 +390,7 @@ func (m *match) run() {
 			// if empty now, delete match, clear all users and global variables of objects related to this match
 			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
 				delete(mid_to_match.match, m.mid)
-				globalBroadcast(&message{Event: "removeMatch", Message: "0"}) // let everyone know there is a new room
+				globalBroadcast(&message{Event: "removeMatch", Message: m.mid}) // let everyone know there is a new room
 				break
 			} else {
 				printAllMatchUserWS()
@@ -861,7 +861,7 @@ func (m *match) run() {
 				m.ended = true
 				m.ticker.Stop()
 
-				msg := &message{Event: "game_over", Message: m.mid.String()}
+				msg := &message{Event: "game_over"}
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {

@@ -169,11 +169,24 @@ function drawTurn() {
     ctx.textAlign = "center";
     ctx.fillText(status,c.width/2, 20);
 
-    ctx.textAlign = "center";
-    ctx.font = '11px monospace';
-    ctx.fillStyle = 'white';
-    time_string = units_of_time+"s"
-    ctx.fillText(time_string,c.width/2, 35);
+
+    if(game_over==true) {
+        ctx.textAlign = "center";
+        ctx.fillStyle = 'black';
+        ctx.fillRect(c.width/2,10,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
+
+        ctx.textAlign = "center";
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.fillText("GAMEOVER",c.width/2, 35);
+
+    } else {
+        ctx.textAlign = "center";
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        time_string = units_of_time+"s"
+        ctx.fillText(time_string,c.width/2, 35);
+    }
 
 }
 

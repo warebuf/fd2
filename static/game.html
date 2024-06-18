@@ -322,6 +322,8 @@
 
     var atk_queue = []
 
+    var game_over = false;
+
     function test() {
 
         var messages = document.getElementById("messages")
@@ -416,6 +418,9 @@
 
                         atk_queue.push(s)
                     }
+                }
+                else if(msg.Event == 'game_over') {
+                    game_over = true
                 }
 
             }

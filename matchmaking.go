@@ -308,6 +308,8 @@ func (m *match) run() {
 				ws.incoming_message <- j
 			}
 
+			ws.incoming_message <- &message{Event: "game_over"}
+
 			// let all participants know that a new user has joined
 			if check_uid == false {
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}

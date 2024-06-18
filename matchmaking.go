@@ -840,6 +840,11 @@ func (m *match) run() {
 
 			if game_over_check(m.team_client_hero) {
 				// have to handle a game over
+
+				// just setting this for now to make sure we don't call 'SIMULATE' anymore
+				has_cmds = true
+				only_bot_cmds = false
+
 			}
 
 			// send new timer to everyone

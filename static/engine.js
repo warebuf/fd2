@@ -172,8 +172,8 @@ function drawTurn() {
 
     if(game_over==true) {
         ctx.textAlign = "center";
-        ctx.fillStyle = 'black';
-        ctx.fillRect(c.width/2,10,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
+        ctx.fillStyle = 'red';
+        ctx.fillRect(c.width/2,35,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
 
         ctx.textAlign = "center";
         ctx.font = '11px monospace';

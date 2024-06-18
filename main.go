@@ -159,6 +159,7 @@ type match struct {
 	sides     uint
 	capacity  uint
 	started   bool
+	ended     bool
 
 	// each client is represented as an int
 	team_client_hero [][][]*hero
@@ -185,12 +186,12 @@ type match struct {
 	spectator_uid_to_user                 map[uuid.UUID]*user
 
 	ticker         *time.Ticker
-	type_of_ticker string
+	type_of_ticker string // tells you turn #, phase
 	start_ticker   chan bool
 
 	message_logs []*message
 
-	open chan bool
+	//open chan bool
 
 	simulate chan bool
 }

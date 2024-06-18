@@ -159,6 +159,7 @@ func createMatch(msg *message) *match {
 				capacity:  num,
 				sides:     sd,
 				started:   false,
+				ended:     false,
 
 				team_client_hero: make([][][]*hero, 0, 0),
 				TCH_JSON:         make([][][]string, 0, 0),
@@ -189,7 +190,7 @@ func createMatch(msg *message) *match {
 
 				message_logs: make([]*message, 0, 16),
 
-				open: make(chan bool),
+				//open: make(chan bool),
 
 				simulate: make(chan bool),
 			}
@@ -863,6 +864,11 @@ func (m *match) run() {
 						}
 					}
 				}
+
+				m.ended = true
+
+				close(m.simulate)
+
 			}
 
 			// send new timer to everyone

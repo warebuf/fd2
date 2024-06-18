@@ -39,7 +39,7 @@ function anime() {
         ctx.fillRect((c.width/2)-(ctx.measureText("GAMEOVER").width/2),40,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.fillText("GAMEOVER",c.width/2, 40);
+        ctx.fillText("GAMEOVER",c.width/2, 45);
     }
     else if(startCount != null) {
         ctx.textAlign = "center";

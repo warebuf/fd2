@@ -396,7 +396,7 @@
                     }
 
                     console.log("GOTHERE2", msg.IsAttack)
-                    if(msg.IsAttack == 1) {
+                    for (i=0; i<msg.AttackLogPop;i++) {
                         console.log("GOTHERE3")
                         event_log.push(atk_queue.shift())
                     }

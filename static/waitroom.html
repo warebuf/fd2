@@ -220,7 +220,8 @@
 	}
 	function sendStart(mid) {
 		console.log("sent start")
-		window.location.replace('http://{{.host}}/game/' + mid);
+		//window.location.replace('http://{{.host}}/game/' + mid);
+		window.location.href = 'http://{{.host}}/game/' + mid;
 	}
 
 

@@ -35,7 +35,7 @@ function anime() {
 
     if(game_over == true) {
         ctx.textAlign = "center";
-        ctx.fillStyle = 'red';
+        ctx.fillStyle = 'blue';
         ctx.fillRect((c.width/2)-(ctx.measureText("GAMEOVER").width/2),40,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';

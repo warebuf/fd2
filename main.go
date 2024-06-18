@@ -250,7 +250,7 @@ type message struct {
 	// game state stuff
 	TCH      [][][]string
 	Status   string
-	isAttack int
+	IsAttack int
 
 	// should add the user's TCH
 	Team_index   int

@@ -126,6 +126,7 @@ function drawPos() {
             }
         }
         let road = 'o' + "-".repeat(99) + 'x';
+        console.log(Math.round(state[i][j][k].Position))
         road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
         ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
     }

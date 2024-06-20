@@ -112,7 +112,7 @@ function drawPos() {
 
     // draw the position
     ctx.textAlign = "left";
-    ctx.fillStyle = 'black';
+    ctx.fillStyle = 'white';
     ctx.font = '11px monospace';
     symbol = '?'
     for(let i = 0; i < state.length; i++) {

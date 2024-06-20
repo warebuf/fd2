@@ -129,7 +129,14 @@ function drawPos() {
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
-                            if(
+
+                            if((state[i][j][k].Position == 0) &&
+                                (state[i][j][k].Direction == 1) &&
+                                (state[i][j][k].B.SPD == 0)
+                            ) {
+                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                            }
+                            else if(
                                 (state[i][j][k].Position == 0) &&
                                 (state[i][j][k].Direction == 0) &&
                                 (state[i][j][k].Move == -1) &&

@@ -734,6 +734,7 @@ func (m *match) run() {
 
 			m.ticker.Stop()
 
+			gave_bots_acts := false
 			// give all bots an action
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -741,12 +742,15 @@ func (m *match) run() {
 						if (m.team_client_hero[i][j][k].Position == 0) && (m.team_client_hero[i][j][k].Direction == 0) && (m.team_client_hero[i][j][k].Move < 0) && (m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)
 							m.team_client_hero[i][j][k].Direction = 1
+							gave_bots_acts = true
 						}
 					}
 				}
 			}
 
-			m.sharepos(0)
+			if gave_bots_acts {
+				m.sharepos(0)
+			}
 
 			// calculate min unit of time to action
 			min_units := 999999.99 //9,223,372,036,854,775,807 (9 quintillion)

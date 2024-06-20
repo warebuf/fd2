@@ -74,7 +74,6 @@ function drawPos() {
     if(all_up_to_date == false) {
 
         // check if the states are up to date
-
         if(pos_up_to_date == false) {
             check = true
             for(let i = 0; i < state.length; i++) {
@@ -101,7 +100,7 @@ function drawPos() {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
                         if(
-                            state[i][j][k].Position != match_data[animating_state][i][j][k].Move
+                            state[i][j][k].Move != match_data[animating_state][i][j][k].Move
                         ) {
                             check = false
                             break
@@ -172,7 +171,6 @@ function drawPos() {
         }
     }
 
-    console.log("drawing all positions")
     // draw the position
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';

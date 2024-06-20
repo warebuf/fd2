@@ -132,6 +132,7 @@ function drawPos() {
                             if(
                                 (state[i][j][k].Position == 0) &&
                                 (state[i][j][k].Direction == 0) &&
+                                (state[i][j][k].Move == -1) &&
                                 (state[i][j][k].Move != match_data[animating_state][i][j][k].Move)
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move

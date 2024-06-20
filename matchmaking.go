@@ -746,6 +746,8 @@ func (m *match) run() {
 				}
 			}
 
+			m.sharepos(0)
+
 			// calculate min unit of time to action
 			min_units := 999999.99 //9,223,372,036,854,775,807 (9 quintillion)
 

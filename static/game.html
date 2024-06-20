@@ -328,27 +328,34 @@
 
     }
 
+    // important data
     var socket = null;
-    var startCount = null;
-    var match_data = new Array();
-    var current_state = -1;
     var my_team = -1;
     var my_int = -1;
-    var status = "null";
+    var game_over = false;
 
+    // pointer index
     var indexer_t = 0;
     var indexer_u = 0;
     var indexer_b = 0;
 
-    var units_of_time = 0;
-
+    // things that are currently being drawn
+    var state = null
+    var animated_state = -1
     var event_log = []
+    var status = "null";
+    var sent_time = null;
+
+    var total_units_of_time = 0;
+
+    // things drawn OR to be drawn
+    var match_data = new Array();
+    var current_state = -1;
 
     var atk_queue = []
+    var status_queue = []
 
-    var game_over = false;
 
-    var state = null
 
     function test() {
 
@@ -388,19 +395,19 @@
                 }
                 else if(msg.Event == 'unitsOfTime') {
                     event_log.push(parseFloat(msg.Message).toFixed(3) + ' time units has passed')
-                    units_of_time=units_of_time+parseFloat(msg.Message)
-                    units_of_time = parseFloat(units_of_time.toFixed(3))
+                    total_units_of_time=total_units_of_time+parseFloat(msg.Message)
+                    total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
                     if(event_log.length >= 25) {
                         event_log.shift()
                     }
                 }
                 else if(msg.Event == 'startMatchCountdown') {
-                    startCount = Date.parse(msg.Message)
+                    sent_time = Date.parse(msg.Message)
                     once = true
                     status = msg.Status
                 }
                 else if(msg.Event == 'turn') {
-                    startCount = Date.parse(msg.Message)
+                    sent_time = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'game_state') {
                     status = msg.Status
@@ -423,8 +430,11 @@
                         my_int = parseInt(temp_string[1])
                         indexer_t = my_team
                         indexer_u = my_int
-                        state = current_state
+                        state = md
                         current_state = 0
+                        animated_state = 0
+                    } else if( (animated_state == current_state) && (match_data.length - 1 > animated_state) ) {
+                        current_state = animated_state + 1
                     }
 
                     // add events to event log

@@ -41,9 +41,9 @@ function anime() {
         ctx.fillStyle = 'white';
         ctx.fillText("GAMEOVER",c.width/2, 45);
     }
-    else if(startCount != null) {
+    else if(sent_time != null) {
         ctx.textAlign = "center";
-        remaining_time = startCount - start.replaceAll("’","")
+        remaining_time = sent_time - start.replaceAll("’","")
         ctx.fillStyle = 'black';
         ctx.fillRect(c.width/2,40,ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
@@ -69,6 +69,58 @@ function anime() {
 anime()
 
 function drawPos() {
+
+    if(animated_state != current_state) {
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length; k++) {
+
+                    symbol = '?'
+                    if(state[i][j][k].H.HP <= 0) {
+                        symbol = 'd'
+                    } else if(state[i][j][k].Direction == 0) {
+                        symbol = '<'
+                        state[i][j][k].Position -= state[i][j][k].B.Speed * 0.01
+                        if(state[i][j][k].Position < state[i][j][k].Position) {
+                            state[i][j][k].Position = match_data[current_state][j][k].Position
+                        }
+                    } else if(state[i][j][k].Direction == 1) {
+                        symbol = '>'
+                        state[i][j][k].Position += state[i][j][k].B.Speed * 0.01
+                        if(state[i][j][k].Position > state[i][j][k].Position) {
+                            state[i][j][k].Position = match_data[current_state][i][j][k].Position
+                        }
+                    }
+
+                    let road = 'o' + "-".repeat(99) + 'x';
+                    road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
+                    ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
+
+                }
+            }
+        }
+
+        is_up_to_date = true
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length; k++) {
+                    if(match_data[animated_state][i][j][k].Position != match_data[current_state][i][j][k].Position) {
+                        is_up_to_date = false
+                        break
+                    }
+                }
+                if(is_up_to_date==false){break}
+            }
+            if(is_up_to_date==false){break}
+        }
+
+        if(is_up_to_date) {
+            animated_state = current_state
+        }
+
+    }
+
+    /*
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
     ctx.textAlign = "left";
@@ -80,7 +132,7 @@ function drawPos() {
 
                     symbol = '?'
                     if(match_data[current_state][i][j][k].H.HP <= 0) {
-                        symbol = 'T'
+                        symbol = 'd'
                     } else if(match_data[current_state][i][j][k].Direction == 0) {
                         symbol = '<'
                     } else if(match_data[current_state][i][j][k].Direction == 1) {
@@ -97,6 +149,7 @@ function drawPos() {
 
         }
     }
+    */
 }
 
 function drawState() {

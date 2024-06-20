@@ -76,24 +76,26 @@
                 console.log("ArrowUp")
                 if(match_data.length>0){
 
+                    // begin iterating through all the heros, check if the hero is at Position 0,
+                    // if he is, then break, otherwise keep iterating until you do a full rotation
                     found = false;
-                    for(i=0;i<match_data[0].length;i++) {
-                        for(j=0;j<match_data[0][0].length;j++) {
-                            for(k=0;k<match_data[0][0][0].length;k++) {
+                    for(i=0;i<state.length;i++) {
+                        for(j=0;j<state[i].length;j++) {
+                            for(k=0;k<state[i][j].length;k++) {
                                 indexer_b--
                                 if(indexer_b<0){
                                     indexer_b=4;
                                     indexer_u--;
                                     if(indexer_u<0) {
-                                        indexer_u=match_data[0][0].length-1;
+                                        indexer_u=state[0].length-1;
                                         indexer_t--;
                                         if(indexer_t<0) {
-                                            indexer_t=match_data[0].length-1
+                                            indexer_t=state.length-1
                                         }
                                     }
                                 }
 
-                                if(match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                if(state[indexer_t][indexer_u][indexer_b].Position==0){
                                     found=true
                                     break
                                 }
@@ -113,23 +115,23 @@
                 if(match_data.length>0){
 
                     found = false;
-                    for(i=0;i<match_data[0].length;i++) {
-                        for(j=0;j<match_data[0][0].length;j++) {
-                            for(k=0;k<match_data[0][0][0].length;k++) {
+                    for(i=0;i<state.length;i++) {
+                        for(j=0;j<state[0].length;j++) {
+                            for(k=0;k<state[0][0].length;k++) {
                                 indexer_b++
                                 if(indexer_b>=5){
                                     indexer_b=0;
                                     indexer_u++;
-                                    if(indexer_u>=match_data[0][0].length) {
+                                    if(indexer_u>=state[0].length) {
                                         indexer_u=0;
                                         indexer_t++;
-                                        if(indexer_t>=match_data[0].length) {
+                                        if(indexer_t>=state.length) {
                                             indexer_t=0
                                         }
                                     }
                                 }
 
-                                if(match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                if(state[indexer_t][indexer_u][indexer_b].Position==0){
                                     found=true
                                     break
                                 }
@@ -153,7 +155,7 @@
                     status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
-                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                    state[indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'HEAD', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
 
@@ -174,7 +176,7 @@
                                     }
                                 }
 
-                                if((my_team==indexer_t) && (my_int==indexer_u) && match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                if((my_team==indexer_t) && (my_int==indexer_u) && state[indexer_t][indexer_u][indexer_b].Position==0){
                                     found=true
                                     break
                                 }
@@ -198,7 +200,7 @@
                     status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
-                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                    state[indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'LARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
 
@@ -219,7 +221,7 @@
                                     }
                                 }
 
-                                if((my_team==indexer_t) && (my_int==indexer_u) && match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                if((my_team==indexer_t) && (my_int==indexer_u) && state[indexer_t][indexer_u][indexer_b].Position==0){
                                     found=true
                                     break
                                 }
@@ -243,7 +245,7 @@
                     status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
-                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                    state[indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'BOTTOM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
 
@@ -264,7 +266,7 @@
                                     }
                                 }
 
-                                if((my_team==indexer_t) && (my_int==indexer_u) && match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                if((my_team==indexer_t) && (my_int==indexer_u) && state[indexer_t][indexer_u][indexer_b].Position==0){
                                     found=true
                                     break
                                 }
@@ -288,7 +290,7 @@
                     status.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
-                    match_data[current_state][indexer_t][indexer_u][indexer_b].Position == 0
+                    state[indexer_t][indexer_u][indexer_b].Position == 0
                 ) {
                     socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
 
@@ -309,7 +311,7 @@
                                     }
                                 }
 
-                                if((my_team==indexer_t) && (my_int==indexer_u) && match_data[current_state][indexer_t][indexer_u][indexer_b].Position==0){
+                                if((my_team==indexer_t) && (my_int==indexer_u) && state[indexer_t][indexer_u][indexer_b].Position==0){
                                     found=true
                                     break
                                 }

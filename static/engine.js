@@ -70,8 +70,10 @@ anime()
 
 function drawPos() {
 
-    // if there are updates to be made, update the position
+    // if there are states updates, update the position
     if(animating_up_to_date == false) {
+
+        // check if the states are up to date
         up_to_date_check = true
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
@@ -86,8 +88,9 @@ function drawPos() {
             if(up_to_date_check==false){break}
         }
 
+        // if we are at this state, let's draw the next one
+        // if we are not at this state, let's move the units so we can approach the next state
         if(up_to_date_check == true) {
-            console.log(animating_state, match_data.length)
             state = match_data[animating_state]
             animating_state++
             if(animating_state >= match_data.length) {

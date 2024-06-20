@@ -104,12 +104,12 @@ function drawPos() {
                     for(let k = 0; k < state[i][j].length; k++) {
                         if(state[i][j][k].H.HP <= 0) {
                         } else if(state[i][j][k].Direction == 0) {
-                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].SPD)
+                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k])
                             state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].SPD * 0.001)
                             console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].SPD)
                             if(state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
                         } else if(state[i][j][k].Direction == 1) {
-                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].SPD)
+                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k])
                             state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].SPD * 0.001)
                             console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].SPD)
                             if(state[i][j][k].Position > match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}

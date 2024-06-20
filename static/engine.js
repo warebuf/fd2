@@ -70,6 +70,7 @@ anime()
 
 function drawPos() {
 
+    console.log("avc", animated_state, current_state)
     if(animated_state != current_state) {
         console.log("iamhere")
         for(let i = 0; i < state.length; i++) {

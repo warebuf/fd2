@@ -131,7 +131,8 @@ function drawPos() {
                         for(let k = 0; k < state[i][j].length; k++) {
 
                             if((state[i][j][k].Position == 0) &&
-                                (state[i][j][k].Direction == 1)
+                                (state[i][j][k].Direction == 1) &&
+                                (state[i][j][k].B.SPD == 0)
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                             }

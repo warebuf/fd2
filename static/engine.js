@@ -111,23 +111,26 @@ function drawPos() {
     }
 
     // draw the position
-        symbol = '?'
-        for(let i = 0; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0; k < state[i][j].length; k++) {
-                    if(state[i][j][k].H.HP <= 0) {
-                        symbol = 'd'
-                    } else if(state[i][j][k].Direction == 0) {
-                        symbol = '<'
-                    } else if(state[i][j][k].Direction == 1) {
-                        symbol = '>'
-                    }
-                    let road = 'o' + "-".repeat(99) + 'x';
-                    road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
-                    ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
+    ctx.textAlign = "left";
+    ctx.fillStyle = 'black';
+    ctx.font = '11px monospace';
+    symbol = '?'
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                if(state[i][j][k].H.HP <= 0) {
+                    symbol = 'd'
+                } else if(state[i][j][k].Direction == 0) {
+                    symbol = '<'
+                } else if(state[i][j][k].Direction == 1) {
+                    symbol = '>'
                 }
+                let road = 'o' + "-".repeat(99) + 'x';
+                road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
+                ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
             }
         }
+    }
 }
 
 function drawState() {

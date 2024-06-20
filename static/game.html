@@ -344,10 +344,14 @@
     // things that are currently being drawn
     var state = []
     var animating_state = -1
-    var animating_up_to_date = true
     var event_log = []
     var status = "null";
     var sent_time = null;
+
+    //
+    var all_up_to_date = true
+    var pos_up_to_date = true
+    var act_up_to_date = true
 
     var total_units_of_time = 0;
 
@@ -430,7 +434,10 @@
                     }
 
                     // if this is the first game_state received, init all global variables
-                    animating_up_to_date = false
+                    all_up_to_date = false
+                    pos_up_to_date = false
+                    act_up_to_date = false
+
                     if(animating_state == -1) {
                         var temp_string = msg.Message.split(";")
                         my_team = parseInt(temp_string[0])

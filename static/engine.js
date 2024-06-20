@@ -71,42 +71,100 @@ anime()
 function drawPos() {
 
     // if there are states updates, update the position
-    if(animating_up_to_date == false) {
+    if(all_up_to_date == false) {
 
         // check if the states are up to date
-        up_to_date_check = true
-        for(let i = 0; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0; k < state[i][j].length; k++) {
-                    if(state[i][j][k].Position != match_data[animating_state][i][j][k].Position) {
-                        up_to_date_check = false
-                        break
+
+        if(pos_up_to_date == false) {
+            check = true
+            for(let i = 0; i < state.length; i++) {
+                for(let j = 0; j < state[i].length; j++) {
+                    for(let k = 0; k < state[i][j].length; k++) {
+                        if(
+                            state[i][j][k].Position != match_data[animating_state][i][j][k].Position ||
+                            state[i][j][k].Direction != match_data[animating_state][i][j][k].Direction
+                        ) {
+                            check = false
+                            break
+                        }
                     }
+                    if(check==false){break}
                 }
-                if(up_to_date_check==false){break}
+                if(check==false){break}
             }
-            if(up_to_date_check==false){break}
+            if (check == true) {pos_up_to_date=true}
+        }
+
+        if(act_up_to_date == false) {
+            check = true
+            for(let i = 0; i < state.length; i++) {
+                for(let j = 0; j < state[i].length; j++) {
+                    for(let k = 0; k < state[i][j].length; k++) {
+                        if(
+                            state[i][j][k].Position != match_data[animating_state][i][j][k].Move
+                        ) {
+                            check = false
+                            break
+                        }
+                    }
+                    if(check==false){break}
+                }
+                if(check==false){break}
+            }
+            if (check == true) {act_up_to_date=true}
         }
 
         // if we are at this state, let's draw the next one
         // if we are not at this state, let's move the units so we can approach the next state
-        if(up_to_date_check == true) {
+        if((pos_up_to_date == true) && (act_up_to_date == true)) {
             state = match_data[animating_state]
+            pos_up_to_date = false
+            act_up_to_date = false
             animating_state++
             if(animating_state >= match_data.length) {
-                animating_up_to_date = true
+                all_up_to_date = true
             }
         } else {
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length; k++) {
-                        if(state[i][j][k].H.HP <= 0) {
-                        } else if(state[i][j][k].Direction == 0) {
-                            state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.001)
-                            if((match_data[animating_state][i][j][k].Direction == 0) && state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
-                        } else if(state[i][j][k].Direction == 1) {
-                            state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.001)
-                            if((match_data[animating_state][i][j][k].Direction == 1) && (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+
+            if(act_up_to_date == false) {
+                for(let i = 0; i < state.length; i++) {
+                    for(let j = 0; j < state[i].length; j++) {
+                        for(let k = 0; k < state[i][j].length; k++) {
+                            if(
+                                (state[i][j][k].Position == 0) &&
+                                (state[i][j][k].Direction == 0) &&
+                                (state[i][j][k].Move != match_data[animating_state][i][j][k].Move)
+                            ) {
+                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                                state[i][j][k].Direction = 1
+                            } else if(
+                                (state[i][j][k].Position == 100) &&
+                                (state[i][j][k].Direction == 1) &&
+                                (state[i][j][k].Move != -1)
+                            ){
+                                state[i][j][k].Move = -1
+                                state[i][j][k].Direction = 0
+                            }
+                        }
+                    }
+                }
+            }
+
+            // move all units
+            if(pos_up_to_date == false) {
+                for(let i = 0; i < state.length; i++) {
+                    for(let j = 0; j < state[i].length; j++) {
+                        for(let k = 0; k < state[i][j].length; k++) {
+                            if(state[i][j][k].H.HP <= 0) {
+                            } else if(state[i][j][k].Direction == 0) {
+                                state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.001)
+                                if((match_data[animating_state][i][j][k].Direction == 0) && state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                                else if(state[i][j][k].Position < 0){state[i][j][k].Position == 0}
+                            } else if(state[i][j][k].Direction == 1) {
+                                state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.001)
+                                if((match_data[animating_state][i][j][k].Direction == 1) && (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                                else if(state[i][j][k].Position > 100){state[i][j][k].Position == 100}
+                            }
                         }
                     }
                 }

@@ -72,12 +72,10 @@ function drawPos() {
 
     // if there are updates to be made, update the position
     if(animating_up_to_date == false) {
-        console.log("new position sent... checking if our positions are up to date...")
         up_to_date_check = true
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
-                    console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position)
                     if(state[i][j][k].Position != match_data[animating_state][i][j][k].Position) {
                         up_to_date_check = false
                         break
@@ -89,30 +87,23 @@ function drawPos() {
         }
 
         if(up_to_date_check == true) {
-            console.log("positions are up to date... moving to next state")
             console.log(animating_state, match_data.length)
             state = match_data[animating_state]
             animating_state++
             if(animating_state >= match_data.length) {
-                console.log("no more states left right now...")
                 animating_up_to_date = true
             }
         } else {
-            console.log("adding movement to all positions")
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
                         if(state[i][j][k].H.HP <= 0) {
                         } else if(state[i][j][k].Direction == 0) {
-                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].B.SPD)
                             state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.001)
-                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].B.SPD)
-                            if(state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                            if((match_data[animating_state][i][j][k].Direction == 0) && state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
                         } else if(state[i][j][k].Direction == 1) {
-                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k])
                             state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.001)
-                            console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, state[i][j][k].B.SPD)
-                            if(state[i][j][k].Position > match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                            if((match_data[animating_state][i][j][k].Direction == 1) && (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
                         }
                     }
                 }

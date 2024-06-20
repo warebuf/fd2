@@ -154,6 +154,7 @@ function drawPos() {
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
+                            console.log(i,j,k,state[i][j][k].Position)
                             if(state[i][j][k].H.HP <= 0) {
                             } else if(state[i][j][k].Direction == 0) {
                                 state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.001)
@@ -172,8 +173,11 @@ function drawPos() {
                                 ) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                 }
-                                else if(state[i][j][k].Position > 100){state[i][j][k].Position = 100}
-                        }
+                                else if(state[i][j][k].Position > 100){
+                                    state[i][j][k].Position = 100
+                                }
+                            }
+                            console.log(i,j,k,state[i][j][k].Position)
                         }
                     }
                 }

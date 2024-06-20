@@ -72,6 +72,7 @@ function drawPos() {
 
     // if there are updates to be made, update the position
     if(animating_up_to_date == false) {
+        console.log("new position sent... checking if our positions are up to date...")
         up_to_date_check = true
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
@@ -87,13 +88,16 @@ function drawPos() {
         }
 
         if(up_to_date_check == true) {
+            console.log("positions are up to date... moving to next state")
             console.log(animating_state, match_data.length)
             state = match_data[animating_state]
             animating_state++
             if(animating_state >= match_data.length) {
+                console.log("no more states left right now...")
                 animating_up_to_date = true
             }
         } else {
+            console.log("adding movement to all positions")
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
@@ -113,6 +117,7 @@ function drawPos() {
         }
     }
 
+    console.log("drawing all positions")
     // draw the position
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';

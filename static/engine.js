@@ -70,88 +70,65 @@ anime()
 
 function drawPos() {
 
-    console.log("avc", animated_state, current_state)
-    if(animated_state != current_state) {
-        console.log("iamhere")
+    // if there are updates to be made, update the position
+    if(animating_up_to_date == false) {
+        up_to_date_check = true
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
+                    if(state[i][j][k].Position != match_data[animating_state][i][j][k].Position) {
+                        up_to_date_check = false
+                        break
+                    }
+                }
+                if(up_to_date_check==false){break}
+            }
+            if(up_to_date_check==false){break}
+        }
 
-                    symbol = '?'
+        if(up_to_date_check == true) {
+            animating_state++
+            if(animating_state >= match_data.length) {
+                animating_up_to_date = true
+            }
+        } else {
+            for(let i = 0; i < state.length; i++) {
+                for(let j = 0; j < state[i].length; j++) {
+                    for(let k = 0; k < state[i][j].length; k++) {
+                        if(state[i][j][k].H.HP <= 0) {
+                        } else if(state[i][j][k].Direction == 0) {
+                            state[i][j][k].Position -= state[i][j][k].Speed * 0.01
+                            if(state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                        } else if(state[i][j][k].Direction == 1) {
+                            state[i][j][k].Position += state[i][j][k].Speed * 0.01
+                            if(state[i][j][k].Position > match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // draw the position
+    if(match_data.length > 0) {
+        symbol = '?'
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length; k++) {
                     if(state[i][j][k].H.HP <= 0) {
                         symbol = 'd'
                     } else if(state[i][j][k].Direction == 0) {
                         symbol = '<'
-                        state[i][j][k].Position -= state[i][j][k].B.Speed * 0.01
-                        if(state[i][j][k].Position < state[i][j][k].Position) {
-                            state[i][j][k].Position = match_data[current_state][j][k].Position
-                        }
                     } else if(state[i][j][k].Direction == 1) {
                         symbol = '>'
-                        state[i][j][k].Position += state[i][j][k].B.Speed * 0.01
-                        if(state[i][j][k].Position > state[i][j][k].Position) {
-                            state[i][j][k].Position = match_data[current_state][i][j][k].Position
-                        }
                     }
-
-                    let road = 'o' + "-".repeat(99) + 'x';
-                    road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
-                    ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
-
                 }
             }
         }
-
-        is_up_to_date = true
-        for(let i = 0; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0; k < state[i][j].length; k++) {
-                    if(match_data[animated_state][i][j][k].Position != match_data[current_state][i][j][k].Position) {
-                        is_up_to_date = false
-                        break
-                    }
-                }
-                if(is_up_to_date==false){break}
-            }
-            if(is_up_to_date==false){break}
-        }
-
-        if(is_up_to_date) {
-            animated_state = current_state
-        }
-
+        let road = 'o' + "-".repeat(99) + 'x';
+        road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
+        ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
     }
-
-    /*
-    ctx.font = '11px monospace';
-    ctx.fillStyle = 'white';
-    ctx.textAlign = "left";
-    for(let i = 0; i < match_data[current_state].length; i++) { // team
-        for(let j = 0; j < match_data[current_state][i].length; j++) { // client
-            for(let k = 0; k < match_data[current_state][i][j].length; k++) {
-                if(match_data[current_state][i][j][k].Health > 0) {
-                    let road = 'o' + "-".repeat(99) + 'x';
-
-                    symbol = '?'
-                    if(match_data[current_state][i][j][k].H.HP <= 0) {
-                        symbol = 'd'
-                    } else if(match_data[current_state][i][j][k].Direction == 0) {
-                        symbol = '<'
-                    } else if(match_data[current_state][i][j][k].Direction == 1) {
-                        symbol = '>'
-                    }
-
-                    road = road.substring(0,
-                        Math.round(match_data[current_state][i][j][k].Position)) +
-                        symbol +
-                        road.substring(Math.round(match_data[current_state][i][j][k].Position) + 1);
-                    ctx.fillText(road, 1085, ((i+j)*115) + 102 + (k*20));
-                }
-            }
-
-        }
-    }
-    */
 }
 
 function drawState() {

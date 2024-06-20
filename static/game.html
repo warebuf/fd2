@@ -341,7 +341,8 @@
 
     // things that are currently being drawn
     var state = null
-    var animated_state = -1
+    var animating_state = -1
+    var animating_up_to_date = true
     var event_log = []
     var status = "null";
     var sent_time = null;
@@ -350,7 +351,6 @@
 
     // things drawn OR to be drawn
     var match_data = new Array();
-    var current_state = -1;
 
     var atk_queue = []
     var status_queue = []
@@ -412,6 +412,7 @@
                 else if(msg.Event == 'game_state') {
                     status = msg.Status
 
+                    // turn the JSON into javascript objects
                     var temp = msg.TCH;
                     var md = new Array();
                     for (i = 0; i < temp.length; i++) {
@@ -424,17 +425,16 @@
                         }
                     }
 
-                    if(current_state == -1) {
+                    // if this is the first game_state received, init all global variables
+                    animating_up_to_date = false
+                    if(animating_state == -1) {
                         var temp_string = msg.Message.split(";")
                         my_team = parseInt(temp_string[0])
                         my_int = parseInt(temp_string[1])
                         indexer_t = my_team
                         indexer_u = my_int
                         state = md
-                        current_state = 0
-                        animated_state = 0
-                    } else if( (animated_state == current_state) && (match_data.length - 1 > animated_state) ) {
-                        current_state = animated_state + 1
+                        animating_state = 0
                     }
 
                     // add events to event log

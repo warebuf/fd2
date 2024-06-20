@@ -157,13 +157,23 @@ function drawPos() {
                             if(state[i][j][k].H.HP <= 0) {
                             } else if(state[i][j][k].Direction == 0) {
                                 state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.001)
-                                if((match_data[animating_state][i][j][k].Direction == 0) && state[i][j][k].Position < match_data[animating_state][i][j][k].Position) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                                if(
+                                    (match_data[animating_state][i][j][k].Direction == 0) &&
+                                    (state[i][j][k].Position < match_data[animating_state][i][j][k].Position)
+                                ) {
+                                    state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                }
                                 else if(state[i][j][k].Position < 0){state[i][j][k].Position = 0}
                             } else if(state[i][j][k].Direction == 1) {
                                 state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.001)
-                                if((match_data[animating_state][i][j][k].Direction == 1) && (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)) {state[i][j][k].Position = match_data[animating_state][i][j][k].Position}
+                                if(
+                                    (match_data[animating_state][i][j][k].Direction == 1) &&
+                                    (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)
+                                ) {
+                                    state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                }
                                 else if(state[i][j][k].Position > 100){state[i][j][k].Position = 100}
-                            }
+                        }
                         }
                     }
                 }

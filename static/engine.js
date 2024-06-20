@@ -87,6 +87,7 @@ function drawPos() {
         }
 
         if(up_to_date_check == true) {
+            console.log(animating_state, match_data.length)
             state = match_data[animating_state]
             animating_state++
             if(animating_state >= match_data.length) {

@@ -743,7 +743,7 @@ func (m *match) run() {
 					}
 				}
 			}
-			if gave_bots_acts {
+			if gave_bots_acts == true {
 				m.sharepos()
 			}
 

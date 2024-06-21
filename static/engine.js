@@ -131,6 +131,7 @@ function drawPos() {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
 
+                            // if we already set a move on this unit, but the user requests a change on it, and the unit is at the starting point
                             if(
                                 (state[i][j][k].Position == 0) &&
                                 (state[i][j][k].Direction == 1) &&
@@ -138,7 +139,7 @@ function drawPos() {
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                             }
-                            else if(
+                            else if( // if the unit is waiting for a move, and a new move comes in
                                 (state[i][j][k].Position == 0) &&
                                 (state[i][j][k].Direction == 0) &&
                                 (state[i][j][k].Move == -1) &&
@@ -146,7 +147,7 @@ function drawPos() {
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                                 state[i][j][k].Direction = 1
-                            } else if(
+                            } else if( // if the unit is ready to attack, attack and set direction to homebase
                                 (state[i][j][k].Position == 100) &&
                                 (state[i][j][k].Direction == 1) &&
                                 (state[i][j][k].Move != -1)
@@ -169,7 +170,8 @@ function drawPos() {
                                 state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.008)
                                 if(
                                     (match_data[animating_state][i][j][k].Direction == 0) &&
-                                    (state[i][j][k].Position < match_data[animating_state][i][j][k].Position)
+                                    (state[i][j][k].Position < match_data[animating_state][i][j][k].Position) &&
+                                    (match_data[animating_state][i][j][k].Position != 100)
                                 ) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                 }

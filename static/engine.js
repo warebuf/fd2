@@ -111,7 +111,33 @@ function drawPos() {
                 }
                 if(check==false){break}
             }
-            if (check == true) {act_up_to_date=true}
+            if (check == true) {
+                time_event_ready = false
+                for(let i = 0; i < state.length; i++) {
+                    for(let j = 0; j < state[i].length; j++) {
+                        for(let k = 0; k < state[i][j].length; k++) {
+                            if(
+                                (state[i][j][k].Position == 0) &&
+                                (state[i][j][k].Direction == 0) &&
+                                (state[i][j][k].Move == -1) &&
+                                (state[i][j][k].Move != match_data[animating_state][i][j][k].Move)
+                            ) {
+                                time_event_ready = true
+                            }
+                        }
+                        if(check==false){break}
+                    }
+                    if(check==false){break}
+                }
+
+                if(time_event_ready==true) {
+                    if(time_queue.length > 0) {
+                        event_log.push(time_queue.shift())
+                    }
+                }
+
+                act_up_to_date=true
+            }
         }
 
         // if we are at this state, let's draw the next one
@@ -141,17 +167,6 @@ function drawPos() {
                                 (state[i][j][k].Position == match_data[animating_state][i][j][k].Position) 
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
-                            }
-                            else if( // if the unit is waiting for a move, but no new move is in
-                                (state[i][j][k].Position == 0) &&
-                                (state[i][j][k].Direction == 0) &&
-                                (state[i][j][k].Move == -1) &&
-                                (state[i][j][k].Move == match_data[animating_state][i][j][k].Move)
-                            ) {
-                                console.log("GOT HERE")
-                                if(time_queue.length > 0) {
-                                    time_event_ready = true
-                                }
                             }
                             else if( // if the unit is waiting for a move, and a new move comes in
                                 (state[i][j][k].Position == 0) &&

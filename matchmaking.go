@@ -731,7 +731,6 @@ func (m *match) run() {
 			}
 			if gave_bots_acts == true {
 				fmt.Println("SENT BOT ACTS")
-				m.printUnitsPos()
 				m.sharepos()
 			}
 
@@ -957,7 +956,7 @@ func (m *match) sharepos() {
 		for j := 0; j < len(m.team_client_hero[i]); j++ {
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 				marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
-				//fmt.Println(string(marshalled))
+				fmt.Println(string(marshalled))
 				m.TCH_JSON[i][j][k] = string(marshalled)
 			}
 		}

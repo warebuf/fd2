@@ -630,6 +630,9 @@ func (m *match) run() {
 					}
 
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
+					marshalled, _ := json.Marshal(temp)
+					//fmt.Println(string(marshalled))
+					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 
 				if m.game_mode == "ffa" {
@@ -648,6 +651,7 @@ func (m *match) run() {
 				}
 			}
 
+			// send everyone the game state
 			m.sharepos()
 
 			init_time := time.Now().Add(1 * time.Second)

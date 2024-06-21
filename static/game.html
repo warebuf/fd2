@@ -403,10 +403,12 @@
                     }
                 }
                 else if(msg.Event == 'unitsOfTime') {
-                    event_log.push(parseFloat(msg.Message).toFixed(3) + ' time units has passed')
+                    time_queue.push(parseFloat(msg.Message).toFixed(3) + ' time units has passed')
                     total_units_of_time=total_units_of_time+parseFloat(msg.Message)
                     total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-                    time_log.push(total_units_of_time)
+                    if(event_log.length >= 25) {
+                        event_log.shift()
+                    }
                 }
                 else if(msg.Event == 'startMatchCountdown') {
                     sent_time = Date.parse(msg.Message)
@@ -446,6 +448,11 @@
                         state = md
                         animating_state = 0
                     }
+
+                    // add events to event log
+                    //for (i=0; i<msg.AttackLogPop;i++) {
+                    //    event_log.push(atk_queue.shift())
+                    //}
 
                     match_data.push(md)
                     console.log(match_data)

@@ -489,6 +489,7 @@ function shallowCopyState(match_data, md) {
             match_data[a][b].push([]) // push a user into the new team
             var c = match_data[a][b].length-1
             for (k = 0; k < md[i][j].length; k++) {
+                    console.log(md[i][j][k])
                     match_data[a][b][c].push(JSON.parse(JSON.stringify(md[i][j][k])))
                 }
             }

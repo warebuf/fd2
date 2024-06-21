@@ -74,7 +74,7 @@ func m_read(m *match_socket) {
 							if sim_check == true {
 								m.m.simulate <- true
 							} else {
-								m.m.sharepos("")
+								m.m.sharepos()
 							}
 						}
 					}
@@ -110,7 +110,7 @@ func m_read(m *match_socket) {
 						m.m.start_ticker <- true
 					}
 				} else if m.m.started == true {
-					m.m.sharepos("")
+					m.m.sharepos()
 				}
 			}
 

@@ -967,6 +967,8 @@ func (m *match) sharepos(a string) {
 		}
 	}
 
+	fmt.Println("ASDA", temp)
+
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {

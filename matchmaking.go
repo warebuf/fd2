@@ -731,6 +731,7 @@ func (m *match) run() {
 			}
 			if gave_bots_acts == true {
 				fmt.Println("SENT BOT ACTS")
+				m.printUnitsPos()
 				m.sharepos()
 			}
 
@@ -1085,4 +1086,13 @@ func game_over_check(state [][][]*hero) bool {
 	}
 
 	return true
+}
+func (m *match) printUnitsPos() {
+	for i := 0; i < len(m.team_client_hero); i++ {
+		for j := 0; j < len(m.team_client_hero[i]); j++ {
+			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
+				fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Move, m.team_client_hero[i][j][k].Direction)
+			}
+		}
+	}
 }

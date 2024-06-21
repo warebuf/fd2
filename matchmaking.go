@@ -772,7 +772,7 @@ func (m *match) run() {
 
 			list_of_attackers := [][]int{}
 
-			// calculate all positions
+			// move all unit positions
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
@@ -801,6 +801,7 @@ func (m *match) run() {
 					}
 				}
 			}
+			fmt.Println("finished unit movement")
 
 			m.sharepos()
 
@@ -977,6 +978,7 @@ func (m *match) sharepos() {
 			}
 		}
 	}
+	fmt.Println("shareposfinished")
 }
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 

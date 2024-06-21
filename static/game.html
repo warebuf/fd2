@@ -478,20 +478,23 @@ function returntomatchmaking(){
 
 function shallowCopyState(match_data, md) {
 
-        match_data.push([])
-        for (i = 0; i < md.length; i++) {
-            match_data[match_data.length-1].push([])
-            for (j = 0; j < md[i].length; j++) {
-                match_data[match_data.length-1][match_data[match_data.length-1].length-1].push([])
-                for (k = 0; k < md[i][j].length; k++) {
-                    match_data
-                        [match_data.length-1]
-                        [match_data[match_data.length-1].length-1]
-                        [match_data[match_data.length-1][match_data[match_data.length-1]][match_data[match_data.length-1].length-1]] = JSON.parse(JSON.stringify(jsonObject))
+    match_data.push([]) // push into match data a new state
+    var a = match_data.length-1
+
+    match_data[a].push([]) // push into the new state, a new list of teams
+    var b = match_data[a].length-1
+
+    for (i = 0; i < md.length; i++) {
+        match_data[a][b].push([]) // push a team into the new list of teams
+        var c = match_data[a][b].length-1
+        for (j = 0; j < md[i].length; j++) {
+            match_data[a][b].push([]) // push a user into the new team
+            var d = match_data[a][b][c].length-1
+            for (k = 0; k < md[i][j].length; k++) {
+                    match_data[a][b][c][d].push(JSON.parse(JSON.stringify(md[i][j][k])))
                 }
             }
         }
-
 }
 
 </script>

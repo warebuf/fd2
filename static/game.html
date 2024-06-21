@@ -448,7 +448,7 @@
                         animating_state = 0
                     }
 
-                    match_data.push(md.slice()) // slice is to make it a shallow copy, as arrays as pass by reference in javascript
+                    shallowCopyState(match_data, md)
                     console.log(match_data)
                 }
                 else if(msg.Event == 'attack_event') {
@@ -476,6 +476,23 @@ function returntomatchmaking(){
     window.location.href = 'http://{{.host}}/waitroom'
 }
 
+function shallowCopyState(match_data, md) {
+
+        match_data.push([])
+        for (i = 0; i < md.length; i++) {
+            match_data[match_data.length-1].push([])
+            for (j = 0; j < md[i].length; j++) {
+                match_data[match_data.length-1][match_data[match_data.length-1].length-1].push([])
+                for (k = 0; k < md[i][j].length; k++) {
+                    match_data
+                        [match_data.length-1]
+                        [match_data[match_data.length-1].length-1]
+                        [match_data[match_data.length-1][match_data[match_data.length-1]][match_data[match_data.length-1].length-1]] = JSON.parse(JSON.stringify(jsonObject))
+                }
+            }
+        }
+
+}
 
 </script>
 </body>

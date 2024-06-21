@@ -295,7 +295,7 @@ function drawState() {
 
                 if(status.substring(0,4) == "TURN") {
                     if (
-                        state[i][j][k].Health > 0 &&
+                        state[i][j][k].H.HP > 0 &&
                         state[i][j][k].Position == 0
                     ){
                         ctx.fillStyle = 'white'

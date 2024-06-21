@@ -124,9 +124,7 @@ function drawPos() {
                 all_up_to_date = true
             }
         } else {
-
-            console.log(state)
-
+            
             if(act_up_to_date == false) {
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
@@ -148,7 +146,7 @@ function drawPos() {
                                 state[i][j][k].Direction = 1
                             } else if(
                                 (state[i][j][k].Position == 100) &&
-                                (state[i][j][k].Direction == 1) 
+                                (state[i][j][k].Direction == 1)
                             ){
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0

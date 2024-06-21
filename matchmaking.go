@@ -630,9 +630,6 @@ func (m *match) run() {
 					}
 
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
-					marshalled, _ := json.Marshal(temp)
-					//fmt.Println(string(marshalled))
-					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 
 				if m.game_mode == "ffa" {
@@ -651,22 +648,7 @@ func (m *match) run() {
 				}
 			}
 
-			// send everyone the game state
-			for k, i := range m.gamer_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					select {
-					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, When: time.Now(), MatchID: m.mid}:
-					}
-				}
-			}
-
-			for _, i := range m.spectator_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					select {
-					case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
-					}
-				}
-			}
+			m.sharepos()
 
 			init_time := time.Now().Add(1 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}

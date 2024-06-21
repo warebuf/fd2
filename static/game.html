@@ -421,8 +421,8 @@
                     status = msg.Status
 
                     // turn the JSON into javascript objects
-                    var temp = msg.TCH;
-                    var md = [];
+                    let temp = msg.TCH;
+                    let md = [];
                     for (i = 0; i < temp.length; i++) {
                         md[i] = new Array();
                         for (j = 0; j < temp[i].length; j++) {
@@ -439,7 +439,7 @@
                     act_up_to_date = false
 
                     if(animating_state == -1) {
-                        var temp_string = msg.Message.split(";")
+                        let temp_string = msg.Message.split(";")
                         my_team = parseInt(temp_string[0])
                         my_int = parseInt(temp_string[1])
                         indexer_t = my_team

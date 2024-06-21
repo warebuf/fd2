@@ -13,6 +13,7 @@ func m_write(m *match_socket) {
 			break
 		} else {
 			fmt.Println("successful write")
+			fmt.Println(msg)
 		}
 	}
 }

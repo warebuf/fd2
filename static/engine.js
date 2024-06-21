@@ -117,6 +117,7 @@ function drawPos() {
         // if we are at this state, let's draw the next one
         // if we are not at this state, let's move the units so we can approach the next state
         if((pos_up_to_date == true) && (act_up_to_date == true)) {
+            event_log.push(time_queue.shift())
             state = match_data[animating_state]
             pos_up_to_date = false
             act_up_to_date = false

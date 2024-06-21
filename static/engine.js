@@ -148,6 +148,7 @@ function drawPos() {
                                 (state[i][j][k].Move == -1) &&
                                 (state[i][j][k].Move == match_data[animating_state][i][j][k].Move)
                             ) {
+                                console.log("GOT HERE")
                                 if(time_queue.length > 0) {
                                     time_event_ready = true
                                 }

@@ -159,9 +159,7 @@ function drawPos() {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
 
-                            // if we already set a move on this unit, but the user requests a change on it, and the unit is at the starting point
-
-                            if(
+                            if( // if we already set a move on this unit, but the user requests a change on it, and the unit is at the starting point
                                 (state[i][j][k].Position == 0) &&
                                 (state[i][j][k].Direction == 1) &&
                                 (state[i][j][k].Position == match_data[animating_state][i][j][k].Position) 
@@ -297,12 +295,11 @@ function drawState() {
                     if (
                         state[i][j][k].H.HP > 0 &&
                         state[i][j][k].Position == 0
-                    ){
+                    ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15,  ((i+j)*115) + y0+2 + (k*20));
-
                         }
                         else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
                             indexer_t = i;
@@ -313,9 +310,6 @@ function drawState() {
                         else {
                             ctx.fillText("*", x0-15,  ((i+j)*115) + y0+2 + (k*20));
                         }
-
-
-
                     }
                 }
             }

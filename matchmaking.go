@@ -965,7 +965,7 @@ func (m *match) sharepos(a string) {
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			var temp [][][]string
+			temp := make([][][]string, 0)
 			copy(temp, m.TCH_JSON)
 			fmt.Println("test", temp)
 			select {
@@ -976,7 +976,7 @@ func (m *match) sharepos(a string) {
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			var temp [][][]string
+			temp := make([][][]string, 0)
 			copy(temp, m.TCH_JSON)
 			select {
 			case j.incoming_message <- &message{Event: "game_state" + a, TCH: temp, When: time.Now(), MatchID: m.mid}:

@@ -148,9 +148,6 @@ function drawPos() {
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                                 state[i][j][k].Direction = 1
-                                if(time_queue.length > 0) {
-                                    event_log.push(time_queue.shift())
-                                }
                             } else if( // if the unit is ready to attack, attack and set direction to homebase
                                 (state[i][j][k].Position == 100) &&
                                 (state[i][j][k].Direction == 1) &&

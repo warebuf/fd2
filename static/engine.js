@@ -117,9 +117,6 @@ function drawPos() {
         // if we are at this state, let's draw the next one
         // if we are not at this state, let's move the units so we can approach the next state
         if((pos_up_to_date == true) && (act_up_to_date == true)) {
-            if(time_queue.length > 0) {
-                event_log.push(time_queue.shift())
-            }
 
             state = match_data[animating_state]
             pos_up_to_date = false
@@ -151,6 +148,9 @@ function drawPos() {
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                                 state[i][j][k].Direction = 1
+                                if(time_queue.length > 0) {
+                                    event_log.push(time_queue.shift())
+                                }
                             } else if( // if the unit is ready to attack, attack and set direction to homebase
                                 (state[i][j][k].Position == 100) &&
                                 (state[i][j][k].Direction == 1) &&
@@ -159,6 +159,9 @@ function drawPos() {
                                 event_log.push(atk_queue.shift())
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0
+                                if(time_queue.length > 0) {
+                                    event_log.push(time_queue.shift())
+                                }
                             }
                         }
                     }

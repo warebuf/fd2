@@ -416,6 +416,8 @@
                     sent_time = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'game_state') {
+                    console.log("received game_state")
+
                     status = msg.Status
 
                     // turn the JSON into javascript objects

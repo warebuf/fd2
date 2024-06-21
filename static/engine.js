@@ -128,6 +128,7 @@ function drawPos() {
         } else {
 
             if(act_up_to_date == false) {
+                time_event_ready = false
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
@@ -147,9 +148,7 @@ function drawPos() {
                                 (state[i][j][k].Move == -1) &&
                                 (state[i][j][k].Move == match_data[animating_state][i][j][k].Move)
                             ) {
-                                if(time_queue.length > 0) {
-                                    event_log.push(time_queue.shift())
-                                }
+                                time_event_ready = true
                             }
                             else if( // if the unit is waiting for a move, and a new move comes in
                                 (state[i][j][k].Position == 0) &&
@@ -167,12 +166,13 @@ function drawPos() {
                                 event_log.push(atk_queue.shift())
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0
-                                if(time_queue.length > 0) {
-                                    event_log.push(time_queue.shift())
-                                }
+                                time_event_ready = true
                             }
                         }
                     }
+                }
+                if(time_event_ready==true) {
+                    event_log.push(time_queue.shift())
                 }
             }
 

@@ -100,7 +100,8 @@ function drawPos() {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
                         if(
-                            state[i][j][k].Move != match_data[animating_state][i][j][k].Move
+                            state[i][j][k].Move != match_data[animating_state][i][j][k].Move &&
+                            state[i][j][k].Direction != match_data[animating_state][i][j][k].Direction
                         ) {
                             check = false
                             break
@@ -124,7 +125,7 @@ function drawPos() {
                 all_up_to_date = true
             }
         } else {
-            
+
             if(act_up_to_date == false) {
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
@@ -132,7 +133,8 @@ function drawPos() {
 
                             if(
                                 (state[i][j][k].Position == 0) &&
-                                (state[i][j][k].Direction == 1)
+                                (state[i][j][k].Direction == 1) &&
+                                (state[i][j][k].Position == match_data[animating_state][i][j][k].Position) 
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                             }
@@ -146,7 +148,8 @@ function drawPos() {
                                 state[i][j][k].Direction = 1
                             } else if(
                                 (state[i][j][k].Position == 100) &&
-                                (state[i][j][k].Direction == 1)
+                                (state[i][j][k].Direction == 1) &&
+                                (state[i][j][k].Move != -1)
                             ){
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0

@@ -955,7 +955,7 @@ func (m *match) sharepos(a string) {
 
 	temp := make([][][]string, len(m.team_client_hero))
 	for i := 0; i < len(m.team_client_hero); i++ {
-		temp[i] = make([][]string, len(m.team_client_hero[i])
+		temp[i] = make([][]string, len(m.team_client_hero[i]))
 		for j := 0; j < len(m.team_client_hero[i]); j++ {
 			temp[i][j] = make([]string, len(m.team_client_hero[i][j]))
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {

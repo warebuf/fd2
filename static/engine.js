@@ -170,8 +170,7 @@ function drawPos() {
                                 state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.008)
                                 if(
                                     (match_data[animating_state][i][j][k].Direction == 0) &&
-                                    (state[i][j][k].Position < match_data[animating_state][i][j][k].Position) &&
-                                    (match_data[animating_state][i][j][k].Position != 100)
+                                    (state[i][j][k].Position < match_data[animating_state][i][j][k].Position)
                                 ) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                 }

@@ -124,6 +124,9 @@ function drawPos() {
             animating_state++
             if(animating_state >= match_data.length) {
                 all_up_to_date = true
+                if(time_queue.length > 0) {
+                    event_log.push(time_queue.shift())
+                }
             }
         } else {
 

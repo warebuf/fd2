@@ -478,13 +478,13 @@ function returntomatchmaking(){
 
 function copyMatchData(match_data, md) {
     match_data.push([])
-    a = match_data.length
+    a = match_data.length -1
     for (i =0; i < md.length; i++) {
         match_data[a].push([])
-        b = match_data[a].length
+        b = match_data[a].length -1
         for (j =0; j < md[i].length; j++) {
             match_data[a][b].push([])
-            c = match_data[a][b].length
+            c = match_data[a][b].length -1
             for (k =0; k < md[i][j].length; k++) {
                 if(match_data.length > 0) {console.log(match_data[0][i][j][k])}
                 console.log(md[i][j][k])

@@ -486,7 +486,10 @@ function copyMatchData(match_data, md) {
             match_data[a][b].push
             c = match_data[a][b].length
             for (k =0; k < md[i][j].length; k++) {
+                console.log(match_data[0][i][j][k])
+                console.log(md[i][j][k])
                 match_data[a][b][c].push(JSON.parse(JSON.stringify(md[i][j][k])))
+                console.log(match_data[0][i][j][k])
             }
         }
     }

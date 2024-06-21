@@ -967,6 +967,7 @@ func (m *match) sharepos(a string) {
 		for _, j := range i {
 			var temp [][][]string
 			copy(temp, m.TCH_JSON)
+			fmt.Println("test", temp)
 			select {
 			case j.incoming_message <- &message{Event: "game_state" + a, TCH: temp, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
 				fmt.Println(m.uuid_to_team_int[k].ab)

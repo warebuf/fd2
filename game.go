@@ -44,7 +44,7 @@ func m_read(m *match_socket) {
 				// check if the match has started and the action is to a user's own bot
 				if m.m.started == true && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the bot is alive
-					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Health > 0 && m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position == 0 {
+					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 && m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position == 0 {
 						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
 							if msg.Message == "HEAD" {
@@ -73,7 +73,7 @@ func m_read(m *match_socket) {
 							if sim_check == true {
 								m.m.simulate <- true
 							} else {
-								m.m.sharepos(0)
+								m.m.sharepos()
 							}
 						}
 					}

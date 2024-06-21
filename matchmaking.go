@@ -565,7 +565,6 @@ func (m *match) run() {
 						Use_outof:   0,
 						Weight:      1,
 					}
-
 					larm := arm{
 						SERIAL: 0,
 						LORR:   false,
@@ -582,7 +581,6 @@ func (m *match) run() {
 						Use_outof:   0,
 						Weight:      1,
 					}
-
 					rarm := arm{
 						SERIAL: 0,
 						LORR:   true,
@@ -599,7 +597,6 @@ func (m *match) run() {
 						Use_outof:   0,
 						Weight:      1,
 					}
-
 					btm := bottom{
 						SERIAL: 0,
 
@@ -621,18 +618,17 @@ func (m *match) run() {
 						ANT: 0,
 						END: 0,
 					}
-
 					temp := &hero{
 						Bot:       is_bot,
 						Position:  0,
 						Direction: 0,
-						Health:    100,
 						Move:      -1,
 						H:         h,
 						L:         larm,
 						R:         rarm,
 						B:         btm,
 					}
+
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)
 					//fmt.Println(string(marshalled))
@@ -734,8 +730,8 @@ func (m *match) run() {
 
 			m.ticker.Stop()
 
-			gave_bots_acts := false
 			// give all bots an action
+			gave_bots_acts := false
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
@@ -747,9 +743,8 @@ func (m *match) run() {
 					}
 				}
 			}
-
 			if gave_bots_acts {
-				m.sharepos(0)
+				m.sharepos()
 			}
 
 			// calculate min unit of time to action
@@ -788,7 +783,6 @@ func (m *match) run() {
 			only_bot_cmds := true
 
 			list_of_attackers := [][]int{}
-			num_total_attacks := 0
 
 			// calculate all positions
 			for i := 0; i < len(m.team_client_hero); i++ {
@@ -820,9 +814,10 @@ func (m *match) run() {
 				}
 			}
 
-			m.sharepos(0)
+			m.sharepos()
 
 			// simulate all attacks
+			simulated_attack := false
 			for i := 0; i < len(list_of_attackers); i++ {
 				enemy := closest_enemies(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2])
 				dmg_list := close_attack(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2], enemy)
@@ -831,7 +826,7 @@ func (m *match) run() {
 
 				if len(enemy) > 0 {
 					fmt.Println("SENDING ATTACK_EVENT")
-					num_total_attacks += 1
+					simulated_attack = true
 
 					msg := &message{Event: "attack_event", Message: "close", Attacker: []int{list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2]}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
 
@@ -857,7 +852,9 @@ func (m *match) run() {
 				}
 			}
 
-			m.sharepos(num_total_attacks)
+			if simulated_attack == true {
+				m.sharepos()
+			}
 
 			if game_over_check(m.team_client_hero) {
 				// have to handle a game over
@@ -961,7 +958,7 @@ func printAllMatchUserWS() {
 		}
 	}
 }
-func (m *match) sharepos(attackLogPop int) {
+func (m *match) sharepos() {
 	fmt.Println("sharepos")
 
 	// have to hide moves of everyone who is not on your team
@@ -981,14 +978,14 @@ func (m *match) sharepos(attackLogPop int) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid, AttackLogPop: attackLogPop}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid, AttackLogPop: attackLogPop}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

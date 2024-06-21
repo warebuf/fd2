@@ -142,7 +142,6 @@ type hero struct {
 	Bot       bool
 	Position  float64
 	Direction int
-	Health    int
 	Move      int
 
 	H head

@@ -820,6 +820,8 @@ func (m *match) run() {
 				}
 			}
 
+			m.sharepos(0)
+
 			// simulate all attacks
 			for i := 0; i < len(list_of_attackers); i++ {
 				enemy := closest_enemies(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2])

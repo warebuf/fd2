@@ -744,6 +744,7 @@ func (m *match) run() {
 				}
 			}
 			if gave_bots_acts == true {
+				fmt.Println("SENT BOT ACTS")
 				m.sharepos()
 			}
 

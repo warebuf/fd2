@@ -152,6 +152,7 @@ function drawPos() {
                                 (state[i][j][k].Direction == 1) &&
                                 (state[i][j][k].Move != -1)
                             ){
+                                event_log.push(atk_queue.shift())
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0
                             }

@@ -125,12 +125,15 @@ function drawPos() {
             }
         } else {
 
+            console.log(state)
+
             if(act_up_to_date == false) {
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
 
-                            if((state[i][j][k].Position == 0) &&
+                            if(
+                                (state[i][j][k].Position == 0) &&
                                 (state[i][j][k].Direction == 1)
                             ) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
@@ -145,8 +148,7 @@ function drawPos() {
                                 state[i][j][k].Direction = 1
                             } else if(
                                 (state[i][j][k].Position == 100) &&
-                                (state[i][j][k].Direction == 1) &&
-                                (state[i][j][k].Move != -1)
+                                (state[i][j][k].Direction == 1) 
                             ){
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0

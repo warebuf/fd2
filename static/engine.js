@@ -121,6 +121,7 @@ function drawPos() {
         if((pos_up_to_date == true) && (act_up_to_date == true)) {
 
             time_event_ready = false
+            attack_event_ready = false
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
@@ -131,14 +132,20 @@ function drawPos() {
                             (match_data[animating_state][i][j][k].SPD != 0)
                         ) {
                             time_event_ready = true
+                        } else if (
+                            (match_data[animating_state][i][j][k].Position == 100) &&
+                            (match_data[animating_state][i][j][k].Direction == 1) &&
+                            (match_data[animating_state][i][j][k].Move != -1)
+                        ) {
+                            attack_event_ready = true
                             break
                         }
                     }
-                    if((time_event_ready)){break}
+                    if((attack_event_ready)){break}
                 }
-                if((time_event_ready)){break}
+                if((attack_event_ready)){break}
             }
-            if(time_event_ready==true) {
+            if((time_event_ready==true) && (attack_event_ready == false)) {
                 if(time_queue.length > 0) {
                     event_log.push(time_queue.shift())
                 }

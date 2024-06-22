@@ -445,11 +445,11 @@
                         my_int = parseInt(temp_string[1])
                         indexer_t = my_team
                         indexer_u = my_int
-                        state = JSON.parse(JSON.stringify(md));
+                        state = md;
                         animating_state = 0
                     }
 
-                    match_data.push(JSON.parse(JSON.stringify(md)))
+                    match_data.push(md)
                     printAllMatchData(match_data)
                     console.log(match_data)
                 }

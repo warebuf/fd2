@@ -449,8 +449,7 @@
                         animating_state = 0
                     }
 
-                    copyMatchData(match_data, md)
-                    console.log(match_data[0][0][0][0].Move, match_data[0][1][0][0].Move)
+                    match_data.push(JSON.parse(JSON.stringify(md)))
                     printAllMatchData(match_data)
                     console.log(match_data)
                 }

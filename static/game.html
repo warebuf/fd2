@@ -450,7 +450,7 @@
                     }
 
                     match_data.push(md)
-                    printAllMatchData(match_data)
+                    //printAllMatchData(match_data)
                     console.log(match_data)
                 }
                 else if(msg.Event == 'attack_event') {
@@ -476,22 +476,6 @@
 
 function returntomatchmaking(){
     window.location.href = 'http://{{.host}}/waitroom'
-}
-
-function copyMatchData(match_data, md) {
-    match_data.push([])
-    let a = match_data.length -1
-    for (i =0; i < md.length; i++) {
-        match_data[a].push([])
-        let b = match_data[a].length -1
-        for (j =0; j < md[i].length; j++) {
-            match_data[a][b].push([])
-            let c = match_data[a][b].length -1
-            for (k =0; k < md[i][j].length; k++) {
-                match_data[a][b][c].push(JSON.parse(JSON.stringify(md[i][j][k])))
-            }
-        }
-    }
 }
 
 function printAllMatchData(match_data) {

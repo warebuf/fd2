@@ -109,7 +109,7 @@ func m_read(m *match_socket) {
 						m.m.start_ticker <- true
 					}
 				} else if m.m.started == true {
-					m.m.sharepos()
+					m.m.sharepos("")
 				}
 			}
 

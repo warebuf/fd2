@@ -652,7 +652,7 @@ func (m *match) run() {
 			}
 
 			// send everyone the game state
-			m.sharepos()
+			m.sharepos("")
 
 			init_time := time.Now().Add(1 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
@@ -731,7 +731,7 @@ func (m *match) run() {
 			}
 			if gave_bots_acts == true {
 				fmt.Println("SENT BOT ACTS")
-				m.sharepos()
+				m.sharepos("a")
 			}
 
 			// calculate min unit of time to action
@@ -802,7 +802,7 @@ func (m *match) run() {
 			}
 			fmt.Println("finished unit movement")
 
-			m.sharepos()
+			m.sharepos("")
 
 			// simulate all attacks
 			simulated_attack := false
@@ -841,7 +841,7 @@ func (m *match) run() {
 			}
 
 			if simulated_attack == true {
-				m.sharepos()
+				m.sharepos("")
 			}
 
 			if game_over_check(m.team_client_hero) {
@@ -946,7 +946,7 @@ func printAllMatchUserWS() {
 		}
 	}
 }
-func (m *match) sharepos() {
+func (m *match) sharepos(a string) {
 	fmt.Println("sharepos")
 
 	// have to hide moves of everyone who is not on your team
@@ -966,7 +966,7 @@ func (m *match) sharepos() {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state" + a, TCH: m.TCH_JSON, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
 				fmt.Println(m.uuid_to_team_int[k].ab)
 			}
 		}
@@ -974,13 +974,12 @@ func (m *match) sharepos() {
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state" + a, TCH: m.TCH_JSON, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}
 	fmt.Println("test:", test)
 	test++
-	fmt.Println("shareposfinished")
 }
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 

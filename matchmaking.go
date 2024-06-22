@@ -1097,4 +1097,6 @@ func (m *match) printUnitsPos() {
 			}
 		}
 	}
+	fmt.Println(test)
+	test++
 }

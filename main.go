@@ -310,7 +310,11 @@ var roomname_to_rid rname_to_rid
 var sid_to_sock sid_to_socket
 var msid_to_sock msid_to_socket
 
+var test int
+
 func main() {
+
+	test = 0
 
 	// making GLOBAL data structures
 	uid_to_user.users = make(map[uuid.UUID]*user)

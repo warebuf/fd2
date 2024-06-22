@@ -119,38 +119,7 @@ function drawPos() {
         // if we are at this state, let's draw the next one
         // if we are not at this state, let's move the units so we can approach the next state
         if((pos_up_to_date == true) && (act_up_to_date == true)) {
-
-            time_event_ready = false
-            attack_event_ready = false
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length; k++) {
-                        if(
-                            (match_data[animating_state][i][j][k].Position == 0) &&
-                            (match_data[animating_state][i][j][k].Direction == 0) &&
-                            (match_data[animating_state][i][j][k].Move == -1) &&
-                            (match_data[animating_state][i][j][k].SPD != 0)
-                        ) {
-                            time_event_ready = true
-                        } else if (
-                            (match_data[animating_state][i][j][k].Position == 100) &&
-                            (match_data[animating_state][i][j][k].Direction == 1) &&
-                            (match_data[animating_state][i][j][k].Move != -1)
-                        ) {
-                            attack_event_ready = true
-                            break
-                        }
-                    }
-                    if((attack_event_ready)){break}
-                }
-                if((attack_event_ready)){break}
-            }
-            if((time_event_ready==true) && (attack_event_ready == false)) {
-                if(time_queue.length > 0) {
-                    event_log.push(time_queue.shift())
-                }
-            }
-
+            
             state = JSON.parse(JSON.stringify(match_data[animating_state]))
             pos_up_to_date = false
             act_up_to_date = false

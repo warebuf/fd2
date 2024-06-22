@@ -487,11 +487,7 @@ function copyMatchData(match_data, md) {
             match_data[a][b].push([])
             let c = match_data[a][b].length -1
             for (k =0; k < md[i][j].length; k++) {
-                if(match_data.length > 0) {console.log("OG:", match_data[0][i][j][k])}
-                console.log("NEW", md[i][j][k])
                 match_data[a][b][c].push(JSON.parse(JSON.stringify(md[i][j][k])))
-                if(match_data.length > 0) {console.log("OG2", match_data[0][i][j][k])}
-                if(match_data.length > 0) {console.log("NU", match_data[a][i][j][k])}
             }
         }
     }

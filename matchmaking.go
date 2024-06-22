@@ -978,6 +978,8 @@ func (m *match) sharepos() {
 			}
 		}
 	}
+	fmt.Println("test:", test)
+	test++
 	fmt.Println("shareposfinished")
 }
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
@@ -1097,6 +1099,4 @@ func (m *match) printUnitsPos() {
 			}
 		}
 	}
-	fmt.Println("test:", test)
-	test++
 }

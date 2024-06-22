@@ -978,7 +978,7 @@ func (m *match) sharepos(a string) {
 			}
 		}
 	}
-	fmt.Println("test:", test)
+	fmt.Println("test:", test+a)
 	test++
 }
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {

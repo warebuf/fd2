@@ -63,7 +63,7 @@
 <script src="/static/engine.js"></script>
 
 <script type="text/javascript">
-    sourceURL=test.js
+    sourceURL="test.js"
 
     document.onkeydown = function (e) {
 
@@ -445,7 +445,7 @@
                         my_int = parseInt(temp_string[1])
                         indexer_t = my_team
                         indexer_u = my_int
-                        state = md
+                        state = JSON.parse(JSON.stringify(md));
                         animating_state = 0
                     }
 

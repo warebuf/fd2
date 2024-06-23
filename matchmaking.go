@@ -1045,8 +1045,6 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 	}
 
 	random_number := rand.Intn(hweight + lweight + rweight + bweight)
-	//fmt.Println(hweight, lweight, rweight, bweight, random_number)
-	//fmt.Println(atk_t, atk_u, atk_b, "v", closest_i, closest_j, closest_k)
 
 	if random_number < hweight {
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
@@ -1061,8 +1059,6 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
 		dmg_list = append(dmg_list, []string{"B;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	}
-
-	fmt.Println(dmg_list)
 
 	return dmg_list
 }

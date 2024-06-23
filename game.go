@@ -65,6 +65,7 @@ func m_read(m *match_socket) {
 									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
 										if m.m.team_client_hero[i][j][k].Bot == false && m.m.team_client_hero[i][j][k].Move < 0 && m.m.team_client_hero[i][j][k].Position == 0 {
 											sim_check = false
+											fmt.Println("sim_check", i, j, k)
 										}
 									}
 								}

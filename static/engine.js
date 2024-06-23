@@ -239,12 +239,12 @@ function drawPos() {
     }
     else if(draw_attacks>0) {
         ctx.textAlign = "left";
-        ctx.fillStyle = 'blue';
+        ctx.fillStyle = 'yellow';
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100)) {
-                        ctx.fillRect(1700, ((i+j)*115) + 100 + (k*20), 5, 5);
+                        ctx.fillRect(1700, ((i+j)*115) + 95 + (k*20), 5, 5);
                     }
                 }
             }

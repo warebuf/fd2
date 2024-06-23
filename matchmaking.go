@@ -1045,7 +1045,8 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 	}
 
 	random_number := rand.Intn(hweight + lweight + rweight + bweight)
-	//fmt.Println(hweight, lweight, rweight, bweight, random_number)
+	fmt.Println(hweight, lweight, rweight, bweight, random_number)
+	fmt.Println(string(hweight))
 	//fmt.Println(atk_t, atk_u, atk_b, "v", closest_i, closest_j, closest_k)
 
 	if random_number < hweight {
@@ -1053,13 +1054,13 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		dmg_list = append(dmg_list, []string{"H;100;" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	} else if random_number < hweight+lweight {
 		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
-		dmg_list = append(dmg_list, []string{"L;100" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
+		dmg_list = append(dmg_list, []string{"L;100;" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	} else if random_number < hweight+lweight+rweight {
 		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
-		dmg_list = append(dmg_list, []string{"R;100" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
+		dmg_list = append(dmg_list, []string{"R;100;" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	} else {
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
-		dmg_list = append(dmg_list, []string{"B;100" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
+		dmg_list = append(dmg_list, []string{"B;100;" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	}
 
 	fmt.Println(dmg_list)

@@ -244,7 +244,7 @@ function drawPos() {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100)) {
-                        ctx.fillRect(1300, ((i+j)*115) + 102 + (k*20)), 5, 5);
+                        ctx.fillRect(1300, ((i+j)*115) + 102 + (k*20), 5, 5);
                     }
                 }
             }

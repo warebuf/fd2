@@ -115,7 +115,6 @@ func createMatch(msg *message) *match {
 		mid_to_match.mutex.RUnlock()
 		if !found {
 
-			fmt.Println(msg.Message)
 			gm := "ffa"
 
 			num := uint(1)
@@ -972,7 +971,6 @@ func (m *match) sharepos() {
 		for _, j := range i {
 			select {
 			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
-				fmt.Println(m.uuid_to_team_int[k].ab)
 			}
 		}
 	}
@@ -1052,16 +1050,16 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 
 	if random_number < hweight {
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
-		dmg_list = append(dmg_list, []string{"H;100"})
+		dmg_list = append(dmg_list, []string{"H;100;" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	} else if random_number < hweight+lweight {
 		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
-		dmg_list = append(dmg_list, []string{"L;100"})
+		dmg_list = append(dmg_list, []string{"L;100" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	} else if random_number < hweight+lweight+rweight {
 		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
-		dmg_list = append(dmg_list, []string{"R;100"})
+		dmg_list = append(dmg_list, []string{"R;100" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	} else {
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
-		dmg_list = append(dmg_list, []string{"B;100"})
+		dmg_list = append(dmg_list, []string{"B;100" + string(hweight) + ";" + string(lweight) + ";" + string(rweight) + ";" + string(bweight) + ";" + string(random_number)})
 	}
 
 	return dmg_list
@@ -1092,13 +1090,4 @@ func game_over_check(state [][][]*hero) bool {
 	}
 
 	return true
-}
-func (m *match) printUnitsPos() {
-	for i := 0; i < len(m.team_client_hero); i++ {
-		for j := 0; j < len(m.team_client_hero[i]); j++ {
-			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-				fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Move, m.team_client_hero[i][j][k].Direction)
-			}
-		}
-	}
 }

@@ -1047,6 +1047,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 	random_number := rand.Intn(hweight + lweight + rweight + bweight)
 	fmt.Println(hweight, lweight, rweight, bweight, random_number)
 	fmt.Println(string(hweight))
+	fmt.Printf("+%v", hweight)
 	//fmt.Println(atk_t, atk_u, atk_b, "v", closest_i, closest_j, closest_k)
 
 	if random_number < hweight {

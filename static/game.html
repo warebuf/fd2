@@ -456,7 +456,7 @@
                 else if(msg.Event == 'attack_event') {
                     if(msg.Message == 'close') {
 
-                        console.log(text.split(msg.Damage[0][0],';'))
+                        console.log(msg.Damage[0][0].split(';'))
 
                         let s = msg.Attacker[0] + ',' + msg.Attacker[1] + ',' + msg.Attacker[2] + ' attacked '
                             +msg.Defender[0][0] + ',' + msg.Defender[0][1] + ',' +msg.Defender[0][2] + ' '

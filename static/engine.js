@@ -187,12 +187,6 @@ function drawPos() {
                                 (state[i][j][k].Move != -1)
                             ){
                                 draw_attacks++
-                                event_log.push(atk_queue.shift())
-                                state[i][j][k].Move = -1
-                                state[i][j][k].Direction = 0
-                                if(time_queue.length > 0) {
-                                    time_event_ready = true
-                                }
                             }
                         }
                     }
@@ -239,8 +233,18 @@ function drawPos() {
     }
     else if(draw_attacks>0) {
 
+
+
+
         draw_attacks++
         if(draw_attacks==100) {
+            event_log.push(atk_queue.shift())
+            state[i][j][k].Move = -1
+            state[i][j][k].Direction = 0
+            if(time_queue.length > 0) {
+                time_event_ready = true
+            }
+            
             draw_attacks = 0
         }
     }

@@ -71,7 +71,7 @@ anime()
 function drawPos() {
 
     // if there are states updates, update the position
-    if(all_up_to_date == false) {
+    if(all_up_to_date == false && draw_attacks <= 0) {
 
         // check if the states are up to date
         if(pos_up_to_date == false) {
@@ -234,6 +234,13 @@ function drawPos() {
                     }
                 }
             }
+        }
+    }
+    else if(draw_attacks>0) {
+
+        draw_attacks++
+        if(draw_attacks==100) {
+            draw_attacks = 0
         }
     }
 

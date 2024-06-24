@@ -186,7 +186,9 @@ function drawPos() {
                                 (state[i][j][k].Direction == 1) &&
                                 (state[i][j][k].Move != -1)
                             ){
-                                draw_attacks++
+                                if(draw_attacks==0){
+                                    draw_attacks=1
+                                }
 
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0
@@ -258,7 +260,6 @@ function drawPos() {
         }
 
         draw_attacks++
-        console.log(draw_attacks)
         if(draw_attacks==100) {
             draw_attacks = 0
         }

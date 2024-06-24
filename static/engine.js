@@ -187,7 +187,9 @@ function drawPos() {
                                 (state[i][j][k].Move != -1)
                             ){
                                 draw_attacks++
-                                event_log.push(atk_data[animating_state])
+                                for(let l=0;i < atk_data[animating_state].length; l++) {
+                                    event_log.push(atk_data[animating_state][l])
+                                }
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0
                                 if(time_queue.length > 0) {

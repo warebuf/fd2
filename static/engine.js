@@ -122,7 +122,6 @@ function drawPos() {
         // if we are not at this state, let's move the units so we can approach the next state
         if((pos_up_to_date == true) && (act_up_to_date == true)) {
 
-            quick_time_event_check = false
             attack_event_ready = false
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
@@ -133,12 +132,13 @@ function drawPos() {
                             (match_data[animating_state][i][j][k].Move == -1) &&
                             (match_data[animating_state][i][j][k].SPD != 0)
                         ) {
-                            quick_time_event_check = true
+                            time_event_ready = true
                         } else if (
                             (match_data[animating_state][i][j][k].Position == 100) &&
                             (match_data[animating_state][i][j][k].Direction == 1) &&
                             (match_data[animating_state][i][j][k].Move != -1)
                         ) {
+                            time_event_ready = false
                             attack_event_ready = true
                             break
                         }
@@ -146,11 +146,6 @@ function drawPos() {
                     if((attack_event_ready)){break}
                 }
                 if((attack_event_ready)){break}
-            }
-            if(attack_event_ready == true) {
-                time_event_ready = false
-            } else if (quick_time_event_check==true){
-                time_event_ready = true
             }
 
             state = JSON.parse(JSON.stringify(match_data[animating_state]))

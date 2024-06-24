@@ -252,7 +252,7 @@ function drawPos() {
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {
-                //console.log(atk_data[animating_state][l])
+                console.log(atk_data[animating_state][l])
                 event_log.push(atk_data[animating_state][l])
             }
         }

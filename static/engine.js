@@ -147,10 +147,10 @@ function drawPos() {
                 }
                 if((attack_event_ready)){break}
             }
-            if((quick_time_event_check==true) && (attack_event_ready == false)) {
-                time_event_ready = true
-            } else {
+            if(attack_event_ready == true) {
                 time_event_ready = false
+            } else if (quick_time_event_check==true){
+                time_event_ready = true
             }
 
             state = JSON.parse(JSON.stringify(match_data[animating_state]))

@@ -815,14 +815,11 @@ func (m *match) run() {
 				a.Attacker[1] = list_of_attackers[i][1]
 				a.Attacker[2] = list_of_attackers[i][2]
 				a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
-				fmt.Println("adef", a.Defender)
 				a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
-				fmt.Println("admg", a.Damage)
 
 				fmt.Println("ATTACK OBJECT", a)
 				if len(a.Defender) > 0 {
 					temp = append(temp, a)
-					fmt.Println(temp)
 				}
 
 				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Direction = 0
@@ -943,12 +940,10 @@ func (m *match) sharepos(a []*attack) {
 		atk_temp = nil
 	} else {
 		for i := 0; i < len(a); i++ {
-			fmt.Println(i, a[i])
 			marshalled, _ := json.Marshal(a[i])
 			atk_temp = append(atk_temp, string(marshalled))
 		}
 	}
-	fmt.Println("atk_temp", atk_temp)
 
 	// convert game state to JSON
 	temp := make([][][]string, len(m.team_client_hero))

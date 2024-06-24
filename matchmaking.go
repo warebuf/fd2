@@ -938,7 +938,7 @@ func printAllMatchUserWS() {
 func (m *match) sharepos(a []*attack) {
 	fmt.Println("sharepos", a)
 
-	atk_temp := make([]string, len(a))
+	atk_temp := make([]string, 0)
 	if a == nil {
 		atk_temp = nil
 	} else {

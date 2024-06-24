@@ -815,7 +815,9 @@ func (m *match) run() {
 				a.attacker[1] = list_of_attackers[i][1]
 				a.attacker[2] = list_of_attackers[i][2]
 				a.defender = closest_enemies(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2])
+				fmt.Println("adef", a.defender)
 				a.damage = close_attack(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2], a.defender)
+				fmt.Println("adef", a.damage)
 
 				fmt.Println("ATTACK OBJECT", temp)
 				if len(a.defender) > 0 {

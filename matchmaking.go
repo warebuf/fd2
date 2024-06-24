@@ -943,7 +943,7 @@ func (m *match) sharepos(a []*attack) {
 		atk_temp = nil
 	} else {
 		for i := 0; i < len(a); i++ {
-			fmt.Println(i)
+			fmt.Println(i, a[i])
 			marshalled, _ := json.Marshal(a[i])
 			atk_temp = append(atk_temp, string(marshalled))
 		}

@@ -151,9 +151,9 @@ type hero struct {
 }
 
 type attack struct {
-	attacker []int      //i,j,k
-	defender [][]int    //list of i,j,k
-	damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
+	Attacker []int      //i,j,k
+	Defender [][]int    //list of i,j,k
+	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
 }
 
 type match struct {

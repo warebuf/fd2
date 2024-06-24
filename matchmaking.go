@@ -807,26 +807,26 @@ func (m *match) run() {
 			temp := make([]*attack, 0)
 			for i := 0; i < len(list_of_attackers); i++ {
 				a := &attack{
-					attacker: make([]int, 3),
-					defender: make([][]int, 0),
-					damage:   make([][]string, 0),
+					Attacker: make([]int, 3),
+					Defender: make([][]int, 0),
+					Damage:   make([][]string, 0),
 				}
-				a.attacker[0] = list_of_attackers[i][0]
-				a.attacker[1] = list_of_attackers[i][1]
-				a.attacker[2] = list_of_attackers[i][2]
-				a.defender = closest_enemies(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2])
-				fmt.Println("adef", a.defender)
-				a.damage = close_attack(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2], a.defender)
-				fmt.Println("admg", a.damage)
+				a.Attacker[0] = list_of_attackers[i][0]
+				a.Attacker[1] = list_of_attackers[i][1]
+				a.Attacker[2] = list_of_attackers[i][2]
+				a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
+				fmt.Println("adef", a.Defender)
+				a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
+				fmt.Println("admg", a.Damage)
 
 				fmt.Println("ATTACK OBJECT", a)
-				if len(a.defender) > 0 {
+				if len(a.Defender) > 0 {
 					temp = append(temp, a)
 					fmt.Println(temp)
 				}
 
-				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Direction = 0
-				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Move = -1
+				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Direction = 0
+				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move = -1
 			}
 
 			if len(temp) > 0 {

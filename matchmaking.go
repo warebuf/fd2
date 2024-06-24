@@ -819,7 +819,7 @@ func (m *match) run() {
 				a.damage = close_attack(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2], a.defender)
 				fmt.Println("adef", a.damage)
 
-				fmt.Println("ATTACK OBJECT", temp)
+				fmt.Println("ATTACK OBJECT", a)
 				if len(a.defender) > 0 {
 					temp = append(temp, a)
 				}

@@ -936,13 +936,14 @@ func printAllMatchUserWS() {
 	}
 }
 func (m *match) sharepos(a []*attack) {
-	fmt.Println("sharepos")
+	fmt.Println("sharepos", a)
 
 	atk_temp := make([]string, len(a))
 	if a == nil {
 		atk_temp = nil
 	} else {
 		for i := 0; i < len(a); i++ {
+			fmt.Println(i)
 			marshalled, _ := json.Marshal(a[i])
 			atk_temp = append(atk_temp, string(marshalled))
 		}

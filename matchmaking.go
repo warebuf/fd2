@@ -822,6 +822,7 @@ func (m *match) run() {
 				fmt.Println("ATTACK OBJECT", a)
 				if len(a.defender) > 0 {
 					temp = append(temp, a)
+					fmt.Println(temp)
 				}
 
 				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Direction = 0

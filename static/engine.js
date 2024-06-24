@@ -230,10 +230,10 @@ function drawPos() {
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
-                    if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100) && (state[i][j][k].Direction==1)) {
+                    if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100)) {
                         ctx.fillRect(1700, ((i+j)*115) + 96 + (k*20), 5, 5);
 
-                        if(draw_attacks==1) {
+                        if(&& (state[i][j][k].Direction==1) && (draw_attacks==1)) {
                             state[i][j][k].Move = -1
                             state[i][j][k].Direction = 0
                             time_event_ready = true

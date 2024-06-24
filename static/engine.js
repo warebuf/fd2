@@ -187,10 +187,7 @@ function drawPos() {
                                 (state[i][j][k].Move != -1)
                             ){
                                 draw_attacks++
-                                for(let l=0;l < atk_data[animating_state].length; l++) {
-                                    //console.log(atk_data[animating_state][l])
-                                    event_log.push(atk_data[animating_state][l])
-                                }
+
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0
                                 if(time_queue.length > 0) {
@@ -250,6 +247,13 @@ function drawPos() {
                         ctx.fillRect(1700, ((i+j)*115) + 96 + (k*20), 5, 5);
                     }
                 }
+            }
+        }
+
+        if(draw_attacks==1) {
+            for(let l=0;l < atk_data[animating_state].length; l++) {
+                //console.log(atk_data[animating_state][l])
+                event_log.push(atk_data[animating_state][l])
             }
         }
 

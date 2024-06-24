@@ -260,7 +260,7 @@ function drawPos() {
         }
 
         draw_attacks++
-        if(draw_attacks==100) {
+        if(draw_attacks==60) {
             draw_attacks = 0
         }
     }

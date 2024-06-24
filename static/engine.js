@@ -258,6 +258,7 @@ function drawPos() {
         }
 
         draw_attacks++
+        console.log(draw_attacks)
         if(draw_attacks==100) {
             draw_attacks = 0
         }

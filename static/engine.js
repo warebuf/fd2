@@ -188,8 +188,8 @@ function drawPos() {
                             ){
                                 draw_attacks++
                                 for(let l=0;l < atk_data[animating_state].length; l++) {
-                                    console.log(atk_data[animating_state][l])
-                                    //event_log.push(atk_data[animating_state][l])
+                                    //console.log(atk_data[animating_state][l])
+                                    event_log.push(atk_data[animating_state][l])
                                 }
                                 state[i][j][k].Move = -1
                                 state[i][j][k].Direction = 0

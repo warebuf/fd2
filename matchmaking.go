@@ -651,7 +651,7 @@ func (m *match) run() {
 			}
 
 			// send everyone the game state
-			m.sharepos()
+			m.sharepos(nil)
 
 			init_time := time.Now().Add(1 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
@@ -730,7 +730,7 @@ func (m *match) run() {
 			}
 			if gave_bots_acts == true {
 				fmt.Println("SENT BOT ACTS")
-				m.sharepos()
+				m.sharepos(nil)
 			}
 
 			// calculate min unit of time to action
@@ -801,46 +801,31 @@ func (m *match) run() {
 			}
 			fmt.Println("finished unit movement")
 
-			m.sharepos()
+			m.sharepos(nil)
 
 			// simulate all attacks
+			temp := make([]*attack, len(list_of_attackers))
 			simulated_attack := false
 			for i := 0; i < len(list_of_attackers); i++ {
-				enemy := closest_enemies(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2])
-				dmg_list := close_attack(m.team_client_hero, list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2], enemy)
-				m.team_client_hero[list_of_attackers[i][0]][list_of_attackers[i][1]][list_of_attackers[i][2]].Direction = 0
-				m.team_client_hero[list_of_attackers[i][0]][list_of_attackers[i][1]][list_of_attackers[i][2]].Move = -1
-
-				if len(enemy) > 0 {
-					fmt.Println("SENDING ATTACK_EVENT")
-					simulated_attack = true
-
-					msg := &message{Event: "attack_event", Message: "close", Attacker: []int{list_of_attackers[i][0], list_of_attackers[i][1], list_of_attackers[i][2]}, Defender: [][]int{[]int{enemy[0][0], enemy[0][1], enemy[0][2]}}, Damage: dmg_list}
-
-					m.mutex.Lock()
-					m.message_logs = append(m.message_logs, msg)
-					m.mutex.Unlock()
-
-					for _, i := range m.gamer_uid_to_msid_to_match_socket {
-						for _, j := range i {
-							select {
-							case j.incoming_message <- msg:
-							}
-						}
-					}
-
-					for _, i := range m.spectator_uid_to_msid_to_match_socket {
-						for _, j := range i {
-							select {
-							case j.incoming_message <- msg:
-							}
-						}
-					}
+				a := &attack{
+					attacker: make([]int, 3),
+					defender: make([][]int, 0),
+					damage:   make([][]string, 0),
 				}
+				a.attacker[0] = list_of_attackers[i][0]
+				a.attacker[1] = list_of_attackers[i][1]
+				a.attacker[2] = list_of_attackers[i][2]
+				a.defender = closest_enemies(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2])
+				a.damage = close_attack(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2], a.defender)
+
+				temp = append(temp, a)
+
+				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Direction = 0
+				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Move = -1
 			}
 
 			if simulated_attack == true {
-				m.sharepos()
+				m.sharepos(temp)
 			}
 
 			if game_over_check(m.team_client_hero) {
@@ -945,13 +930,20 @@ func printAllMatchUserWS() {
 		}
 	}
 }
-func (m *match) sharepos() {
+func (m *match) sharepos(a []*attack) {
 	fmt.Println("sharepos")
 
-	// have to hide moves of everyone who is not on your team
+	atk_temp := make([]string, len(a))
+	if a == nil {
+		atk_temp = nil
+	} else {
+		for i := 0; i < len(a); i++ {
+			marshalled, _ := json.Marshal(a[i])
+			atk_temp = append(atk_temp, string(marshalled))
+		}
+	}
 
 	// convert game state to JSON
-
 	temp := make([][][]string, len(m.team_client_hero))
 	for i := 0; i < len(m.team_client_hero); i++ {
 		temp[i] = make([][]string, len(m.team_client_hero[i]))
@@ -970,18 +962,19 @@ func (m *match) sharepos() {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}
 }
+
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 
 	ans := [][]int{}

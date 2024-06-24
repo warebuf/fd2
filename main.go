@@ -150,6 +150,12 @@ type hero struct {
 	B bottom
 }
 
+type attack struct {
+	attacker []int      //i,j,k
+	defender [][]int    //list of i,j,k
+	damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
+}
+
 type match struct {
 	mutex sync.RWMutex
 
@@ -248,18 +254,15 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	TCH          [][][]string
-	Status       string
-	AttackLogPop int
+	TCH    [][][]string
+	Status string
 
 	// should add the user's TCH
 	Team_index   int
 	Client_index int
 	Hero_index   int
 
-	Attacker []int
-	Defender [][]int
-	Damage   [][]string
+	Atk []string
 }
 
 // Global Variables - Utility

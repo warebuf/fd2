@@ -804,8 +804,7 @@ func (m *match) run() {
 			m.sharepos(nil)
 
 			// simulate all attacks
-			temp := make([]*attack, len(list_of_attackers))
-			simulated_attack := false
+			temp := make([]*attack, 0)
 			for i := 0; i < len(list_of_attackers); i++ {
 				a := &attack{
 					attacker: make([]int, 3),
@@ -818,13 +817,16 @@ func (m *match) run() {
 				a.defender = closest_enemies(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2])
 				a.damage = close_attack(m.team_client_hero, a.attacker[0], a.attacker[1], a.attacker[2], a.defender)
 
-				temp = append(temp, a)
+				fmt.Println("ATTACK OBJECT", temp)
+				if len(a.defender) > 0 {
+					temp = append(temp, a)
+				}
 
 				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Direction = 0
 				m.team_client_hero[a.attacker[0]][a.attacker[1]][a.attacker[2]].Move = -1
 			}
 
-			if simulated_attack == true {
+			if len(temp) > 0 {
 				m.sharepos(temp)
 			}
 

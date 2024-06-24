@@ -359,8 +359,8 @@
 
     // things drawn OR to be drawn
     var match_data = new Array();
+    var atk_data = new Array();
 
-    var atk_queue = []
     var time_queue = []
     var status_queue = []
 
@@ -454,11 +454,13 @@
                     match_data.push(md)
                     //printAllMatchData(match_data)
                     //console.log(match_data)
-                }
-                else if(msg.Event == 'attack_event') {
-                    if(msg.Message == 'close') {
 
-                        weights = msg.Damage[0][0].split(';')
+                    if(msg.Atk == null) {
+                        atk_data.push([])
+                    } else {
+                        atk_data.push(msg.Atk)
+                        /*
+                        weights = msg.Atk[0].attacker[0].split(';')
                         sum = Number(weights[2])+Number(weights[3])+Number(weights[4])+Number(weights[5])
                         partper = weights[0]+weights[1]
                         hweight = Math.round(100*Number(weights[2])/sum).toString() + '%'
@@ -466,14 +468,12 @@
                         rweight = Math.round(100*Number(weights[4])/sum).toString() + '%'
                         bweight = Math.round(100*Number(weights[5])/sum).toString() + '%'
 
-
-
                         let s = msg.Attacker[0] + ',' + msg.Attacker[1] + ',' + msg.Attacker[2] + ' attacked '
                             +msg.Defender[0][0] + ',' + msg.Defender[0][1] + ',' +msg.Defender[0][2] + ' '
                             +partper +' (H'+hweight+' L'+lweight+' R'+rweight+' B'+bweight+')'
-
-                        atk_queue.push(s)
+                         */
                     }
+
                 }
                 else if(msg.Event == 'game_over') {
                     game_over = true

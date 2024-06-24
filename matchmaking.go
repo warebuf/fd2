@@ -942,6 +942,7 @@ func (m *match) sharepos(a []*attack) {
 			atk_temp = append(atk_temp, string(marshalled))
 		}
 	}
+	fmt.Println("atk_temp", atk_temp)
 
 	// convert game state to JSON
 	temp := make([][][]string, len(m.team_client_hero))

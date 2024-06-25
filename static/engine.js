@@ -228,6 +228,8 @@ function drawPos() {
                     if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100)) {
                         ctx.fillRect(1700, ((i+j)*115) + 96 + (k*20), 5, 5);
 
+                        dashedLine(1700,((i+j)*115) + 96 + (k*20),10,10,[5,5])
+
                         if( (state[i][j][k].Direction==1) && (draw_attacks==1) ) {
                             state[i][j][k].Move = -1
                             state[i][j][k].Direction = 0
@@ -238,23 +240,6 @@ function drawPos() {
             }
         }
 
-        dashedLine(50,50,1800,750,[5,5])
-
-        // Draw the red line.
-        ctx.beginPath();
-        ctx.strokeStyle = '#f00';
-        ctx.lineWidth = 1;
-        ctx.moveTo(10, 0);
-        ctx.lineTo(10, 100);
-        ctx.stroke();
-
-        // Draw the green line.
-        ctx.beginPath();
-        ctx.lineWidth = 1;
-        ctx.moveTo(50, 0);
-        ctx.strokeStyle = '#0f0';
-        ctx.lineTo(50, 100);
-        ctx.stroke();
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {

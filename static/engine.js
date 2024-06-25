@@ -237,7 +237,7 @@ function drawPos() {
                             a1++
                         }
 
-                        if (draw_attacks==59) {
+                        if ((draw_attacks==59) && (a2 < atk_data[animating_state].length)) {
                             event_log.push(atk_data[animating_state][a2])
                             a2++
 

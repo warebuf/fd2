@@ -228,7 +228,7 @@ function drawPos() {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if( (state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100) ) {
 
-                        console.log(animating_state, len(atk_data), len(match_data))
+                        console.log(animating_state, atk_data.length, match_data.length)
                         let b = JSON.parse(atk_data[animating_state][a1])
                         let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
                         let x2 = 1085 + (pos*6.05)

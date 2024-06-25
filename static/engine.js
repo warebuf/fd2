@@ -238,19 +238,19 @@ function drawPos() {
             }
         }
 
-        //dashedLine(50,50,1800,750,[5,5])
+        dashedLine(50,50,1800,750,[5,5])
 
         // Draw the red line.
         ctx.beginPath();
         ctx.strokeStyle = '#f00';
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 1;
         ctx.moveTo(10, 0);
         ctx.lineTo(10, 100);
         ctx.stroke();
 
         // Draw the green line.
         ctx.beginPath();
-        ctx.lineWidth = 10;
+        ctx.lineWidth = 1;
         ctx.moveTo(50, 0);
         ctx.strokeStyle = '#0f0';
         ctx.lineTo(50, 100);
@@ -561,6 +561,7 @@ function dashedLine(x1,y1,x2,y2,dashArr){
     var i = 0;        // the current line position in pixels
     ctx.beginPath();  // start a path
     ctx.strokeStyle = 'yellow';
+    ctx.lineWidth = 1;
     while(i < dist){   // do while less than line length
         // get the line seg dash length
         var dashLen = dashArr[(dashIdx ++) % dashArr.length];

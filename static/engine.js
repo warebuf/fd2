@@ -221,23 +221,24 @@ function drawPos() {
     }
     else if(draw_attacks>0) {
 
-        let a = 0
+        let a1 = 0
+        let a2 = 0
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100)) {
 
-                        let b = JSON.parse(atk_data[animating_state][a])
+                        let b = JSON.parse(atk_data[animating_state][a1])
                         let pos = state[b.Attacker[0]][b.Attacker[1]][b.Attacker[2]].Position
                         let x2 = 1060 + (pos*5)
                         console.log(x2, pos)
+                        a1++
 
-
-                        dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,100,[5,2])
+                        dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,200,[5,2])
 
                         if (draw_attacks==59) {
-                            event_log.push(atk_data[animating_state][a])
-                            a++
+                            event_log.push(atk_data[animating_state][a2])
+                            a2++
 
                             if (state[i][j][k].Direction==1) {
                                 state[i][j][k].Move = -1

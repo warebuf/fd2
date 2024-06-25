@@ -492,8 +492,8 @@ func (m *match) run() {
 				fmt.Println("ticker went off 1")
 				timer1_length = time.Second * 120
 				timer2_length = time.Second * 121
-				num, _ := strconv.Atoi(m.type_of_ticker[5:])
-				m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
+				//num, _ := strconv.Atoi(m.type_of_ticker[5:])
+				//m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
 			}
 
 			init_time := time.Now().Add(timer1_length)
@@ -826,6 +826,9 @@ func (m *match) run() {
 				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move = -1
 			}
 
+			num, _ := strconv.Atoi(m.type_of_ticker[5:])
+			m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
+
 			if len(temp) > 0 {
 				m.sharepos(temp)
 			}
@@ -863,8 +866,6 @@ func (m *match) run() {
 			// send new timer to everyone
 			timer1_length := time.Second * 120
 			timer2_length := time.Second * 121
-			num, _ := strconv.Atoi(m.type_of_ticker[5:])
-			m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
 
 			init_time := time.Now().Add(timer1_length)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}

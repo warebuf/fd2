@@ -234,7 +234,7 @@ function drawPos() {
                         let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
                         console.log('2', pos)
                         let x2 = 1085 + (pos*6.08)
-                        let y2 = ((b.Defender[0][0]+b.Defender[0][1])*115) + 102 + (b.Defender[0][2]*20)
+                        let y2 = ((b.Defender[0][0]+b.Defender[0][1])*115) + 100 + (b.Defender[0][2]*20)
                         a1++
 
                         dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,y2,[5,2])

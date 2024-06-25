@@ -334,11 +334,6 @@ function drawState() {
                 }
                 ctx.fillRect(x0, ((i+j)*115) + y0+1 + (k*20), 5, 7);
 
-                if ((i == my_team) && (j == my_int)) {
-                    ctx.fillStyle = 'yellow';
-                    ctx.fillRect(x0+2, ((i+j)*115) + y0-2 + (k*20), 1, 1);
-                }
-
                 if(status.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&

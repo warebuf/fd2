@@ -237,7 +237,8 @@ function drawPos() {
 
                             ctx.fillStyle = 'white'
                             ctx.textAlign = "center";
-                            ctx.fillText("BOOM",x2, y2-5);
+                            ctx.font = '5px monospace';
+                            ctx.fillText("BOOM",x2, y2-7);
 
                             a1++
                         }

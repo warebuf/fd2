@@ -220,8 +220,8 @@ function drawPos() {
         }
     }
     else if(draw_attacks>0) {
-        ctx.textAlign = "left";
-        ctx.fillStyle = 'yellow';
+
+        let a = 0
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
@@ -229,23 +229,25 @@ function drawPos() {
 
                         dashedLine(1690,((i+j)*115) + 98 + (k*20),10,10,[5,2])
 
-                        if( (state[i][j][k].Direction==1) && (draw_attacks==1) ) {
+                        if(draw_attacks==1) {
+                            console.log(atk_data[animating_state][a], typeof(atk_data[animating_state][a]))
+                            event_log.push(atk_data[animating_state][a])
+                            a++
+                        }
+
+                        if( (state[i][j][k].Direction==1) && (draw_attacks==60) ) {
                             state[i][j][k].Move = -1
                             state[i][j][k].Direction = 0
                             time_event_ready = true
                         }
+
                     }
                 }
             }
         }
 
 
-        if(draw_attacks==1) {
-            for(let l=0;l < atk_data[animating_state].length; l++) {
-                console.log(atk_data[animating_state][l])
-                event_log.push(atk_data[animating_state][l])
-            }
-        }
+
 
         draw_attacks++
         if(draw_attacks==60) {

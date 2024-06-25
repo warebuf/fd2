@@ -650,14 +650,13 @@ func (m *match) run() {
 				}
 			}
 
-			m.type_of_ticker = "PREGAME"
+			m.type_of_ticker = "TURN 0"
 			// send everyone the game state
 			m.sharepos(nil)
 
 			init_time := time.Now().Add(1 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "TURN 0", MatchID: m.mid}
 			m.ticker = time.NewTicker(2 * time.Second) //will tick in 30 s
-			m.type_of_ticker = "PREGAME"
 
 			// send ticker to everyone
 			m.mutex.Lock()

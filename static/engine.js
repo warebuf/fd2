@@ -233,12 +233,16 @@ function drawPos() {
                             let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
                             let x2 = 1085 + (pos*6.08)
                             let y2 = ((b.Defender[0][0]+b.Defender[0][1])*115) + 100 + (b.Defender[0][2]*20)
-                            dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,y2,[5,2])
 
-                            ctx.fillStyle = 'white'
-                            ctx.textAlign = "center";
-                            ctx.font = '9px monospace';
-                            ctx.fillText("BOOM!",x2, y2-7);
+                            let perc = draw_attacks / 30
+                            dashedLine(1690,((i+j)*115) + 98 + (k*20),x2*perc,y2*perc,[5,2])
+
+                            if(draw_attacks==30) {
+                                ctx.fillStyle = 'white'
+                                ctx.textAlign = "center";
+                                ctx.font = '9px monospace';
+                                ctx.fillText("BOOM!",x2, y2-7);
+                            }
 
                             a1++
                         }

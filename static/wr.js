@@ -23,7 +23,7 @@ function anime() {
 	//ctx.clearRect(0,0,innerWidth,innerHeight);
 	ctx.beginPath();
 	ctx.arc(x,y,radius,0,Math.PI*2,false);
-	ctx.strokeStyle='blue';
+	ctx.strokeStyle='rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
 	ctx.stroke();
 	
 	if (x + radius > c.width || x - radius < 0) {

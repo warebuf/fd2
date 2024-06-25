@@ -728,13 +728,11 @@ func (m *match) run() {
 				}
 			}
 			if gave_bots_acts == true {
-				fmt.Println("SENT BOT ACTS")
 				m.sharepos(nil)
 			}
 
 			// calculate min unit of time to action
 			min_units := 999999.99 //9,223,372,036,854,775,807 (9 quintillion)
-
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
@@ -799,11 +797,10 @@ func (m *match) run() {
 				}
 			}
 			fmt.Println("finished unit movement")
-
 			m.sharepos(nil)
 
 			// simulate all attacks
-			temp := make([]*attack, 0)
+			atk_list := make([]*attack, 0)
 			for i := 0; i < len(list_of_attackers); i++ {
 				a := &attack{
 					Attacker: make([]int, 3),
@@ -816,9 +813,8 @@ func (m *match) run() {
 				a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
 				a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
 
-				fmt.Println("ATTACK OBJECT", a)
 				if len(a.Defender) > 0 {
-					temp = append(temp, a)
+					atk_list = append(atk_list, a)
 				}
 
 				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Direction = 0
@@ -826,10 +822,14 @@ func (m *match) run() {
 			}
 
 			num, _ := strconv.Atoi(m.type_of_ticker[5:])
-			m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
+			if len(atk_list) > 0 {
+				m.type_of_ticker = "TURN " + strconv.Itoa(num+len(atk_list))
+			} else {
+				m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
+			}
 
-			if len(temp) > 0 {
-				m.sharepos(temp)
+			if len(atk_list) > 0 {
+				m.sharepos(atk_list)
 			}
 
 			if game_over_check(m.team_client_hero) {

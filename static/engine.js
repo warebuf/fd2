@@ -229,11 +229,11 @@ function drawPos() {
 
                         let b = JSON.parse(atk_data[animating_state][a])
                         let pos = state[b.Attacker[0]][b.Attacker[1]][b.Attacker[2]].Position
-                        let y2 = 1060 + (pos*5)
-                        console.log(y2)
+                        let x2 = 1060 + (pos*5)
+                        console.log(x2)
 
 
-                        dashedLine(1690,((i+j)*115) + 98 + (k*20),10,y2,[5,2])
+                        dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,10,[5,2])
 
                         if(draw_attacks==1) {
                             event_log.push(atk_data[animating_state][a])

@@ -238,14 +238,7 @@ function drawPos() {
             }
         }
 
-        ctx.strokeStyle = 'yellow';
-        ctx.setLineDash([5, 3]);/*dashes are 5px and spaces are 3px*/
-        ctx.beginPath();
-        ctx.moveTo(0,100);
-        ctx.lineTo(400, 100);
-        ctx.stroke();
-        ctx.setLineDash([0, 0]);/*dashes are 5px and spaces are 3px*/
-        ctx.strokeStyle = "white"
+        dashedLine(10,10,1000,1000,[2,2])
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {
@@ -538,4 +531,31 @@ function drawLog() {
         ctx.fillStyle = 'white';
         ctx.fillText(event_log[i],0, 350 + (10*i));
     }
+}
+
+
+function dashedLine(x1,y1,x2,y2,dashArr){
+    // get the normalised line vector from start to end
+    var nx = x2 - x1;
+    var ny = y2 - y1;
+    const dist = Math.sqrt(nx * nx + ny * ny);  // get the line length
+    nx /= dist;
+    ny /= dist;
+    var dashIdx = 0;  // the index into the dash array
+    var i = 0;        // the current line position in pixels
+    ctx.beginPath();  // start a path
+    while(i < dist){   // do while less than line length
+        // get the line seg dash length
+        var dashLen = dashArr[(dashIdx ++) % dashArr.length];
+        // draw the dash
+        ctx.moveTo(x1 + nx * i, y1 + ny * i);
+        i = Math.min(dist,i + dashLen);
+        ctx.lineTo(x1 + nx * i, y1 + ny * i);
+        // add the spacing
+        i += dashArr[(dashIdx ++) % dashArr.length];
+        if(i <= 0) { // something is wrong so exit rather than endless loop
+            break;
+        }
+    }
+    ctx.stroke();  // stroke
 }

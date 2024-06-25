@@ -34,7 +34,7 @@ function anime() {
     if(game_over == true) {
         ctx.textAlign = "center";
         ctx.fillStyle = 'blue';
-        ctx.fillRect((c.width/2)-(ctx.measureText("GAMEOVER").width/2),40,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
+        ctx.fillRect((c.width/2)-(ctx.measureText("GAMEOVER").width/2),42,ctx.measureText("GAMEOVER").width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.fillText("GAMEOVER",c.width/2, 45);
@@ -256,7 +256,7 @@ function drawPos() {
             t = time_queue.shift()
             total_units_of_time += parseFloat(t)
             total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-            event_log.push(t.toString() + " time units has passed")
+            event_log.push(t.toString() + " units of time has passed")
         }
     }
 

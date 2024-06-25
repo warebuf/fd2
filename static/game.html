@@ -412,7 +412,7 @@
                     }
                 }
                 else if(msg.Event == 'unitsOfTime') {
-                    time_queue.push(parseFloat(msg.Message).toFixed(3) + ' time units has passed')
+                    time_queue.push(parseFloat(msg.Message).toFixed(3))
                     total_units_of_time=total_units_of_time+parseFloat(msg.Message)
                     total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
                 }

@@ -238,7 +238,21 @@ function drawPos() {
             }
         }
 
-        dashedLine(50,50,1800,750,[5,5])
+        //dashedLine(50,50,1800,750,[5,5])
+
+        // Draw the red line.
+        ctx.beginPath();
+        ctx.strokeStyle = '#f00';
+        ctx.moveTo(10, 0);
+        ctx.lineTo(10, 100);
+        ctx.stroke();
+
+        // Draw the green line.
+        ctx.beginPath();
+        ctx.moveTo(50, 0);
+        ctx.strokeStyle = '#0f0';
+        ctx.lineTo(50, 100);
+        ctx.stroke();
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {

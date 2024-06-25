@@ -244,6 +244,7 @@ function drawPos() {
         ctx.moveTo(0,100);
         ctx.lineTo(400, 100);
         ctx.stroke();
+        ctx.setLineDash([0, 0]);/*dashes are 5px and spaces are 3px*/
 
 
         if(draw_attacks==1) {

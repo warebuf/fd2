@@ -544,6 +544,7 @@ function dashedLine(x1,y1,x2,y2,dashArr){
     var dashIdx = 0;  // the index into the dash array
     var i = 0;        // the current line position in pixels
     ctx.beginPath();  // start a path
+    ctx.strokeStyle = 'yellow';
     while(i < dist){   // do while less than line length
         // get the line seg dash length
         var dashLen = dashArr[(dashIdx ++) % dashArr.length];

@@ -497,21 +497,6 @@ function returntomatchmaking(){
     window.location.href = 'http://{{.host}}/waitroom'
 }
 
-function printAllMatchData(match_data) {
-
-    for (i =0; i < match_data.length; i++) {
-        for (j =0; j < match_data[i].length; j++) {
-            for (k =0; k < match_data[i][j].length; k++) {
-                for(l =0; l < match_data[i][j][k].length; l++) {
-                    console.log(i, j, k, l, match_data[i][j][k][l].Position, match_data[i][j][k][l].Direction, match_data[i][j][k][l].Move)
-                }
-            }
-        }
-        console.log("")
-    }
-
-}
-
 </script>
 </body>
 </html>

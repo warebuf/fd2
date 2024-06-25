@@ -227,11 +227,15 @@ function drawPos() {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if((state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100)) {
 
-                        dashedLine(1690,((i+j)*115) + 98 + (k*20),10,10,[5,2])
+                        let b = JSON.parse(atk_data[animating_state][a])
+                        let pos = state[b.Attacker[0]][b.Attacker[1]][b.Attacker[2]].Position
+                        let y2 = 1060 + (pos*5)
+                        console.log(y2)
+
+
+                        dashedLine(1690,((i+j)*115) + 98 + (k*20),10,y,[5,2])
 
                         if(draw_attacks==1) {
-                            let b = JSON.parse(atk_data[animating_state][a])
-                                console.log(state[b.Attacker[0]][b.Attacker[1]][b.Attacker[2]])
                             event_log.push(atk_data[animating_state][a])
                             a++
                         }

@@ -253,7 +253,10 @@ function drawPos() {
 
     if(time_event_ready==true) {
         if(time_queue.length > 0) {
-            event_log.push(time_queue.shift().toString()+ " time units has passed")
+            t = time_queue.shift()
+            total_units_of_time=total_units_of_time+t
+            total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+            event_log.push(t.toString() + " time units has passed")
         }
     }
 

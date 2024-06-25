@@ -418,7 +418,6 @@
                 }
                 else if(msg.Event == 'startMatchCountdown') {
                     sent_time = Date.parse(msg.Message)
-                    once = true
                     if(status==null){status = msg.Status}
                 }
                 else if(msg.Event == 'turn') {

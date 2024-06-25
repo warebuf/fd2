@@ -551,7 +551,6 @@ func (m *match) run() {
 				}
 
 				for y := 0; y < 5; y++ {
-
 					h := head{
 						SERIAL: 0,
 
@@ -630,10 +629,8 @@ func (m *match) run() {
 						R:         rarm,
 						B:         btm,
 					}
-
 					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
 					marshalled, _ := json.Marshal(temp)
-					//fmt.Println(string(marshalled))
 					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
 				}
 

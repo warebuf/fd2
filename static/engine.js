@@ -23,8 +23,6 @@ window.requestAnimFrame = (function(){
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
 
-var once = true
-
 function anime() {
     window.requestAnimFrame(anime);
     ctx.fillStyle = '#101010';
@@ -49,12 +47,6 @@ function anime() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.fillText(remaining_time,c.width/2, 50);
-
-        // need to change it so that it not only sends ur input when time expires, but sends it if you disconnect
-        if(remaining_time<=0 && once) {
-            socket.send(JSON.stringify({ "Event": 'timeUpMsg', "Message": "test" }))
-            once = false
-        }
     }
 
     if (match_data.length > 0) {

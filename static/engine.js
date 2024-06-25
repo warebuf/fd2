@@ -248,7 +248,6 @@ function drawPos() {
         ctx.lineTo(10, 100);
         ctx.stroke();
 
-        /*
         // Draw the green line.
         ctx.beginPath();
         ctx.lineWidth = 1;
@@ -256,8 +255,6 @@ function drawPos() {
         ctx.strokeStyle = '#0f0';
         ctx.lineTo(50, 100);
         ctx.stroke();
-        
-         */
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {
@@ -395,7 +392,8 @@ function drawStats() {
     a0 = 975
     ctx.textAlign = "center";
     ctx.fillText("UNIT", a0+(60/2), y0);
-    ctx.lineWidth = 0.1;
+    ctx.beginPath()
+    ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.moveTo(a0-5, y0+5);
     ctx.lineTo(a0+60, y0+5);
@@ -407,7 +405,8 @@ function drawStats() {
 
     a1 = 10
     ctx.fillText("HEAD", a1+(260/2), y0);
-    ctx.lineWidth = 0.1;
+    ctx.beginPath()
+    ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.moveTo(a1-5, y0+5);
     ctx.lineTo(a1+260, y0+5);
@@ -426,7 +425,8 @@ function drawStats() {
 
     a2 = 300
     ctx.fillText("ARMS", a2+(250/2), y0);
-    ctx.lineWidth = 0.1;
+    ctx.beginPath()
+    ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.moveTo(a2-5, y0+5);
     ctx.lineTo(a2+250, y0+5);
@@ -445,7 +445,8 @@ function drawStats() {
 
     a3 = 575
     ctx.fillText("LEGS", a3+(375/2), y0);
-    ctx.lineWidth = 0.1;
+    ctx.beginPath()
+    ctx.lineWidth = 1;
     ctx.strokeStyle = "white";
     ctx.moveTo(a3-5, y0+5);
     ctx.lineTo(a3+375, y0+5);

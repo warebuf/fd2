@@ -306,25 +306,29 @@ function drawState() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if (state[i][j][k].H.HP > 0) {
-                    ctx.fillStyle = 'green';
+                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
+                    else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0, ((i+j)*115) + y0-9 + (k*20), 5, 5);
                 if (state[i][j][k].L.HP > 0) {
-                    ctx.fillStyle = 'green';
+                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
+                    else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0-5, ((i+j)*115) + y0-4 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (state[i][j][k].R.HP > 0) {
-                    ctx.fillStyle = 'green';
+                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
+                    else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0+5, ((i+j)*115) + y0-4 + (k*20), 5, 7);
                 if (state[i][j][k].B.HP > 0) {
-                    ctx.fillStyle = 'green';
+                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
+                    else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }

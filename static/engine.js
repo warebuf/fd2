@@ -230,7 +230,7 @@ function drawPos() {
                         dashedLine(1690,((i+j)*115) + 98 + (k*20),10,10,[5,2])
 
                         if(draw_attacks==1) {
-                            console.log(atk_data[animating_state][a], typeof(atk_data[animating_state][a]))
+                            console.log(atk_data[animating_state][a].Attacker, typeof(atk_data[animating_state][a]))
                             event_log.push(atk_data[animating_state][a])
                             a++
                         }

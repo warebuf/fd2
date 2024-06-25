@@ -238,9 +238,10 @@ function drawPos() {
                             if(draw_attacks>30){
                                 perc = 1
                             }
+                            //dashedLine(1690,((i+j)*115) + 98 + (k*20),x2*perc,y2*perc,[5,2])
                             dashedLine(1690,((i+j)*115) + 98 + (k*20),x2*perc,y2*perc,[5,2])
 
-                            if(draw_attacks==30) {
+                            if(draw_attacks>=30) {
                                 ctx.fillStyle = 'white'
                                 ctx.textAlign = "center";
                                 ctx.font = '9px monospace';

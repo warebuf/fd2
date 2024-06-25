@@ -307,7 +307,7 @@ func (m *match) run() {
 				ws.incoming_message <- &message{Event: "game_over"}
 			}
 
-			// let all participants know that a new user has joined
+			// let all participants know that a new user has joined (if only socket for this user that has joined)
 			if check_uid == false {
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 
@@ -374,6 +374,9 @@ func (m *match) run() {
 			// broadcast to all users of the room that the user has left
 			if check == false {
 				msg := &message{Name: ws.u.email, Message: "x left the chat", Event: "left", When: time.Now()}
+				m.mutex.Lock()
+				m.message_logs = append(m.message_logs, msg)
+				m.mutex.Unlock()
 				m.broadcast <- msg
 				fmt.Println("left the game")
 			}
@@ -650,12 +653,11 @@ func (m *match) run() {
 				}
 			}
 
-			m.type_of_ticker = "TURN 0"
-			// send everyone the game state
+			m.type_of_ticker = "PREGAME"
 			m.sharepos(nil)
 
 			init_time := time.Now().Add(1 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "TURN 0", MatchID: m.mid}
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
 			m.ticker = time.NewTicker(2 * time.Second) //will tick in 30 s
 
 			// send ticker to everyone

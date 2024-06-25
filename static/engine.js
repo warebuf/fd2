@@ -232,7 +232,7 @@ function drawPos() {
                         let b = JSON.parse(atk_data[animating_state][a1])
                         let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
                         let x2 = 1085 + (pos*6.05)
-                        let y2 = ((i+j)*115) + 102 + (k*20)
+                        let y2 = ((b.Defender[0][0]+b.Defender[0][1])*115) + 102 + (b.Defender[0][2]*20)
                         a1++
 
                         dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,y2,[5,2])

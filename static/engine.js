@@ -248,6 +248,7 @@ function drawPos() {
         ctx.lineTo(10, 100);
         ctx.stroke();
 
+        /*
         // Draw the green line.
         ctx.beginPath();
         ctx.lineWidth = 1;
@@ -255,6 +256,8 @@ function drawPos() {
         ctx.strokeStyle = '#0f0';
         ctx.lineTo(50, 100);
         ctx.stroke();
+        
+         */
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {

@@ -238,6 +238,14 @@ function drawPos() {
             }
         }
 
+        ctx.fillStyle = 'yellow';
+        ctx.setLineDash([5, 3]);/*dashes are 5px and spaces are 3px*/
+        ctx.beginPath();
+        ctx.moveTo(0,100);
+        ctx.lineTo(400, 100);
+        ctx.stroke();
+
+
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {
                 console.log(atk_data[animating_state][l])

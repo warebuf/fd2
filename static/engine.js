@@ -235,7 +235,7 @@ function drawPos() {
 
                         dashedLine(1690,((i+j)*115) + 98 + (k*20),x2,10,[5,2])
 
-                        if(draw_attacks==1) {
+                        if(draw_attacks==59) {
                             event_log.push(atk_data[animating_state][a])
                             a++
                         }

@@ -151,6 +151,9 @@ function drawPos() {
             state = JSON.parse(JSON.stringify(match_data[animating_state]))
             pos_up_to_date = false
             act_up_to_date = false
+
+            status = status_queue[animating_state]
+
             animating_state++
             if(animating_state >= match_data.length) {
                 all_up_to_date = true

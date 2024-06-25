@@ -332,7 +332,7 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0, ((i+j)*115) + y0+1 + (k*20), 5, 7);
+                ctx.fillRect(x0+1, ((i+j)*115) + y0+1 + (k*20), 5, 7);
 
                 if(status.substring(0,4) == "TURN") {
                     if (

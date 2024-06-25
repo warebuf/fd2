@@ -243,12 +243,14 @@ function drawPos() {
         // Draw the red line.
         ctx.beginPath();
         ctx.strokeStyle = '#f00';
+        ctx.lineWidth = 10;
         ctx.moveTo(10, 0);
         ctx.lineTo(10, 100);
         ctx.stroke();
 
         // Draw the green line.
         ctx.beginPath();
+        ctx.lineWidth = 10;
         ctx.moveTo(50, 0);
         ctx.strokeStyle = '#0f0';
         ctx.lineTo(50, 100);

@@ -318,14 +318,14 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0-6, ((i+j)*115) + y0-4 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
+                ctx.fillRect(x0-5, ((i+j)*115) + y0-4 + (k*20), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (state[i][j][k].R.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0+6, ((i+j)*115) + y0-4 + (k*20), 5, 7);
+                ctx.fillRect(x0+5, ((i+j)*115) + y0-4 + (k*20), 5, 7);
                 if (state[i][j][k].B.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}

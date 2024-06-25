@@ -235,7 +235,7 @@ function drawPos() {
                             a++
                         }
 
-                        if( (state[i][j][k].Direction==1) && (draw_attacks==60) ) {
+                        if( (state[i][j][k].Direction==1) && (draw_attacks==59) ) {
                             state[i][j][k].Move = -1
                             state[i][j][k].Direction = 0
                             time_event_ready = true

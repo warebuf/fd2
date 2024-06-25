@@ -246,15 +246,13 @@ function drawPos() {
                         if ((draw_attacks==59) && (a2 < atk_data[animating_state].length)) {
                             event_log.push(atk_data[animating_state][a2])
                             a2++
-
-                            if (state[i][j][k].Direction==1) {
-                                state[i][j][k].Move = -1
-                                state[i][j][k].Direction = 0
-                                time_event_ready = true
-                            }
                         }
 
-
+                        if ((draw_attacks==59) && (state[i][j][k].Direction==1)) {
+                            state[i][j][k].Move = -1
+                            state[i][j][k].Direction = 0
+                            time_event_ready = true
+                        }
 
                     }
                 }

@@ -238,7 +238,7 @@ function drawPos() {
             }
         }
 
-        dashedLine(10,10,1000,500,[10,100])
+        dashedLine(10,10,1000,500,[10,10])
 
         if(draw_attacks==1) {
             for(let l=0;l < atk_data[animating_state].length; l++) {

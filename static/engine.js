@@ -253,7 +253,7 @@ function drawPos() {
 
     if(time_event_ready==true) {
         if(time_queue.length > 0) {
-            event_log.push(time_queue.shift()+ ' time units has passed')
+            event_log.push(time_queue.shift()+ " time units has passed")
         }
     }
 

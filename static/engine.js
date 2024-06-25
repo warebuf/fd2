@@ -254,8 +254,8 @@ function drawPos() {
     if(time_event_ready==true) {
         if(time_queue.length > 0) {
             t = time_queue.shift()
-            total_units_of_time=total_units_of_time+t
-            total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+            //total_units_of_time=total_units_of_time+t
+            //total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
             event_log.push(t.toString() + " time units has passed")
         }
     }
@@ -361,7 +361,7 @@ function drawTurn() {
     ctx.textAlign = "center";
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
-    time_string = total_units_of_time+" time units"
+    time_string = total_units_of_time+" units of time"
     ctx.fillText(time_string,c.width/2, 35);
 }
 

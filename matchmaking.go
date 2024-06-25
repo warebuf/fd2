@@ -650,6 +650,7 @@ func (m *match) run() {
 				}
 			}
 
+			m.type_of_ticker = "PREGAME"
 			// send everyone the game state
 			m.sharepos(nil)
 

@@ -230,7 +230,7 @@ function drawPos() {
 
                         let b = JSON.parse(atk_data[animating_state][a1])
                         let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
-                        let x2 = 1085 + (pos*6)
+                        let x2 = 1085 + (pos*6.1)
                         console.log(x2, pos)
                         a1++
 

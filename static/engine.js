@@ -273,13 +273,12 @@ function drawPos() {
             }
         }
 
+        // have to draw BOOM animations and -100 animations
 
 
 
         draw_attacks++
-        if(draw_attacks==60) {
-            draw_attacks = 0
-        }
+        if(draw_attacks==60) {draw_attacks = 0}
     }
 
     if(time_event_ready==true) {

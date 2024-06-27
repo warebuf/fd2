@@ -30,7 +30,7 @@ func p_read(p *permission_socket) {
 		pid_to_permissions.mutex.Unlock()
 
 		if p.open {
-			fmt.Println("client left the room", p)
+			fmt.Println("client left waitroom (psocket)")
 		}
 	}()
 
@@ -345,22 +345,16 @@ func (m *match) run() {
 			continue
 
 		case ws := <-m.gamer_leave: // leaving
-			fmt.Println("a socket has left the room")
-
-			check := (len(ws.u.rid_to_sid_to_socket[ws.m.mid]) == 0)
-
-			fmt.Println(check)
+			fmt.Println("<-m.gamer_leave")
 
 			// remove mid from user object
-			uid_to_user.mutex.Lock()
 			ws.u.mutex.Lock()
 			delete(ws.u.mid_to_msid_to_match_socket[ws.m.mid], ws.msid)
-			if len(ws.u.rid_to_sid_to_socket[ws.m.mid]) == 0 {
+			if len(ws.u.mid_to_msid_to_match_socket[ws.m.mid]) == 0 {
 				delete(ws.u.mid_to_msid_to_match_socket, ws.m.mid)
 				delete(ws.u.mid_to_match, ws.m.mid)
 			}
 			ws.u.mutex.Unlock()
-			uid_to_user.mutex.Unlock()
 
 			// remove uid from match object
 			rid_to_room.mutex.Lock()
@@ -374,10 +368,29 @@ func (m *match) run() {
 			rid_to_room.mutex.Unlock()
 
 			// broadcast to all users of the room that the user has left
-			if check == false {
+			if len(ws.m.gamer_uid_to_msid_to_match_socket[ws.u.uid]) == 0 {
 				msg := &message{Name: ws.u.email, Message: "x left the chat", Event: "left", When: time.Now()}
-				m.broadcast <- msg
-				fmt.Println("left the game")
+				m.mutex.Lock()
+				m.message_logs = append(m.message_logs, msg)
+				m.mutex.Unlock()
+
+				fmt.Println("sending:", msg)
+
+				for _, i := range m.gamer_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
+				}
+
+				for _, i := range m.spectator_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
+				}
 			}
 
 			// remove/take care of socket object
@@ -386,7 +399,6 @@ func (m *match) run() {
 			close(ws.incoming_message)
 			ws.socket.Close()
 			ws.open = false
-			fmt.Println("a socket has left the match")
 
 			// if empty now, delete match, clear all users and global variables of objects related to this match
 			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {

@@ -23,7 +23,7 @@ func m_read(m *match_socket) {
 		m.m.gamer_leave <- m
 
 		if m.open {
-			fmt.Println("client left the room", m)
+			fmt.Println("client left the match (match_socket)")
 		}
 	}()
 

@@ -371,12 +371,11 @@ func (m *match) run() {
 			ws.m.mutex.Unlock()
 			rid_to_room.mutex.Unlock()
 
+			fmt.Println(ws.u.rid_to_sid_to_socket)
+
 			// broadcast to all users of the room that the user has left
 			if check == false {
 				msg := &message{Name: ws.u.email, Message: "x left the chat", Event: "left", When: time.Now()}
-				m.mutex.Lock()
-				m.message_logs = append(m.message_logs, msg)
-				m.mutex.Unlock()
 				m.broadcast <- msg
 				fmt.Println("left the game")
 			}
@@ -905,10 +904,7 @@ func (m *match) run() {
 			}
 
 		}
-
 	}
-
-	fmt.Println("got out of infinite for loop")
 }
 
 func globalBroadcast(msg *message) {

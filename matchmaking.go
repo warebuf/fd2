@@ -349,6 +349,8 @@ func (m *match) run() {
 
 			check := (len(ws.u.rid_to_sid_to_socket[ws.m.mid]) == 0)
 
+			fmt.Println(check)
+
 			// remove mid from user object
 			uid_to_user.mutex.Lock()
 			ws.u.mutex.Lock()
@@ -370,8 +372,6 @@ func (m *match) run() {
 			}
 			ws.m.mutex.Unlock()
 			rid_to_room.mutex.Unlock()
-
-			fmt.Println(ws.u.rid_to_sid_to_socket)
 
 			// broadcast to all users of the room that the user has left
 			if check == false {

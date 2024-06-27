@@ -12,24 +12,9 @@
             overflow: hidden;
 
         }
-
         #container {
             position:relative;
         }
-
-        #messages {
-            position: absolute;
-            padding: 0px;
-            text-align: center;
-            max-width: 100%;
-            width: 100%;
-            margin-left:auto;
-            margin-right:auto;
-            top:60%;
-            left:50%;
-            transform:translate(-50%,-50%);
-        }
-
         #test {
             position: absolute;
             padding: 0px;
@@ -377,8 +362,6 @@
 
 
     function test() {
-
-        var messages = document.getElementById("messages")
 
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")

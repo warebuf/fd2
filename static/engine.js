@@ -56,6 +56,10 @@ function anime() {
         drawTurn()
         drawLog()
     }
+    else if(status=="CHARACTER SELECTION") {
+        drawTurn()
+        drawLog()
+    }
 
 }
 anime()
@@ -238,7 +242,6 @@ function drawPos() {
                             if(draw_attacks>30){
                                 perc = 1
                             }
-                            //dashedLine(1690,((i+j)*115) + 98 + (k*20),x2*perc,y2*perc,[5,2])
 
                             // calculate a vector to draw
                             let x1 = 1690

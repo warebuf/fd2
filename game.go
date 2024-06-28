@@ -94,7 +94,6 @@ func m_read(m *match_socket) {
 					allset := true
 					for i, j := range m.m.gamer_uid_to_msid_to_match_socket {
 						if uid_to_user.users[i].bot_status == true {
-
 						} else {
 							for _, l := range j {
 								fmt.Println(l.msid)

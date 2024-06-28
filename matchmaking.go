@@ -659,6 +659,38 @@ func (m *match) run() {
 				}
 			}
 
+			m.type_of_ticker = "CHARACTER SELECTION"
+			init_time := time.Now().Add(15 * time.Second)
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			m.ticker = time.NewTicker(16 * time.Second) //will tick in 30 s
+
+			// send ticker to everyone
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+
+			/*
 			m.type_of_ticker = "PREGAME"
 			m.sharepos(nil)
 
@@ -690,8 +722,11 @@ func (m *match) run() {
 					}
 				}
 			}
+			*/
 			continue
 
+
+			 */
 		case msg := <-m.broadcast: // forward message to all clients
 
 			m.mutex.Lock()
@@ -982,7 +1017,6 @@ func (m *match) sharepos(a []*attack) {
 		}
 	}
 }
-
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 
 	ans := [][]int{}

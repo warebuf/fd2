@@ -189,8 +189,6 @@ func createMatch(msg *message) *match {
 
 				message_logs: make([]*message, 0, 16),
 
-				//open: make(chan bool),
-
 				simulate: make(chan bool),
 			}
 

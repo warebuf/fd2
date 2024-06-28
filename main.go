@@ -196,8 +196,6 @@ type match struct {
 
 	message_logs []*message
 
-	//open chan bool
-
 	simulate chan bool
 }
 

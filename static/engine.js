@@ -238,14 +238,14 @@ function drawPos() {
                             if(draw_attacks>30){
                                 perc = 1
                             }
-                            //dashedLine(1690,((i+j)*115) + 98 + (k*20),x2*perc,y2*perc,[5,2])
+                            dashedLine(1690,((i+j)*115) + 98 + (k*20),x2*perc,y2*perc,[5,2])
 
                             // calculate a vector to draw
-                            let x1 = 1690
-                            let y1 = ((i+j)*115) + 98 + (k*20)
-                            let x2_x1 = (x2 - x1)*perc
-                            let y2_y1 = (y2 - y1)*perc
-                            dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[5,2])
+                            //let x1 = 1690
+                            //let y1 = ((i+j)*115) + 98 + (k*20)
+                            //let x2_x1 = (x2 - x1)*perc
+                            //let y2_y1 = (y2 - y1)*perc
+                            //dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[5,2])
 
                             if(draw_attacks>=30) {
                                 ctx.fillStyle = 'white'

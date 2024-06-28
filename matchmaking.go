@@ -689,44 +689,41 @@ func (m *match) run() {
 				}
 			}
 
-
 			/*
-			m.type_of_ticker = "PREGAME"
-			m.sharepos(nil)
+				m.type_of_ticker = "PREGAME"
+				m.sharepos(nil)
 
-			init_time := time.Now().Add(1 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
-			m.ticker = time.NewTicker(2 * time.Second) //will tick in 30 s
+				init_time := time.Now().Add(1 * time.Second)
+				msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: "PREGAME", MatchID: m.mid}
+				m.ticker = time.NewTicker(2 * time.Second) //will tick in 30 s
 
-			// send ticker to everyone
-			m.mutex.Lock()
-			m.message_logs = append(m.message_logs, msg)
-			m.mutex.Unlock()
+				// send ticker to everyone
+				m.mutex.Lock()
+				m.message_logs = append(m.message_logs, msg)
+				m.mutex.Unlock()
 
-			fmt.Println("sending:", msg)
+				fmt.Println("sending:", msg)
 
-			for _, i := range m.gamer_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
-					select {
-					case j.incoming_message <- msg:
+				for _, i := range m.gamer_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+						select {
+						case j.incoming_message <- msg:
+						}
 					}
 				}
-			}
 
-			for _, i := range m.spectator_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
-					select {
-					case j.incoming_message <- msg:
+				for _, i := range m.spectator_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+						select {
+						case j.incoming_message <- msg:
+						}
 					}
 				}
-			}
 			*/
 			continue
 
-
-			 */
 		case msg := <-m.broadcast: // forward message to all clients
 
 			m.mutex.Lock()

@@ -27,7 +27,7 @@
             left:50%;
             transform:translate(-50%,-50%);
         }
-        #test {
+        #sel_but {
             position: absolute;
             padding: 0px;
             text-align: center;
@@ -408,7 +408,7 @@
                     if((status=="null") || (status=="PREGAME") || ((status=="CHARACTER SELECTION"))){
                         status = msg.Status
                         if(status="CHARACTER SELECTION") {
-                            document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='!' onclick=endCharSelect()>finished</button>");
+                            document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='!' onclick=endCharSelect()>finished</button>");
                         }
 
                     }

@@ -496,12 +496,12 @@ func (m *match) run() {
 			var timer2_length time.Duration
 
 			if m.type_of_ticker == "CHARACTER SELECTION" {
-				timer1_length = time.Second * 300
-				timer2_length = time.Second * 301
+				timer1_length = time.Second * 10
+				timer2_length = time.Second * 11
 				m.type_of_ticker = "PREGAME"
 			} else if m.type_of_ticker == "PREGAME" {
-				timer1_length = time.Second * 300
-				timer2_length = time.Second * 301
+				timer1_length = time.Second * 10
+				timer2_length = time.Second * 11
 				m.type_of_ticker = "TURN 0"
 			} else if m.type_of_ticker[0:4] == "TURN" {
 				timer1_length = time.Second * 120

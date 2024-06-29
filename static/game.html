@@ -374,7 +374,7 @@
             socket.onmessage = function(e) {
                 var receive_time = Date.now()
                 var msg = eval('('+e.data+')');
-                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH);
+                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Status);
 
                 var msg_date = msg.When.substring(0,10);
                 var msg_time = msg.When.substring(11,19);

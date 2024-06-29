@@ -659,9 +659,9 @@ func (m *match) run() {
 			}
 
 			m.type_of_ticker = "CHARACTER SELECTION"
-			init_time := time.Now().Add(5 * time.Second)
+			init_time := time.Now().Add(600 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
-			m.ticker = time.NewTicker(6 * time.Second) //will tick in 30 s
+			m.ticker = time.NewTicker(601 * time.Second) //will tick in 30 s
 
 			// send ticker to everyone
 			m.mutex.Lock()

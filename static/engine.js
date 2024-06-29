@@ -49,16 +49,16 @@ function anime() {
         ctx.fillText(remaining_time,c.width/2, 50);
     }
 
-    if (match_data.length > 0) {
+
+    if(status=="CHARACTER SELECTION") {
+        drawTurn()
+        drawLog()
+    } else if (match_data.length > 0) {
         drawPos()
         drawState()
         drawStats()
         drawTurn()
         drawUnitsOfTime()
-        drawLog()
-    }
-    else if(status=="CHARACTER SELECTION") {
-        drawTurn()
         drawLog()
     }
 

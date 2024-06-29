@@ -194,6 +194,7 @@ type match struct {
 	type_of_ticker string // tells you turn #, phase
 	start_ticker   chan bool
 
+	char_sel_done   []bool
 	char_sel_ticker chan bool
 
 	message_logs []*message

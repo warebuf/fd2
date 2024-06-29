@@ -114,6 +114,10 @@ func m_read(m *match_socket) {
 					m.m.sharepos(nil)
 				}
 			} else if msg.Event == "endCharSel" {
+				all_done = true
+				for i := 0; i<len(m.m.char_sel_done);i++ {
+					if()
+				}
 				m.m.ticker.Stop()
 				m.m.start_ticker <- true
 			}

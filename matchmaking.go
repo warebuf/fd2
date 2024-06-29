@@ -183,9 +183,11 @@ func createMatch(msg *message) *match {
 				spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
 
-				ticker:          time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
-				type_of_ticker:  "null",
-				start_ticker:    make(chan bool),
+				ticker:         time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
+				type_of_ticker: "null",
+				start_ticker:   make(chan bool),
+
+				char_sel_done:   make([]bool, num),
 				char_sel_ticker: make(chan bool),
 
 				message_logs: make([]*message, 0, 16),

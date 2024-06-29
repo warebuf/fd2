@@ -411,7 +411,7 @@
                     if((status=="null") || (status=="PREGAME") || ((status=="CHARACTER SELECTION"))){
                         status = msg.Status
                         if(status="CHARACTER SELECTION") {
-                            document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='!' onclick=endCharSelect()>finished</button>");
+                            document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
                         }
 
                     }
@@ -494,6 +494,8 @@ function returntomatchmaking(){
 
 function endCharSelect(){
     socket.send(JSON.stringify({ "Event": 'endCharSel' }))
+    var menu2 = document.getElementById("a1");
+    menu2.remove();
 }
 
 </script>

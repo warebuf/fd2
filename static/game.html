@@ -411,6 +411,7 @@
                     if((status=="null") || ((status=="CHARACTER SELECTION"))){
                         status = msg.Status
                         if(status="CHARACTER SELECTION") {
+                            console.log(document.getElementById("sel_but"))
                             document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
                         }
                     }

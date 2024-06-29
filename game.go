@@ -108,15 +108,14 @@ func m_read(m *match_socket) {
 					}
 					if allset == true {
 						m.m.started = true
-						m.m.start_ticker <- true
+						m.m.char_sel_ticker <- true
 					}
 				} else if m.m.started == true {
 					m.m.sharepos(nil)
 				}
 			} else if msg.Event == "endCharSel" {
 				m.m.ticker.Stop()
-				m.m.ticker = time.NewTicker(time.Second * 1).C
-
+				m.m.start_ticker <- true
 			}
 
 		} else {

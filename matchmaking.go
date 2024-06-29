@@ -183,9 +183,10 @@ func createMatch(msg *message) *match {
 				spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
 				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
 
-				ticker:         time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
-				type_of_ticker: "null",
-				start_ticker:   make(chan bool),
+				ticker:          time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
+				type_of_ticker:  "null",
+				start_ticker:    make(chan bool),
+				char_sel_ticker: make(chan bool),
 
 				message_logs: make([]*message, 0, 16),
 
@@ -466,7 +467,7 @@ func (m *match) run() {
 				}
 				if allset == true && m.ended == false {
 					fmt.Println("started gamecountdown from bot join")
-					m.start_ticker <- true
+					m.char_sel_ticker <- true
 				}
 			}
 
@@ -538,8 +539,7 @@ func (m *match) run() {
 				}
 			}
 
-		case <-m.start_ticker:
-
+		case <-m.char_sel_ticker:
 			// creating the game state here
 			// create each team
 			for i := 0; i < int(m.sides); i++ {
@@ -689,6 +689,40 @@ func (m *match) run() {
 					}
 				}
 			}
+			continue
+		case <-m.start_ticker:
+			m.type_of_ticker = "TURN 0"
+			init_time := time.Now().Add(120 * time.Second)
+			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			m.ticker = time.NewTicker(121 * time.Second) //will tick in 30 s
+
+			// send ticker to everyone
+			m.mutex.Lock()
+			m.message_logs = append(m.message_logs, msg)
+			m.mutex.Unlock()
+
+			fmt.Println("sending:", msg)
+
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+
+			m.sharepos(nil)
+
 			continue
 
 		case msg := <-m.broadcast: // forward message to all clients

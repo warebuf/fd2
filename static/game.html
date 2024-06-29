@@ -408,7 +408,7 @@
                 }
                 else if(msg.Event == 'startMatchCountdown') {
                     sent_time = Date.parse(msg.Message)
-                    if((status=="null") || (status=="PREGAME") || ((status=="CHARACTER SELECTION"))){
+                    if((status=="null") || ((status=="CHARACTER SELECTION"))){
                         status = msg.Status
                         if(status="CHARACTER SELECTION") {
                             document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
@@ -450,6 +450,8 @@
                         state = md;
                         animating_state = 0
                         status = msg.Status
+                        var menu2 = document.getElementById("a1");
+                        menu2.remove();
                     }
 
                     match_data.push(md)
@@ -494,8 +496,6 @@ function returntomatchmaking(){
 
 function endCharSelect(){
     socket.send(JSON.stringify({ "Event": 'endCharSel' }))
-    var menu2 = document.getElementById("a1");
-    menu2.remove();
 }
 
 </script>

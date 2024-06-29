@@ -96,7 +96,6 @@ func m_read(m *match_socket) {
 						if uid_to_user.users[i].bot_status == true {
 						} else {
 							for _, l := range j {
-								fmt.Println(l.msid)
 								if (l.user_time == time.Time{}) {
 									allset = false
 									break
@@ -114,6 +113,8 @@ func m_read(m *match_socket) {
 				} else if m.m.started == true {
 					m.m.sharepos(nil)
 				}
+			} else if msg.Event == "endCharSel" {
+				m.m.ticker = time.NewTicker(0)
 			}
 
 		} else {

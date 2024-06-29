@@ -400,7 +400,7 @@
                 }
                 else if(msg.Event == 'startMatchCountdown') {
                     sent_time = Date.parse(msg.Message)
-                    if((status==null) || (status=="PREGAME")){status = msg.Status}
+                    if((status==null) || (status=="PREGAME") || ((status=="CHARACTER SELECTION"))){status = msg.Status}
                 }
                 else if(msg.Event == 'turn') {
                     sent_time = Date.parse(msg.Message)

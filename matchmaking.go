@@ -495,13 +495,16 @@ func (m *match) run() {
 			var timer1_length time.Duration
 			var timer2_length time.Duration
 
-			if m.type_of_ticker == "PREGAME" {
-				fmt.Println("ticker went off pregame")
+			if m.type_of_ticker == "CHARACTER SELECTION" {
+				timer1_length = time.Second * 300
+				timer2_length = time.Second * 301
+				m.type_of_ticker = "PREGAME"
+			}
+			else if m.type_of_ticker == "PREGAME" {
 				timer1_length = time.Second * 300
 				timer2_length = time.Second * 301
 				m.type_of_ticker = "TURN 0"
 			} else if m.type_of_ticker[0:4] == "TURN" {
-				fmt.Println("ticker went off 1")
 				timer1_length = time.Second * 120
 				timer2_length = time.Second * 121
 				//num, _ := strconv.Atoi(m.type_of_ticker[5:])

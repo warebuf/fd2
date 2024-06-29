@@ -499,8 +499,7 @@ func (m *match) run() {
 				timer1_length = time.Second * 300
 				timer2_length = time.Second * 301
 				m.type_of_ticker = "PREGAME"
-			}
-			else if m.type_of_ticker == "PREGAME" {
+			} else if m.type_of_ticker == "PREGAME" {
 				timer1_length = time.Second * 300
 				timer2_length = time.Second * 301
 				m.type_of_ticker = "TURN 0"

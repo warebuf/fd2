@@ -517,7 +517,7 @@ func (m *match) run() {
 			}
 
 			init_time := time.Now().Add(timer1_length)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length) //will tick in 30 s
 
 			// send ticker to everyone
@@ -668,7 +668,7 @@ func (m *match) run() {
 
 			m.type_of_ticker = "CHARACTER SELECTION"
 			init_time := time.Now().Add(600 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
 			m.ticker = time.NewTicker(601 * time.Second) //will tick in 30 s
 
 			// send ticker to everyone
@@ -699,7 +699,7 @@ func (m *match) run() {
 		case <-m.start_ticker:
 			m.type_of_ticker = "TURN 0"
 			init_time := time.Now().Add(120 * time.Second)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
 			m.ticker = time.NewTicker(121 * time.Second) //will tick in 30 s
 
 			// send ticker to everyone
@@ -915,7 +915,7 @@ func (m *match) run() {
 			timer2_length := time.Second * 121
 
 			init_time := time.Now().Add(timer1_length)
-			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length)
 			msg2 := &message{Event: "unitsOfTime", When: time.Now(), Message: strconv.FormatFloat(min_units, 'E', 3, 64)}
 
@@ -1009,7 +1009,7 @@ func (m *match) sharepos(a []*attack) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Status: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Phase: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

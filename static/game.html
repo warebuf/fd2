@@ -148,7 +148,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    status.substring(0,4) == "TURN" &&
+                    phase.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -193,7 +193,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    status.substring(0,4) == "TURN" &&
+                    phase.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -238,7 +238,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    status.substring(0,4) == "TURN" &&
+                    phase.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -283,7 +283,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    status.substring(0,4) == "TURN" &&
+                    phase.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -346,7 +346,7 @@
     var state = []
     var animating_state = -1
     var event_log = []
-    var status = "null";
+    var phase = "null";
     var sent_time = null;
 
     //
@@ -361,7 +361,7 @@
     var atk_data = new Array();
 
     var time_queue = []
-    var status_queue = []
+    var phase_queue = []
 
     //to delete
     units_of_time = 0
@@ -382,7 +382,7 @@
             socket.onmessage = function(e) {
                 var receive_time = Date.now()
                 var msg = eval('('+e.data+')');
-                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Status);
+                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Phase);
 
                 var msg_date = msg.When.substring(0,10);
                 var msg_time = msg.When.substring(11,19);
@@ -406,11 +406,11 @@
                 else if(msg.Event == 'unitsOfTime') {
                     time_queue.push(parseFloat(msg.Message).toFixed(3))
                 }
-                else if(msg.Event == 'startMatchCountdown') {
+                else if(msg.Event == 'ticker_start') {
                     sent_time = Date.parse(msg.Message)
-                    if((status=="null") || ((status=="CHARACTER SELECTION"))){
-                        status = msg.Status
-                        if(status="CHARACTER SELECTION") {
+                    if((phase=="null") || ((phase=="CHARACTER SELECTION"))){
+                        phase = msg.Phase
+                        if(phase="CHARACTER SELECTION") {
                             console.log(document.getElementById("sel_but"))
                             document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
                         }
@@ -419,7 +419,7 @@
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")
 
-                    status_queue.push(msg.Status)
+                    phase_queue.push(msg.Phase)
 
                     // turn the JSON into javascript objects
                     let temp = msg.TCH;
@@ -446,23 +446,12 @@
                         indexer_u = my_int
                         state = md;
                         animating_state = 0
-                        status = msg.Status
-                        if(status.substring(0,4)=="TURN") {
+                        phase = msg.Phase
+                        if(phase.substring(0,4)=="TURN") {
                             var menu2 = document.getElementById("sel_but");
                             menu2.remove();
                         }
-                    } else if(status=="CHARACTER SELECTION") {
-                        let temp_string = msg.Message.split(";")
-                        my_team = parseInt(temp_string[0])
-                        my_int = parseInt(temp_string[1])
-                        indexer_t = my_team
-                        indexer_u = my_int
-                        state = md;
-                        animating_state = 0
-                        status = msg.Status
-                        var menu2 = document.getElementById("sel_but");
-                        menu2.remove();
-                    }
+                    } 
 
                     match_data.push(md)
                     //printAllMatchData(match_data)

@@ -255,8 +255,8 @@ type message struct {
 	MatchID uuid.UUID
 
 	// game state stuff
-	TCH    [][][]string
-	Status string
+	TCH   [][][]string
+	Phase string
 
 	// should add the user's TCH
 	Team_index   int

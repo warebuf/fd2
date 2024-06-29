@@ -54,6 +54,7 @@ function anime() {
         drawState()
         drawStats()
         drawTurn()
+        drawUnitsOfTime()
         drawLog()
     }
     else if(status=="CHARACTER SELECTION") {
@@ -389,14 +390,15 @@ function drawTurn() {
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
     ctx.fillText(status,c.width/2, 20);
+}
 
+function drawUnitsOfTime() {
     ctx.textAlign = "center";
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
     time_string = total_units_of_time+" units of time"
     ctx.fillText(time_string,c.width/2, 35);
 }
-
 function drawStats() {
     ctx.fillStyle = 'white'
 

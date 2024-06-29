@@ -115,6 +115,7 @@ func m_read(m *match_socket) {
 				}
 			} else if msg.Event == "endCharSel" {
 				m.m.ticker = time.NewTicker(time.Millisecond * 1)
+				fmt.Println("got here")
 			}
 
 		} else {

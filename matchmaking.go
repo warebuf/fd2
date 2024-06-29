@@ -498,11 +498,8 @@ func (m *match) run() {
 			if m.type_of_ticker == "CHARACTER SELECTION" {
 				timer1_length = time.Second * 10
 				timer2_length = time.Second * 11
-				m.type_of_ticker = "PREGAME"
-			} else if m.type_of_ticker == "PREGAME" {
-				timer1_length = time.Second * 10
-				timer2_length = time.Second * 11
 				m.type_of_ticker = "TURN 0"
+				m.sharepos(nil)
 			} else if m.type_of_ticker[0:4] == "TURN" {
 				timer1_length = time.Second * 120
 				timer2_length = time.Second * 121
@@ -662,9 +659,9 @@ func (m *match) run() {
 			}
 
 			m.type_of_ticker = "CHARACTER SELECTION"
-			init_time := time.Now().Add(15 * time.Second)
+			init_time := time.Now().Add(5 * time.Second)
 			msg := &message{Event: "startMatchCountdown", When: time.Now(), Status: m.type_of_ticker, MatchID: m.mid}
-			m.ticker = time.NewTicker(16 * time.Second) //will tick in 30 s
+			m.ticker = time.NewTicker(6 * time.Second) //will tick in 30 s
 
 			// send ticker to everyone
 			m.mutex.Lock()

@@ -492,6 +492,8 @@ func (m *match) run() {
 
 		case <-m.ticker.C: // ticker goes off
 
+			fmt.Println("m.Ticker.C")
+
 			var timer1_length time.Duration
 			var timer2_length time.Duration
 

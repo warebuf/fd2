@@ -447,8 +447,10 @@
                         state = md;
                         animating_state = 0
                         status = msg.Status
-                        var menu2 = document.getElementById("sel_but");
-                        menu2.remove();
+                        if(status.substring(0,4)=="TURN") {
+                            var menu2 = document.getElementById("sel_but");
+                            menu2.remove();
+                        }
                     }
 
                     match_data.push(md)

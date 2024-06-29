@@ -304,6 +304,10 @@ func (m *match) run() {
 				ws.incoming_message <- j
 			}
 
+			if m.type_of_ticker = "CHARACTER SELECTION" {
+
+			}
+
 			if m.ended == true {
 				ws.incoming_message <- &message{Event: "game_over"}
 			}

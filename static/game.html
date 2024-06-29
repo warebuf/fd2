@@ -34,8 +34,6 @@
             position: absolute;
             right: 10px;
             top: 10px;
-
-
         }
 
     </style>
@@ -415,7 +413,6 @@
                         if(status="CHARACTER SELECTION") {
                             document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
                         }
-
                     }
                 }
                 else if(msg.Event == 'turn') {
@@ -484,10 +481,8 @@
                 }
                 else if(msg.Event == 'game_over') {
                     game_over = true
-                    document.getElementById("test").insertAdjacentHTML('beforeend',"<p>eof</p>");
                     document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b1' onclick=returntomatchmaking()>RETURN TO MATCHMAKING</button>");
                 }
-
             }
         }
     }

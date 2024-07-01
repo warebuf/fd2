@@ -155,7 +155,7 @@ func m_read(m *match_socket) {
 				m.user_time = time.UnixMilli(test)
 				fmt.Println("dif", m.system_time.Sub(m.user_time))
 
-				msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.m.phase, MatchID: m.m.mid}
+				msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.m.mid}
 				msg.Message = m.m.next_time.Add(m.user_time.Sub(m.system_time)).UTC().String()
 				m.incoming_message <- msg
 
@@ -593,7 +593,7 @@ func (m *match) run() {
 				num, _ := strconv.Atoi(m.turn[5:])
 				m.turn = "TURN " + strconv.Itoa(num+1)
 
-				msg := &message{Event: "ticker_start", When: time.Now(), Turn: m.turn, MatchID: m.mid}
+				msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 
 				m.next_time = time.Now().Add(120 * time.Second)
 				m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
@@ -659,7 +659,7 @@ func (m *match) run() {
 		case <-m.start_ticker:
 			m.phase = "TURN"
 			m.turn = "TURN 0"
-			msg := &message{Event: "ticker_start", When: time.Now(), Turn: m.turn, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 
 			m.next_time = time.Now().Add(120 * time.Second)
 			m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
@@ -877,7 +877,7 @@ func (m *match) run() {
 			timer2_length := time.Second * 121
 
 			init_time := time.Now().Add(timer1_length)
-			msg := &message{Event: "ticker_start", When: time.Now(), Turn: m.turn, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length)
 			msg2 := &message{Event: "unitsOfTime", When: time.Now(), Message: strconv.FormatFloat(min_units, 'E', 3, 64)}
 

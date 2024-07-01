@@ -86,14 +86,13 @@ func p_read(p *permission_socket) {
 			fmt.Println(msg.When, "pmessage~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
-			// TODO: have to create match object here
 			if msg.Event == "createPermissionList" {
 
 				fmt.Println("received createPermissionList")
 
 				perm_list := createPL(msg)
 				go perm_list.run()
-				permissionlistBroadcast(&pmessage{Event: "newPL", Message: perm_list.game_mode + strconv.Itoa(int(perm_list.capacity)), When: time.Now(), PLID: perm_list.plid}) // let everyone know there is a new room
+				psocketBroadcast(&pmessage{Event: "newPL", Message: perm_list.game_mode + strconv.Itoa(int(perm_list.capacity)), When: time.Now(), PLID: perm_list.plid}) // let everyone know there is a new room
 				perm_list.gamer_permission_signup <- p
 
 			} else if msg.Event == "participantJoin" { // user request to join match
@@ -237,10 +236,10 @@ func (pl *permission_list) run() {
 		select {
 
 		case ws := <-pl.gamer_permission_signup: // joining the PL
-			_, check_uid := pl.gamer_permission_list[ws.u.uid] // check if the user is in the PL object
 			fmt.Println("gamer_permission_signup", ws.u.uid)
 
 			// if user is not in the PL object, add the user object
+			_, check_uid := pl.gamer_permission_list[ws.u.uid]
 			pl.mutex.Lock()
 			if check_uid == false {
 				pl.gamer_permission_list[ws.u.uid] = ws.u
@@ -257,7 +256,6 @@ func (pl *permission_list) run() {
 				pid_to_permissions.mutex.RUnlock()
 			}
 
-			fmt.Println("a psocket has finished permission_signup")
 			printAllMatchUserWS()
 			continue
 
@@ -327,12 +325,12 @@ func (pl *permission_list) run() {
 
 		case <-pl.ended:
 			delete(mid_to_match.match, pl.plid)
-			permissionlistBroadcast(&pmessage{Event: "removeMatch", Message: pl.plid.String()})
+			psocketBroadcast(&pmessage{Event: "removeMatch", Message: pl.plid.String()})
 		}
 	}
 }
 
-func permissionlistBroadcast(msg *pmessage) {
+func psocketBroadcast(msg *pmessage) {
 	fmt.Println("global broadcast")
 	pid_to_permissions.mutex.RLock()
 	for _, i := range pid_to_permissions.global {

@@ -811,7 +811,6 @@ func psocketSetupHandler(res http.ResponseWriter, req *http.Request) {
 	go p_write(temp)
 	go p_read(temp)
 
-	fmt.Println("GOT HERE")
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range plid_to_permission_list.global {
 		temp.incoming_message <- &pmessage{Event: "newPL", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), PLID: i.plid} // send match

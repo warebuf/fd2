@@ -182,7 +182,7 @@
 				else if(msg.Event == "participantJoinSuccess") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
 					for(i=0;i<list_of_matches.length;i++) {
-						if(list_of_matches[i].textContent==msg.MatchID) {
+						if(list_of_matches[i].textContent==msg.PLID) {
 							var temp = document.createElement("div");
 							temp.setAttribute("id","opp")
 							temp.appendChild(document.createTextNode(msg.Name));

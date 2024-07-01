@@ -249,7 +249,7 @@ func (pl *permission_list) run() {
 
 			// if this is the first join, send a message to everyone that he's joined
 			if check_uid == false {
-				msg := &pmessage{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), PLID: pl.plid}
+				msg := &pmessage{Name: ws.u.email, Event: "participantJoinSuccess", When: time.Now(), PLID: pl.plid}
 				pid_to_permissions.mutex.RLock()
 				for _, j := range pid_to_permissions.global {
 					j.incoming_message <- msg

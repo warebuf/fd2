@@ -239,6 +239,7 @@ func (pl *permission_list) run() {
 			fmt.Println("gamer_permission_signup", ws.u.uid)
 
 			// if user is not in the PL object, add the user object
+			// TODO: BUG, same user has different UIDs!!!, therefore the same user on different browsers can join twice
 			_, check_uid := pl.gamer_permission_list[ws.u.uid]
 			pl.mutex.Lock()
 			if check_uid == false {

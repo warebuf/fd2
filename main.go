@@ -861,16 +861,18 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// if there is space left in the permission_list, then add bots to remaining positions
-	for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
-		pl.bot <- true
-	}
-	pl.started = true
+	if pl.started == false {
+		// if there is space left in the permission_list, then add bots to remaining positions
+		for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
+			pl.bot <- true
+		}
+		pl.started = true
 
-	// create the match object, start the character selection timer
-	mtch := createMatch(pl)
-	go mtch.run()
-	mtch.char_sel_ticker <- true
+		// create the match object, start the character selection timer
+		mtch := createMatch(pl)
+		go mtch.run()
+		mtch.char_sel_ticker <- true
+	}
 
 	data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "mid": parsed[2]}
 	t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))

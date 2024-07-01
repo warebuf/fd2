@@ -626,7 +626,6 @@ func (m *match) run() {
 
 		case <-m.char_sel_ticker:
 
-			fmt.Println("DOING THIS")
 			m.phase = "CHARACTER SELECTION"
 			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 			msg2 := &message{Event: "update_phase", Phase: m.phase, MatchID: m.mid}
@@ -642,6 +641,7 @@ func (m *match) run() {
 					select {
 					case j.incoming_message <- msg:
 						j.incoming_message <- msg2
+						fmt.Println("DOING THIS")
 					}
 				}
 			}

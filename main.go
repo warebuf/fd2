@@ -156,52 +156,6 @@ type attack struct {
 	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
 }
 
-type match struct {
-	mutex sync.RWMutex
-
-	mid       uuid.UUID
-	game_mode string
-	sides     uint
-	capacity  uint
-	started   bool
-	ended     bool
-
-	// each client is represented as an int
-	team_client_hero [][][]*hero
-	TCH_JSON         [][][]string
-	uuid_to_team_int map[uuid.UUID]pair
-
-	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
-	prio_broadcast chan *message // gets priority over normal broadcast ^
-
-	gamer_join                        chan *match_socket
-	gamer_uid_to_user                 map[uuid.UUID]*user
-	gamer_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	gamer_leave                       chan *match_socket // a channel for clients wishing to leave
-
-	gamer_permission_signup  chan *permission_socket
-	gamer_permission_list    map[uuid.UUID]*user
-	gamer_permission_signout chan *permission_socket
-
-	bot_join  chan *user
-	bot_leave chan *user
-
-	spectator_join                        chan *match_socket // a channel for clients wishing to join
-	spectator_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
-	spectator_uid_to_user                 map[uuid.UUID]*user
-
-	ticker         *time.Ticker
-	type_of_ticker string // tells you turn #, phase
-	start_ticker   chan bool
-
-	char_sel_done   []bool
-	char_sel_ticker chan bool
-
-	message_logs []*message
-
-	simulate chan bool
-}
-
 type socket struct {
 	mutex sync.RWMutex
 
@@ -217,36 +171,6 @@ type socket struct {
 	open bool
 }
 
-type match_socket struct {
-	mutex sync.RWMutex
-
-	socket *websocket.Conn
-
-	msid uuid.UUID
-
-	u *user
-	m *match
-
-	user_time   time.Time
-	system_time time.Time
-
-	incoming_message chan *message // send is a channel on which messages are sent.
-
-	open bool
-}
-
-type permission_socket struct {
-	socket *websocket.Conn
-
-	pid uuid.UUID
-
-	u *user
-
-	incoming_message chan *message // send is a channel on which messages are sent.
-
-	open bool
-}
-
 type message struct {
 	Name    string
 	Message string
@@ -254,9 +178,11 @@ type message struct {
 	Event   string
 	MatchID uuid.UUID
 
-	// game state stuff
-	TCH   [][][]string
 	Phase string
+
+	// game state stuff
+	TCH  [][][]string
+	Turn string
 
 	// should add the user's TCH
 	Team_index   int
@@ -286,7 +212,11 @@ type matchbase struct {
 	mutex sync.RWMutex
 }
 
-type permissionbase struct {
+type plbase struct {
+	global map[uuid.UUID]*permission_list
+	mutex  sync.RWMutex
+}
+type pbase struct {
 	global map[uuid.UUID]*permission_socket
 	mutex  sync.RWMutex
 }
@@ -294,7 +224,8 @@ type permissionbase struct {
 var uid_to_user userbase
 var rid_to_room roombase
 var mid_to_match matchbase
-var pid_to_permissions permissionbase // global storage of all permission sockets, have a tendency to be ephimeral/disposable since this is the only place they are saved
+var pid_to_permissions pbase // global storage of all permission sockets, have a tendency to be ephimeral/disposable since this is the only place they are saved
+var plid_to_permission_list plbase
 
 // QUICK LOOK UP
 type rname_to_rid struct {
@@ -325,6 +256,8 @@ func main() {
 	mid_to_match.mutex = sync.RWMutex{}
 	pid_to_permissions.global = make(map[uuid.UUID]*permission_socket)
 	pid_to_permissions.mutex = sync.RWMutex{}
+	plid_to_permission_list.global = make(map[uuid.UUID]*permission_list)
+	plid_to_permission_list.mutex = sync.RWMutex{}
 
 	// making QUICK LOOKUP data structures
 	roomname_to_rid.name_to_rid = make(map[string]uuid.UUID)
@@ -374,10 +307,10 @@ func main() {
 	mux.Handle("/music/", http.StripPrefix("/music/", fs2))
 
 	mux.HandleFunc("/waitroom", waitroomHandler)
-	mux.HandleFunc("/matchmaking", matchmakingHandler)
+	mux.HandleFunc("/psocket", psocketSetupHandler)
 
 	mux.HandleFunc("/game/", gameHandler)
-	mux.HandleFunc("/ingame", ingameHandler)
+	mux.HandleFunc("/msocket", msocketHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)
@@ -822,11 +755,10 @@ func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 		fmt.Println("User is not authenticated, redirecting to home page")
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 	}
-
 }
 
-func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
-	log.Println("/matchmaking")
+func psocketSetupHandler(res http.ResponseWriter, req *http.Request) {
+	log.Println("/pSetupHandler")
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
@@ -865,7 +797,7 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 				socket:           sock,
 				pid:              random_pid,
 				u:                requesting_user,
-				incoming_message: make(chan *message),
+				incoming_message: make(chan *pmessage),
 				open:             true,
 			}
 			pid_to_permissions.mutex.Lock()
@@ -880,10 +812,10 @@ func matchmakingHandler(res http.ResponseWriter, req *http.Request) {
 	go p_read(temp)
 
 	// when a match socket is created, send them a list of all possible matches
-	for _, i := range mid_to_match.match {
-		temp.incoming_message <- &message{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), MatchID: i.mid} // send match
+	for _, i := range plid_to_permission_list.global {
+		temp.incoming_message <- &pmessage{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), PLID: i.plid} // send match
 		for _, j := range i.gamer_permission_list {
-			temp.incoming_message <- &message{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: i.mid} // send users in match
+			temp.incoming_message <- &pmessage{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), PLID: i.plid} // send users in match
 		}
 	}
 }
@@ -903,7 +835,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// parse MID from URL and make sure it exists, if so, fetch the corresponding match object
+	// parse PLID from URL and make sure it exists, if so, fetch the corresponding permission_list object
 	u := req.URL
 	parsed := strings.Split(u.Path, `/`)
 	if len(parsed) < 3 {
@@ -911,8 +843,8 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
 		return
 	}
-	mid, err2 := uuid.Parse(parsed[2])
-	mtch, found := mid_to_match.match[mid]
+	plid, err2 := uuid.Parse(parsed[2])
+	pl, found := plid_to_permission_list.global[plid]
 	if !found || (err2 != nil) {
 		fmt.Println("could not find this MID")
 		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
@@ -921,7 +853,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 
 	// get UID from cookie, check if the user is on the permission list
 	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
-	_, found2 := mtch.gamer_permission_list[uid]
+	_, found2 := pl.gamer_permission_list[uid]
 	if !found2 {
 		fmt.Println("this user is not in the match, he cannot start it")
 		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
@@ -929,46 +861,23 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// if there is space left in the permission_list, then add bots to remaining positions
-	for i := len(mtch.gamer_permission_list); i < int(mtch.capacity); i++ {
-
-		not_assigned := true
-		var random_number uuid.UUID
-		for not_assigned {
-			random_number = uuid.New()
-			if _, found := uid_to_user.users[random_number]; !found {
-				not_assigned = false
-				fmt.Println("assigning bot UID:", random_number)
-			}
-		}
-
-		user_object := &user{
-			mutex: sync.RWMutex{},
-
-			uid:          random_number,
-			email:        "bot@bot.com",
-			nickname:     "BOT",
-			currency:     0,
-			admin_status: false,
-			bot_status:   true,
-
-			rid_to_sid_to_socket: nil,
-			rid_to_room:          nil,
-
-			mid_to_msid_to_match_socket: nil,
-			mid_to_match:                nil,
-		}
-
-		mtch.bot_join <- user_object
-
+	for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
+		pl.bot <- true
 	}
+	pl.started = true
+
+	// create the match object, start the character selection timer
+	mtch := createMatch(pl)
+	go mtch.run()
+	mtch.char_sel_ticker <- true
 
 	data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "mid": parsed[2]}
 	t := template.Must(template.ParseFiles(filepath.Join("static", "game.html")))
 	t.Execute(res, data)
 }
 
-func ingameHandler(res http.ResponseWriter, req *http.Request) {
-	log.Println("/ingame")
+func msocketHandler(res http.ResponseWriter, req *http.Request) {
+	log.Println("/msocketHandler")
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
@@ -977,7 +886,7 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// get room object from RID
+	// get match object from MID
 	u := req.URL
 	parameters, err := url.ParseQuery(u.RawQuery)
 	fmt.Println(u, parameters, err)
@@ -988,6 +897,16 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// get the user's object from their UUID
+	fmt.Println("UUID:", session.Values["uid"])
+	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
+	uid_to_user.mutex.RLock()
+	requesting_user := uid_to_user.users[uid]
+	uid_to_user.mutex.RUnlock()
+
+	// check if the user is on the permission list
+	_, check_uid := plid_to_permission_list.global[mid].gamer_permission_list[uid]
+
 	// create a web socket connection
 	var upgrader = &websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	sock, err := upgrader.Upgrade(res, req, nil)
@@ -997,48 +916,40 @@ func ingameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// get the user's object from their UUID
-	fmt.Println("UUID:", session.Values["uid"])
-	uid, _ := uuid.Parse(session.Values["uid"].(string)) // convert string type to UUID type
-	uid_to_user.mutex.RLock()
-	requesting_user := uid_to_user.users[uid]
-	uid_to_user.mutex.RUnlock()
-
-	// create a socket object for the user
-	not_assigned := true
-	var random_pid uuid.UUID
-	var temp *match_socket
-	for not_assigned {
-		random_pid = uuid.New()
-		pid_to_permissions.mutex.RLock()
-		_, found := pid_to_permissions.global[random_pid]
-		pid_to_permissions.mutex.RUnlock()
-		if !found {
-			temp = &match_socket{
-				mutex:            sync.RWMutex{},
-				socket:           sock,
-				msid:             random_pid,
-				u:                requesting_user,
-				m:                mtch,
-				system_time:      time.Time{},
-				user_time:        time.Time{},
-				incoming_message: make(chan *message),
-				open:             true,
-			}
-			not_assigned = false
-		}
-	}
-
-	go m_write(temp)
-	go m_read(temp)
-
-	// check if the user is on the permission list
-	_, check_uid := mtch.gamer_permission_list[requesting_user.uid]
-
 	if check_uid == false {
 		// this is where you add them to spectator mode, unless it is a private match, which is a feature far far far into the future
 		fmt.Println("UID cannot join! Not on permission list")
+		return
 	} else {
+
+		// create a match_socket object for the user
+		not_assigned := true
+		var random_msid uuid.UUID
+		var temp *match_socket
+		for not_assigned {
+			random_msid = uuid.New()
+			msid_to_sock.mutex.RLock()
+			_, found := msid_to_sock.msid_to_sock[random_msid]
+			msid_to_sock.mutex.RUnlock()
+			if !found {
+				temp = &match_socket{
+					mutex:            sync.RWMutex{},
+					socket:           sock,
+					msid:             random_msid,
+					u:                requesting_user,
+					m:                mtch,
+					system_time:      time.Time{},
+					user_time:        time.Time{},
+					incoming_message: make(chan *message),
+					open:             true,
+				}
+				not_assigned = false
+			}
+		}
+
+		go m_write(temp)
+		go m_read(temp)
+
 		mtch.gamer_join <- temp
 	}
 

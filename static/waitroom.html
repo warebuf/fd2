@@ -17,7 +17,7 @@
 		position:relative;
 	}
 
-	#test {
+	#mid_div {
 		position: absolute;
 		padding: 0px;
 		text-align: center;
@@ -93,7 +93,7 @@
 
 	<div id="matches"></div>
 
-	<div id="test">
+	<div id="mid_div">
 		<button id="b1", onclick="removeB1()">Create a Match</button>
 	</div>
 	<div id="format">
@@ -133,7 +133,7 @@
 		if (!window["WebSocket"]) {
 			alert("Error: Your browser does not support web sockets.")
 		} else {
-			socket = new WebSocket("ws://{{.host}}/matchmaking");
+			socket = new WebSocket("ws://{{.host}}/psocket");
 			socket.onclose = function() {
 				alert("Connection has been closed.");
 			}
@@ -142,7 +142,7 @@
 				var msg = eval('('+e.data+')');
 				console.log(msg.Event, msg.Name, msg.MatchID, msg.Message);
 
-				if(msg.Event == "newMatch") {
+				if(msg.Event == "newPL") {
 					var div_parent = document.getElementById("matches");
 					var div_child = document.createElement("div");
 					div_child.setAttribute("id","panel")
@@ -151,23 +151,23 @@
 					div_body1.appendChild(document.createTextNode(msg.Message));
 					var div_body2 = document.createElement("div");
 					div_body2.setAttribute("id","panel_body2")
-					div_body2.appendChild(document.createTextNode(msg.MatchID));
+					div_body2.appendChild(document.createTextNode(msg.PLID));
 					var div_footer = document.createElement("div");
 					div_footer.setAttribute("id","panel_footer")
 					var div_but1 = document.createElement("button");
 					div_but1.setAttribute("id","panel_join");
-					div_but1.onclick = function() {sendParticipantJoin(msg.MatchID)};
+					div_but1.onclick = function() {sendParticipantJoin(msg.PLID)};
 					div_but1.appendChild(document.createTextNode("Join"));
 					var div_but2 = document.createElement("button");
 					div_but2.setAttribute("id","spectate")
 					div_but2.appendChild(document.createTextNode("Spectate"));
 					var div_but3 = document.createElement("button");
 					div_but3.setAttribute("id","start")
-					div_but3.onclick = function() {sendStart(msg.MatchID)};
+					div_but3.onclick = function() {sendStart(msg.PLID)};
 					div_but3.appendChild(document.createTextNode("Start"));
 					var div_but4 = document.createElement("button");
 					div_but4.setAttribute("id","leave")
-					div_but4.onclick = function() {sendParticipantLeave(msg.MatchID)};
+					div_but4.onclick = function() {sendParticipantLeave(msg.PLID)};
 					div_but4.appendChild(document.createTextNode("Leave"));
 
 					div_footer.appendChild(div_but1)
@@ -183,10 +183,10 @@
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
 					for(i=0;i<list_of_matches.length;i++) {
 						if(list_of_matches[i].textContent==msg.MatchID) {
-							var test = document.createElement("div");
-							test.setAttribute("id","opp")
-							test.appendChild(document.createTextNode(msg.Name));
-							list_of_matches[i-2].appendChild(test)
+							var temp = document.createElement("div");
+							temp.setAttribute("id","opp")
+							temp.appendChild(document.createTextNode(msg.Name));
+							list_of_matches[i-2].appendChild(temp)
 						}
 					}
 				}
@@ -194,8 +194,8 @@
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
 					var next_instance = false;
 					for(i=0;i<list_of_matches.length;i++) {
-						console.log(i, list_of_matches[i])
-						console.log(i, list_of_matches[i].textContent)
+						//console.log(i, list_of_matches[i])
+						//console.log(i, list_of_matches[i].textContent)
 						if(list_of_matches[i].textContent==msg.MatchID) {
 							next_instance = true;
 						}
@@ -208,33 +208,31 @@
 				else if(msg.Event == "removeMatch") {
 					var list_of_matches = document.getElementById("matches").getElementsByTagName("div")
 					for(i=0;i<list_of_matches.length;i++) {
-						console.log(i, list_of_matches[i])
-						console.log(i, list_of_matches[i].textContent)
-						console.log(msg.Message, typeof(msg.Message))
+						//console.log(i, list_of_matches[i])
+						//console.log(i, list_of_matches[i].textContent)
+						//console.log(msg.Message, typeof(msg.Message))
 						if(list_of_matches[i].textContent==msg.Message) {
 							list_of_matches[i-2].remove();
 							break;
 						}
 					}
 				}
-
-
 			}
 		}
 	}
 	test()
 
-	function sendParticipantJoin(mid) {
+	function sendParticipantJoin(plid) {
 		console.log("sent participant join")
-		socket.send(JSON.stringify({ "Event": 'participantJoin', "Message": "test", MatchID:mid }))
+		socket.send(JSON.stringify({ "Event": 'participantJoin', PLID:plid }))
 	}
-	function sendParticipantLeave(mid) {
+	function sendParticipantLeave(plid) {
 		console.log("sent participant leave")
-		socket.send(JSON.stringify({ "Event": 'participantLeave', "Message": "test", MatchID:mid }))
+		socket.send(JSON.stringify({ "Event": 'participantLeave', PLID:plid }))
 	}
-	function sendStart(mid) {
+	function sendStart(plid) {
 		console.log("sent start")
-		window.location.href = 'http://{{.host}}/game/' + mid;
+		window.location.href = 'http://{{.host}}/game/' + plid;
 	}
 
 	// play music

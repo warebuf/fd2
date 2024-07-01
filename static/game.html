@@ -148,7 +148,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    phase.substring(0,4) == "TURN" &&
+                    turn.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -193,7 +193,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    phase.substring(0,4) == "TURN" &&
+                    turn.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -238,7 +238,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    phase.substring(0,4) == "TURN" &&
+                    turn.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -283,7 +283,7 @@
                 if(
                     game_over == false &&
                     match_data.length > 0 &&
-                    phase.substring(0,4) == "TURN" &&
+                    turn.substring(0,4) == "TURN" &&
                     indexer_t == my_team &&
                     indexer_u == my_int &&
                     state[indexer_t][indexer_u][indexer_b].Position == 0
@@ -332,41 +332,42 @@
     }
 
     // important data
-    var socket = null;
-    var my_team = -1;
-    var my_int = -1;
-    var game_over = false;
+    var socket = null; // socket object for this tab
+    var my_team = -1; // the user's team index
+    var my_int = -1; // the user's player index
 
     // pointer index
     var indexer_t = 0;
     var indexer_u = 0;
     var indexer_b = 0;
 
-    // things that are currently being drawn
-    var state = []
-    var animating_state = -1
-    var event_log = []
-    var phase = "null";
-    var sent_time = null;
+    // state stuff
+    var animating_state = -1 // where are we at in the dataset
+    var turn = "null"; // the current phase/turn
+    var sent_time = null; // the time that the turn ends
 
-    //
+    var game_over = false;
+
+    // global variables to help simulation
     var all_up_to_date = true
     var pos_up_to_date = true
     var act_up_to_date = true
 
-    var total_units_of_time = 0;
+    var draw_attacks = false
 
-    // things drawn OR to be drawn
+    // the board state
+    var state = []
+
+    // datasets
     var match_data = new Array();
     var atk_data = new Array();
 
     var time_queue = []
-    var phase_queue = []
+    var turn_queue = []
 
-    //to delete
-    units_of_time = 0
+    var event_log = []
 
-    var draw_attacks = false
+    var total_units_of_time = 0;
 
 
     function test() {
@@ -374,7 +375,7 @@
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")
         } else {
-            socket = new WebSocket("ws://{{.host}}/ingame?matchid={{.mid}}");
+            socket = new WebSocket("ws://{{.host}}/msocket?matchid={{.mid}}");
             socket.onclose = function() {
                 alert("Connection has been closed.");
             }
@@ -382,7 +383,7 @@
             socket.onmessage = function(e) {
                 var receive_time = Date.now()
                 var msg = eval('('+e.data+')');
-                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Phase);
+                console.log(msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn);
 
                 var msg_date = msg.When.substring(0,10);
                 var msg_time = msg.When.substring(11,19);
@@ -408,18 +409,26 @@
                 }
                 else if(msg.Event == 'ticker_start') {
                     sent_time = Date.parse(msg.Message)
-                    if((phase=="null") || ((phase=="CHARACTER SELECTION"))){
+                }
+                else if(msg.Event == 'update_phase') {
+                    if (phase=="null") {
                         phase = msg.Phase
                         if(phase="CHARACTER SELECTION") {
                             console.log(document.getElementById("sel_but"))
                             document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
                         }
+                    } else {
+                        if(phase=="CHARACTER SELECTION") {
+                            var menu2 = document.getElementById("sel_but");
+                            menu2.remove();
+                        }
+                        phase_queue.push(msg.Phase)
                     }
                 }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")
 
-                    phase_queue.push(msg.Phase)
+                    turn_queue.push(msg.Turn)
 
                     // turn the JSON into javascript objects
                     let temp = msg.TCH;
@@ -446,12 +455,7 @@
                         indexer_u = my_int
                         state = md;
                         animating_state = 0
-                        phase = msg.Phase
-                        if(phase.substring(0,4)=="TURN") {
-                            var menu2 = document.getElementById("sel_but");
-                            menu2.remove();
-                        }
-                    } 
+                    }
 
                     match_data.push(md)
                     //printAllMatchData(match_data)

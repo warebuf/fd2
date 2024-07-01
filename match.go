@@ -4,15 +4,79 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
+
 	"math/rand"
 	"strconv"
 	"sync"
 	"time"
 )
 
-func p_write(p *permission_socket) {
-	for msg := range p.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
-		if err := p.socket.WriteJSON(msg); err != nil {
+type match struct {
+	mutex sync.RWMutex
+
+	mid       uuid.UUID
+	game_mode string
+	sides     uint
+	capacity  uint
+	ended     bool
+
+	// each client is represented as an int
+	team_client_hero [][][]*hero
+	uuid_to_team_int map[uuid.UUID]pair
+	turn             string // tells you turn #
+
+	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
+	prio_broadcast chan *message // gets priority over normal broadcast ^
+
+	gamer_join                        chan *match_socket
+	gamer_uid_to_user                 map[uuid.UUID]*user
+	gamer_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	gamer_leave                       chan *match_socket // a channel for clients wishing to leave
+
+	bot_join  chan *user
+	bot_leave chan *user
+
+	spectator_join                        chan *match_socket // a channel for clients wishing to join
+	spectator_uid_to_msid_to_match_socket map[uuid.UUID]map[uuid.UUID]*match_socket
+	spectator_uid_to_user                 map[uuid.UUID]*user
+
+	phase string
+
+	ticker       *time.Ticker
+	start_ticker chan bool
+
+	next_time time.Time
+
+	char_sel_done   map[uuid.UUID]bool
+	char_sel_ticker chan bool
+
+	message_logs []*message
+
+	simulate chan bool
+}
+
+type match_socket struct {
+	mutex sync.RWMutex
+
+	socket *websocket.Conn
+
+	msid uuid.UUID
+
+	u *user
+	m *match
+
+	user_time   time.Time
+	system_time time.Time
+
+	incoming_message chan *message // send is a channel on which messages are sent.
+
+	open bool
+}
+
+func m_write(m *match_socket) {
+	for msg := range m.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
+		if err := m.socket.WriteJSON(msg); err != nil {
 			fmt.Println("error writing to socket")
 			break
 		} else {
@@ -21,76 +85,92 @@ func p_write(p *permission_socket) {
 	}
 }
 
-func p_read(p *permission_socket) {
+func m_read(m *match_socket) {
 	defer func() {
-		fmt.Println("read psocket closing")
+		fmt.Printf("read socket closing")
+		m.m.gamer_leave <- m
 
-		pid_to_permissions.mutex.Lock()
-		delete(pid_to_permissions.global, p.pid)
-		pid_to_permissions.mutex.Unlock()
-
-		if p.open {
-			fmt.Println("client left waitroom (psocket)")
+		if m.open {
+			fmt.Println("client left the match (match_socket)")
 		}
 	}()
 
 	for {
 		var msg *message
-		if err := p.socket.ReadJSON(&msg); err == nil {
+		if err := m.socket.ReadJSON(&msg); err == nil {
 			fmt.Printf("JSON: %+v\n", msg)
 
 			msg.When = time.Now()
-			msg.Name = p.u.email
+			msg.Name = m.u.email
 			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
-			if msg.Event == "createMatch" {
+			if msg.Event == "act" {
+				fmt.Println("received act")
+				// check if the match has started and the action is to a user's own bot
+				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
+					// check if the bot is alive
+					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 && m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position == 0 {
+						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
-				fmt.Println("received createMatch")
+							if msg.Message == "HEAD" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 0
+							} else if msg.Message == "LARM" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 1
+							} else if msg.Message == "RARM" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 2
+							} else if msg.Message == "BOTTOM" {
+								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
+							}
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Direction = 1
 
-				mtch := createMatch(msg)
-				go mtch.run()
-				globalBroadcast(&message{Event: "newMatch", Message: mtch.game_mode + strconv.Itoa(int(mtch.capacity)), When: time.Now(), MatchID: mtch.mid}) // let everyone know there is a new room
-				mtch.gamer_permission_signup <- p
+							// check if all bots have commands, if so, calculate next position
+							sim_check := true
+							for i := 0; i < len(m.m.team_client_hero); i++ {
+								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
+									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
+										if (m.m.team_client_hero[i][j][k].Bot == false) &&
+											(m.m.team_client_hero[i][j][k].Move < 0) &&
+											(m.m.team_client_hero[i][j][k].Position == 0) &&
+											(m.m.team_client_hero[i][j][k].H.HP > 0) {
+											sim_check = false
+											fmt.Println("sim_check", i, j, k)
+										}
+									}
+								}
+							}
+							fmt.Println("sim_check", sim_check)
+							if sim_check == true {
+								m.m.simulate <- true
+							} else {
+								m.m.sharepos(nil)
+							}
+						}
+					}
 
-			} else if msg.Event == "participantJoin" { // user request to join match
+				}
 
-				fmt.Println("received participantJoin")
+			} else if msg.Event == "clockSyncResponse" {
+				test, _ := strconv.ParseInt(msg.Message, 10, 64)
+				m.user_time = time.UnixMilli(test)
+				fmt.Println("dif", m.system_time.Sub(m.user_time))
 
-				mid_to_match.mutex.Lock()
-				mtch, exists := mid_to_match.match[msg.MatchID]
-				mid_to_match.mutex.Unlock()
+				msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.m.phase, MatchID: m.m.mid}
+				msg.Message = m.m.next_time.Add(m.user_time.Sub(m.system_time)).UTC().String()
+				m.incoming_message <- msg
 
-				if exists {
-					_, check_uid := mtch.gamer_permission_list[p.u.uid]
-					if check_uid == true {
-						fmt.Println("participant ws is already is the match!")
-					} else if mtch.started == true {
-						fmt.Println("match has already started, of course you can't join")
-					} else if len(mtch.gamer_permission_list) > int(mtch.capacity) {
-						fmt.Println("the match is full")
-						msg := &message{Name: p.u.email, Message: "the match is full", Event: "failedMatchJoin", When: time.Now(), MatchID: mtch.mid}
-						p.incoming_message <- msg
-					} else {
-						mtch.gamer_permission_signup <- p
+			} else if msg.Event == "endCharSel" {
+
+				m.m.char_sel_done[m.u.uid] = true
+				all_done := true
+				for _, j := range m.m.char_sel_done {
+					if j == false {
+						all_done = false
+						break
 					}
 				}
-			} else if msg.Event == "participantLeave" {
-				mid_to_match.mutex.Lock()
-				mtch, exists := mid_to_match.match[msg.MatchID]
-				mid_to_match.mutex.Unlock()
-
-				if exists {
-					_, check_uid := mtch.gamer_permission_list[p.u.uid]
-					if check_uid == true {
-						if mtch.started == false {
-							mtch.gamer_permission_signout <- p
-						} else {
-							fmt.Println("cannot leave permission list if match is in progress!")
-						}
-					} else {
-						fmt.Println("cannot leave, user isn't even in the room")
-					}
+				if all_done {
+					m.m.start_ticker <- true
 				}
 			}
 
@@ -101,109 +181,177 @@ func p_read(p *permission_socket) {
 	}
 }
 
-func createMatch(msg *message) *match {
+func createMatch(pl *permission_list) *match {
 	fmt.Println("called 'createMatch'")
 
 	var ans *match
-	// create a global room for users to chat in
-	not_assigned := true
-	for not_assigned {
-		random_number := uuid.New()
 
-		mid_to_match.mutex.RLock()
-		_, found := mid_to_match.match[random_number]
-		mid_to_match.mutex.RUnlock()
-		if !found {
+	mid_to_match.mutex.RLock()
+	_, found := mid_to_match.match[pl.plid] // USE SAME PLID FOR MID
+	mid_to_match.mutex.RUnlock()
+	if !found {
 
-			gm := "ffa"
+		ans = &match{
 
-			num := uint(1)
-			sd := uint(2)
-			if len(msg.Message) < 4 {
-				gm = "ffa"
-				num = 1
-			} else {
-				if msg.Message[0:3] == "ffa" {
-					gm = "ffa"
-				} else if msg.Message[0:3] == "tea" {
-					gm = "tea"
-				} else if msg.Message[0:3] == "1vx" {
-					gm = "1vx"
-				} else {
-					gm = "ffa"
-				}
-				num_ops, _ := strconv.Atoi(msg.Message[3:])
+			mutex: sync.RWMutex{},
 
-				if (num_ops < 100) && (num_ops > 1) {
-					num = uint(num_ops)
-				} else {
-					num = 2
-				}
+			mid:       pl.plid,
+			game_mode: pl.game_mode,
+			capacity:  pl.capacity,
+			sides:     pl.sides,
+			ended:     false,
 
-				if gm == "ffa" {
-					sd = num
-				} else if gm == "tea" {
-					sd = 2
-				} else if gm == "1vx" {
-					sd = 2
-				}
-			}
+			team_client_hero: make([][][]*hero, 0, 0),
+			//TCH_JSON:         make([][][]string, 0, 0),
+			uuid_to_team_int: make(map[uuid.UUID]pair),
 
-			ans = &match{
+			broadcast:      make(chan *message),
+			prio_broadcast: make(chan *message),
 
-				mutex: sync.RWMutex{},
+			gamer_join:                        make(chan *match_socket),
+			gamer_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+			gamer_uid_to_user:                 make(map[uuid.UUID]*user),
+			gamer_leave:                       make(chan *match_socket),
 
-				mid:       random_number,
-				game_mode: gm,
-				capacity:  num,
-				sides:     sd,
-				started:   false,
-				ended:     false,
+			bot_join:  make(chan *user),
+			bot_leave: make(chan *user),
 
-				team_client_hero: make([][][]*hero, 0, 0),
-				TCH_JSON:         make([][][]string, 0, 0),
-				uuid_to_team_int: make(map[uuid.UUID]pair),
+			spectator_join:                        make(chan *match_socket),
+			spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
+			spectator_uid_to_user:                 make(map[uuid.UUID]*user),
 
-				broadcast:      make(chan *message),
-				prio_broadcast: make(chan *message),
+			phase: "null",
 
-				gamer_join:                        make(chan *match_socket),
-				gamer_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
-				gamer_uid_to_user:                 make(map[uuid.UUID]*user),
-				gamer_leave:                       make(chan *match_socket),
+			ticker:       time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
+			turn:         "null",
+			start_ticker: make(chan bool),
 
-				gamer_permission_signup:  make(chan *permission_socket),
-				gamer_permission_list:    make(map[uuid.UUID]*user),
-				gamer_permission_signout: make(chan *permission_socket),
+			char_sel_done:   make(map[uuid.UUID]bool),
+			char_sel_ticker: make(chan bool),
 
-				bot_join:  make(chan *user),
-				bot_leave: make(chan *user),
+			message_logs: make([]*message, 0, 16),
 
-				spectator_join:                        make(chan *match_socket),
-				spectator_uid_to_msid_to_match_socket: make(map[uuid.UUID]map[uuid.UUID]*match_socket),
-				spectator_uid_to_user:                 make(map[uuid.UUID]*user),
-
-				ticker:         time.NewTicker(2400000 * time.Hour), //will not tick until 100,000 days, or 273 years
-				type_of_ticker: "null",
-				start_ticker:   make(chan bool),
-
-				char_sel_done:   make([]bool, num),
-				char_sel_ticker: make(chan bool),
-
-				message_logs: make([]*message, 0, 16),
-
-				simulate: make(chan bool),
-			}
-
-			fmt.Println("created MID:", random_number)
-
-			mid_to_match.mutex.Lock()
-			mid_to_match.match[random_number] = ans
-			mid_to_match.mutex.Unlock()
-
-			not_assigned = false
+			simulate: make(chan bool),
 		}
 
+		// create each team
+		for i := 0; i < int(ans.sides); i++ {
+			ans.team_client_hero = append(ans.team_client_hero, make([][]*hero, 0))
+		}
+
+		// assign clients and heroes to each team
+		team_int := 0
+		client_int := 0
+		for i, j := range pl.gamer_permission_list {
+
+			ans.char_sel_done[i] = false
+
+			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)}
+			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))
+
+			for y := 0; y < 5; y++ {
+				h := head{
+					SERIAL: 0,
+
+					HP:          100,
+					ATK:         0,
+					DEF:         0,
+					ACC:         0,
+					CRT:         0,
+					MOB:         0,
+					CD:          0,
+					CLU:         0,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      1,
+				}
+				larm := arm{
+					SERIAL: 0,
+					LORR:   false,
+
+					HP:          100,
+					ATK:         0,
+					DEF:         0,
+					ACC:         0,
+					CRT:         0,
+					MOB:         0,
+					CD:          0,
+					CLU:         0,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      1,
+				}
+				rarm := arm{
+					SERIAL: 0,
+					LORR:   true,
+
+					HP:          100,
+					ATK:         0,
+					DEF:         0,
+					ACC:         0,
+					CRT:         0,
+					MOB:         0,
+					CD:          0,
+					CLU:         0,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      1,
+				}
+				btm := bottom{
+					SERIAL: 0,
+
+					HP:          100,
+					ATK:         0,
+					DEF:         0,
+					ACC:         0,
+					CRT:         0,
+					MOB:         0,
+					CD:          0,
+					CLU:         0,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      1,
+
+					DOG: 0,
+					SPD: rand.Intn(10) * 10,
+					ACL: 0,
+					ANT: 0,
+					END: 0,
+				}
+				temp := &hero{
+					Bot:       j.bot_status,
+					Position:  0,
+					Direction: 0,
+					Move:      -1,
+					H:         h,
+					L:         larm,
+					R:         rarm,
+					B:         btm,
+				}
+				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
+			}
+
+			if ans.game_mode == "ffa" {
+				team_int++
+			} else if ans.game_mode == "tea" {
+				if team_int == 0 {
+					team_int = 1
+				} else {
+					team_int = 0
+				}
+			} else if ans.game_mode == "1vx" {
+				team_int = 1
+			}
+			if len(ans.team_client_hero) > team_int {
+				client_int = len(ans.team_client_hero[team_int])
+			}
+		}
+
+		fmt.Println("created MID:", ans.mid)
+
+		mid_to_match.mutex.Lock()
+		mid_to_match.match[ans.mid] = ans
+		mid_to_match.mutex.Unlock()
 	}
 
 	return ans
@@ -215,62 +363,6 @@ func (m *match) run() {
 		// dont forget to give timer priority
 
 		select {
-
-		// only add the user, do not add the mmsocket
-		case ws := <-m.gamer_permission_signup: // joining the waitroom for matchmaking
-			_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
-			fmt.Println("gamer_permission_signup", ws.u.uid)
-
-			// if user is not in the match object, add the user and create a socket object
-			m.mutex.Lock()
-			if check_uid == false {
-				m.gamer_permission_list[ws.u.uid] = ws.u
-			}
-			m.mutex.Unlock()
-
-			// if this is the first socket the user has joined this room, send a message to everyone that he's joined
-			if check_uid == false {
-				msg := &message{Name: ws.u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
-				go func() {
-					pid_to_permissions.mutex.RLock()
-					for _, j := range pid_to_permissions.global {
-						j.incoming_message <- msg
-					}
-					pid_to_permissions.mutex.RUnlock()
-				}()
-			}
-
-			fmt.Println("a psocket has finished permission_signup")
-			printAllMatchUserWS()
-			continue
-
-		case ws := <-m.gamer_permission_signout: // leaving the waitroom for matchmaking
-
-			_, check_uid := m.gamer_permission_list[ws.u.uid] // check if the user is in the match object
-			fmt.Println("gamer_permission_signout", ws.u.uid)
-
-			// if user is in the match object, delete all sockets as well
-			m.mutex.Lock()
-			if check_uid == true {
-				delete(m.gamer_permission_list, ws.u.uid)
-			}
-			m.mutex.Unlock()
-
-			// if this is the first socket the user has left the room, send a message to everyone that he's joined
-			if check_uid == true {
-				msg := &message{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), MatchID: m.mid}
-				go func() {
-					pid_to_permissions.mutex.RLock()
-					for _, j := range pid_to_permissions.global {
-						j.incoming_message <- msg
-					}
-					pid_to_permissions.mutex.RUnlock()
-				}()
-			}
-
-			fmt.Println("a psocket has finished permission_signout")
-			printAllMatchUserWS()
-			continue
 
 		case ws := <-m.gamer_join: // joining
 
@@ -303,10 +395,6 @@ func (m *match) run() {
 			for _, j := range m.message_logs {
 				ws.incoming_message <- j
 			}
-
-			//if m.type_of_ticker = "CHARACTER SELECTION" {
-
-			//}
 
 			if m.ended == true {
 				ws.incoming_message <- &message{Event: "game_over"}
@@ -408,7 +496,7 @@ func (m *match) run() {
 			// if empty now, delete match, clear all users and global variables of objects related to this match
 			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
 				delete(mid_to_match.match, m.mid)
-				globalBroadcast(&message{Event: "removeMatch", Message: m.mid.String()}) // let everyone know there is a new room
+				//permissionlistBroadcast(&pmessage{Event: "removeMatch", Message: m.mid.String()}) // let everyone know there is a new room
 				break
 			} else {
 				printAllMatchUserWS()
@@ -418,36 +506,35 @@ func (m *match) run() {
 		case u := <-m.bot_join:
 
 			m.mutex.Lock()
-			m.gamer_permission_list[u.uid] = u
 			m.gamer_uid_to_user[u.uid] = u
 			//m.gamer_uid_to_msid_to_match_socket[u.uid] = make(map[uuid.UUID]*match_socket)
 			m.mutex.Unlock()
 
 			// send to all permission sockets that this bot has joined the permission list
-			msg := &message{Name: u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), MatchID: m.mid}
+			msg1 := &pmessage{Name: u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), PLID: m.mid}
 			pid_to_permissions.mutex.RLock()
 			for _, j := range pid_to_permissions.global {
-				j.incoming_message <- msg
+				j.incoming_message <- msg1
 			}
 			pid_to_permissions.mutex.RUnlock()
 
 			// send to all match sockets that the bot has entered the match
-			msg = &message{Name: u.email, Message: "x entered the match", Event: "entered", When: time.Now()}
+			msg2 := &message{Name: u.email, Message: "x entered the match", Event: "entered", When: time.Now()}
 			m.mutex.Lock()
-			m.message_logs = append(m.message_logs, msg)
+			m.message_logs = append(m.message_logs, msg2)
 			m.mutex.Unlock()
-			fmt.Println("sending:", msg)
+			fmt.Println("sending:", msg2)
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
-					case j.incoming_message <- msg:
+					case j.incoming_message <- msg2:
 					}
 				}
 			}
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
-					case j.incoming_message <- msg:
+					case j.incoming_message <- msg2:
 					}
 				}
 			}
@@ -483,7 +570,6 @@ func (m *match) run() {
 		case u := <-m.bot_leave:
 
 			m.mutex.Lock()
-			delete(m.gamer_permission_list, u.uid)
 			delete(m.gamer_uid_to_user, u.uid)
 			//delete(m.gamer_uid_to_msid_to_match_socket, u.uid)
 			m.mutex.Unlock()
@@ -501,186 +587,56 @@ func (m *match) run() {
 
 			fmt.Println("m.Ticker.C")
 
-			var timer1_length time.Duration
-			var timer2_length time.Duration
+			if m.phase == "CHARACTER SELECTION" {
+				m.start_ticker <- true
+			} else if m.turn[0:4] == "TURN" {
+				num, _ := strconv.Atoi(m.turn[5:])
+				m.turn = "TURN " + strconv.Itoa(num+1)
 
-			if m.type_of_ticker == "CHARACTER SELECTION" {
-				timer1_length = time.Second * 10
-				timer2_length = time.Second * 11
-				m.type_of_ticker = "TURN 0"
-				m.sharepos(nil)
-			} else if m.type_of_ticker[0:4] == "TURN" {
-				timer1_length = time.Second * 120
-				timer2_length = time.Second * 121
-				//num, _ := strconv.Atoi(m.type_of_ticker[5:])
-				//m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
-			}
+				msg := &message{Event: "ticker_start", When: time.Now(), Turn: m.turn, MatchID: m.mid}
 
-			init_time := time.Now().Add(timer1_length)
-			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
-			m.ticker = time.NewTicker(timer2_length) //will tick in 30 s
+				m.next_time = time.Now().Add(120 * time.Second)
+				m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
 
-			// send ticker to everyone
-			m.mutex.Lock()
-			m.message_logs = append(m.message_logs, msg)
-			m.mutex.Unlock()
+				// send ticker to everyone
+				m.mutex.Lock()
+				m.message_logs = append(m.message_logs, msg)
+				m.mutex.Unlock()
 
-			fmt.Println("sending:", msg)
+				fmt.Println("sending:", msg)
 
-			for _, i := range m.gamer_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
-					select {
-					case j.incoming_message <- msg:
+				for _, i := range m.gamer_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+						select {
+						case j.incoming_message <- msg:
+						}
 					}
 				}
-			}
 
-			for _, i := range m.spectator_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
-					select {
-					case j.incoming_message <- msg:
+				for _, i := range m.spectator_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
+						select {
+						case j.incoming_message <- msg:
+						}
 					}
 				}
 			}
 
 		case <-m.char_sel_ticker:
-			// creating the game state here
-			// create each team
-			for i := 0; i < int(m.sides); i++ {
-				m.team_client_hero = append(m.team_client_hero, make([][]*hero, 0, 1))
-				m.TCH_JSON = append(m.TCH_JSON, make([][]string, 0, 1))
-			}
 
-			// assign clients and heroes to each team
-			team_int := 0
-			client_int := 0
-			for i, _ := range m.gamer_uid_to_user {
-				m.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)}
-				m.team_client_hero[team_int] = append(m.team_client_hero[team_int], make([]*hero, 0, 5))
-				m.TCH_JSON[team_int] = append(m.TCH_JSON[team_int], make([]string, 0, 5))
-
-				is_bot := false
-				if m.gamer_permission_list[i].bot_status == true {
-					is_bot = true
-				}
-
-				for y := 0; y < 5; y++ {
-					h := head{
-						SERIAL: 0,
-
-						HP:          100,
-						ATK:         0,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						MOB:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-					}
-					larm := arm{
-						SERIAL: 0,
-						LORR:   false,
-
-						HP:          100,
-						ATK:         0,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						MOB:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-					}
-					rarm := arm{
-						SERIAL: 0,
-						LORR:   true,
-
-						HP:          100,
-						ATK:         0,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						MOB:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-					}
-					btm := bottom{
-						SERIAL: 0,
-
-						HP:          100,
-						ATK:         0,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						MOB:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-
-						DOG: 0,
-						SPD: rand.Intn(10) * 10,
-						ACL: 0,
-						ANT: 0,
-						END: 0,
-					}
-					temp := &hero{
-						Bot:       is_bot,
-						Position:  0,
-						Direction: 0,
-						Move:      -1,
-						H:         h,
-						L:         larm,
-						R:         rarm,
-						B:         btm,
-					}
-					m.team_client_hero[team_int][client_int] = append(m.team_client_hero[team_int][client_int], temp)
-					marshalled, _ := json.Marshal(temp)
-					m.TCH_JSON[team_int][client_int] = append(m.TCH_JSON[team_int][client_int], string(marshalled))
-				}
-
-				if m.game_mode == "ffa" {
-					team_int++
-				} else if m.game_mode == "tea" {
-					if team_int == 0 {
-						team_int = 1
-					} else {
-						team_int = 0
-					}
-				} else if m.game_mode == "1vx" {
-					team_int = 1
-				}
-				if len(m.team_client_hero) > team_int {
-					client_int = len(m.team_client_hero[team_int])
-				}
-			}
-
-			m.type_of_ticker = "CHARACTER SELECTION"
-			init_time := time.Now().Add(600 * time.Second)
-			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
-			m.ticker = time.NewTicker(601 * time.Second) //will tick in 30 s
+			m.phase = "CHARACTER SELECTION"
+			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.phase, MatchID: m.mid}
+			m.next_time = time.Now().Add(600 * time.Second)
+			m.ticker = time.NewTicker(m.next_time.Sub(time.Now()))
 
 			// send ticker to everyone
-			m.mutex.Lock()
-			m.message_logs = append(m.message_logs, msg)
-			m.mutex.Unlock()
-
 			fmt.Println("sending:", msg)
 
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+					msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
 					select {
 					case j.incoming_message <- msg:
 					}
@@ -689,18 +645,21 @@ func (m *match) run() {
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+					msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
 					select {
 					case j.incoming_message <- msg:
 					}
 				}
 			}
 			continue
+
 		case <-m.start_ticker:
-			m.type_of_ticker = "TURN 0"
-			init_time := time.Now().Add(120 * time.Second)
-			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
-			m.ticker = time.NewTicker(121 * time.Second) //will tick in 30 s
+			m.phase = "TURN"
+			m.turn = "TURN 0"
+			msg := &message{Event: "ticker_start", When: time.Now(), Turn: m.turn, MatchID: m.mid}
+
+			m.next_time = time.Now().Add(120 * time.Second)
+			m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
 
 			// send ticker to everyone
 			m.mutex.Lock()
@@ -711,7 +670,7 @@ func (m *match) run() {
 
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
+					msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
 					select {
 					case j.incoming_message <- msg:
 					}
@@ -720,7 +679,7 @@ func (m *match) run() {
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
+					msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
 					select {
 					case j.incoming_message <- msg:
 					}
@@ -869,11 +828,11 @@ func (m *match) run() {
 				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move = -1
 			}
 
-			num, _ := strconv.Atoi(m.type_of_ticker[5:])
+			num, _ := strconv.Atoi(m.turn[5:])
 			if len(atk_list) > 0 {
-				m.type_of_ticker = "TURN " + strconv.Itoa(num+len(atk_list))
+				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
 			} else {
-				m.type_of_ticker = "TURN " + strconv.Itoa(num+1)
+				m.turn = "TURN " + strconv.Itoa(num+1)
 			}
 
 			if len(atk_list) > 0 {
@@ -915,7 +874,7 @@ func (m *match) run() {
 			timer2_length := time.Second * 121
 
 			init_time := time.Now().Add(timer1_length)
-			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.type_of_ticker, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), Turn: m.turn, MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length)
 			msg2 := &message{Event: "unitsOfTime", When: time.Now(), Message: strconv.FormatFloat(min_units, 'E', 3, 64)}
 
@@ -956,17 +915,6 @@ func (m *match) run() {
 	}
 }
 
-func globalBroadcast(msg *message) {
-	fmt.Println("global broadcast")
-	pid_to_permissions.mutex.RLock()
-	for _, i := range pid_to_permissions.global {
-		select {
-		case i.incoming_message <- msg:
-		}
-	}
-
-	pid_to_permissions.mutex.RUnlock()
-}
 func printAllMatchUserWS() {
 	fmt.Println("printing everything")
 
@@ -999,7 +947,7 @@ func (m *match) sharepos(a []*attack) {
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 				marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
 				//fmt.Println(string(marshalled))
-				m.TCH_JSON[i][j][k] = string(marshalled)
+				//m.TCH_JSON[i][j][k] = string(marshalled)
 				temp[i][j][k] = string(marshalled)
 			}
 		}
@@ -1009,7 +957,7 @@ func (m *match) sharepos(a []*attack) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Phase: m.type_of_ticker, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

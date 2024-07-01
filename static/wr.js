@@ -42,7 +42,7 @@ function removeB1() {
 	// send message to server to create match
 	var e1 = document.getElementById("formatselect").value;
 	var e2 = document.getElementById("opponentselect").value;
-	socket.send(JSON.stringify({ "Event": 'createMatch', "Message": e1+e2 }))
+	socket.send(JSON.stringify({ "Event": 'createPermissionList', "Message": e1+e2 }))
 
 	var button = document.getElementById("b1");
 	button.remove();
@@ -51,14 +51,14 @@ function removeB1() {
 	var menu2 = document.getElementById("format");
 	menu2.remove();
 
-	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");
+	document.getElementById("mid_div").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");
 
 }
 
 function removeB2() {
 	var button = document.getElementById("b2");
 	button.remove();
-	document.getElementById("test").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Create a Match</button>");
+	document.getElementById("mid_div").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Create a Match</button>");
 
 	document.getElementById("container").insertAdjacentHTML('beforeend',
 		"<div id=\"format\">\n" +

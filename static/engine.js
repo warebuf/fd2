@@ -49,7 +49,6 @@ function anime() {
         ctx.fillText(remaining_time,c.width/2, 50);
     }
 
-
     if(phase=="CHARACTER SELECTION") {
         drawTurn()
         drawLog()
@@ -149,7 +148,7 @@ function drawPos() {
             pos_up_to_date = false
             act_up_to_date = false
 
-            phase = phase_queue[animating_state]
+            turn = turn_queue[animating_state]
 
             animating_state++
             if(animating_state >= match_data.length) {
@@ -355,7 +354,7 @@ function drawState() {
                 }
                 ctx.fillRect(x0, ((i+j)*115) + y0+1 + (k*20), 5, 7);
 
-                if(phase.substring(0,4) == "TURN") {
+                if(turn.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&
                         state[i][j][k].Position == 0
@@ -385,11 +384,11 @@ function drawState() {
 function drawTurn() {
     ctx.textAlign = "center";
     ctx.fillStyle = 'black';
-    ctx.fillRect(c.width/2,10,ctx.measureText(phase).width,ctx.measureText('M').width);
+    ctx.fillRect(c.width/2,10,ctx.measureText(turn).width,ctx.measureText('M').width);
 
     ctx.fillStyle = 'white'
     ctx.textAlign = "center";
-    ctx.fillText(phase,c.width/2, 20);
+    ctx.fillText(turn,c.width/2, 20);
 }
 
 function drawUnitsOfTime() {

@@ -813,7 +813,9 @@ func psocketSetupHandler(res http.ResponseWriter, req *http.Request) {
 
 	// when a match socket is created, send them a list of all possible matches
 	for _, i := range plid_to_permission_list.global {
-		temp.incoming_message <- &pmessage{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), PLID: i.plid} // send match
+		x := &pmessage{Event: "newMatch", Message: i.game_mode + strconv.Itoa(int(i.capacity)), When: time.Now(), PLID: i.plid} // send match
+		fmt.Println(x)
+		temp.incoming_message <- x
 		for _, j := range i.gamer_permission_list {
 			temp.incoming_message <- &pmessage{Name: j.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), PLID: i.plid} // send users in match
 		}

@@ -627,7 +627,8 @@ func (m *match) run() {
 		case <-m.char_sel_ticker:
 
 			m.phase = "CHARACTER SELECTION"
-			msg := &message{Event: "ticker_start", When: time.Now(), Phase: m.phase, MatchID: m.mid}
+			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
+			msg2 := &message{Event: "update_phase", Phase: m.phase, MatchID: m.mid}
 			m.next_time = time.Now().Add(600 * time.Second)
 			m.ticker = time.NewTicker(m.next_time.Sub(time.Now()))
 
@@ -639,6 +640,7 @@ func (m *match) run() {
 					msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
 					select {
 					case j.incoming_message <- msg:
+						j.incoming_message <- msg2
 					}
 				}
 			}
@@ -648,6 +650,7 @@ func (m *match) run() {
 					msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
 					select {
 					case j.incoming_message <- msg:
+						j.incoming_message <- msg2
 					}
 				}
 			}

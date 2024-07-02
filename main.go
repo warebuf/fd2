@@ -863,14 +863,13 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	if pl.started == false {
 		// if there is space left in the permission_list, then add bots to remaining positions
 
-		var wg sync.WaitGroup
+		var wg *sync.WaitGroup
+
 		for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
 			wg.Add(1)
-			go func() {
-				defer wg.Done()
-				pl.bot <- true
-			}()
+			pl.bot <- wg
 		}
+
 		wg.Wait()
 
 		pl.started = true

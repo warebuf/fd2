@@ -22,7 +22,7 @@ type permission_list struct {
 	gamer_permission_list    map[uuid.UUID]*user
 	gamer_permission_signout chan *permission_socket
 
-	bot chan bool
+	bot chan *sync.WaitGroup
 
 	ended chan bool
 
@@ -208,7 +208,7 @@ func createPL(msg *pmessage) *permission_list {
 				gamer_permission_list:    make(map[uuid.UUID]*user),
 				gamer_permission_signout: make(chan *permission_socket),
 
-				bot: make(chan bool),
+				bot: make(chan *sync.WaitGroup),
 
 				ended: make(chan bool),
 
@@ -285,7 +285,7 @@ func (pl *permission_list) run() {
 			printAllMatchUserWS()
 			continue
 
-		case <-pl.bot:
+		case wg := <-pl.bot:
 			not_assigned := true
 			var random_number uuid.UUID
 			for not_assigned {
@@ -321,6 +321,7 @@ func (pl *permission_list) run() {
 				}
 			}
 
+			wg.Done()
 			fmt.Println("should call before createMatch2")
 
 		case <-pl.ended:

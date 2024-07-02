@@ -50,7 +50,7 @@ function anime() {
     }
 
     if(phase=="CHARACTER SELECTION") {
-        drawTurn()
+        drawPhase()
         drawLog()
     } else if (match_data.length > 0) {
         drawPos()
@@ -379,6 +379,16 @@ function drawState() {
         }
     }
 
+}
+
+function drawPhase() {
+    ctx.textAlign = "center";
+    ctx.fillStyle = 'black';
+    ctx.fillRect(c.width/2,10,ctx.measureText(phase).width,ctx.measureText('M').width);
+
+    ctx.fillStyle = 'white'
+    ctx.textAlign = "center";
+    ctx.fillText(phase,c.width/2, 20);
 }
 
 function drawTurn() {

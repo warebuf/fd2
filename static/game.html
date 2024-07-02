@@ -414,16 +414,13 @@
                 else if(msg.Event == 'update_phase') {
                     if (phase=="null") {
                         phase = msg.Phase
-                        if(phase="CHARACTER SELECTION") {
-                            console.log(document.getElementById("sel_but"))
+                        if(phase=="CHARACTER SELECTION") {
                             document.getElementById("sel_but").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
                         }
-                    } else {
-                        if(phase=="CHARACTER SELECTION") {
-                            var menu2 = document.getElementById("sel_but");
-                            menu2.remove();
-                        }
-                        phase_queue.push(msg.Phase)
+                    } else if(phase=="CHARACTER SELECTION") {
+                        var menu2 = document.getElementById("sel_but");
+                        menu2.remove();
+                        phase = msg.Phase
                     }
                 }
                 else if(msg.Event == 'game_state') {

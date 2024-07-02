@@ -165,7 +165,10 @@ func m_read(m *match_socket) {
 
 				m.m.char_sel_done[m.u.uid] = true
 				all_done := true
-				for _, j := range m.m.char_sel_done {
+				for i, j := range m.m.char_sel_done {
+
+					fmt.Println("a", i, j)
+
 					if j == false {
 						all_done = false
 						break

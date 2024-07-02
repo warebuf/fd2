@@ -651,6 +651,7 @@ func (m *match) run() {
 			m.phase = "TURN"
 			m.turn = "TURN 0"
 			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
+			msg2 := &message{Event: "update_phase", Phase: m.phase, MatchID: m.mid}
 
 			m.next_time = time.Now().Add(120 * time.Second)
 			m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
@@ -667,6 +668,7 @@ func (m *match) run() {
 					msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
 					select {
 					case j.incoming_message <- msg:
+						j.incoming_message <- msg2
 					}
 				}
 			}
@@ -676,6 +678,7 @@ func (m *match) run() {
 					msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
 					select {
 					case j.incoming_message <- msg:
+						j.incoming_message <- msg2
 					}
 				}
 			}

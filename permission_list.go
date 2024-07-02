@@ -22,7 +22,7 @@ type permission_list struct {
 	gamer_permission_list    map[uuid.UUID]*user
 	gamer_permission_signout chan *permission_socket
 
-	bot chan sync.WaitGroup
+	bot chan *sync.WaitGroup
 
 	ended chan bool
 
@@ -208,7 +208,7 @@ func createPL(msg *pmessage) *permission_list {
 				gamer_permission_list:    make(map[uuid.UUID]*user),
 				gamer_permission_signout: make(chan *permission_socket),
 
-				bot: make(chan sync.WaitGroup),
+				bot: make(chan *sync.WaitGroup),
 
 				ended: make(chan bool),
 

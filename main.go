@@ -846,7 +846,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 	plid, err2 := uuid.Parse(parsed[2])
 	pl, found := plid_to_permission_list.global[plid]
 	if !found || (err2 != nil) {
-		fmt.Println("could not find this MID")
+		fmt.Println("could not find this PLID")
 		http.Redirect(res, req, "/waitroom", http.StatusSeeOther)
 		return
 	}
@@ -906,9 +906,6 @@ func msocketHandler(res http.ResponseWriter, req *http.Request) {
 	requesting_user := uid_to_user.users[uid]
 	uid_to_user.mutex.RUnlock()
 
-	// check if the user is on the permission list
-	_, check_uid := plid_to_permission_list.global[mid].gamer_permission_list[uid]
-
 	// create a web socket connection
 	var upgrader = &websocket.Upgrader{ReadBufferSize: 1024, WriteBufferSize: 1024}
 	sock, err := upgrader.Upgrade(res, req, nil)
@@ -918,6 +915,8 @@ func msocketHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// check if the user is on the permission list
+	_, check_uid := plid_to_permission_list.global[mid].gamer_permission_list[uid]
 	if check_uid == false {
 		// this is where you add them to spectator mode, unless it is a private match, which is a feature far far far into the future
 		fmt.Println("UID cannot join! Not on permission list")

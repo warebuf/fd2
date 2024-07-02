@@ -262,29 +262,26 @@ func (pl *permission_list) run() {
 
 		case ws := <-pl.gamer_permission_signout: // leaving the waitroom for matchmaking
 
-			_, check_uid := pl.gamer_permission_list[ws.u.uid] // check if the user is in the match object
 			fmt.Println("gamer_permission_signout", ws.u.uid)
 
 			// if user is in the match object, delete all sockets as well
+			_, check_uid := pl.gamer_permission_list[ws.u.uid] // check if the user is in the match object
 			pl.mutex.Lock()
 			if check_uid == true {
 				delete(pl.gamer_permission_list, ws.u.uid)
 			}
 			pl.mutex.Unlock()
 
-			// if this is the first socket the user has left the room, send a message to everyone that he's joined
+			// send a message to everyone that he's left
 			if check_uid == true {
 				msg := &pmessage{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), PLID: pl.plid}
-				go func() {
-					pid_to_permissions.mutex.RLock()
-					for _, j := range pid_to_permissions.global {
-						j.incoming_message <- msg
-					}
-					pid_to_permissions.mutex.RUnlock()
-				}()
-			}
+				pid_to_permissions.mutex.RLock()
+				for _, j := range pid_to_permissions.global {
+					j.incoming_message <- msg
+				}
+				pid_to_permissions.mutex.RUnlock()
 
-			fmt.Println("a psocket has finished permission_signout")
+			}
 			printAllMatchUserWS()
 			continue
 

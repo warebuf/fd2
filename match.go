@@ -187,7 +187,7 @@ func createMatch(pl *permission_list) *match {
 	var ans *match
 
 	mid_to_match.mutex.RLock()
-	_, found := mid_to_match.match[pl.plid] // USE SAME PLID FOR MID
+	_, found := mid_to_match.match[pl.plid] // USE THE SAME PLID FOR MID
 	mid_to_match.mutex.RUnlock()
 	if !found {
 
@@ -202,7 +202,6 @@ func createMatch(pl *permission_list) *match {
 			ended:     false,
 
 			team_client_hero: make([][][]*hero, 0, 0),
-			//TCH_JSON:         make([][][]string, 0, 0),
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
 			broadcast:      make(chan *message),
@@ -234,19 +233,27 @@ func createMatch(pl *permission_list) *match {
 			simulate: make(chan bool),
 		}
 
-		// create each team
+		// add bots to gamer_uid_to_user
+		for _, j := range pl.spectator_uid_to_user {
+			if j.bot_status == true {
+				ans.bot_join <- j
+			}
+		}
+
+		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
+		// (1) creating each team
 		for i := 0; i < int(ans.sides); i++ {
 			ans.team_client_hero = append(ans.team_client_hero, make([][]*hero, 0))
 		}
 
-		// assign clients and heroes to each team
+		// (2) and (3) assigning clients and heroes to each team
 		team_int := 0
 		client_int := 0
 		for i, j := range pl.gamer_permission_list {
 
-			ans.char_sel_done[i] = false
+			ans.char_sel_done[i] = false // setting up a map of user to a boolean to check/track the state of all clients
 
-			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)}
+			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)} // assigning a pair of ints (team, pos in team) to each client
 			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))
 
 			for y := 0; y < 5; y++ {
@@ -510,61 +517,28 @@ func (m *match) run() {
 			//m.gamer_uid_to_msid_to_match_socket[u.uid] = make(map[uuid.UUID]*match_socket)
 			m.mutex.Unlock()
 
-			// send to all permission sockets that this bot has joined the permission list
-			msg1 := &pmessage{Name: u.email, Message: "participantJoinSuccess", Event: "participantJoinSuccess", When: time.Now(), PLID: m.mid}
-			pid_to_permissions.mutex.RLock()
-			for _, j := range pid_to_permissions.global {
-				j.incoming_message <- msg1
-			}
-			pid_to_permissions.mutex.RUnlock()
-
 			// send to all match sockets that the bot has entered the match
-			msg2 := &message{Name: u.email, Message: "x entered the match", Event: "entered", When: time.Now()}
+			msg := &message{Name: u.email, Event: "entered", When: time.Now()}
 			m.mutex.Lock()
-			m.message_logs = append(m.message_logs, msg2)
+			m.message_logs = append(m.message_logs, msg)
 			m.mutex.Unlock()
-			fmt.Println("sending:", msg2)
+			fmt.Println("sending:", msg)
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
-					case j.incoming_message <- msg2:
+					case j.incoming_message <- msg:
 					}
 				}
 			}
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					select {
-					case j.incoming_message <- msg2:
+					case j.incoming_message <- msg:
 					}
 				}
 			}
 			fmt.Println("bot has joined the game")
 
-			// check if everyone is set up to begin the game countdown
-			if len(m.gamer_uid_to_user) == int(m.capacity) {
-				allset := true
-				for i, j := range m.gamer_uid_to_msid_to_match_socket {
-					if uid_to_user.users[i].bot_status == true {
-
-					} else {
-						for _, l := range j {
-							if (l.user_time == time.Time{}) {
-								allset = false
-								break
-							}
-						}
-					}
-					if allset == false {
-						break
-					}
-				}
-				if allset == true && m.ended == false {
-					fmt.Println("started gamecountdown from bot join")
-					m.char_sel_ticker <- true
-				}
-			}
-
-			fmt.Println("added a bot")
 			continue
 
 		case u := <-m.bot_leave:
@@ -574,11 +548,22 @@ func (m *match) run() {
 			//delete(m.gamer_uid_to_msid_to_match_socket, u.uid)
 			m.mutex.Unlock()
 
-			go func(m *match, email string) {
-				msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
-				m.broadcast <- msg
-				fmt.Println("bot has left the game")
-			}(m, u.email)
+			msg := &message{Name: u.email, Event: "left", When: time.Now()}
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- msg:
+					}
+				}
+			}
+			fmt.Println("bot has left the game")
 
 			fmt.Println("removed a bot")
 			continue
@@ -641,7 +626,6 @@ func (m *match) run() {
 					select {
 					case j.incoming_message <- msg:
 						j.incoming_message <- msg2
-						fmt.Println("DOING THIS")
 					}
 				}
 			}
@@ -694,7 +678,7 @@ func (m *match) run() {
 
 			continue
 
-		case msg := <-m.broadcast: // forward message to all clients
+		case msg := <-m.broadcast: // TODO: I would get rid of this, replace it with a function roomBroadcast
 
 			m.mutex.Lock()
 			m.message_logs = append(m.message_logs, msg)

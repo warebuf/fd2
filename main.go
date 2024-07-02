@@ -864,9 +864,9 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		// if there is space left in the permission_list, then add bots to remaining positions
 		var wg sync.WaitGroup
 		for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
-			fmt.Println("should call before createMatch1.1")
+			fmt.Println("should call before createMatch1.1", wg)
 			wg.Add(1)
-			fmt.Println("should call before createMatch1.2")
+			fmt.Println("should call before createMatch1.2", wg)
 			pl.bot <- wg
 		}
 

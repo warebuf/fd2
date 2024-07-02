@@ -321,6 +321,8 @@ func (pl *permission_list) run() {
 				}
 			}
 
+			fmt.Println("should call before createMatch2")
+
 		case <-pl.ended:
 			delete(mid_to_match.match, pl.plid)
 			psocketBroadcast(&pmessage{Event: "removeMatch", Message: pl.plid.String()})

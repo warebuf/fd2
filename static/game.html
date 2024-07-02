@@ -423,6 +423,9 @@
                         phase = msg.Phase
                     }
                 }
+                else if(msg.Event == 'sel_finished') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has finished choosing their units.')
+                }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")
 

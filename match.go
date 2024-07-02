@@ -168,7 +168,29 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "endCharSel" {
 				fmt.Println("recieved endCharSel")
 
-				m.m.char_sel_done[m.u.uid] = true
+				if m.m.char_sel_done[m.u.uid] == false {
+					m.m.char_sel_done[m.u.uid] = true
+					msg := &message{Event: "sel_finished", Name: m.u.email, Message: m.m.uuid_to_team_int[m.u.uid].ab, When: time.Now(), MatchID: m.m.mid}
+					m.mutex.Lock()
+					m.m.message_logs = append(m.m.message_logs, msg)
+					m.mutex.Unlock()
+					for _, i := range m.m.gamer_uid_to_msid_to_match_socket {
+						for _, j := range i {
+							select {
+							case j.incoming_message <- msg:
+							}
+						}
+					}
+
+					for _, i := range m.m.spectator_uid_to_msid_to_match_socket {
+						for _, j := range i {
+							select {
+							case j.incoming_message <- msg:
+							}
+						}
+					}
+				}
+
 				all_done := true
 				for i, j := range m.m.char_sel_done {
 
@@ -520,7 +542,6 @@ func (m *match) run() {
 			// if empty now, delete match, clear all users and global variables of objects related to this match
 			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
 				delete(mid_to_match.match, m.mid)
-				//permissionlistBroadcast(&pmessage{Event: "removeMatch", Message: m.mid.String()}) // let everyone know there is a new room
 				plid_to_permission_list.global[m.mid].ended <- true
 				break
 			} else {

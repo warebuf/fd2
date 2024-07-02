@@ -162,6 +162,7 @@ func m_read(m *match_socket) {
 				m.incoming_message <- msg2
 
 			} else if msg.Event == "endCharSel" {
+				fmt.Println("recieved endCharSel")
 
 				m.m.char_sel_done[m.u.uid] = true
 				all_done := true

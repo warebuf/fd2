@@ -255,6 +255,9 @@ func createMatch(pl *permission_list) *match {
 		// (2) and (3) assigning clients and heroes to each team
 		team_int := 0
 		client_int := 0
+
+		fmt.Println(pl.gamer_permission_list)
+
 		for i, j := range pl.gamer_permission_list {
 
 			ans.char_sel_done[i] = false // setting up a map of user to a boolean to check/track the state of all clients

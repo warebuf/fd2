@@ -260,7 +260,11 @@ func createMatch(pl *permission_list) *match {
 
 		for i, j := range pl.gamer_permission_list {
 
-			ans.char_sel_done[i] = false // setting up a map of user to a boolean to check/track the state of all clients
+			if j.bot_status == false {
+				ans.char_sel_done[i] = false // setting up a map of user to a boolean to check/track the state of all clients
+			} else {
+				ans.char_sel_done[i] = true
+			}
 
 			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)} // assigning a pair of ints (team, pos in team) to each client
 			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))

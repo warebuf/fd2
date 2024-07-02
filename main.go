@@ -862,6 +862,9 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 
 	if pl.started == false {
 		// if there is space left in the permission_list, then add bots to remaining positions
+
+		fmt.Println(len(pl.gamer_permission_list), int(pl.capacity), "12321321321")
+
 		for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
 			pl.bot <- true
 		}

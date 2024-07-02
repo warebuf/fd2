@@ -256,7 +256,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		fmt.Println(pl.gamer_permission_list)
+		fmt.Println("b", pl.gamer_permission_list)
 
 		for i, j := range pl.gamer_permission_list {
 

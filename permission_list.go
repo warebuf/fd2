@@ -323,6 +323,7 @@ func (pl *permission_list) run() {
 			wg.Done()
 
 		case <-pl.ended:
+			fmt.Println("<-pl.ended")
 			delete(mid_to_match.match, pl.plid)
 			psocketBroadcast(&pmessage{Event: "removeMatch", Message: pl.plid.String()})
 		}

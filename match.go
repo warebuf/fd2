@@ -160,7 +160,7 @@ func m_read(m *match_socket) {
 				m.incoming_message <- msg
 				msg2 := &message{Event: "update_phase", Phase: m.m.phase, MatchID: m.m.mid}
 				m.incoming_message <- msg2
-				
+
 				if m.m.phase == "TURN" {
 					m.m.sharepos(nil)
 				}
@@ -521,6 +521,7 @@ func (m *match) run() {
 			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
 				delete(mid_to_match.match, m.mid)
 				//permissionlistBroadcast(&pmessage{Event: "removeMatch", Message: m.mid.String()}) // let everyone know there is a new room
+				plid_to_permission_list.global[m.mid].ended <- true
 				break
 			} else {
 				printAllMatchUserWS()

@@ -158,6 +158,8 @@ func m_read(m *match_socket) {
 				msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.m.mid}
 				msg.Message = m.m.next_time.Add(m.user_time.Sub(m.system_time)).UTC().String()
 				m.incoming_message <- msg
+				msg2 := &message{Event: "update_phase", Phase: m.m.phase, MatchID: m.m.mid}
+				m.incoming_message <- msg2
 
 			} else if msg.Event == "endCharSel" {
 

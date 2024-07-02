@@ -866,7 +866,9 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		var wg *sync.WaitGroup
 
 		for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
+			fmt.Println("should call before createMatch1.1")
 			wg.Add(1)
+			fmt.Println("should call before createMatch1.2")
 			pl.bot <- wg
 		}
 

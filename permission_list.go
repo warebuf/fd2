@@ -320,9 +320,9 @@ func (pl *permission_list) run() {
 					pid_to_permissions.mutex.RUnlock()
 				}
 			}
-
+			fmt.Println("should call before createMatch2.1")
 			wg.Done()
-			fmt.Println("should call before createMatch2")
+			fmt.Println("should call before createMatch2.2")
 
 		case <-pl.ended:
 			delete(mid_to_match.match, pl.plid)

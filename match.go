@@ -160,6 +160,10 @@ func m_read(m *match_socket) {
 				m.incoming_message <- msg
 				msg2 := &message{Event: "update_phase", Phase: m.m.phase, MatchID: m.m.mid}
 				m.incoming_message <- msg2
+				
+				if m.m.phase == "TURN" {
+					m.m.sharepos(nil)
+				}
 
 			} else if msg.Event == "endCharSel" {
 				fmt.Println("recieved endCharSel")

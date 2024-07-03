@@ -598,6 +598,12 @@ function drawStarters() {
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+        ctx.fillRect(25 + x_offset_2, y1+83, ctx.measureText("STARTERS (LEFT ARM)").width, 1);
+        ctx.fillText("STARTERS (LEFT ARM)",70 + x_offset_2, y1+ 80 );
+
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
         ctx.textAlign = "left";
 
         for(let i = 0; i < state[my_team][my_int].length; i++) {

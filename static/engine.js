@@ -590,7 +590,7 @@ function drawStarters() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(30, y1+80, ctx.measureText("STARTER HEADS").width, 1);
+        ctx.fillRect(30, y1+85, ctx.measureText("STARTER HEADS").width, 1);
         ctx.fillText("STARTER HEADS",70, y1+ 80 );
 
         ctx.font = '11px monospace';

@@ -600,7 +600,7 @@ function drawBench() {
 
                 ctx.textAlign = "left";
                 ctx.fillStyle = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
-                ctx.fillRect(50,100 + (60*i)+(j*700),ctx.measureText("EYE OF GOD").width,ctx.measureText('M').width);
+                ctx.fillRect(50,90 + (60*i)+(j*700),ctx.measureText("EYE OF GOD").width,ctx.measureText('M').width);
 
                 x = 50
                 ctx.font = '11px monospace';

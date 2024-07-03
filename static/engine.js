@@ -635,6 +635,13 @@ function drawStarters() {
             ctx.fillRect(175 + x_offset_4,90 + (60*i), 5, 1);
             ctx.fillRect(175 + x_offset_4,90 + 55 + (60*i), 5, 1);
 
+            // printing number
+            ctx.font = '11px monospace';
+            ctx.fillStyle = 'white';
+            ctx.textAlign = "left";
+            ctx.fillText(i, x_offset-30,90 + 78 + (60*i));
+
+
             // HEAD STARTERS
             s   = state[my_team][my_int][i].H.SERIAL.toString()
             for (let k = s.length; k < 7; k++) {

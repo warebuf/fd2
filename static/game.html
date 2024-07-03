@@ -434,58 +434,73 @@
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")
 
-                    turn_queue.push(msg.Turn)
-
-                    // turn the JSON into javascript objects
-                    let temp = msg.TCH;
-                    let md = [];
-                    for (i = 0; i < temp.length; i++) {
-                        md[i] = new Array();
-                        for (j = 0; j < temp[i].length; j++) {
-                            md[i][j] = new Array();
-                            for (k = 0; k < temp[i][j].length; k++ ){
-                                md[i][j][k] = JSON.parse(temp[i][j][k]);
+                    if(phase=="CHARACTER SELECTION") {
+                        let temp = msg.TCH;
+                        let md = [];
+                        for (i = 0; i < temp.length; i++) {
+                            md[i] = new Array();
+                            for (j = 0; j < temp[i].length; j++) {
+                                md[i][j] = new Array();
+                                for (k = 0; k < temp[i][j].length; k++ ){
+                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
+                                }
                             }
                         }
-                    }
-                    // if this is the first game_state received, init all global variables
-                    all_up_to_date = false
-                    pos_up_to_date = false
-                    act_up_to_date = false
-
-                    if(animating_state == -1) {
-                        let temp_string = msg.Message.split(";")
-                        my_team = parseInt(temp_string[0])
-                        my_int = parseInt(temp_string[1])
-                        indexer_t = my_team
-                        indexer_u = my_int
-                        state = md;
-                        animating_state = 0
-                    }
-
-                    match_data.push(md)
-                    //printAllMatchData(match_data)
-                    //console.log(match_data)
-
-                    console.log("atk_data",msg.Atk)
-                    if(msg.Atk == null) {
-                        atk_data.push([])
+                        state = md
                     } else {
-                        atk_data.push(msg.Atk)
-                        /*
-                        weights = msg.Atk[0].attacker[0].split(';')
-                        sum = Number(weights[2])+Number(weights[3])+Number(weights[4])+Number(weights[5])
-                        partper = weights[0]+weights[1]
-                        hweight = Math.round(100*Number(weights[2])/sum).toString() + '%'
-                        lweight = Math.round(100*Number(weights[3])/sum).toString() + '%'
-                        rweight = Math.round(100*Number(weights[4])/sum).toString() + '%'
-                        bweight = Math.round(100*Number(weights[5])/sum).toString() + '%'
+                        turn_queue.push(msg.Turn)
 
-                        let s = msg.Attacker[0] + ',' + msg.Attacker[1] + ',' + msg.Attacker[2] + ' attacked '
-                            +msg.Defender[0][0] + ',' + msg.Defender[0][1] + ',' +msg.Defender[0][2] + ' '
-                            +partper +' (H'+hweight+' L'+lweight+' R'+rweight+' B'+bweight+')'
-                         */
+                        // turn the JSON into javascript objects
+                        let temp = msg.TCH;
+                        let md = [];
+                        for (i = 0; i < temp.length; i++) {
+                            md[i] = new Array();
+                            for (j = 0; j < temp[i].length; j++) {
+                                md[i][j] = new Array();
+                                for (k = 0; k < temp[i][j].length; k++ ){
+                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
+                                }
+                            }
+                        }
+                        // if this is the first game_state received, init all global variables
+                        all_up_to_date = false
+                        pos_up_to_date = false
+                        act_up_to_date = false
+
+                        if(animating_state == -1) {
+                            let temp_string = msg.Message.split(";")
+                            my_team = parseInt(temp_string[0])
+                            my_int = parseInt(temp_string[1])
+                            indexer_t = my_team
+                            indexer_u = my_int
+                            state = md;
+                            animating_state = 0
+                        }
+
+                        match_data.push(md)
+
+                        console.log("atk_data",msg.Atk)
+                        if(msg.Atk == null) {
+                            atk_data.push([])
+                        } else {
+                            atk_data.push(msg.Atk)
+                            /*
+                            weights = msg.Atk[0].attacker[0].split(';')
+                            sum = Number(weights[2])+Number(weights[3])+Number(weights[4])+Number(weights[5])
+                            partper = weights[0]+weights[1]
+                            hweight = Math.round(100*Number(weights[2])/sum).toString() + '%'
+                            lweight = Math.round(100*Number(weights[3])/sum).toString() + '%'
+                            rweight = Math.round(100*Number(weights[4])/sum).toString() + '%'
+                            bweight = Math.round(100*Number(weights[5])/sum).toString() + '%'
+
+                            let s = msg.Attacker[0] + ',' + msg.Attacker[1] + ',' + msg.Attacker[2] + ' attacked '
+                                +msg.Defender[0][0] + ',' + msg.Defender[0][1] + ',' +msg.Defender[0][2] + ' '
+                                +partper +' (H'+hweight+' L'+lweight+' R'+rweight+' B'+bweight+')'
+                             */
+                        }
                     }
+
+
 
                 }
                 else if(msg.Event == 'game_over') {

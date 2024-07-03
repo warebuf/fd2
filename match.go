@@ -391,7 +391,7 @@ func createMatch(pl *permission_list) *match {
 
 			names := []string{
 				"EYE OF GOD", "TERRACOTTA PINCER", "GNOCCHI GUCCI", "OOGLY GOOGLY", "LEFT HAND FREE", "SENT TO HELL", "ULTRA MIAMI BLASTER",
-				"PEANUT BUTTER SOCKS", "OOGA BOOGA", "JUNK WARRIOR", "BLUE EYES WHITE DRAGON", "PIKACHU", "FINN", "MEGAN FOX",
+				"PEANUT BUTTER SOCKS", "OOGA BOOGA", "JUNK WARRIOR", "BLUE EYES WHITE DRAGON", "PIKACHU", "FINN", "MEGAN FOX", "MUMEN RIDER",
 			}
 
 			ans.benchH[ans.uuid_to_team_int[i].ab] = make([]*head, 0)

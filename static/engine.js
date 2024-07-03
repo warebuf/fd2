@@ -609,12 +609,14 @@ function drawBench() {
                         parseInt(bench[key][i]["CLU"])
                     ) / 8)
 
+
+            let x = 50
+            let y1 = 400
+
                 ctx.textAlign = "left";
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(50,94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+                ctx.fillRect(z,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
-                let x = 50
-                let y1 = 500
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(s,x*0, y1+ 100 + (60*i));

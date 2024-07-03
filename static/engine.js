@@ -825,6 +825,7 @@ function drawStarters() {
         }
     }
 }
+
 function drawBench() {
 
     if((bench!=null) && (my_team != -1) && (my_int != -1)) {
@@ -843,7 +844,6 @@ function drawBench() {
             DEF = "DEF: " + bench[key][i]["DEF"]
             ACC = "ACC: " + bench[key][i]["ACC"]
             CRT = "CRT: " + bench[key][i]["CRT"]
-            MOB = "MOB: " + bench[key][i]["MOB"]
             CD  = "CD:  " + bench[key][i]["CD"]
             CLU = "CLU: " + bench[key][i]["CLU"]
             W   = "Weight: " + bench[key][i]["Weight"]
@@ -854,10 +854,9 @@ function drawBench() {
                         parseInt(bench[key][i]["DEF"]) +
                         parseInt(bench[key][i]["ACC"]) +
                         parseInt(bench[key][i]["CRT"]) +
-                        parseInt(bench[key][i]["MOB"]) +
                         parseInt(bench[key][i]["CD"]) +
                         parseInt(bench[key][i]["CLU"])
-                    ) / 8)
+                    ) / 7)
 
 
 
@@ -874,9 +873,8 @@ function drawBench() {
             ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*i));
             ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*i));
             ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0 + x_offset, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
 

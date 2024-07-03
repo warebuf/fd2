@@ -588,15 +588,15 @@ function drawBench() {
             for (let i=0;i<bench[m].length;i++) {
                 s =
                     "s#: " + bench[m][i]["SERIAL"] +
-                    "HP: " + bench[m][i]["HP"] +
-                    "ATK: " + bench[m][i]["ATK"] +
-                    "DEF: " + bench[m][i]["DEF"] +
-                    "ACC: " + bench[m][i]["ACC"] +
-                    "CRT: " + bench[m][i]["CRT"] +
-                    "MOB: " + bench[m][i]["MOB"] +
-                    "CD: " + bench[m][i]["CD"] +
-                    "CLU: " + bench[m][i]["CLU"] +
-                    "Weight: " + bench[m][i]["Weight"]
+                    " HP: " + bench[m][i]["HP"] +
+                    " ATK: " + bench[m][i]["ATK"] +
+                    " DEF: " + bench[m][i]["DEF"] +
+                    " ACC: " + bench[m][i]["ACC"] +
+                    " CRT: " + bench[m][i]["CRT"] +
+                    " MOB: " + bench[m][i]["MOB"] +
+                    " CD: " + bench[m][i]["CD"] +
+                    " CLU: " + bench[m][i]["CLU"] +
+                    " Weight: " + bench[m][i]["Weight"]
 
                 ctx.fillText(s,0, 100 + (10*i)+(j*120));
             }

@@ -613,28 +613,40 @@ function drawBench() {
             let x = 50
             let y1 = 300
 
-                ctx.textAlign = "left";
-                ctx.fillStyle = 'blue';
-                ctx.fillRect(x,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
-                ctx.font = '11px monospace';
-                ctx.fillStyle = 'white';
-                ctx.fillText(s,x*0, y1+ 100 + (60*i));
-                ctx.fillText(name,x*1, y1+ 100 + (60*i));
-                ctx.fillText(HP,x*0, y1+ 110 + (60*i));
-                ctx.fillText(ATK,x*1, y1+ 110 + (60*i));
-                ctx.fillText(DEF,x*2, y1+ 110 + (60*i));
-                ctx.fillText(ACC,x*0, y1+ 120 + (60*i));
-                ctx.fillText(CRT,x*1, y1+ 120 + (60*i));
-                ctx.fillText(MOB,x*2, y1+ 120 + (60*i));
-                ctx.fillText(CD,x*0, y1+ 130 + (60*i));
-                ctx.fillText(CLU,x*1, y1+ 130 + (60*i));
-                ctx.fillText(W,x*0, y1+ 140 + (60*i));
-                ctx.fillText(AVG,x*2, y1+ 140 + (60*i));
+            ctx.font = '11px monospace';
+            ctx.fillStyle = 'white';
+            ctx.fillText(s,x*0, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1, y1+ 120 + (60*i));
+            ctx.fillText(MOB,x*2, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*0, y1+ 130 + (60*i));
+            ctx.fillText(CLU,x*1, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2, y1+ 140 + (60*i));
 
-            }
+            if(i == 4) {i = bench[key].length} // only show 5 parts
+        }
+
+        for(let i = 0; i<bench[key].length;i++){
+            let a = i * 50
+            let b = Math.floor(i/5)*20
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'green';
+            ctx.fillRect(a,b,5,5);
+        }
 
     }
+
+
 }
 
 function dashedLine(x1,y1,x2,y2,dashArr){

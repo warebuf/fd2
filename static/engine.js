@@ -597,16 +597,17 @@ function drawBench() {
                 CLU = "CLU: " + bench[m][i]["CLU"]
                 W   = "Weight: " + bench[m][i]["Weight"]
 
-                ctx.fillText(s,0, 100 + (10*i)+(j*120));
-                ctx.fillText(HP,10, 100 + (10*i)+(j*120));
-                ctx.fillText(ATK,20, 100 + (10*i)+(j*120));
-                ctx.fillText(DEF,30, 100 + (10*i)+(j*120));
-                ctx.fillText(ACC,40, 100 + (10*i)+(j*120));
-                ctx.fillText(CRT,50, 100 + (10*i)+(j*120));
-                ctx.fillText(MOB,60, 100 + (10*i)+(j*120));
-                ctx.fillText(CD,70, 100 + (10*i)+(j*120));
-                ctx.fillText(CLU,80, 100 + (10*i)+(j*120));
-                ctx.fillText(W,90, 100 + (10*i)+(j*120));
+                x = 0
+                ctx.fillText(s,x*0, 100 + (10*i)+(j*120));
+                ctx.fillText(HP,x*1, 100 + (10*i)+(j*120));
+                ctx.fillText(ATK,x*2, 100 + (10*i)+(j*120));
+                ctx.fillText(DEF,x*3, 100 + (10*i)+(j*120));
+                ctx.fillText(ACC,x*4, 100 + (10*i)+(j*120));
+                ctx.fillText(CRT,x*5, 100 + (10*i)+(j*120));
+                ctx.fillText(MOB,x*6, 100 + (10*i)+(j*120));
+                ctx.fillText(CD,x*7, 100 + (10*i)+(j*120));
+                ctx.fillText(CLU,x*8, 100 + (10*i)+(j*120));
+                ctx.fillText(W,x*9, 100 + (10*i)+(j*120));
 
 
             }

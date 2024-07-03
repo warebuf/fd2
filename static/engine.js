@@ -837,8 +837,8 @@ function drawBench() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(90 + x_offset, y1 + 70, ctx.measureText("BENCH (HEAD)").width, 1);
-        ctx.fillText("BENCH (HEAD)",90 + x_offset, y1 + 70);
+        ctx.fillRect(50 + x_offset, y1 + 70, ctx.measureText("BENCH (HEAD)").width, 1);
+        ctx.fillText("BENCH (HEAD)",80 + x_offset, y1 + 70);
 
 
         let key = my_team + ';' + my_int

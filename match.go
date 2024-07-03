@@ -701,9 +701,7 @@ func (m *match) run() {
 
 			if m.phase == "CHARACTER SELECTION" {
 				m.start_ticker <- true
-			} else if m.turn[0:4] == "TURN" {
-				num, _ := strconv.Atoi(m.turn[5:])
-				m.turn = "TURN " + strconv.Itoa(num+1)
+			} else if m.phase == "TURN" {
 
 				msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 

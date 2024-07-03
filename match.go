@@ -452,6 +452,8 @@ func createMatch(pl *permission_list) *match {
 					CRT:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
+					SPD:         rand.Intn(99) + 1,
+					DOG:         rand.Intn(99) + 1,
 					Use_current: rand.Intn(99) + 1,
 					Use_outof:   rand.Intn(99) + 1,
 					Weight:      rand.Intn(99) + 1,

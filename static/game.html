@@ -359,6 +359,8 @@
     // the board state
     var state = []
 
+    var bench = null
+
     // datasets
     var match_data = new Array();
     var atk_data = new Array();
@@ -410,6 +412,9 @@
                 }
                 else if(msg.Event == 'ticker_start') {
                     sent_time = Date.parse(msg.Message)
+                }
+                else if(msg.Event == 'bench'){
+                    bench = json.parse(msg.Message)
                 }
                 else if(msg.Event == 'update_phase') {
                     if (phase=="null") {

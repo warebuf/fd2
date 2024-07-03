@@ -52,6 +52,7 @@ function anime() {
     if(phase=="CHARACTER SELECTION") {
         drawPhase()
         drawLog()
+        drawBench()
     } else if (match_data.length > 0) {
         drawPos()
         drawState()
@@ -578,6 +579,15 @@ function drawLog() {
     }
 }
 
+function drawBench() {
+    ctx.font = '11px monospace';
+    ctx.fillStyle = 'white';
+    if(bench!=null) {
+        for(i=0;i<bench.length;i++){
+            ctx.fillText(bench[i],0, 200 + (10*i));
+        }
+    }
+}
 
 function dashedLine(x1,y1,x2,y2,dashArr){
     // get the normalised line vector from start to end

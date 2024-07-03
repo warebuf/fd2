@@ -582,16 +582,19 @@ function drawLog() {
 
 function drawStarters() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
+
 
         let x = 60
         let y1 = 0
 
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
         ctx.fillRect(70, y1+80, ctx.measureText("STARTER HEADS"), 2);
         ctx.fillText("STARTER HEADS",70, y1+ 80 );
 
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
         ctx.textAlign = "left";
 
         for(let i = 0; i < state[my_team][my_int].length; i++) {

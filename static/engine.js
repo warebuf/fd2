@@ -596,7 +596,7 @@ function drawBench() {
                 CD  = "CD: " + bench[m][i]["CD"]
                 CLU = "CLU: " + bench[m][i]["CLU"]
                 W   = "Weight: " + bench[m][i]["Weight"]
-                TOT = "TOT: " + (parseInt(bench[m][i]["HP"])+parseInt(bench[m][i]["ATK"]) +parseInt(bench[m][i]["DEF"]) +
+                AVG = "AVG: " + Math.floor(parseInt(bench[m][i]["HP"])+parseInt(bench[m][i]["ATK"]) +parseInt(bench[m][i]["DEF"]) +
                     parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 9
 
                 x = 50
@@ -611,7 +611,7 @@ function drawBench() {
                 ctx.fillText(CD,x*0, 130 + (60*i)+(j*220));
                 ctx.fillText(CLU,x*1, 130 + (60*i)+(j*220));
                 ctx.fillText(W,x*0, 140 + (60*i)+(j*220));
-                ctx.fillText(TOT,x*2, 140 + (60*i)+(j*220));
+                ctx.fillText(AVG,x*2, 140 + (60*i)+(j*220));
 
             }
             j=j+1

@@ -600,18 +600,18 @@ function drawBench() {
                     parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 9)
 
                 x = 50
-                ctx.fillText("H00000",x*0, 100 + (60*i)+(j*220));
+                ctx.fillText("H000000",x*0, 100 + (60*i)+(j*220));
                 ctx.fillText("EYE OF GOD",x*1, 100 + (60*i)+(j*220));
-                ctx.fillText(HP,x*0, 110 + (60*i)+(j*220));
-                ctx.fillText(ATK,x*1, 110 + (60*i)+(j*220));
-                ctx.fillText(DEF,x*2, 110 + (60*i)+(j*220));
-                ctx.fillText(ACC,x*0, 120 + (60*i)+(j*220));
-                ctx.fillText(CRT,x*1, 120 + (60*i)+(j*220));
-                ctx.fillText(MOB,x*2, 120 + (60*i)+(j*220));
-                ctx.fillText(CD,x*0, 130 + (60*i)+(j*220));
-                ctx.fillText(CLU,x*1, 130 + (60*i)+(j*220));
-                ctx.fillText(W,x*0, 140 + (60*i)+(j*220));
-                ctx.fillText(AVG,x*2, 140 + (60*i)+(j*220));
+                ctx.fillText(HP,x*0, 110 + (60*i)+(j*500));
+                ctx.fillText(ATK,x*1, 110 + (60*i)+(j*500));
+                ctx.fillText(DEF,x*2, 110 + (60*i)+(j*500));
+                ctx.fillText(ACC,x*0, 120 + (60*i)+(j*500));
+                ctx.fillText(CRT,x*1, 120 + (60*i)+(j*500));
+                ctx.fillText(MOB,x*2, 120 + (60*i)+(j*500));
+                ctx.fillText(CD,x*0, 130 + (60*i)+(j*500));
+                ctx.fillText(CLU,x*1, 130 + (60*i)+(j*500));
+                ctx.fillText(W,x*0, 140 + (60*i)+(j*500));
+                ctx.fillText(AVG,x*2, 140 + (60*i)+(j*500));
 
             }
             j=j+1

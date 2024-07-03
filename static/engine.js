@@ -708,7 +708,7 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';
-            ctx.fillRect(80+ a + x_offset,750+b,3,3);
+            ctx.fillRect(70 + a + x_offset,800+b,3,3);
         }
 
         if(h_index + 5 < bench[key].length) {

@@ -414,7 +414,7 @@
                     sent_time = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'bench'){
-                    bench = json.parse(msg.Message)
+                    bench = JSON.parse(msg.Message)
                 }
                 else if(msg.Event == 'update_phase') {
                     if (phase=="null") {

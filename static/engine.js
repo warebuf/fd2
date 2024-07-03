@@ -596,6 +596,7 @@ function drawBench() {
                 CD  = "CD: " + bench[m][i]["CD"]
                 CLU = "CLU: " + bench[m][i]["CLU"]
                 W   = "Weight: " + bench[m][i]["Weight"]
+                TOT = bench[m][i]["HP"]+bench[m][i]["ATK"] +bench[m][i]["DEF"] +bench[m][i]["ACC"] +bench[m][i]["CRT"] +bench[m][i]["MOB"] +bench[m][i]["CD"] +bench[m][i]["CLU"]
 
                 x = 50
                 ctx.fillText("H00000",x*0, 100 + (60*i)+(j*220));
@@ -609,7 +610,7 @@ function drawBench() {
                 ctx.fillText(CD,x*0, 130 + (60*i)+(j*220));
                 ctx.fillText(CLU,x*1, 130 + (60*i)+(j*220));
                 ctx.fillText(W,x*0, 140 + (60*i)+(j*220));
-
+                ctx.fillText(TOT,x*2, 140 + (60*i)+(j*220));
 
             }
             j=j+1

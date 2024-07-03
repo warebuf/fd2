@@ -597,7 +597,7 @@ function drawBench() {
                 CLU = "CLU: " + bench[m][i]["CLU"]
                 W   = "Weight: " + bench[m][i]["Weight"]
 
-                x = 0
+                x = 25
                 ctx.fillText(s,x*0, 100 + (10*i)+(j*120));
                 ctx.fillText(HP,x*1, 100 + (10*i)+(j*120));
                 ctx.fillText(ATK,x*2, 100 + (10*i)+(j*120));

@@ -598,7 +598,7 @@ function drawStarters() {
             MOB = "MOB: " + state[my_team][my_int][i].H.MOB
             CD  = "CD:  " + state[my_team][my_int][i].H.CD
             CLU = "CLU: " + state[my_team][my_int][i].H.CLU
-            W   = "Weight: " + state[my_team][my_int][i].H.W
+            W   = "Weight: " + state[my_team][my_int][i].H.Weight
             AVG = "AVG: " +
                 Math.floor(
                     (parseInt(state[my_team][my_int][i].H.HP)+
@@ -611,7 +611,7 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].H.CLU)
                     ) / 8)
 
-            let x = 0
+            let x = 50
             let y1 = 0
 
             ctx.textAlign = "left";

@@ -612,7 +612,7 @@ function drawStarters() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(30 + x_offset_4, y1+83, ctx.measureText("STARTERS (BOTTOM)").width, 1);
+        ctx.fillRect(35 + x_offset_4, y1+83, ctx.measureText("STARTERS (BOTTOM)").width, 1);
         ctx.fillText("STARTERS (BOTTOM)",85 + x_offset_4, y1+ 80 );
 
         ctx.font = '11px monospace';
@@ -683,9 +683,8 @@ function drawStarters() {
             ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*i));
             ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*i));
             ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0 + x_offset, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
 
@@ -730,9 +729,8 @@ function drawStarters() {
             ctx.fillText(DEF,x*2 + x_offset_2, y1+ 110 + (60*i));
             ctx.fillText(ACC,x*0 + x_offset_2, y1+ 120 + (60*i));
             ctx.fillText(CRT,x*1 + x_offset_2, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2 + x_offset_2, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0 + x_offset_2, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1 + x_offset_2, y1+ 130 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset_2, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*i));
 
@@ -777,9 +775,8 @@ function drawStarters() {
             ctx.fillText(DEF,x*2 + x_offset_3, y1+ 110 + (60*i));
             ctx.fillText(ACC,x*0 + x_offset_3, y1+ 120 + (60*i));
             ctx.fillText(CRT,x*1 + x_offset_3, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2 + x_offset_3, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0 + x_offset_3, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1 + x_offset_3, y1+ 130 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset_3, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset_3, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset_3, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset_3, y1+ 140 + (60*i));
 
@@ -798,6 +795,8 @@ function drawStarters() {
             MOB = "MOB: " + state[my_team][my_int][i].B.MOB
             CD  = "CD:  " + state[my_team][my_int][i].B.CD
             CLU = "CLU: " + state[my_team][my_int][i].B.CLU
+            CD  = "SPD:  " + state[my_team][my_int][i].B.SPD
+            CLU = "DOG: " + state[my_team][my_int][i].B.DOG
             W   = "Weight: " + state[my_team][my_int][i].B.Weight
             AVG = "AVG: " +
                 Math.floor(
@@ -824,9 +823,10 @@ function drawStarters() {
             ctx.fillText(DEF,x*2 + x_offset_4, y1+ 110 + (60*i));
             ctx.fillText(ACC,x*0 + x_offset_4, y1+ 120 + (60*i));
             ctx.fillText(CRT,x*1 + x_offset_4, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2 + x_offset_4, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0 + x_offset_4, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1 + x_offset_4, y1+ 130 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset_4, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset_4, y1+ 130 + (60*i));
+            ctx.fillText(SPD,x*1 + x_offset_4, y1+ 130 + (60*i));
+            ctx.fillText(DOG,x*2 + x_offset_4, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset_4, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset_4, y1+ 140 + (60*i));
 

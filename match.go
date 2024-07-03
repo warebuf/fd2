@@ -316,7 +316,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
-					MOB:         0,
 					CD:          0,
 					CLU:         0,
 					Use_current: 0,
@@ -333,7 +332,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
-					MOB:         0,
 					CD:          0,
 					CLU:         0,
 					Use_current: 0,
@@ -350,7 +348,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
-					MOB:         0,
 					CD:          0,
 					CLU:         0,
 					Use_current: 0,
@@ -366,7 +363,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
-					MOB:         0,
 					CD:          0,
 					CLU:         0,
 					Use_current: 0,
@@ -375,9 +371,6 @@ func createMatch(pl *permission_list) *match {
 
 					DOG: 0,
 					SPD: rand.Intn(10) * 10,
-					ACL: 0,
-					ANT: 0,
-					END: 0,
 				}
 				temp := &hero{
 					Bot:       j.bot_status,
@@ -413,7 +406,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         rand.Intn(99) + 1,
 					ACC:         rand.Intn(99) + 1,
 					CRT:         rand.Intn(99) + 1,
-					MOB:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
 					Use_current: 0,
@@ -429,7 +421,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         rand.Intn(99) + 1,
 					ACC:         rand.Intn(99) + 1,
 					CRT:         rand.Intn(99) + 1,
-					MOB:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
 					Use_current: rand.Intn(99) + 1,
@@ -445,7 +436,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         rand.Intn(99) + 1,
 					ACC:         rand.Intn(99) + 1,
 					CRT:         rand.Intn(99) + 1,
-					MOB:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
 					Use_current: rand.Intn(99) + 1,
@@ -460,7 +450,6 @@ func createMatch(pl *permission_list) *match {
 					DEF:         rand.Intn(99) + 1,
 					ACC:         rand.Intn(99) + 1,
 					CRT:         rand.Intn(99) + 1,
-					MOB:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
 					Use_current: rand.Intn(99) + 1,
@@ -469,9 +458,6 @@ func createMatch(pl *permission_list) *match {
 
 					DOG: 0,
 					SPD: rand.Intn(10) * 10,
-					ACL: 0,
-					ANT: 0,
-					END: 0,
 				}
 
 				ans.benchH[ans.uuid_to_team_int[i].ab] = append(ans.benchH[ans.uuid_to_team_int[i].ab], h)

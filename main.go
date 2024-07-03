@@ -91,7 +91,6 @@ type head struct {
 	DEF         int
 	ACC         int
 	CRT         int
-	MOB         int
 	CD          int
 	CLU         int
 	Use_current int
@@ -109,7 +108,6 @@ type arm struct {
 	DEF         int
 	ACC         int
 	CRT         int
-	MOB         int
 	CD          int
 	CLU         int
 	Use_current int
@@ -125,7 +123,6 @@ type bottom struct {
 	DEF         int
 	ACC         int
 	CRT         int
-	MOB         int
 	CD          int
 	CLU         int
 	Use_current int
@@ -134,9 +131,6 @@ type bottom struct {
 
 	DOG int
 	SPD int
-	ACL int
-	ANT int
-	END int
 }
 
 // NOTE: FOR SOME REASON ONLY CONVERTS TO JSON IF CAPITALIZED

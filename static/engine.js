@@ -587,7 +587,7 @@ function drawStarters() {
         let x = 60
         let y1 = 0
         let x_offset = 25
-        let x_offset_2 = 200
+        let x_offset_2 = 250
 
 
         ctx.font = '11px monospace';
@@ -643,7 +643,7 @@ function drawStarters() {
             ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
-            
+
             s   = state[my_team][my_int][i].L.SERIAL
             name = state[my_team][my_int][i].L.NAME
             HP  = "HP:  " + state[my_team][my_int][i].L.HP

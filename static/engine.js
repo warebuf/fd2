@@ -599,15 +599,15 @@ function drawBench() {
 
                 x = 50
                 ctx.fillText(s,x*0, 100 + (20*i)+(j*120));
-                ctx.fillText(HP,x*1, 100 + (20*i)+(j*120));
-                ctx.fillText(ATK,x*2, 100 + (20*i)+(j*120));
-                ctx.fillText(DEF,x*3, 100 + (20*i)+(j*120));
-                ctx.fillText(ACC,x*4, 100 + (20*i)+(j*120));
-                ctx.fillText(CRT,x*5, 100 + (20*i)+(j*120));
-                ctx.fillText(MOB,x*6, 100 + (20*i)+(j*120));
-                ctx.fillText(CD,x*7, 100 + (20*i)+(j*120));
-                ctx.fillText(CLU,x*8, 100 + (20*i)+(j*120));
-                ctx.fillText(W,x*9, 100 + (20*i)+(j*120));
+                ctx.fillText(HP,x*0, 110 + (20*i)+(j*120));
+                ctx.fillText(ATK,x*1, 110 + (20*i)+(j*120));
+                ctx.fillText(DEF,x*2, 110 + (20*i)+(j*120));
+                ctx.fillText(ACC,x*0, 120 + (20*i)+(j*120));
+                ctx.fillText(CRT,x*1, 120 + (20*i)+(j*120));
+                ctx.fillText(MOB,x*2, 120 + (20*i)+(j*120));
+                ctx.fillText(CD,x*3, 130 + (20*i)+(j*120));
+                ctx.fillText(CLU,x*0, 130 + (20*i)+(j*120));
+                ctx.fillText(W,x*1, 130 + (20*i)+(j*120));
 
 
             }

@@ -170,6 +170,7 @@ func m_read(m *match_socket) {
 					m.m.sharepos(nil)
 				} else if m.m.phase == "CHARACTER SELECTION" {
 					m.m.sharebench()
+					m.m.sharepos(nil)
 				}
 
 			} else if msg.Event == "endCharSel" {
@@ -781,6 +782,7 @@ func (m *match) run() {
 			continue
 
 			m.sharebench()
+			m.sharepos(nil)
 
 		case <-m.start_ticker:
 			m.phase = "TURN"

@@ -400,9 +400,11 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			for y := 0; y < 10; y++ {
+
+				temp := rand.Intn(len(names))
 				h := &head{
-					SERIAL:      99,
-					NAME:        names[rand.Intn(len(names))],
+					SERIAL:      temp,
+					NAME:        names[temp],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
 					DEF:         rand.Intn(99) + 1,

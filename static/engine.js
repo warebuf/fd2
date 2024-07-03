@@ -612,7 +612,7 @@ function drawStarters() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(25 + x_offset_4, y1+83, ctx.measureText("STARTERS (BOTTOM)").width, 1);
+        ctx.fillRect(30 + x_offset_4, y1+83, ctx.measureText("STARTERS (BOTTOM)").width, 1);
         ctx.fillText("STARTERS (BOTTOM)",85 + x_offset_4, y1+ 80 );
 
         ctx.font = '11px monospace';
@@ -832,7 +832,7 @@ function drawBench() {
 
         let x = 60
         let y1 = 350
-        let x_offset = 25
+        let x_offset = 75
 
         let key = my_team + ';' + my_int
 

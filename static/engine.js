@@ -627,7 +627,13 @@ function drawStarters() {
             ctx.fillRect(15,90 + (60*i), 1, 55);
             ctx.fillRect(15,90 + (60*i), 5, 1);
             ctx.fillRect(15,90 + 55 + (60*i), 5, 1);
+
             // right bracket
+            ctx.fillStyle = 'red';
+            ctx.textAlign = "left";
+            ctx.fillRect(15,x_offset_4 + (60*i), 1, 55);
+            ctx.fillRect(15,x_offset_4 + (60*i), 5, 1);
+            ctx.fillRect(15,x_offset_4 + 55 + (60*i), 5, 1);
 
             // HEAD STARTERS
             s   = state[my_team][my_int][i].H.SERIAL

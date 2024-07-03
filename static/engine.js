@@ -600,8 +600,8 @@ function drawBench() {
                     parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 9)
 
                 x = 50
-                ctx.fillText("H000000",x*0, 100 + (60*i)+(j*500)));
-                ctx.fillText("EYE OF GOD",x*1, 100 + (60*i)+(j*500)));
+                ctx.fillText("H000000",x*0, 100 + (60*i)+(j*500));
+                ctx.fillText("EYE OF GOD",x*1, 100 + (60*i)+(j*500));
                 ctx.fillText(HP,x*0, 110 + (60*i)+(j*500));
                 ctx.fillText(ATK,x*1, 110 + (60*i)+(j*500));
                 ctx.fillText(DEF,x*2, 110 + (60*i)+(j*500));

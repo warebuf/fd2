@@ -675,7 +675,7 @@ function drawBench() {
 
 
             let x = 60
-            let y1 = 300
+            let y1 = 350
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
@@ -712,13 +712,13 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▼",70, 700);
+            ctx.fillText("▼",70, y1+400);
         }
         if(h_index > 0) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",70, 500);
+            ctx.fillText("▲",70, y1+200);
         }
 
     }

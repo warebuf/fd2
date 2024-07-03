@@ -599,7 +599,7 @@ function drawBench() {
 
                 x = 50
                 ctx.fillText(s,x*0, 100 + (50*i)+(j*200));
-                ctx.fillText("EYE OF GOD",x*0, 100 + (50*i)+(j*200));
+                ctx.fillText("EYE OF GOD",x*1, 100 + (50*i)+(j*200));
                 ctx.fillText(HP,x*0, 110 + (50*i)+(j*200));
                 ctx.fillText(ATK,x*1, 110 + (50*i)+(j*200));
                 ctx.fillText(DEF,x*2, 110 + (50*i)+(j*200));

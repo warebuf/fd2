@@ -586,7 +586,7 @@ function drawBench() {
         for (let m in bench){
             for (let i=0;i<bench[m].length;i++) {
                 s   = "H000000"
-                name = "EYE OF GOD"
+                name = bench[m][i]["NAME"]
                 HP  = "HP:  " + bench[m][i]["HP"]
                 ATK = "ATK: " + bench[m][i]["ATK"]
                 DEF = "DEF: " + bench[m][i]["DEF"]

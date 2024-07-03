@@ -585,7 +585,8 @@ function drawStarters() {
         for(let i = 0; i < state[my_team][my_int].length; i++) {
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.fillText(state[my_team][my_int][i],0, 0 + (10*i));
+            ctx.textAlign = "left";
+            ctx.fillText(state[my_team][my_int][i]H.HP,0, 0 + (10*i));
         }
     }
 }

@@ -599,7 +599,7 @@ function drawBench() {
                     parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 9)
 
                 ctx.textAlign = "left";
-                ctx.fillStyle = 'rgb('+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+','+Math.floor(Math.random()*255)+')';
+                ctx.fillStyle = 'blue';
                 ctx.fillRect(50,95 + (60*i)+(j*700),ctx.measureText("EYE OF GOD").width,ctx.measureText('M').width);
 
                 x = 50

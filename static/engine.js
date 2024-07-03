@@ -587,6 +587,8 @@ function drawStarters() {
         let x = 60
         let y1 = 0
         let x_offset = 25
+        let x_offset_2 = 200
+
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
@@ -641,9 +643,7 @@ function drawStarters() {
             ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
-
-            x_offset = 200
-
+            
             s   = state[my_team][my_int][i].L.SERIAL
             name = state[my_team][my_int][i].L.NAME
             HP  = "HP:  " + state[my_team][my_int][i].L.HP
@@ -669,22 +669,22 @@ function drawStarters() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.fillRect(x + x_offset_2,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0 + x_offset, y1+ 100 + (60*i));
-            ctx.fillText(name,x*1 + x_offset, y1+ 100 + (60*i));
-            ctx.fillText(HP,x*0 + x_offset, y1+ 110 + (60*i));
-            ctx.fillText(ATK,x*1 + x_offset, y1+ 110 + (60*i));
-            ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*i));
-            ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2 + x_offset, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0 + x_offset, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
-            ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
-            ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
+            ctx.fillText(s,x*0 + x_offset_2, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1 + x_offset_2, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0 + x_offset_2, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1 + x_offset_2, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2 + x_offset_2, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(MOB,x*2 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*0 + x_offset_2, y1+ 130 + (60*i));
+            ctx.fillText(CLU,x*1 + x_offset_2, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*i));
         }
     }
 }

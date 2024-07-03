@@ -588,6 +588,7 @@ function drawStarters() {
         let y1 = 0
         let x_offset = 25
         let x_offset_2 = 250
+        let x_offset_3 = 475
 
 
         ctx.font = '11px monospace';
@@ -600,7 +601,13 @@ function drawStarters() {
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
         ctx.fillRect(25 + x_offset_2, y1+83, ctx.measureText("STARTERS (LEFT ARM)").width, 1);
-        ctx.fillText("STARTERS (LEFT ARM)",80 + x_offset_2, y1+ 80 );
+        ctx.fillText("STARTERS (LEFT ARM)",85 + x_offset_2, y1+ 80 );
+
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+        ctx.fillRect(25 + x_offset_3, y1+83, ctx.measureText("STARTERS (RIGHT ARM)").width, 1);
+        ctx.fillText("STARTERS (RIGHT ARM)",85 + x_offset_3, y1+ 80 );
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
@@ -691,6 +698,51 @@ function drawStarters() {
             ctx.fillText(CLU,x*1 + x_offset_2, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*i));
+
+            s   = state[my_team][my_int][i].R.SERIAL
+            name = state[my_team][my_int][i].R.NAME
+            HP  = "HP:  " + state[my_team][my_int][i].R.HP
+            ATK = "ATK: " + state[my_team][my_int][i].R.ATK
+            DEF = "DEF: " + state[my_team][my_int][i].R.DEF
+            ACC = "ACC: " + state[my_team][my_int][i].R.ACC
+            CRT = "CRT: " + state[my_team][my_int][i].R.CRT
+            MOB = "MOB: " + state[my_team][my_int][i].R.MOB
+            CD  = "CD:  " + state[my_team][my_int][i].R.CD
+            CLU = "CLU: " + state[my_team][my_int][i].R.CLU
+            W   = "Weight: " + state[my_team][my_int][i].R.Weight
+            AVG = "AVG: " +
+                Math.floor(
+                    (parseInt(state[my_team][my_int][i].R.HP)+
+                        parseInt(state[my_team][my_int][i].R.ATK)+
+                        parseInt(state[my_team][my_int][i].R.DEF) +
+                        parseInt(state[my_team][my_int][i].R.ACC) +
+                        parseInt(state[my_team][my_int][i].R.CRT) +
+                        parseInt(state[my_team][my_int][i].R.MOB) +
+                        parseInt(state[my_team][my_int][i].R.CD) +
+                        parseInt(state[my_team][my_int][i].R.CLU)
+                    ) / 8)
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x + x_offset_2,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+
+            ctx.font = '11px monospace';
+            ctx.fillStyle = 'white';
+            ctx.fillText(s,x*0 + x_offset_2, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1 + x_offset_2, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0 + x_offset_2, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1 + x_offset_2, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2 + x_offset_2, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(MOB,x*2 + x_offset_2, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*0 + x_offset_2, y1+ 130 + (60*i));
+            ctx.fillText(CLU,x*1 + x_offset_2, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*i));
+
+
+
         }
     }
 }

@@ -585,7 +585,7 @@ function drawBench() {
     if(bench!=null) {
         for (var m in bench){
             for (var i=0;i<bench[m].length;i++) {
-                console.log(bench[m][i].get("SERIAL"))
+                console.log(bench[m][i]["SERIAL"])
                 //ctx.fillText(,0, 200 + (10*i));
             }
         }

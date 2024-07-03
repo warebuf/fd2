@@ -621,6 +621,13 @@ function drawStarters() {
 
         for(let i = 0; i < state[my_team][my_int].length; i++) {
 
+            // left bracket
+            ctx.fillStyle = 'red';
+            ctx.textAlign = "left";
+            ctx.fillRect(x,94 + (60*i), 1, 100);
+
+            // right bracket
+
             // HEAD STARTERS
             s   = state[my_team][my_int][i].H.SERIAL
             name = state[my_team][my_int][i].H.NAME

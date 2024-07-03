@@ -589,7 +589,8 @@ function drawStarters() {
         let x = 60
         let y1 = 0
 
-        ctx.fillText("STARTER HEADS",50, y1+ 80 );
+        ctx.fillRect(70, y1+80, ctx.measureText("STARTER HEADS"), 2);
+        ctx.fillText("STARTER HEADS",70, y1+ 80 );
 
         ctx.textAlign = "left";
 

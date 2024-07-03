@@ -611,7 +611,7 @@ function drawBench() {
 
 
             let x = 50
-            let y1 = 400
+            let y1 = 300
 
                 ctx.textAlign = "left";
                 ctx.fillStyle = 'blue';

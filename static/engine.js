@@ -581,47 +581,56 @@ function drawLog() {
 
 function drawBench() {
 
-    if(bench!=null) {
-        let j = 0
-        for (let m in bench){
-            for (let i=0;i<bench[m].length;i++) {
-                s   = "H000000"
-                name = bench[m][i]["NAME"]
-                HP  = "HP:  " + bench[m][i]["HP"]
-                ATK = "ATK: " + bench[m][i]["ATK"]
-                DEF = "DEF: " + bench[m][i]["DEF"]
-                ACC = "ACC: " + bench[m][i]["ACC"]
-                CRT = "CRT: " + bench[m][i]["CRT"]
-                MOB = "MOB: " + bench[m][i]["MOB"]
-                CD  = "CD:  " + bench[m][i]["CD"]
-                CLU = "CLU: " + bench[m][i]["CLU"]
-                W   = "Weight: " + bench[m][i]["Weight"]
-                AVG = "AVG: " + Math.floor((parseInt(bench[m][i]["HP"])+parseInt(bench[m][i]["ATK"]) +parseInt(bench[m][i]["DEF"]) +
-                    parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 8)
+    if((bench!=null) && (my_team != -1) && (my_int != -1)) {
+
+        let key = my_team + ';' + my_int
+
+        for (let i=0;i<bench[key].length;i++) {
+            s   = "H000000"
+            name = bench[key][i]["NAME"]
+            HP  = "HP:  " + bench[key][i]["HP"]
+            ATK = "ATK: " + bench[key][i]["ATK"]
+            DEF = "DEF: " + bench[key][i]["DEF"]
+            ACC = "ACC: " + bench[key][i]["ACC"]
+            CRT = "CRT: " + bench[key][i]["CRT"]
+            MOB = "MOB: " + bench[key][i]["MOB"]
+            CD  = "CD:  " + bench[key][i]["CD"]
+            CLU = "CLU: " + bench[key][i]["CLU"]
+            W   = "Weight: " + bench[key][i]["Weight"]
+            AVG = "AVG: " +
+                Math.floor(
+                    (parseInt(bench[key][i]["HP"])+
+                        parseInt(bench[key][i]["ATK"])+
+                        parseInt(bench[key][i]["DEF"]) +
+                        parseInt(bench[key][i]["ACC"]) +
+                        parseInt(bench[key][i]["CRT"]) +
+                        parseInt(bench[key][i]["MOB"]) +
+                        parseInt(bench[key][i]["CD"]) +
+                        parseInt(bench[key][i]["CLU"])
+                    ) / 8)
 
                 ctx.textAlign = "left";
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(50,94 + (60*i)+(j*700),ctx.measureText(name).width,ctx.measureText('M').width);
+                ctx.fillRect(50,94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
                 x = 50
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(s,x*0, 100 + (60*i)+(j*700));
-                ctx.fillText(name,x*1, 100 + (60*i)+(j*700));
-                ctx.fillText(HP,x*0, 110 + (60*i)+(j*700));
-                ctx.fillText(ATK,x*1, 110 + (60*i)+(j*700));
-                ctx.fillText(DEF,x*2, 110 + (60*i)+(j*700));
-                ctx.fillText(ACC,x*0, 120 + (60*i)+(j*700));
-                ctx.fillText(CRT,x*1, 120 + (60*i)+(j*700));
-                ctx.fillText(MOB,x*2, 120 + (60*i)+(j*700));
-                ctx.fillText(CD,x*0, 130 + (60*i)+(j*700));
-                ctx.fillText(CLU,x*1, 130 + (60*i)+(j*700));
-                ctx.fillText(W,x*0, 140 + (60*i)+(j*700));
-                ctx.fillText(AVG,x*2, 140 + (60*i)+(j*700));
+                ctx.fillText(s,x*0, 100 + (60*i));
+                ctx.fillText(name,x*1, 100 + (60*i));
+                ctx.fillText(HP,x*0, 110 + (60*i));
+                ctx.fillText(ATK,x*1, 110 + (60*i));
+                ctx.fillText(DEF,x*2, 110 + (60*i));
+                ctx.fillText(ACC,x*0, 120 + (60*i));
+                ctx.fillText(CRT,x*1, 120 + (60*i));
+                ctx.fillText(MOB,x*2, 120 + (60*i));
+                ctx.fillText(CD,x*0, 130 + (60*i));
+                ctx.fillText(CLU,x*1, 130 + (60*i));
+                ctx.fillText(W,x*0, 140 + (60*i));
+                ctx.fillText(AVG,x*2, 140 + (60*i));
 
             }
-            j=j+1
-        }
+
     }
 }
 

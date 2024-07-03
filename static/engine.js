@@ -605,9 +605,9 @@ function drawBench() {
                 ctx.fillText(ACC,x*0, 120 + (50*i)+(j*200));
                 ctx.fillText(CRT,x*1, 120 + (50*i)+(j*200));
                 ctx.fillText(MOB,x*2, 120 + (50*i)+(j*200));
-                ctx.fillText(CD,x*3, 130 + (50*i)+(j*200));
-                ctx.fillText(CLU,x*0, 130 + (50*i)+(j*200));
-                ctx.fillText(W,x*1, 130 + (50*i)+(j*200));
+                ctx.fillText(CD,x*0, 130 + (50*i)+(j*200));
+                ctx.fillText(CLU,x*1, 130 + (50*i)+(j*200));
+                ctx.fillText(W,x*2, 130 + (50*i)+(j*200));
 
 
             }

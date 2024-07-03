@@ -636,7 +636,7 @@ function drawStarters() {
             ctx.fillRect(165 + x_offset_4,90 + 55 + (60*i), 5, 1);
 
             // HEAD STARTERS
-            s   = state[my_team][my_int][i].H.SERIAL
+            s   = state[my_team][my_int][i].H.SERIAL.toString()
             for (let k = s.length; k < 7; k++) {
                 s = '0' + s
             }
@@ -683,7 +683,7 @@ function drawStarters() {
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
 
             // LEFT STARTERS
-            s   = state[my_team][my_int][i].L.SERIAL
+            s   = state[my_team][my_int][i].L.SERIAL.toString()
             for (let k = s.length; k < 7; k++) {
                 s = '0' + s
             }
@@ -730,7 +730,7 @@ function drawStarters() {
             ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*i));
 
             // RIGHT STARTERS
-            s   = state[my_team][my_int][i].R.SERIAL
+            s   = state[my_team][my_int][i].R.SERIAL.toString()
             for (let k = s.length; k < 7; k++) {
                 s = '0' + s
             }
@@ -777,7 +777,7 @@ function drawStarters() {
             ctx.fillText(AVG,x*2 + x_offset_3, y1+ 140 + (60*i));
 
             // BOTTOM STARTERS
-            s   = state[my_team][my_int][i].B.SERIAL
+            s   = state[my_team][my_int][i].B.SERIAL.toString()
             for (let k = s.length; k < 7; k++) {
                 s = '0' + s
             }

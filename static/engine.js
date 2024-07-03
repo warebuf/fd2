@@ -639,7 +639,7 @@ function drawStarters() {
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillText(i, x_offset-30,90 + 78 + (60*i));
+            ctx.fillText(i, x_offset-30,90 + (60*i));
 
 
             // HEAD STARTERS

@@ -53,6 +53,7 @@ function anime() {
         drawPhase()
         drawLog()
         drawBench()
+        drawStarters()
     } else if (match_data.length > 0) {
         drawPos()
         drawState()
@@ -579,6 +580,15 @@ function drawLog() {
     }
 }
 
+function drawStarters() {
+    if((bench!=null) && (my_team != -1) && (my_int != -1)) {
+        for(let i = 0; i < state[my_team][my_int].length; i++) {
+            ctx.font = '11px monospace';
+            ctx.fillStyle = 'white';
+            ctx.fillText(state[my_team][my_int][i],0, 0 + (10*i));
+        }
+    }
+}
 function drawBench() {
 
     if((bench!=null) && (my_team != -1) && (my_int != -1)) {

@@ -636,8 +636,8 @@ function drawBench() {
         }
 
         for(let i = 0; i<bench[key].length;i++){
-            let a = i * 50
-            let b = Math.floor(i/5)*20
+            let a = i * 10
+            let b = Math.floor(i/5)*10
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';

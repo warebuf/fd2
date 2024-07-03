@@ -654,7 +654,6 @@ function drawStarters() {
             DEF = "DEF: " + state[my_team][my_int][i].H.DEF
             ACC = "ACC: " + state[my_team][my_int][i].H.ACC
             CRT = "CRT: " + state[my_team][my_int][i].H.CRT
-            MOB = "MOB: " + state[my_team][my_int][i].H.MOB
             CD  = "CD:  " + state[my_team][my_int][i].H.CD
             CLU = "CLU: " + state[my_team][my_int][i].H.CLU
             W   = "Weight: " + state[my_team][my_int][i].H.Weight
@@ -665,10 +664,9 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].H.DEF) +
                         parseInt(state[my_team][my_int][i].H.ACC) +
                         parseInt(state[my_team][my_int][i].H.CRT) +
-                        parseInt(state[my_team][my_int][i].H.MOB) +
                         parseInt(state[my_team][my_int][i].H.CD) +
                         parseInt(state[my_team][my_int][i].H.CLU)
-                    ) / 8)
+                    ) / 7)
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
@@ -700,7 +698,6 @@ function drawStarters() {
             DEF = "DEF: " + state[my_team][my_int][i].L.DEF
             ACC = "ACC: " + state[my_team][my_int][i].L.ACC
             CRT = "CRT: " + state[my_team][my_int][i].L.CRT
-            MOB = "MOB: " + state[my_team][my_int][i].L.MOB
             CD  = "CD:  " + state[my_team][my_int][i].L.CD
             CLU = "CLU: " + state[my_team][my_int][i].L.CLU
             W   = "Weight: " + state[my_team][my_int][i].L.Weight
@@ -711,10 +708,9 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].L.DEF) +
                         parseInt(state[my_team][my_int][i].L.ACC) +
                         parseInt(state[my_team][my_int][i].L.CRT) +
-                        parseInt(state[my_team][my_int][i].L.MOB) +
                         parseInt(state[my_team][my_int][i].L.CD) +
                         parseInt(state[my_team][my_int][i].L.CLU)
-                    ) / 8)
+                    ) / 7)
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
@@ -746,7 +742,6 @@ function drawStarters() {
             DEF = "DEF: " + state[my_team][my_int][i].R.DEF
             ACC = "ACC: " + state[my_team][my_int][i].R.ACC
             CRT = "CRT: " + state[my_team][my_int][i].R.CRT
-            MOB = "MOB: " + state[my_team][my_int][i].R.MOB
             CD  = "CD:  " + state[my_team][my_int][i].R.CD
             CLU = "CLU: " + state[my_team][my_int][i].R.CLU
             W   = "Weight: " + state[my_team][my_int][i].R.Weight
@@ -757,7 +752,6 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].R.DEF) +
                         parseInt(state[my_team][my_int][i].R.ACC) +
                         parseInt(state[my_team][my_int][i].R.CRT) +
-                        parseInt(state[my_team][my_int][i].R.MOB) +
                         parseInt(state[my_team][my_int][i].R.CD) +
                         parseInt(state[my_team][my_int][i].R.CLU)
                     ) / 8)
@@ -792,7 +786,6 @@ function drawStarters() {
             DEF = "DEF: " + state[my_team][my_int][i].B.DEF
             ACC = "ACC: " + state[my_team][my_int][i].B.ACC
             CRT = "CRT: " + state[my_team][my_int][i].B.CRT
-            MOB = "MOB: " + state[my_team][my_int][i].B.MOB
             CD  = "CD:  " + state[my_team][my_int][i].B.CD
             CLU = "CLU: " + state[my_team][my_int][i].B.CLU
             SPD  = "SPD:  " + state[my_team][my_int][i].B.SPD
@@ -805,10 +798,9 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].B.DEF) +
                         parseInt(state[my_team][my_int][i].B.ACC) +
                         parseInt(state[my_team][my_int][i].B.CRT) +
-                        parseInt(state[my_team][my_int][i].B.MOB) +
                         parseInt(state[my_team][my_int][i].B.CD) +
                         parseInt(state[my_team][my_int][i].B.CLU)
-                    ) / 8)
+                    ) / 9)
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';

@@ -598,7 +598,7 @@ function drawBench() {
                 W   = "Weight: " + bench[m][i]["Weight"]
 
                 x = 50
-                ctx.fillText(s,x*0, 100 + (60*i)+(j*220));
+                ctx.fillText("H00000",x*0, 100 + (60*i)+(j*220));
                 ctx.fillText("EYE OF GOD",x*1, 100 + (60*i)+(j*220));
                 ctx.fillText(HP,x*0, 110 + (60*i)+(j*220));
                 ctx.fillText(ATK,x*1, 110 + (60*i)+(j*220));

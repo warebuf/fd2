@@ -580,8 +580,7 @@ function drawLog() {
 }
 
 function drawBench() {
-    ctx.font = '11px monospace';
-    ctx.fillStyle = 'white';
+
     if(bench!=null) {
         let j = 0
         for (let m in bench){
@@ -599,7 +598,13 @@ function drawBench() {
                 AVG = "AVG: " + Math.floor((parseInt(bench[m][i]["HP"])+parseInt(bench[m][i]["ATK"]) +parseInt(bench[m][i]["DEF"]) +
                     parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 9)
 
+                ctx.textAlign = "left";
+                ctx.fillStyle = 'black';
+                ctx.fillRect(50,100 + (60*i)+(j*700),ctx.measureText("EYE OF GOD").width,ctx.measureText('M').width);
+
                 x = 50
+                ctx.font = '11px monospace';
+                ctx.fillStyle = 'white';
                 ctx.fillText("H000000",x*0, 100 + (60*i)+(j*700));
                 ctx.fillText("EYE OF GOD",x*1, 100 + (60*i)+(j*700));
                 ctx.fillText(HP,x*0, 110 + (60*i)+(j*700));

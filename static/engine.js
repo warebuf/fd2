@@ -581,12 +581,57 @@ function drawLog() {
 }
 
 function drawStarters() {
-    if((bench!=null) && (my_team != -1) && (my_int != -1)) {
+    if((state!=null) && (my_team != -1) && (my_int != -1)) {
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "left";
+
         for(let i = 0; i < state[my_team][my_int].length; i++) {
+
+            s   = state[my_team][my_int][i].H.SERIAL
+            name = state[my_team][my_int][i].H.NAME
+            HP  = "HP:  " + state[my_team][my_int][i].H.HP
+            ATK = "ATK: " + state[my_team][my_int][i].H.ATK
+            DEF = "DEF: " + state[my_team][my_int][i].H.DEF
+            ACC = "ACC: " + state[my_team][my_int][i].H.ACC
+            CRT = "CRT: " + state[my_team][my_int][i].H.CRT
+            MOB = "MOB: " + state[my_team][my_int][i].H.MOB
+            CD  = "CD:  " + state[my_team][my_int][i].H.CD
+            CLU = "CLU: " + state[my_team][my_int][i].H.CLU
+            W   = "Weight: " + state[my_team][my_int][i].H.W
+            AVG = "AVG: " +
+                Math.floor(
+                    (parseInt(state[my_team][my_int][i].H.HP)+
+                        parseInt(state[my_team][my_int][i].H.ATK)+
+                        parseInt(state[my_team][my_int][i].H.DEF) +
+                        parseInt(state[my_team][my_int][i].H.ACC) +
+                        parseInt(state[my_team][my_int][i].H.CRT) +
+                        parseInt(state[my_team][my_int][i].H.MOB) +
+                        parseInt(state[my_team][my_int][i].H.CD) +
+                        parseInt(state[my_team][my_int][i].H.CLU)
+                    ) / 8)
+
+            let x = 0
+            let y1 = 0
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.textAlign = "left";
-            ctx.fillText(state[my_team][my_int][i].H.HP,0, 0 + (10*i));
+            ctx.fillText(s,x*0, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1, y1+ 120 + (60*i));
+            ctx.fillText(MOB,x*2, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*0, y1+ 130 + (60*i));
+            ctx.fillText(CLU,x*1, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2, y1+ 140 + (60*i));
         }
     }
 }

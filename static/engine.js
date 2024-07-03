@@ -583,8 +583,8 @@ function drawBench() {
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
     if(bench!=null) {
-        for(i=0;i<bench.length;i++){
-            ctx.fillText(bench[i],0, 200 + (10*i));
+        for (var m in bench){
+            ctx.fillText(m,0, 200 + (10*i));
         }
     }
 }

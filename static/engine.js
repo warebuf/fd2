@@ -596,7 +596,8 @@ function drawBench() {
                 CD  = "CD: " + bench[m][i]["CD"]
                 CLU = "CLU: " + bench[m][i]["CLU"]
                 W   = "Weight: " + bench[m][i]["Weight"]
-                TOT = "TOT: " + bench[m][i]["HP"]+bench[m][i]["ATK"] +bench[m][i]["DEF"] +bench[m][i]["ACC"] +bench[m][i]["CRT"] +bench[m][i]["MOB"] +bench[m][i]["CD"] +bench[m][i]["CLU"]
+                TOT = "TOT: " + (parseInt(bench[m][i]["HP"])+parseInt(bench[m][i]["ATK"]) +parseInt(bench[m][i]["DEF"]) +
+                    parseInt(bench[m][i]["ACC"]) +parseInt(bench[m][i]["CRT"]) +parseInt(bench[m][i]["MOB"]) +parseInt(bench[m][i]["CD"]) +parseInt(bench[m][i]["CLU"])) / 9
 
                 x = 50
                 ctx.fillText("H00000",x*0, 100 + (60*i)+(j*220));

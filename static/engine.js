@@ -584,8 +584,10 @@ function drawBench() {
     ctx.fillStyle = 'white';
     if(bench!=null) {
         for (var m in bench){
-            ctx.fillText(m,0, 200 + (10*i));
-            console.log(m)
+            for (var i=0;i<bench[m].length;i++) {
+                ctx.fillText(bench[i][m],0, 200 + (10*i));
+                console.log(m)
+            }
         }
     }
 }

@@ -642,7 +642,7 @@ function drawStarters() {
             ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
 
-            let x_offset = 200
+            x_offset = 200
 
             s   = state[my_team][my_int][i].L.SERIAL
             name = state[my_team][my_int][i].L.NAME

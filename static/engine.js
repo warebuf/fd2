@@ -575,7 +575,7 @@ function drawLog() {
         ctx.fillRect(0,4000 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.fillText(event_log[i],0, 350 + (10*i));
+        ctx.fillText(event_log[i],0, 4000 + (10*i));
     }
 }
 

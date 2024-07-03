@@ -586,19 +586,29 @@ function drawBench() {
         let j = 0
         for (let m in bench){
             for (let i=0;i<bench[m].length;i++) {
-                s =
-                    "s#: " + bench[m][i]["SERIAL"] +
-                    " HP: " + bench[m][i]["HP"] +
-                    " ATK: " + bench[m][i]["ATK"] +
-                    " DEF: " + bench[m][i]["DEF"] +
-                    " ACC: " + bench[m][i]["ACC"] +
-                    " CRT: " + bench[m][i]["CRT"] +
-                    " MOB: " + bench[m][i]["MOB"] +
-                    " CD: " + bench[m][i]["CD"] +
-                    " CLU: " + bench[m][i]["CLU"] +
-                    " Weight: " + bench[m][i]["Weight"]
+                s   = "s#: " + bench[m][i]["SERIAL"]
+                HP  = "HP: " + bench[m][i]["HP"]
+                ATK = "ATK: " + bench[m][i]["ATK"]
+                DEF = "DEF: " + bench[m][i]["DEF"]
+                ACC = "ACC: " + bench[m][i]["ACC"]
+                CRT = "CRT: " + bench[m][i]["CRT"]
+                MOB = "MOB: " + bench[m][i]["MOB"]
+                CD  = "CD: " + bench[m][i]["CD"]
+                CLU = "CLU: " + bench[m][i]["CLU"]
+                W   = "Weight: " + bench[m][i]["Weight"]
 
                 ctx.fillText(s,0, 100 + (10*i)+(j*120));
+                ctx.fillText(HP,10, 100 + (10*i)+(j*120));
+                ctx.fillText(ATK,20, 100 + (10*i)+(j*120));
+                ctx.fillText(DEF,30, 100 + (10*i)+(j*120));
+                ctx.fillText(ACC,40, 100 + (10*i)+(j*120));
+                ctx.fillText(CRT,50, 100 + (10*i)+(j*120));
+                ctx.fillText(MOB,60, 100 + (10*i)+(j*120));
+                ctx.fillText(CD,70, 100 + (10*i)+(j*120));
+                ctx.fillText(CLU,80, 100 + (10*i)+(j*120));
+                ctx.fillText(W,90, 100 + (10*i)+(j*120));
+
+
             }
             j=j+1
         }

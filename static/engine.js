@@ -586,6 +586,12 @@ function drawStarters() {
         ctx.fillStyle = 'white';
         ctx.textAlign = "left";
 
+        let x = 60
+        let y1 = 0
+
+        ctx.fillText("STARTER HEAD",75, y1+ 80 );
+
+
         for(let i = 0; i < state[my_team][my_int].length; i++) {
 
             s   = state[my_team][my_int][i].H.SERIAL
@@ -611,12 +617,9 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].H.CLU)
                     ) / 8)
 
-            let x = 60
-            let y1 = 0
-
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x,y1+ 94 + (75*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.fillRect(x,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';

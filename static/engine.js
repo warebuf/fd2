@@ -641,7 +641,7 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';
-            ctx.fillRect(200+ a,500+b,3,3);
+            ctx.fillRect(100+ a,700+b,3,3);
         }
 
     }

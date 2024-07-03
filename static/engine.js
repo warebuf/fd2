@@ -706,20 +706,20 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';
-            ctx.fillRect(60+ a,750+b,3,3);
+            ctx.fillRect(80+ a,750+b,3,3);
         }
 
         if(h_index + 5 < bench[key].length) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▼",70, y1+400);
+            ctx.fillText("▼",80, y1+400);
         }
         if(h_index > 0) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",70, y1+200);
+            ctx.fillText("▲",80, y1+200);
         }
 
     }

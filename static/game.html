@@ -407,6 +407,11 @@
                         event_log.shift()
                     }
                 }
+                else if(msg.Event == 'assignInt') {
+                    let temp_string = msg.Message.split(";")
+                    my_team = parseInt(temp_string[0])
+                    my_int = parseInt(temp_string[1])
+                }
                 else if(msg.Event == 'unitsOfTime') {
                     time_queue.push(parseFloat(msg.Message).toFixed(3))
                 }
@@ -468,9 +473,6 @@
                         act_up_to_date = false
 
                         if(animating_state == -1) {
-                            let temp_string = msg.Message.split(";")
-                            my_team = parseInt(temp_string[0])
-                            my_int = parseInt(temp_string[1])
                             indexer_t = my_team
                             indexer_u = my_int
                             state = md;

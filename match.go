@@ -26,10 +26,10 @@ type match struct {
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
 
-	benchH map[uuid.UUID][]*head
-	benchL map[uuid.UUID][]*arm
-	benchR map[uuid.UUID][]*arm
-	benchB map[uuid.UUID][]*bottom
+	benchH map[string][]*head   // team, user index to part
+	benchL map[string][]*arm    // team, user index to part
+	benchR map[string][]*arm    // team, user index to part
+	benchB map[string][]*bottom // team, user index to part
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^
@@ -172,6 +172,7 @@ func m_read(m *match_socket) {
 					m.m.sharebench()
 					m.m.sharepos(nil)
 				}
+				m.incoming_message <- &message{Event: "assignInt", Message: m.m.uuid_to_team_int[m.u.uid].ab, MatchID: m.m.mid}
 
 			} else if msg.Event == "endCharSel" {
 				fmt.Println("recieved endCharSel")
@@ -265,10 +266,10 @@ func createMatch(pl *permission_list) *match {
 			turn:         "null",
 			start_ticker: make(chan bool),
 
-			benchH: make(map[uuid.UUID][]*head),
-			benchL: make(map[uuid.UUID][]*arm),
-			benchR: make(map[uuid.UUID][]*arm),
-			benchB: make(map[uuid.UUID][]*bottom),
+			benchH: make(map[string][]*head),
+			benchL: make(map[string][]*arm),
+			benchR: make(map[string][]*arm),
+			benchB: make(map[string][]*bottom),
 
 			char_sel_done:   make(map[uuid.UUID]bool),
 			char_sel_ticker: make(chan bool),
@@ -283,13 +284,6 @@ func createMatch(pl *permission_list) *match {
 			if j.bot_status == true {
 				ans.bot_join <- j
 			}
-		}
-
-		for i, _ := range pl.gamer_permission_list {
-			ans.benchH[i] = make([]*head, 0)
-			ans.benchL[i] = make([]*arm, 0)
-			ans.benchR[i] = make([]*arm, 0)
-			ans.benchB[i] = make([]*bottom, 0)
 		}
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
@@ -400,6 +394,11 @@ func createMatch(pl *permission_list) *match {
 				"PEANUT BUTTER SOCKS", "OOGA BOOGA", "JUNK WARRIOR", "BLUE EYES WHITE DRAGON", "PIKACHU", "FINN", "MEGAN FOX",
 			}
 
+			ans.benchH[ans.uuid_to_team_int[i].ab] = make([]*head, 0)
+			ans.benchL[ans.uuid_to_team_int[i].ab] = make([]*arm, 0)
+			ans.benchR[ans.uuid_to_team_int[i].ab] = make([]*arm, 0)
+			ans.benchB[ans.uuid_to_team_int[i].ab] = make([]*bottom, 0)
+
 			for y := 0; y < 10; y++ {
 
 				temp := rand.Intn(len(names))
@@ -472,10 +471,10 @@ func createMatch(pl *permission_list) *match {
 					END: 0,
 				}
 
-				ans.benchH[i] = append(ans.benchH[i], h)
-				ans.benchL[i] = append(ans.benchL[i], larm)
-				ans.benchR[i] = append(ans.benchR[i], rarm)
-				ans.benchB[i] = append(ans.benchB[i], btm)
+				ans.benchH[ans.uuid_to_team_int[i].ab] = append(ans.benchH[ans.uuid_to_team_int[i].ab], h)
+				ans.benchL[ans.uuid_to_team_int[i].ab] = append(ans.benchL[ans.uuid_to_team_int[i].ab], larm)
+				ans.benchR[ans.uuid_to_team_int[i].ab] = append(ans.benchR[ans.uuid_to_team_int[i].ab], rarm)
+				ans.benchB[ans.uuid_to_team_int[i].ab] = append(ans.benchB[ans.uuid_to_team_int[i].ab], btm)
 			}
 
 			if ans.game_mode == "ffa" {
@@ -783,6 +782,7 @@ func (m *match) run() {
 
 			m.sharebench()
 			m.sharepos(nil)
+			m.shareint()
 
 		case <-m.start_ticker:
 			m.phase = "TURN"
@@ -1228,6 +1228,19 @@ func (m *match) sharebench() {
 		for _, j := range i {
 			select {
 			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+			}
+		}
+	}
+}
+
+func (m *match) shareint() {
+	fmt.Println("shareint")
+
+	// send updated positions to everyone
+	for k, i := range m.gamer_uid_to_msid_to_match_socket {
+		for _, j := range i {
+			select {
+			case j.incoming_message <- &message{Event: "assignInt", Message: m.uuid_to_team_int[k].ab, MatchID: m.mid}:
 			}
 		}
 	}

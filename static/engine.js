@@ -586,12 +586,13 @@ function drawStarters() {
 
         let x = 60
         let y1 = 0
+        let x_offset = 10
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(25, y1+83, ctx.measureText("STARTERS (HEAD)").width, 1);
-        ctx.fillText("STARTERS (HEAD)",70, y1+ 80 );
+        ctx.fillRect(25 + x_offset, y1+83, ctx.measureText("STARTERS (HEAD)").width, 1);
+        ctx.fillText("STARTERS (HEAD)",70 + x_offset, y1+ 80 );
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
@@ -624,22 +625,22 @@ function drawStarters() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.fillRect(x + x_offset,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0, y1+ 100 + (60*i));
-            ctx.fillText(name,x*1, y1+ 100 + (60*i));
-            ctx.fillText(HP,x*0, y1+ 110 + (60*i));
-            ctx.fillText(ATK,x*1, y1+ 110 + (60*i));
-            ctx.fillText(DEF,x*2, y1+ 110 + (60*i));
-            ctx.fillText(ACC,x*0, y1+ 120 + (60*i));
-            ctx.fillText(CRT,x*1, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1, y1+ 130 + (60*i));
-            ctx.fillText(W,x*0, y1+ 140 + (60*i));
-            ctx.fillText(AVG,x*2, y1+ 140 + (60*i));
+            ctx.fillText(s,x*0 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(MOB,x*2 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*0 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
         }
     }
 }
@@ -649,6 +650,7 @@ function drawBench() {
 
         let x = 60
         let y1 = 350
+        let x_offset = 10
 
         let key = my_team + ';' + my_int
 
@@ -680,22 +682,22 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.fillRect(x + x_offset,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0, y1+ 100 + (60*i));
-            ctx.fillText(name,x*1, y1+ 100 + (60*i));
-            ctx.fillText(HP,x*0, y1+ 110 + (60*i));
-            ctx.fillText(ATK,x*1, y1+ 110 + (60*i));
-            ctx.fillText(DEF,x*2, y1+ 110 + (60*i));
-            ctx.fillText(ACC,x*0, y1+ 120 + (60*i));
-            ctx.fillText(CRT,x*1, y1+ 120 + (60*i));
-            ctx.fillText(MOB,x*2, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*0, y1+ 130 + (60*i));
-            ctx.fillText(CLU,x*1, y1+ 130 + (60*i));
-            ctx.fillText(W,x*0, y1+ 140 + (60*i));
-            ctx.fillText(AVG,x*2, y1+ 140 + (60*i));
+            ctx.fillText(s,x*0 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(MOB,x*2 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*0 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(CLU,x*1 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
 
             if(i == 4) {i = bench[key].length} // only show 5 parts
         }
@@ -706,20 +708,20 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';
-            ctx.fillRect(80+ a,750+b,3,3);
+            ctx.fillRect(80+ a + x_offset,750+b,3,3);
         }
 
         if(h_index + 5 < bench[key].length) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▼",80, y1+400);
+            ctx.fillText("▼",80 + x_offset, y1+400);
         }
         if(h_index > 0) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80, y1+200);
+            ctx.fillText("▲",80 + x_offset, y1+200);
         }
 
     }

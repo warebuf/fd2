@@ -636,12 +636,12 @@ function drawBench() {
         }
 
         for(let i = 0; i<bench[key].length;i++){
-            let a = (i%5) * 10
-            let b = Math.floor(i/5)*10
+            let a = (i%5) * 5
+            let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';
-            ctx.fillRect(a,b,5,5);
+            ctx.fillRect(a,b,3,3);
         }
 
     }

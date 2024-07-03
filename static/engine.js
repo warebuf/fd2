@@ -624,16 +624,16 @@ function drawStarters() {
             // left bracket
             ctx.fillStyle = 'red';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-10,90 + (60*i), 1, 55);
-            ctx.fillRect(x_offset-10,90 + (60*i), 5, 1);
-            ctx.fillRect(x_offset-10,90 + 55 + (60*i), 5, 1);
+            ctx.fillRect(x_offset-15,90 + (60*i), 1, 55);
+            ctx.fillRect(x_offset-15,90 + (60*i), 5, 1);
+            ctx.fillRect(x_offset-15,90 + 55 + (60*i), 5, 1);
 
             // right bracket
             ctx.fillStyle = 'red';
             ctx.textAlign = "left";
-            ctx.fillRect(170 + x_offset_4,90 + (60*i), 1, 55);
-            ctx.fillRect(165 + x_offset_4,90 + (60*i), 5, 1);
-            ctx.fillRect(165 + x_offset_4,90 + 55 + (60*i), 5, 1);
+            ctx.fillRect(175 + x_offset_4,90 + (60*i), 1, 55);
+            ctx.fillRect(170 + x_offset_4,90 + (60*i), 5, 1);
+            ctx.fillRect(170 + x_offset_4,90 + 55 + (60*i), 5, 1);
 
             // HEAD STARTERS
             s   = state[my_team][my_int][i].H.SERIAL.toString()

@@ -457,9 +457,6 @@ func createMatch(pl *permission_list) *match {
 					Use_current: rand.Intn(99) + 1,
 					Use_outof:   rand.Intn(99) + 1,
 					Weight:      rand.Intn(99) + 1,
-
-					DOG: 0,
-					SPD: rand.Intn(10) * 10,
 				}
 
 				ans.benchH[ans.uuid_to_team_int[i].ab] = append(ans.benchH[ans.uuid_to_team_int[i].ab], h)

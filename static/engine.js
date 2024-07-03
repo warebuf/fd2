@@ -629,7 +629,7 @@ function drawStarters() {
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.fillText(sH,x*0 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(s,x*0 + x_offset, y1+ 100 + (60*i));
             ctx.fillText(name,x*1 + x_offset, y1+ 100 + (60*i));
             ctx.fillText(HP,x*0 + x_offset, y1+ 110 + (60*i));
             ctx.fillText(ATK,x*1 + x_offset, y1+ 110 + (60*i));

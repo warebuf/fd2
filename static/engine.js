@@ -637,6 +637,10 @@ function drawStarters() {
 
             // HEAD STARTERS
             s   = state[my_team][my_int][i].H.SERIAL
+            for (let k = s.length; k < 7; k++) {
+                s = '0' + s
+            }
+            s = 'H' + s
             name = state[my_team][my_int][i].H.NAME
             HP  = "HP:  " + state[my_team][my_int][i].H.HP
             ATK = "ATK: " + state[my_team][my_int][i].H.ATK
@@ -680,6 +684,10 @@ function drawStarters() {
 
             // LEFT STARTERS
             s   = state[my_team][my_int][i].L.SERIAL
+            for (let k = s.length; k < 7; k++) {
+                s = '0' + s
+            }
+            s = 'L' + s
             name = state[my_team][my_int][i].L.NAME
             HP  = "HP:  " + state[my_team][my_int][i].L.HP
             ATK = "ATK: " + state[my_team][my_int][i].L.ATK
@@ -723,6 +731,10 @@ function drawStarters() {
 
             // RIGHT STARTERS
             s   = state[my_team][my_int][i].R.SERIAL
+            for (let k = s.length; k < 7; k++) {
+                s = '0' + s
+            }
+            s = 'R' + s
             name = state[my_team][my_int][i].R.NAME
             HP  = "HP:  " + state[my_team][my_int][i].R.HP
             ATK = "ATK: " + state[my_team][my_int][i].R.ATK
@@ -766,6 +778,10 @@ function drawStarters() {
 
             // BOTTOM STARTERS
             s   = state[my_team][my_int][i].B.SERIAL
+            for (let k = s.length; k < 7; k++) {
+                s = '0' + s
+            }
+            s = 'B' + s
             name = state[my_team][my_int][i].B.NAME
             HP  = "HP:  " + state[my_team][my_int][i].B.HP
             ATK = "ATK: " + state[my_team][my_int][i].B.ATK

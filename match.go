@@ -309,8 +309,8 @@ func createMatch(pl *permission_list) *match {
 
 			for y := 0; y < 5; y++ {
 				h := head{
-					SERIAL: 0,
-
+					SERIAL:      0,
+					NAME:        "DEFAULT",
 					HP:          100,
 					ATK:         0,
 					DEF:         0,
@@ -325,6 +325,7 @@ func createMatch(pl *permission_list) *match {
 				}
 				larm := arm{
 					SERIAL: 0,
+					NAME:   "DEFAULT",
 					LORR:   false,
 
 					HP:          100,
@@ -341,6 +342,7 @@ func createMatch(pl *permission_list) *match {
 				}
 				rarm := arm{
 					SERIAL: 0,
+					NAME:   "DEFAULT",
 					LORR:   true,
 
 					HP:          100,
@@ -357,6 +359,7 @@ func createMatch(pl *permission_list) *match {
 				}
 				btm := bottom{
 					SERIAL: 0,
+					NAME:   "DEFAULT",
 
 					HP:          100,
 					ATK:         0,

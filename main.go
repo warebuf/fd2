@@ -101,6 +101,7 @@ type head struct {
 
 type arm struct {
 	SERIAL int
+	NAME   string
 	LORR   bool
 
 	HP          int
@@ -117,8 +118,8 @@ type arm struct {
 }
 
 type bottom struct {
-	SERIAL int
-
+	SERIAL      int
+	NAME        string
 	HP          int
 	ATK         int
 	DEF         int

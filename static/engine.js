@@ -624,9 +624,9 @@ function drawStarters() {
             // left bracket
             ctx.fillStyle = 'red';
             ctx.textAlign = "left";
-            ctx.fillRect(15,90 + (60*i), 1, 55);
-            ctx.fillRect(15,90 + (60*i), 5, 1);
-            ctx.fillRect(15,90 + 55 + (60*i), 5, 1);
+            ctx.fillRect(x_offset_4-10,90 + (60*i), 1, 55);
+            ctx.fillRect(x_offset_4-10,90 + (60*i), 5, 1);
+            ctx.fillRect(x_offset_4-10,90 + 55 + (60*i), 5, 1);
 
             // right bracket
             ctx.fillStyle = 'red';

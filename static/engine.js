@@ -834,9 +834,18 @@ function drawBench() {
         let y1 = 350
         let x_offset = 75
 
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+        ctx.fillRect(25 + x_offset, y1, ctx.measureText("BENCH (HEAD)").width, 1);
+        ctx.fillText("BENCH (HEAD)",70 + x_offset, y1 );
+
+
         let key = my_team + ';' + my_int
 
         for (let i=0;i<bench[key].length;i++) {
+
+            // ALL HEAD RELATED BENCH
             s   = "H000000"
             name = bench[key][i]["NAME"]
             HP  = "HP:  " + bench[key][i]["HP"]
@@ -902,6 +911,9 @@ function drawBench() {
             ctx.font = '11px monospace';
             ctx.fillText("▲",80 + x_offset, y1+200);
         }
+
+        // ALL LARM RELATED BENCH
+
 
     }
 

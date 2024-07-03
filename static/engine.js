@@ -598,7 +598,7 @@ function drawBench() {
                     "CLU: " + bench[m][i]["CLU"] +
                     "Weight: " + bench[m][i]["Weight"]
 
-                ctx.fillText(s,0, 100 + (10*i)+(j*100));
+                ctx.fillText(s,0, 100 + (10*i)+(j*120));
             }
             j=j+1
         }

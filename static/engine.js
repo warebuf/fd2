@@ -586,7 +586,7 @@ function drawStarters() {
 
         let x = 60
         let y1 = 0
-        let x_offset = 10
+        let x_offset = 25
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
@@ -650,7 +650,7 @@ function drawBench() {
 
         let x = 60
         let y1 = 350
-        let x_offset = 10
+        let x_offset = 25
 
         let key = my_team + ';' + my_int
 

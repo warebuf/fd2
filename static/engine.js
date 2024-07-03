@@ -586,10 +586,10 @@ function drawStarters() {
 
         let x = 60
         let y1 = 0
-        let x_offset = 25
-        let x_offset_2 = 250
-        let x_offset_3 = 475
-        let x_offset_4 = 700
+        let x_offset = 75
+        let x_offset_2 = 300
+        let x_offset_3 = 525
+        let x_offset_4 = 750
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';

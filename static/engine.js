@@ -583,8 +583,9 @@ function drawBench() {
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
     if(bench!=null) {
-        for (var m in bench){
-            for (var i=0;i<bench[m].length;i++) {
+        let j = 0
+        for (let m in bench){
+            for (let i=0;i<bench[m].length;i++) {
                 s =
                     "s#: " + bench[m][i]["SERIAL"] +
                     "HP: " + bench[m][i]["HP"] +
@@ -597,8 +598,9 @@ function drawBench() {
                     "CLU: " + bench[m][i]["CLU"] +
                     "Weight: " + bench[m][i]["Weight"]
 
-                ctx.fillText(s,0, 100 + (10*i));
+                ctx.fillText(s,0, 100 + (10*i)+(j*100));
             }
+            j=j+1
         }
     }
 }

@@ -84,6 +84,7 @@ type room struct {
 
 type head struct {
 	SERIAL int
+	NAME   string
 
 	HP          int
 	ATK         int

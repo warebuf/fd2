@@ -394,10 +394,15 @@ func createMatch(pl *permission_list) *match {
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
+			names := []string{
+				"EYE OF GOD", "TERRACOTTA PINCER", "GNOCCHI GUCCI", "OOGLY GOOGLY", "LEFT HAND FREE", "SENT TO HELL", "ULTRA MIAMI BLASTER",
+				"PEANUT BUTTER SOCKS",
+			}
+
 			for y := 0; y < 10; y++ {
 				h := &head{
-					SERIAL: 99,
-
+					SERIAL:      99,
+					NAME:        names[rand.Intn(len(names))],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
 					DEF:         rand.Intn(99) + 1,

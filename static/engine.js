@@ -585,6 +585,7 @@ function drawBench() {
     if(bench!=null) {
         for (var m in bench){
             ctx.fillText(m,0, 200 + (10*i));
+            console.log(m)
         }
     }
 }

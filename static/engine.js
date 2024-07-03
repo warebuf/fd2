@@ -598,16 +598,16 @@ function drawBench() {
                 W   = "Weight: " + bench[m][i]["Weight"]
 
                 x = 50
-                ctx.fillText(s,x*0, 100 + (20*i)+(j*120));
-                ctx.fillText(HP,x*0, 110 + (20*i)+(j*120));
-                ctx.fillText(ATK,x*1, 110 + (20*i)+(j*120));
-                ctx.fillText(DEF,x*2, 110 + (20*i)+(j*120));
-                ctx.fillText(ACC,x*0, 120 + (20*i)+(j*120));
-                ctx.fillText(CRT,x*1, 120 + (20*i)+(j*120));
-                ctx.fillText(MOB,x*2, 120 + (20*i)+(j*120));
-                ctx.fillText(CD,x*3, 130 + (20*i)+(j*120));
-                ctx.fillText(CLU,x*0, 130 + (20*i)+(j*120));
-                ctx.fillText(W,x*1, 130 + (20*i)+(j*120));
+                ctx.fillText(s,x*0, 100 + (50*i)+(j*200));
+                ctx.fillText(HP,x*0, 110 + (50*i)+(j*200));
+                ctx.fillText(ATK,x*1, 110 + (50*i)+(j*200));
+                ctx.fillText(DEF,x*2, 110 + (50*i)+(j*200));
+                ctx.fillText(ACC,x*0, 120 + (50*i)+(j*200));
+                ctx.fillText(CRT,x*1, 120 + (50*i)+(j*200));
+                ctx.fillText(MOB,x*2, 120 + (50*i)+(j*200));
+                ctx.fillText(CD,x*3, 130 + (50*i)+(j*200));
+                ctx.fillText(CLU,x*0, 130 + (50*i)+(j*200));
+                ctx.fillText(W,x*1, 130 + (50*i)+(j*200));
 
 
             }

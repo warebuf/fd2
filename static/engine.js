@@ -613,7 +613,7 @@ function drawBench() {
                 ctx.fillStyle = 'blue';
                 ctx.fillRect(50,94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
 
-                x = 50
+                x = 300
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(s,x*0, 100 + (60*i));

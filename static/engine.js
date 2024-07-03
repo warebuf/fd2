@@ -795,8 +795,8 @@ function drawStarters() {
             MOB = "MOB: " + state[my_team][my_int][i].B.MOB
             CD  = "CD:  " + state[my_team][my_int][i].B.CD
             CLU = "CLU: " + state[my_team][my_int][i].B.CLU
-            CD  = "SPD:  " + state[my_team][my_int][i].B.SPD
-            CLU = "DOG: " + state[my_team][my_int][i].B.DOG
+            SPD  = "SPD:  " + state[my_team][my_int][i].B.SPD
+            DOG = "DOG: " + state[my_team][my_int][i].B.DOG
             W   = "Weight: " + state[my_team][my_int][i].B.Weight
             AVG = "AVG: " +
                 Math.floor(

@@ -647,6 +647,9 @@ function drawBench() {
 
     if((bench!=null) && (my_team != -1) && (my_int != -1)) {
 
+        let x = 60
+        let y1 = 350
+
         let key = my_team + ';' + my_int
 
         for (let i=0;i<bench[key].length;i++) {
@@ -674,8 +677,6 @@ function drawBench() {
                     ) / 8)
 
 
-            let x = 60
-            let y1 = 350
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';

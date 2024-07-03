@@ -585,14 +585,15 @@ function drawBench() {
         let j = 0
         for (let m in bench){
             for (let i=0;i<bench[m].length;i++) {
-                s   = "s#: " + bench[m][i]["SERIAL"]
-                HP  = "HP: " + bench[m][i]["HP"]
+                s   = "H000000"
+                name = "EYE OF GOD"
+                HP  = "HP:  " + bench[m][i]["HP"]
                 ATK = "ATK: " + bench[m][i]["ATK"]
                 DEF = "DEF: " + bench[m][i]["DEF"]
                 ACC = "ACC: " + bench[m][i]["ACC"]
                 CRT = "CRT: " + bench[m][i]["CRT"]
                 MOB = "MOB: " + bench[m][i]["MOB"]
-                CD  = "CD: " + bench[m][i]["CD"]
+                CD  = "CD:  " + bench[m][i]["CD"]
                 CLU = "CLU: " + bench[m][i]["CLU"]
                 W   = "Weight: " + bench[m][i]["Weight"]
                 AVG = "AVG: " + Math.floor((parseInt(bench[m][i]["HP"])+parseInt(bench[m][i]["ATK"]) +parseInt(bench[m][i]["DEF"]) +
@@ -605,8 +606,8 @@ function drawBench() {
                 x = 50
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText("H000000",x*0, 100 + (60*i)+(j*700));
-                ctx.fillText("EYE OF GOD",x*1, 100 + (60*i)+(j*700));
+                ctx.fillText(s,x*0, 100 + (60*i)+(j*700));
+                ctx.fillText(name,x*1, 100 + (60*i)+(j*700));
                 ctx.fillText(HP,x*0, 110 + (60*i)+(j*700));
                 ctx.fillText(ATK,x*1, 110 + (60*i)+(j*700));
                 ctx.fillText(DEF,x*2, 110 + (60*i)+(j*700));

@@ -771,6 +771,9 @@ func (m *match) run() {
 			m.shareint()
 
 		case <-m.start_ticker:
+
+			fmt.Println("/startTicker")
+
 			m.phase = "TURN"
 			m.turn = "TURN 0"
 			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}

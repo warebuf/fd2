@@ -641,7 +641,14 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'green';
-            ctx.fillRect(50+ a,700+b,3,3);
+            ctx.fillRect(60+ a,750+b,3,3);
+        }
+
+        if(h_index + 5 < bench[key].length) {
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'white';
+            ctx.font = '11px monospace';
+            ctx.fillText("&#10576",10, 10);
         }
 
     }

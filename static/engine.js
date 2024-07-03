@@ -612,7 +612,7 @@ function drawStarters() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(30 + x_offset_4, y1+83, ctx.measureText("STARTERS (BOTTOM)").width, 1);
+        ctx.fillRect(32 + x_offset_4, y1+83, ctx.measureText("STARTERS (BOTTOM)").width, 1);
         ctx.fillText("STARTERS (BOTTOM)",85 + x_offset_4, y1+ 80 );
 
         ctx.font = '11px monospace';
@@ -837,7 +837,7 @@ function drawBench() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(40 + x_offset, y1 + 72, ctx.measureText("BENCH (HEAD)").width, 1);
+        ctx.fillRect(42 + x_offset, y1 + 72, ctx.measureText("BENCH (HEAD)").width, 1);
         ctx.fillText("BENCH (HEAD)",80 + x_offset, y1 + 70);
 
 

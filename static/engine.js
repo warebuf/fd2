@@ -636,7 +636,7 @@ function drawBench() {
         }
 
         for(let i = 0; i<bench[key].length;i++){
-            let a = i * 10
+            let a = (i%5) * 10
             let b = Math.floor(i/5)*10
 
             ctx.textAlign = "left";

@@ -902,7 +902,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset, y1+100);
+            ctx.fillText("▲",80 + x_offset, y1);
         }
     }
     if((bench_l!=null) && (my_team != -1) && (my_int != -1)) {

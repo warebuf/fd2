@@ -237,7 +237,7 @@ func m_read(m *match_socket) {
 
 		} else if msg.Event == "swapRequest" {
 			indices := strings.Split(msg.Message, `;`)
-
+			fmt.Println("GOT")
 			if indices[1] == indices[4] {
 				fmt.Println("GOTHERE")
 				if indices[1] == "0" { //head

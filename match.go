@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"strings"
 
 	"math/rand"
 	"strconv"
@@ -232,6 +233,61 @@ func m_read(m *match_socket) {
 				if all_done {
 					m.m.start_ticker <- true
 				}
+			}
+
+		} else if msg.Event == "swapRequest" {
+			indices := strings.Split(msg.Message, `;`)
+
+			if indices[1] == indices[4] {
+
+				if indices[1] == "0" { //head
+					if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+						team_index := m.m.uuid_to_team_int[m.u.uid].a
+						player_index := m.m.uuid_to_team_int[m.u.uid].b
+						unit_index_1, _ := strconv.Atoi(indices[2])
+						temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H
+						unit_index_2, _ := strconv.Atoi(indices[5])
+						m.m.team_client_hero[team_index][player_index][unit_index_1].H = m.m.team_client_hero[team_index][player_index][unit_index_2].H
+						m.m.team_client_hero[team_index][player_index][unit_index_2].H = temp
+					} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+						team_index := m.m.uuid_to_team_int[m.u.uid].a
+						player_index := m.m.uuid_to_team_int[m.u.uid].b
+						unit_index_1, _ := strconv.Atoi(indices[2])
+						temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H
+						tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+						unit_index_2, _ := strconv.Atoi(indices[5])
+						m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.benchH[tp_index][unit_index_2]
+						m.m.benchH[tp_index][unit_index_2] = &temp
+
+					} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+						tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+						unit_index_1, _ := strconv.Atoi(indices[2])
+						temp := *m.m.benchH[tp_index][unit_index_1]
+						team_index := m.m.uuid_to_team_int[m.u.uid].a
+						player_index := m.m.uuid_to_team_int[m.u.uid].b
+						unit_index_2, _ := strconv.Atoi(indices[5])
+						m.m.benchH[tp_index][unit_index_1] = &m.m.team_client_hero[team_index][player_index][unit_index_2].H
+						m.m.team_client_hero[team_index][player_index][unit_index_2].H = temp
+					} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+						tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+						unit_index_1, _ := strconv.Atoi(indices[2])
+						temp := m.m.benchH[tp_index][unit_index_1]
+						unit_index_2, _ := strconv.Atoi(indices[5])
+						m.m.benchH[tp_index][unit_index_1] = m.m.benchH[tp_index][unit_index_2]
+						m.m.benchH[tp_index][unit_index_1] = temp
+					}
+
+				} else if indices[1] == "1" { //larm
+				} else if indices[1] == "2" { //rarm
+				} else if indices[1] == "3" { //bottom
+				}
+
+				// send updated bench, send updated starters
+				m.m.sharebench()
+				m.m.sharepos(nil)
+
+			} else {
+				fmt.Println("cannot swap incompatible body parts")
 			}
 
 		} else {

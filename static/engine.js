@@ -1076,7 +1076,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_3, y1+80);
+            ctx.fillText("▲",80 + x_offset_3, y1+85);
         }
     }
     if((bench_b!=null) && (my_team != -1) && (my_int != -1)) {
@@ -1170,7 +1170,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_4, y1+80);
+            ctx.fillText("▲",80 + x_offset_4, y1+85);
         }
     }
 
@@ -1220,4 +1220,20 @@ function dashedLine(x1,y1,x2,y2,dashArr){
         }
     }
     ctx.stroke();  // stroke
+}
+
+function drawError(){
+    if(err_msg_index == 0) {
+        return
+    }
+    if(err_msg_index == 1) {
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'red';
+        ctx.fillText("CANNOT SWAP INCOMPATIBLE BODY PARTS",50, 50);
+    }
+
+    if(err_count==10) {
+        err_msg_index = 0
+        err_count = 0
+    }
 }

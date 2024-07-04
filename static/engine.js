@@ -1231,6 +1231,7 @@ function drawError(){
         ctx.font = '11px monospace';
         ctx.fillStyle = 'red';
         ctx.fillText("CANNOT SWAP INCOMPATIBLE BODY PARTS",50, 50);
+        err_count = err_count + 1
     }
 
     if(err_count==10) {

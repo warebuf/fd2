@@ -920,7 +920,7 @@ function drawBench() {
 
         let x = 60
         let y1 = 350
-        let x_offset_2 = 375
+        let x_offset_2 = 300
 
 
         ctx.font = '11px monospace';

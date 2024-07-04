@@ -885,7 +885,10 @@ function drawBench() {
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            if((i >= h_index) && (i < h_index+5)) {
+            if((second_index==true)&&(x_index_2==0)&&(i==y_index_2)) {
+                ctx.fillStyle = 'yellow';
+            }
+            else if((i >= h_index) && (i < h_index+5)) {
                 ctx.fillStyle = 'red';
             } else{
                 ctx.fillStyle = 'green';

@@ -66,9 +66,16 @@
 
                     if(second_index==false) {
                         second_index=true
-                        x_index_2=x_index_1
-                        y_index_2=y_index_1
+
                         screen_index_2 = screen_index
+                        x_index_2=x_index_1
+                        if(screen_index==1) {
+                            if(x_index_1==0) {y_index_2=y_index_1+h_index}
+                            else if(x_index_1==1){y_index_2=y_index_1+l_index}
+                            else if(x_index_1==2){y_index_2=y_index_1+r_index}
+                            else if(x_index_1==3){y_index_2=y_index_1+b_index}
+                        } else {y_index_2=y_index_1}
+
                     }
                     else if(second_index==true){
 
@@ -81,14 +88,7 @@
                                 y1 = y_index_1
                             }
 
-                            let y2 = ""
-                            if(screen_index_2==1) {
-                                y2 = y_index_2+h_index
-                            } else {
-                                y2 = y_index_2
-                            }
-
-                            s = screen_index + ';' + x_index_1 + ';' + y1 + ';' + screen_index_2 + ';' + x_index_2 + ';' + y2
+                            s = screen_index + ';' + x_index_1 + ';' + y1 + ';' + screen_index_2 + ';' + x_index_2 + ';' + y_index_2
                             socket.send(JSON.stringify({ "Event": "swapRequest", "Message": s }))
                             console.log("sent swapreq")
                         } else{

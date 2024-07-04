@@ -58,7 +58,7 @@ function anime() {
     } else if (match_data.length > 0) {
         drawPos()
         drawState()
-        drawStats()
+        //drawStats()
         drawTurn()
         drawUnitsOfTime()
         drawLog()

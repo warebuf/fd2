@@ -442,8 +442,8 @@ func createMatch(pl *permission_list) *match {
 					CRT:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
-					Use_current: rand.Intn(99) + 1,
-					Use_outof:   rand.Intn(99) + 1,
+					Use_current: 0,
+					Use_outof:   0,
 					Weight:      rand.Intn(99) + 1,
 				}
 				rarm := &arm{
@@ -457,9 +457,9 @@ func createMatch(pl *permission_list) *match {
 					CRT:         rand.Intn(99) + 1,
 					CD:          rand.Intn(99) + 1,
 					CLU:         rand.Intn(99) + 1,
-					Use_current: rand.Intn(99) + 1,
-					Use_outof:   rand.Intn(99) + 1,
-					Weight:      1,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      rand.Intn(99) + 1,
 				}
 				btm := &bottom{
 					SERIAL: 0,
@@ -473,8 +473,8 @@ func createMatch(pl *permission_list) *match {
 					CLU:         rand.Intn(99) + 1,
 					SPD:         rand.Intn(99) + 1,
 					DOG:         rand.Intn(99) + 1,
-					Use_current: rand.Intn(99) + 1,
-					Use_outof:   rand.Intn(99) + 1,
+					Use_current: 0,
+					Use_outof:   0,
 					Weight:      rand.Intn(99) + 1,
 				}
 

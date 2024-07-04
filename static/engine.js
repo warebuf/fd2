@@ -58,7 +58,7 @@ function anime() {
     } else if (match_data.length > 0) {
         drawPos()
         drawState()
-        //drawStats()
+        drawStats()
         drawTurn()
         drawUnitsOfTime()
         drawLog()
@@ -528,7 +528,6 @@ function drawStats() {
                 ctx.fillText(state[i][j][k].L.DEF, a2 +(25*3), ((i+j)*115) + y1-3 + (k*20)) // L DEF
                 ctx.fillText(state[i][j][k].L.ACC, a2 +(25*4), ((i+j)*115) + y1-3 + (k*20)) // L ACC
                 ctx.fillText(state[i][j][k].L.CRT, a2 +(25*5), ((i+j)*115) + y1-3 + (k*20)) // L CRIT
-                ctx.fillText(state[i][j][k].L.MOB, a2 +(25*6), ((i+j)*115) + y1-3 + (k*20)) // L MOBI
                 ctx.fillText(state[i][j][k].L.CD, a2 +(25*7), ((i+j)*115) + y1-3 + (k*20)) // L CD
                 ctx.fillText(state[i][j][k].L.CLU, a2 +(25*8), ((i+j)*115) + y1-3 + (k*20)) // L CLU
                 ctx.fillText(state[i][j][k].L.Use_current+"/"+state[i][j][k].L.Use_outof, a2 +(25*9), ((i+j)*115) + y1-3 + (k*20)) // L USE
@@ -541,7 +540,6 @@ function drawStats() {
                 ctx.fillText(state[i][j][k].R.DEF, a2 +(25*3), ((i+j)*115) + y1+7 + (k*20)) // R DEF
                 ctx.fillText(state[i][j][k].R.ACC, a2 +(25*4), ((i+j)*115) + y1+7 + (k*20)) // R ACC
                 ctx.fillText(state[i][j][k].R.CRT, a2 +(25*5), ((i+j)*115) + y1+7 + (k*20)) // R CRIT
-                ctx.fillText(state[i][j][k].R.MOB, a2 +(25*6), ((i+j)*115) + y1+7 + (k*20)) // R MOBI
                 ctx.fillText(state[i][j][k].R.CD, a2 +(25*7), ((i+j)*115) + y1+7 + (k*20)) // R CD
                 ctx.fillText(state[i][j][k].R.CLU, a2 +(25*8), ((i+j)*115) + y1+7 + (k*20)) // R CLU
                 ctx.fillText(state[i][j][k].R.Use_current+"/"+state[i][j][k].R.Use_outof, a2 +(25*9), ((i+j)*115) + y1+7 + (k*20)) // R USE
@@ -554,7 +552,6 @@ function drawStats() {
                 ctx.fillText(state[i][j][k].B.DEF, a3 +(25*3), ((i+j)*115) + y1+2 + (k*20)) // LEG DEF
                 ctx.fillText(state[i][j][k].B.ACC, a3 +(25*4), ((i+j)*115) + y1+2 + (k*20)) // LEG ACC
                 ctx.fillText(state[i][j][k].B.CRT, a3 +(25*5), ((i+j)*115) + y1+2 + (k*20)) // LEG CRIT
-                ctx.fillText(state[i][j][k].B.MOB, a3 +(25*6), ((i+j)*115) + y1+2 + (k*20)) // LEG MOBI
                 ctx.fillText(state[i][j][k].B.CD, a3 +(25*7), ((i+j)*115) + y1+2 + (k*20)) // LEG CD
                 ctx.fillText(state[i][j][k].B.CLU, a3 +(25*8), ((i+j)*115) + y1+2 + (k*20)) // LEG  CLU
                 ctx.fillText(state[i][j][k].B.Use_current+"/"+state[i][j][k].B.Use_outof, a3 +(25*9), ((i+j)*115) + y1+2 + (k*20)) // LEG USE

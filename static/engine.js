@@ -1192,7 +1192,7 @@ function drawSelect() {
         ctx.beginPath();
         ctx.lineWidth = "1";
         ctx.strokeStyle = "red";
-        ctx.rect(72+(225*x_index_2), 450+(70*y_index_2), 170, 55);
+        ctx.rect(72+(225*x_index_2), 440+(70*y_index_2), 170, 55);
         ctx.stroke();
     }
 

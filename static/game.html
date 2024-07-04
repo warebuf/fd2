@@ -85,7 +85,13 @@
                 break;
             case "ArrowUp":
                 console.log("ArrowUp")
-                if(match_data.length>0){
+                if(phase=="CHARACTER SELECTION") {
+                    y_index = y_index -1
+                    if(y_index < 0) {
+                        y_index = 3
+                    }
+                }
+                else if(match_data.length>0){
 
                     // begin iterating through all the heros, check if the hero is at Position 0,
                     // if he is, then break, otherwise keep iterating until you do a full rotation
@@ -123,7 +129,13 @@
                 break;
             case "ArrowDown":
                 console.log("ArrowDown")
-                if(match_data.length>0){
+                if(phase=="CHARACTER SELECTION") {
+                    y_index = y_index + 1
+                    if(y_index > 3) {
+                        y_index = 0
+                    }
+                }
+                else if(match_data.length>0){
 
                     found = false;
                     for(i=0;i<state.length;i++) {

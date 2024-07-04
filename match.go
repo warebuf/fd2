@@ -281,7 +281,7 @@ func m_read(m *match_socket) {
 							temp := m.m.benchH[tp_index][unit_index_1]
 							unit_index_2, _ := strconv.Atoi(indices[5])
 							m.m.benchH[tp_index][unit_index_1] = m.m.benchH[tp_index][unit_index_2]
-							m.m.benchH[tp_index][unit_index_1] = temp
+							m.m.benchH[tp_index][unit_index_2] = temp
 						}
 
 					} else if indices[1] == "1" { //larm

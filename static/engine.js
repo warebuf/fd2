@@ -935,7 +935,7 @@ function drawBench() {
         for (let i=0;i<bench_l[key].length;i++) {
 
             // ALL HEAD RELATED BENCH
-            s   = "H000000"
+            s   = "L000000"
             name = bench_l[key][i]["NAME"]
             HP  = "HP:  " + bench_l[key][i]["HP"]
             ATK = "ATK: " + bench_l[key][i]["ATK"]
@@ -1011,7 +1011,7 @@ function drawBench() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(42 + x_offset_3, y1 + 72, ctx.measureText("BENCH (RIGHT ARM)").width, 1);
+        ctx.fillRect(30 + x_offset_3, y1 + 72, ctx.measureText("BENCH (RIGHT ARM)").width, 1);
         ctx.fillText("BENCH (RIGHT ARM)",80 + x_offset_3, y1 + 70);
 
 
@@ -1019,8 +1019,7 @@ function drawBench() {
 
         for (let i=0;i<bench_r[key].length;i++) {
 
-            // ALL HEAD RELATED BENCH
-            s   = "H000000"
+            s   = "R000000"
             name = bench_r[key][i]["NAME"]
             HP  = "HP:  " + bench_r[key][i]["HP"]
             ATK = "ATK: " + bench_r[key][i]["ATK"]
@@ -1104,7 +1103,6 @@ function drawBench() {
 
         for (let i=0;i<bench_b[key].length;i++) {
 
-            // ALL HEAD RELATED BENCH
             s   = "B000000"
             name = bench_b[key][i]["NAME"]
             HP  = "HP:  " + bench_b[key][i]["HP"]

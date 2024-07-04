@@ -61,6 +61,18 @@
     document.onkeydown = function (e) {
 
         switch (e.key) {
+            case "Enter":
+                if(phase=="CHARACTER SELECTION"){
+
+                    if(second_index==false) {
+                        second_index=true
+                        x_index_2=x_index_1
+                        y_index_2=y_index_1
+                    }
+                    else if(second_index==true){
+                        second_index=false
+                    }
+                }
             case "ArrowLeft":
                 console.log("ArrowLeft")
 
@@ -70,8 +82,6 @@
                     if(x_index_1 < 0) {
                         x_index_1 = 3
                     }
-
-
                 }
 
                 break;
@@ -411,7 +421,7 @@
     var screen_index = 0
     var x_index_1 = 0
     var y_index_1 = 0
-
+    var second_index = false
     var x_index_2 = 0
     var y_index_2 = 0
 

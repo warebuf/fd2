@@ -1188,7 +1188,13 @@ function drawSelect() {
     ctx.rect(72+(225*x_index_1), 90+(60*y_index_1)+(350*screen_index), 170, 55);
     ctx.stroke();
 
-
+    if(second_index==true) {
+        ctx.beginPath();
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "pink";
+        ctx.rect(72+(225*x_index_2), 90+(60*y_index_2)+(350*screen_index), 170, 55);
+        ctx.stroke();
+    }
 
 }
 

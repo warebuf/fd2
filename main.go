@@ -167,27 +167,6 @@ type socket struct {
 	open bool
 }
 
-type message struct {
-	Name    string
-	Message string
-	When    time.Time
-	Event   string
-	MatchID uuid.UUID
-
-	Phase string
-
-	// game state stuff
-	TCH  [][][]string
-	Turn string
-
-	// should add the user's TCH
-	Team_index   int
-	Client_index int
-	Hero_index   int
-
-	Atk []string
-}
-
 // Global Variables - Utility
 var store *sessions.CookieStore // used to create and decrypt cookies
 var port string

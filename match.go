@@ -79,6 +79,27 @@ type match_socket struct {
 	open bool
 }
 
+type message struct {
+	Name    string
+	Message string
+	When    time.Time
+	Event   string
+	MatchID uuid.UUID
+
+	Phase string
+
+	// game state stuff
+	TCH  [][][]string
+	Turn string
+
+	// should add the user's TCH
+	Team_index   int
+	Client_index int
+	Hero_index   int
+
+	Atk []string
+}
+
 func m_write(m *match_socket) {
 	for msg := range m.incoming_message { // special trait of a channel, will block until something is in the channel or it is closed
 		if err := m.socket.WriteJSON(msg); err != nil {
@@ -1203,20 +1224,29 @@ func game_over_check(state [][][]*hero) bool {
 func (m *match) sharebench() {
 	fmt.Println("sharebench")
 
-	marshalled, _ := json.Marshal(m.benchH)
+	marshalledH, _ := json.Marshal(m.benchH)
+	marshalledL, _ := json.Marshal(m.benchL)
+	marshalledR, _ := json.Marshal(m.benchR)
+	marshalledB, _ := json.Marshal(m.benchB)
 
 	// send updated positions to everyone
 	for _, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "bench", Message: string(marshalledH), Team_index: 0, MatchID: m.mid}:
+				j.incoming_message <- &message{Event: "bench", Message: string(marshalledL), Team_index: 1, MatchID: m.mid}
+				j.incoming_message <- &message{Event: "bench", Message: string(marshalledR), Team_index: 2, MatchID: m.mid}
+				j.incoming_message <- &message{Event: "bench", Message: string(marshalledB), Team_index: 3, MatchID: m.mid}
 			}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "bench", Message: string(marshalledH), Team_index: 0, MatchID: m.mid}:
+				j.incoming_message <- &message{Event: "bench", Message: string(marshalledL), Team_index: 1, MatchID: m.mid}
+				j.incoming_message <- &message{Event: "bench", Message: string(marshalledR), Team_index: 2, MatchID: m.mid}
+				j.incoming_message <- &message{Event: "bench", Message: string(marshalledB), Team_index: 3, MatchID: m.mid}
 			}
 		}
 	}

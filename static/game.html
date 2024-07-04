@@ -39,7 +39,6 @@
     </style>
 </head>
 
-
 <body>
 
 <div id="container">
@@ -64,9 +63,25 @@
         switch (e.key) {
             case "ArrowLeft":
                 console.log("ArrowLeft")
+
+                if(phase=="CHARACTER SELECTION"){
+                    y_index = y_index -1
+                    if(y_index < 0) {
+                        y_index = 3
+                    }
+                }
+
                 break;
             case "ArrowRight":
                 console.log("ArrowRight")
+
+                if(phase=="CHARACTER SELECTION"){
+                    y_index = y_index + 1
+                    if(y_index > 3) {
+                        y_index = 0
+                    }
+                }
+
                 break;
             case "ArrowUp":
                 console.log("ArrowUp")
@@ -368,8 +383,8 @@
     var r_index = 0
     var b_index = 0
 
-    var l_r_index = 0
-    var u_d_index = 0
+    var x_index = 0
+    var y_index = 0
     var screen_index = 0
 
     // datasets

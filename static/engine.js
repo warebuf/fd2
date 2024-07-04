@@ -1184,8 +1184,8 @@ function drawSelect() {
 
     ctx.beginPath();
     ctx.lineWidth = "1";
-    ctx.strokeStyle = "yellow";
-    ctx.rect(72, 90, 170, 55);
+    ctx.strokeStyle = "red";
+    ctx.rect(72+(225*x_index), 90+(75*y_index), 170, 55);
     ctx.stroke();
 
 }

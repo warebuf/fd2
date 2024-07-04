@@ -132,7 +132,7 @@ func m_read(m *match_socket) {
 			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
 
 			if msg.Event == "swapRequest" {
-				fmt.Println('ASD')
+				fmt.Println("asd")
 			}
 
 			// user requests to create match

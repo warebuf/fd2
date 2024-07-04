@@ -1178,6 +1178,8 @@ function drawBench() {
     }
 
     ctx.beginPath();
+    ctx.lineWidth = "4";
+    ctx.strokeStyle = "green";
     ctx.rect(20, 20, 150, 100);
     ctx.stroke();
 

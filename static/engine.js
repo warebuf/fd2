@@ -921,7 +921,7 @@ function drawBench() {
 
         let key = my_team + ';' + my_int
 
-        for (let i=0;i<bench_l[key].length;i++) {
+        for (let i=0+l_index;i<bench_l[key].length;i++) {
 
             // ALL HEAD RELATED BENCH
             s   = "L000000"
@@ -949,21 +949,21 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset_2,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.fillRect(x + x_offset_2,y1+ 94 + (60*(i-l_index)),ctx.measureText(name).width,ctx.measureText('M').width);
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0 + x_offset_2, y1+ 100 + (60*i));
-            ctx.fillText(name,x*1 + x_offset_2, y1+ 100 + (60*i));
-            ctx.fillText(HP,x*0 + x_offset_2, y1+ 110 + (60*i));
-            ctx.fillText(ATK,x*1 + x_offset_2, y1+ 110 + (60*i));
-            ctx.fillText(DEF,x*2 + x_offset_2, y1+ 110 + (60*i));
-            ctx.fillText(ACC,x*0 + x_offset_2, y1+ 120 + (60*i));
-            ctx.fillText(CRT,x*1 + x_offset_2, y1+ 120 + (60*i));
-            ctx.fillText(CD,x*2 + x_offset_2, y1+ 120 + (60*i));
-            ctx.fillText(CLU,x*0 + x_offset_2, y1+ 130 + (60*i));
-            ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*i));
-            ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*i));
+            ctx.fillText(s,x*0 + x_offset_2, y1+ 100 + (60*(i-l_index)));
+            ctx.fillText(name,x*1 + x_offset_2, y1+ 100 + (60*(i-l_index)));
+            ctx.fillText(HP,x*0 + x_offset_2, y1+ 110 + (60*(i-l_index)));
+            ctx.fillText(ATK,x*1 + x_offset_2, y1+ 110 + (60*(i-l_index)));
+            ctx.fillText(DEF,x*2 + x_offset_2, y1+ 110 + (60*(i-l_index)));
+            ctx.fillText(ACC,x*0 + x_offset_2, y1+ 120 + (60*(i-l_index)));
+            ctx.fillText(CRT,x*1 + x_offset_2, y1+ 120 + (60*(i-l_index)));
+            ctx.fillText(CD,x*2 + x_offset_2, y1+ 120 + (60*(i-l_index)));
+            ctx.fillText(CLU,x*0 + x_offset_2, y1+ 130 + (60*(i-l_index)));
+            ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*(i-l_index)));
+            ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*(i-l_index)));
 
             if(i == 4) {i = bench_l[key].length} // only show 5 parts
         }
@@ -992,7 +992,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_2, y1+100);
+            ctx.fillText("▲",80 + x_offset_2, y1+85);
         }
     }
     if((bench_r!=null) && (my_team != -1) && (my_int != -1)) {

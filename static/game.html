@@ -65,10 +65,19 @@
                 console.log("ArrowLeft")
 
                 if(phase=="CHARACTER SELECTION"){
-                    x_index = x_index -1
-                    if(x_index < 0) {
-                        x_index = 3
+
+                    if(screen_index==0) {
+                        x_index_1 = x_index_1 -1
+                        if(x_index_1 < 0) {
+                            x_index_1 = 3
+                        }
+                    } else if(screen_index==1) {
+                        x_index_2 = x_index_2 -1
+                        if(x_index_2 < 0) {
+                            x_index_2 = 3
+                        }
                     }
+
                 }
 
                 break;
@@ -76,9 +85,16 @@
                 console.log("ArrowRight")
 
                 if(phase=="CHARACTER SELECTION"){
-                    x_index = x_index + 1
-                    if(x_index > 3) {
-                        x_index = 0
+                    if(screen_index==0) {
+                        x_index_1 = x_index_1 + 1
+                        if(x_index_1 > 3) {
+                            x_index_1 = 0
+                        }
+                    } else if(screen_index==1) {
+                        x_index_2 = x_index_2 + 1
+                        if(x_index_2 > 3) {
+                            x_index_2 = 0
+                        }
                     }
                 }
 
@@ -86,10 +102,22 @@
             case "ArrowUp":
                 console.log("ArrowUp")
                 if(phase=="CHARACTER SELECTION") {
-                    y_index = y_index - 1
-                    if(y_index < 0) {
-                        y_index = 4
+                    if(screen_index==0) {
+                        y_index_1 = y_index_1 - 1
+                        if(y_index_1 < 0) {
+                            screen_index=1
+                            y_index_2=4
+                            x_index_2=x_index_1
+                        }
+                    } else if(screen_index==1) {
+                        y_index_2 = y_index_2 - 1
+                        if(y_index_2 < 0) {
+                            screen_index=0
+                            y_index_1=4
+                            x_index_1=x_index_2
+                        }
                     }
+
                 }
                 else if(match_data.length>0){
 
@@ -130,10 +158,23 @@
             case "ArrowDown":
                 console.log("ArrowDown")
                 if(phase=="CHARACTER SELECTION") {
-                    y_index = y_index + 1
-                    if(y_index > 4) {
-                        y_index = 0
+
+                    if(screen_index==0) {
+                        y_index_1 = y_index_1 + 1
+                        if(y_index_1 > 4) {
+                            screen_index=1
+                            y_index_2=0
+                            x_index_2=x_index_1
+                        }
+                    } else if(screen_index==1) {
+                        y_index_2 = y_index_2 + 1
+                        if(y_index_2 > 4) {
+                            screen_index=0
+                            y_index_1=0
+                            x_index_1=x_index_2
+                        }
                     }
+
                 }
                 else if(match_data.length>0){
 
@@ -395,9 +436,11 @@
     var r_index = 0
     var b_index = 0
 
-    var x_index = 0
-    var y_index = 0
     var screen_index = 0
+    var x_index_1 = 0
+    var y_index_1 = 0
+    var x_index_2 = 0
+    var y_index_2 = 0
 
     // datasets
     var match_data = new Array();

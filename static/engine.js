@@ -755,7 +755,7 @@ function drawStarters() {
                         parseInt(state[my_team][my_int][i].R.CRT) +
                         parseInt(state[my_team][my_int][i].R.CD) +
                         parseInt(state[my_team][my_int][i].R.CLU)
-                    ) / 8)
+                    ) / 7)
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
@@ -1182,11 +1182,20 @@ function drawBench() {
 
 function drawSelect() {
 
-    ctx.beginPath();
-    ctx.lineWidth = "1";
-    ctx.strokeStyle = "red";
-    ctx.rect(72+(225*x_index), 90+(60*y_index), 170, 55);
-    ctx.stroke();
+    if(screen_index==0) {
+        ctx.beginPath();
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "red";
+        ctx.rect(72+(225*x_index_1), 90+(60*x_index_1), 170, 55);
+        ctx.stroke();
+    } else if(screen_index==1) {
+        ctx.beginPath();
+        ctx.lineWidth = "1";
+        ctx.strokeStyle = "red";
+        ctx.rect(772+(225*x_index_2), 790+(60*x_index_2), 170, 55);
+        ctx.stroke();
+    }
+
 
 }
 

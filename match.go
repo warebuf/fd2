@@ -259,6 +259,7 @@ func m_read(m *match_socket) {
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_1, _ := strconv.Atoi(indices[2])
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H // same as b
+							fmt.Println(temp)
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_2, _ := strconv.Atoi(indices[5])
 							m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.benchH[tp_index][unit_index_2]

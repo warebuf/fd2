@@ -1001,6 +1001,91 @@ function drawBench() {
             ctx.fillText("▲",80 + x_offset_2, y1+200);
         }
     }
+    if((bench_r!=null) && (my_team != -1) && (my_int != -1)) {
+
+        let x = 60
+        let y1 = 350
+        let x_offset_3 = 300
+
+
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+        ctx.fillRect(42 + x_offset_3, y1 + 72, ctx.measureText("BENCH (RIGHT ARM)").width, 1);
+        ctx.fillText("BENCH (RIGHT ARM)",80 + x_offset_3, y1 + 70);
+
+
+        let key = my_team + ';' + my_int
+
+        for (let i=0;i<bench_r[key].length;i++) {
+
+            // ALL HEAD RELATED BENCH
+            s   = "H000000"
+            name = bench_r[key][i]["NAME"]
+            HP  = "HP:  " + bench_r[key][i]["HP"]
+            ATK = "ATK: " + bench_r[key][i]["ATK"]
+            DEF = "DEF: " + bench_r[key][i]["DEF"]
+            ACC = "ACC: " + bench_r[key][i]["ACC"]
+            CRT = "CRT: " + bench_r[key][i]["CRT"]
+            CD  = "CD:  " + bench_r[key][i]["CD"]
+            CLU = "CLU: " + bench_r[key][i]["CLU"]
+            W   = "Weight: " + bench_r[key][i]["Weight"]
+            AVG = "AVG: " +
+                Math.floor(
+                    (parseInt(bench_r[key][i]["HP"])+
+                        parseInt(bench_r[key][i]["ATK"])+
+                        parseInt(bench_r[key][i]["DEF"]) +
+                        parseInt(bench_r[key][i]["ACC"]) +
+                        parseInt(bench_r[key][i]["CRT"]) +
+                        parseInt(bench_r[key][i]["CD"]) +
+                        parseInt(bench_r[key][i]["CLU"])
+                    ) / 7)
+
+
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x + x_offset_3,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+
+            ctx.font = '11px monospace';
+            ctx.fillStyle = 'white';
+            ctx.fillText(s,x*0 + x_offset_3, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1 + x_offset_3, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0 + x_offset_3, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1 + x_offset_3, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2 + x_offset_3, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0 + x_offset_3, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1 + x_offset_3, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset_3, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset_3, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0 + x_offset_3, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2 + x_offset_3, y1+ 140 + (60*i));
+
+            if(i == 4) {i = bench_r[key].length} // only show 5 parts
+        }
+
+        for(let i = 0; i<bench_r[key].length;i++){
+            let a = (i%5) * 5
+            let b = Math.floor(i/5)*5
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'green';
+            ctx.fillRect(70 + a + x_offset_3,775+b,3,3);
+        }
+
+        if(h_index + 5 < bench_r[key].length) {
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'white';
+            ctx.font = '11px monospace';
+            ctx.fillText("▼",80 + x_offset_3, y1+400);
+        }
+        if(h_index > 0) {
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'white';
+            ctx.font = '11px monospace';
+            ctx.fillText("▲",80 + x_offset_3, y1+200);
+        }
+    }
 
 
 }

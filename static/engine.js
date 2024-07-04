@@ -1176,7 +1176,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_4, y1+200);
+            ctx.fillText("▲",80 + x_offset_4, y1+100);
         }
     }
 

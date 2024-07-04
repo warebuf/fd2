@@ -859,7 +859,7 @@ function drawBench() {
 
             ctx.textAlign = "left";
             ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+            ctx.fillRect(x + x_offset,y1+ 94 + (60*(i-h_index)),ctx.measureText(name).width,ctx.measureText('M').width);
 
             ctx.font = '11px monospace';
             ctx.fillStyle = 'white';

@@ -1112,6 +1112,9 @@ function drawBench() {
             CRT = "CRT: " + bench_b[key][i]["CRT"]
             CD  = "CD:  " + bench_b[key][i]["CD"]
             CLU = "CLU: " + bench_b[key][i]["CLU"]
+            SPD = "SPD: " + bench_b[key][i]["SPD"]
+            DOG = "DOG: " + bench_b[key][i]["DOG"]
+
             W   = "Weight: " + bench_b[key][i]["Weight"]
             AVG = "AVG: " +
                 Math.floor(
@@ -1121,8 +1124,10 @@ function drawBench() {
                         parseInt(bench_b[key][i]["ACC"]) +
                         parseInt(bench_b[key][i]["CRT"]) +
                         parseInt(bench_b[key][i]["CD"]) +
-                        parseInt(bench_b[key][i]["CLU"])
-                    ) / 7)
+                        parseInt(bench_b[key][i]["CLU"]) +
+                        parseInt(bench_b[key][i]["SPD"]) +
+                        parseInt(bench_b[key][i]["DOG"])
+                    ) / 9)
 
 
 
@@ -1141,6 +1146,8 @@ function drawBench() {
             ctx.fillText(CRT,x*1 + x_offset_4, y1+ 120 + (60*i));
             ctx.fillText(CD,x*2 + x_offset_4, y1+ 120 + (60*i));
             ctx.fillText(CLU,x*0 + x_offset_4, y1+ 130 + (60*i));
+            ctx.fillText(SPD,x*1 + x_offset_4, y1+ 130 + (60*i));
+            ctx.fillText(DOG,x*2 + x_offset_4, y1+ 130 + (60*i));
             ctx.fillText(W,x*0 + x_offset_4, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset_4, y1+ 140 + (60*i));
 

@@ -1182,19 +1182,12 @@ function drawBench() {
 
 function drawSelect() {
 
-    if(screen_index==0) {
-        ctx.beginPath();
-        ctx.lineWidth = "1";
-        ctx.strokeStyle = "red";
-        ctx.rect(72+(225*x_index_1), 90+(60*y_index_1), 170, 55);
-        ctx.stroke();
-    } else if(screen_index==1) {
-        ctx.beginPath();
-        ctx.lineWidth = "1";
-        ctx.strokeStyle = "red";
-        ctx.rect(72+(225*x_index_2), 440+(60*y_index_2), 170, 55);
-        ctx.stroke();
-    }
+    ctx.beginPath();
+    ctx.lineWidth = "1";
+    ctx.strokeStyle = "red";
+    ctx.rect(72+(225*x_index_1), 90+(60*y_index_1)+(350*screen_index), 170, 55);
+    ctx.stroke();
+
 
 
 }

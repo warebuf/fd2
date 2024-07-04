@@ -891,12 +891,17 @@ function drawBench() {
             if(i == 4) {i = bench_h[key].length} // only show 5 parts
         }
 
+        // draw dot legend
         for(let i = 0; i<bench_h[key].length;i++){
             let a = (i%5) * 5
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            ctx.fillStyle = 'green';
+            if((i >= h_index) && (i < h_index+5)) {
+                ctx.fillStyle = 'red';
+            } else{
+                ctx.fillStyle = 'green';
+            }
             ctx.fillRect(70 + a + x_offset,775+b,3,3);
         }
 
@@ -912,10 +917,6 @@ function drawBench() {
             ctx.font = '11px monospace';
             ctx.fillText("▲",80 + x_offset, y1+200);
         }
-
-        // ALL LARM RELATED BENCH
-
-
     }
     if((bench_l!=null) && (my_team != -1) && (my_int != -1)) {
 
@@ -980,22 +981,27 @@ function drawBench() {
             if(i == 4) {i = bench_l[key].length} // only show 5 parts
         }
 
+        // draw dot legend
         for(let i = 0; i<bench_l[key].length;i++){
             let a = (i%5) * 5
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            ctx.fillStyle = 'green';
+            if((i >= l_index) && (i < l_index+5)) {
+                ctx.fillStyle = 'red';
+            } else{
+                ctx.fillStyle = 'green';
+            }
             ctx.fillRect(70 + a + x_offset_2,775+b,3,3);
         }
 
-        if(h_index + 5 < bench_l[key].length) {
+        if(l_index + 5 < bench_l[key].length) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
             ctx.fillText("▼",80 + x_offset_2, y1+400);
         }
-        if(h_index > 0) {
+        if(l_index > 0) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
@@ -1019,7 +1025,6 @@ function drawBench() {
         let key = my_team + ';' + my_int
 
         for (let i=0;i<bench_r[key].length;i++) {
-
             s   = "R000000"
             name = bench_r[key][i]["NAME"]
             HP  = "HP:  " + bench_r[key][i]["HP"]
@@ -1064,22 +1069,27 @@ function drawBench() {
             if(i == 4) {i = bench_r[key].length} // only show 5 parts
         }
 
+        // draw dot legend
         for(let i = 0; i<bench_r[key].length;i++){
             let a = (i%5) * 5
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            ctx.fillStyle = 'green';
+            if((i >= r_index) && (i < r_index+5)) {
+                ctx.fillStyle = 'red';
+            } else{
+                ctx.fillStyle = 'green';
+            }
             ctx.fillRect(70 + a + x_offset_3,775+b,3,3);
         }
 
-        if(h_index + 5 < bench_r[key].length) {
+        if(r_index + 5 < bench_r[key].length) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
             ctx.fillText("▼",80 + x_offset_3, y1+400);
         }
-        if(h_index > 0) {
+        if(r_index > 0) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
@@ -1155,22 +1165,27 @@ function drawBench() {
             if(i == 4) {i = bench_b[key].length} // only show 5 parts
         }
 
+        // draw dot legend
         for(let i = 0; i<bench_b[key].length;i++){
             let a = (i%5) * 5
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            ctx.fillStyle = 'green';
+            if((i >= b_index) && (i < b_index+5)) {
+                ctx.fillStyle = 'red';
+            } else{
+                ctx.fillStyle = 'green';
+            }
             ctx.fillRect(70 + a + x_offset_4,775+b,3,3);
         }
 
-        if(h_index + 5 < bench_b[key].length) {
+        if(b_index + 5 < bench_b[key].length) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
             ctx.fillText("▼",80 + x_offset_4, y1+400);
         }
-        if(h_index > 0) {
+        if(b_index > 0) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';

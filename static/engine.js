@@ -831,7 +831,7 @@ function drawBench() {
 
         let key = my_team + ';' + my_int
 
-        for (let i=0;i<bench_h[key].length;i++) {
+        for (let i=0+h_index;i<bench_h[key].length;i++) {
 
             // ALL HEAD RELATED BENCH
             s   = "H000000"
@@ -902,7 +902,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset, y1+200);
+            ctx.fillText("▲",80 + x_offset, y1+100);
         }
     }
     if((bench_l!=null) && (my_team != -1) && (my_int != -1)) {
@@ -992,7 +992,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_2, y1+200);
+            ctx.fillText("▲",80 + x_offset_2, y1+100);
         }
     }
     if((bench_r!=null) && (my_team != -1) && (my_int != -1)) {
@@ -1080,7 +1080,7 @@ function drawBench() {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_3, y1+200);
+            ctx.fillText("▲",80 + x_offset_3, y1+100);
         }
     }
     if((bench_b!=null) && (my_team != -1) && (my_int != -1)) {

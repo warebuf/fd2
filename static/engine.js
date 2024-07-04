@@ -535,7 +535,7 @@ function drawStats() {
                 ctx.fillText(state[i][j][k].R.CRT, a2 +(25*5), ((i+j)*115) + y1+7 + (k*20)) // R CRIT
                 ctx.fillText(state[i][j][k].R.CD, a2 +(25*6), ((i+j)*115) + y1+7 + (k*20)) // R CD
                 ctx.fillText(state[i][j][k].R.CLU, a2 +(25*7), ((i+j)*115) + y1+7 + (k*20)) // R CLU
-                ctx.fillText(state[i][j][k].R.Use_current+"/"+state[i][j][k].R.Use_outof, a2 +(25*7), ((i+j)*115) + y1+7 + (k*20)) // R USE
+                ctx.fillText(state[i][j][k].R.Use_current+"/"+state[i][j][k].R.Use_outof, a2 +(25*8), ((i+j)*115) + y1+7 + (k*20)) // R USE
                 ctx.fillText(state[i][j][k].R.Weight, a2 +(25*9), ((i+j)*115) + y1+7 + (k*20)) // R WEIGHT
 
 

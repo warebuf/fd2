@@ -268,14 +268,12 @@ func m_read(m *match_socket) {
 							fmt.Println("GOTHERE3")
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.benchH[tp_index][unit_index_1]
 							team_index := m.m.uuid_to_team_int[m.u.uid].a
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.benchH[tp_index][unit_index_1] = &m.m.team_client_hero[team_index][player_index][unit_index_2].H
-							fmt.Println(m.m.benchH[tp_index][unit_index_1])
-							m.m.team_client_hero[team_index][player_index][unit_index_2].H = *temp
-							fmt.Println(m.m.benchH[tp_index][unit_index_1])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].H
+							m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.benchH[tp_index][unit_index_1]
+							m.m.benchH[tp_index][unit_index_1] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
 							fmt.Println("GOTHERE4")

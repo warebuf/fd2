@@ -129,7 +129,11 @@ func m_read(m *match_socket) {
 
 			msg.When = time.Now()
 			msg.Name = m.u.email
-			fmt.Println("Event: ", msg.Event, ", Message: ", msg.Message)
+			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
+
+			if msg.Event == "swapRequest" {
+				fmt.Println('ASD')
+			}
 
 			// user requests to create match
 			if msg.Event == "act" {
@@ -236,8 +240,8 @@ func m_read(m *match_socket) {
 			}
 
 		} else if msg.Event == "swapRequest" {
+			fmt.Println("recieved swapRequest")
 			indices := strings.Split(msg.Message, `;`)
-			fmt.Println("GOT")
 			if indices[1] == indices[4] {
 				fmt.Println("GOTHERE")
 				if indices[1] == "0" { //head

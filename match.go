@@ -244,7 +244,6 @@ func m_read(m *match_socket) {
 				if indices[1] == indices[4] {
 					if indices[1] == "0" { //head
 						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-							fmt.Println("GOTHERE1")
 							team_index := m.m.uuid_to_team_int[m.u.uid].a
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_1, _ := strconv.Atoi(indices[2])
@@ -253,7 +252,6 @@ func m_read(m *match_socket) {
 							m.m.team_client_hero[team_index][player_index][unit_index_1].H = m.m.team_client_hero[team_index][player_index][unit_index_2].H
 							m.m.team_client_hero[team_index][player_index][unit_index_2].H = temp
 						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-							fmt.Println("GOTHERE2")
 							team_index := m.m.uuid_to_team_int[m.u.uid].a
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_1, _ := strconv.Atoi(indices[2])
@@ -264,7 +262,6 @@ func m_read(m *match_socket) {
 							m.m.benchH[tp_index][unit_index_2] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-							fmt.Println("GOTHERE3")
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
 							team_index := m.m.uuid_to_team_int[m.u.uid].a
@@ -275,7 +272,6 @@ func m_read(m *match_socket) {
 							m.m.benchH[tp_index][unit_index_1] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-							fmt.Println("GOTHERE4")
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
 							temp := m.m.benchH[tp_index][unit_index_1]
@@ -285,8 +281,116 @@ func m_read(m *match_socket) {
 						}
 
 					} else if indices[1] == "1" { //larm
+						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.team_client_hero[team_index][player_index][unit_index_1].L = m.m.team_client_hero[team_index][player_index][unit_index_2].L
+							m.m.team_client_hero[team_index][player_index][unit_index_2].L = temp
+						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L // same as b
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.team_client_hero[team_index][player_index][unit_index_1].L = *m.m.benchL[tp_index][unit_index_2]
+							m.m.benchL[tp_index][unit_index_2] = &temp
+
+						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].L
+							m.m.team_client_hero[team_index][player_index][unit_index_2].L = *m.m.benchL[tp_index][unit_index_1]
+							m.m.benchL[tp_index][unit_index_1] = &temp
+
+						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.benchL[tp_index][unit_index_1]
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.benchL[tp_index][unit_index_1] = m.m.benchL[tp_index][unit_index_2]
+							m.m.benchL[tp_index][unit_index_2] = temp
+						}
 					} else if indices[1] == "2" { //rarm
+						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.team_client_hero[team_index][player_index][unit_index_1].R = m.m.team_client_hero[team_index][player_index][unit_index_2].R
+							m.m.team_client_hero[team_index][player_index][unit_index_2].R = temp
+						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R // same as b
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.team_client_hero[team_index][player_index][unit_index_1].R = *m.m.benchR[tp_index][unit_index_2]
+							m.m.benchR[tp_index][unit_index_2] = &temp
+
+						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].R
+							m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.benchR[tp_index][unit_index_1]
+							m.m.benchR[tp_index][unit_index_1] = &temp
+
+						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.benchR[tp_index][unit_index_1]
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.benchR[tp_index][unit_index_1] = m.m.benchR[tp_index][unit_index_2]
+							m.m.benchR[tp_index][unit_index_2] = temp
+						}
 					} else if indices[1] == "3" { //bottom
+						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.team_client_hero[team_index][player_index][unit_index_1].B = m.m.team_client_hero[team_index][player_index][unit_index_2].B
+							m.m.team_client_hero[team_index][player_index][unit_index_2].B = temp
+						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B // same as b
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.team_client_hero[team_index][player_index][unit_index_1].B = *m.m.benchB[tp_index][unit_index_2]
+							m.m.benchB[tp_index][unit_index_2] = &temp
+
+						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							team_index := m.m.uuid_to_team_int[m.u.uid].a
+							player_index := m.m.uuid_to_team_int[m.u.uid].b
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].B
+							m.m.team_client_hero[team_index][player_index][unit_index_2].B = *m.m.benchB[tp_index][unit_index_1]
+							m.m.benchB[tp_index][unit_index_1] = &temp
+
+						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+							unit_index_1, _ := strconv.Atoi(indices[2])
+							temp := m.m.benchB[tp_index][unit_index_1]
+							unit_index_2, _ := strconv.Atoi(indices[5])
+							m.m.benchB[tp_index][unit_index_1] = m.m.benchB[tp_index][unit_index_2]
+							m.m.benchB[tp_index][unit_index_2] = temp
+						}
 					}
 
 					// send updated bench, send updated starters

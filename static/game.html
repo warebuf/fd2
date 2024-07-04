@@ -89,7 +89,7 @@
                             }
 
                             s = screen_index + ';' + x_index_1 + ';' + y1 + ';' + screen_index_2 + ';' + x_index_2 + ';' + y2
-                            socket.send(JSON.stringify({ "Event": 'swapRequest', "Message": s }))
+                            socket.send(JSON.stringify({ "Event": "swapRequest", "Message": s }))
                         } else{
                             console.log("CANNOT SWAP INCOMPATIBLE BODY PARTS")
                         }

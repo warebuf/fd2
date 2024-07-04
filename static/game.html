@@ -359,7 +359,10 @@
     // the board state
     var state = []
 
-    var bench = null
+    var bench_h = null
+    var bench_l = null
+    var bench_r = null
+    var bench_b = null
     var h_index = 0
     var l_index = 0
     var r_index = 0
@@ -427,7 +430,11 @@
                     sent_time = Date.parse(msg.Message)
                 }
                 else if(msg.Event == 'bench'){
-                    bench = JSON.parse(msg.Message)
+                    if(msg.Team_index == 0) {bench_h = JSON.parse(msg.Message)}
+                    else if(msg.Team_index == 1) {bench_l = JSON.parse(msg.Message)}
+                    else if(msg.Team_index == 2) {bench_r = JSON.parse(msg.Message)}
+                    else if(msg.Team_index == 3) {bench_b = JSON.parse(msg.Message)}
+
                 }
                 else if(msg.Event == 'update_phase') {
                     if (phase=="null") {

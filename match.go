@@ -222,9 +222,7 @@ func m_read(m *match_socket) {
 				}
 
 				all_done := true
-				for i, j := range m.m.char_sel_done {
-
-					fmt.Println("a", i, j)
+				for _, j := range m.m.char_sel_done {
 
 					if j == false {
 						all_done = false

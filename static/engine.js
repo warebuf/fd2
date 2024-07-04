@@ -828,7 +828,7 @@ function drawStarters() {
 
 function drawBench() {
 
-    if((bench!=null) && (my_team != -1) && (my_int != -1)) {
+    if((bench_h!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x = 60
         let y1 = 350
@@ -843,28 +843,28 @@ function drawBench() {
 
         let key = my_team + ';' + my_int
 
-        for (let i=0;i<bench[key].length;i++) {
+        for (let i=0;i<bench_h[key].length;i++) {
 
             // ALL HEAD RELATED BENCH
             s   = "H000000"
-            name = bench[key][i]["NAME"]
-            HP  = "HP:  " + bench[key][i]["HP"]
-            ATK = "ATK: " + bench[key][i]["ATK"]
-            DEF = "DEF: " + bench[key][i]["DEF"]
-            ACC = "ACC: " + bench[key][i]["ACC"]
-            CRT = "CRT: " + bench[key][i]["CRT"]
-            CD  = "CD:  " + bench[key][i]["CD"]
-            CLU = "CLU: " + bench[key][i]["CLU"]
-            W   = "Weight: " + bench[key][i]["Weight"]
+            name = bench_h[key][i]["NAME"]
+            HP  = "HP:  " + bench_h[key][i]["HP"]
+            ATK = "ATK: " + bench_h[key][i]["ATK"]
+            DEF = "DEF: " + bench_h[key][i]["DEF"]
+            ACC = "ACC: " + bench_h[key][i]["ACC"]
+            CRT = "CRT: " + bench_h[key][i]["CRT"]
+            CD  = "CD:  " + bench_h[key][i]["CD"]
+            CLU = "CLU: " + bench_h[key][i]["CLU"]
+            W   = "Weight: " + bench_h[key][i]["Weight"]
             AVG = "AVG: " +
                 Math.floor(
-                    (parseInt(bench[key][i]["HP"])+
-                        parseInt(bench[key][i]["ATK"])+
-                        parseInt(bench[key][i]["DEF"]) +
-                        parseInt(bench[key][i]["ACC"]) +
-                        parseInt(bench[key][i]["CRT"]) +
-                        parseInt(bench[key][i]["CD"]) +
-                        parseInt(bench[key][i]["CLU"])
+                    (parseInt(bench_h[key][i]["HP"])+
+                        parseInt(bench_h[key][i]["ATK"])+
+                        parseInt(bench_h[key][i]["DEF"]) +
+                        parseInt(bench_h[key][i]["ACC"]) +
+                        parseInt(bench_h[key][i]["CRT"]) +
+                        parseInt(bench_h[key][i]["CD"]) +
+                        parseInt(bench_h[key][i]["CLU"])
                     ) / 7)
 
 
@@ -887,10 +887,10 @@ function drawBench() {
             ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
             ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
 
-            if(i == 4) {i = bench[key].length} // only show 5 parts
+            if(i == 4) {i = bench_h[key].length} // only show 5 parts
         }
 
-        for(let i = 0; i<bench[key].length;i++){
+        for(let i = 0; i<bench_h[key].length;i++){
             let a = (i%5) * 5
             let b = Math.floor(i/5)*5
 
@@ -899,7 +899,7 @@ function drawBench() {
             ctx.fillRect(70 + a + x_offset,775+b,3,3);
         }
 
-        if(h_index + 5 < bench[key].length) {
+        if(h_index + 5 < bench_h[key].length) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'white';
             ctx.font = '11px monospace';
@@ -915,6 +915,90 @@ function drawBench() {
         // ALL LARM RELATED BENCH
 
 
+    }
+    if((bench_l!=null) && (my_team != -1) && (my_int != -1)) {
+
+        let x = 60
+        let y1 = 350
+        let x_offset = 75
+
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+        ctx.fillRect(42 + x_offset, y1 + 72, ctx.measureText("BENCH (LEFT ARM)").width, 1);
+        ctx.fillText("BENCH (LEFT ARM)",80 + x_offset, y1 + 70);
+
+
+        let key = my_team + ';' + my_int
+
+        for (let i=0;i<bench_l[key].length;i++) {
+
+            // ALL HEAD RELATED BENCH
+            s   = "H000000"
+            name = bench_l[key][i]["NAME"]
+            HP  = "HP:  " + bench_l[key][i]["HP"]
+            ATK = "ATK: " + bench_l[key][i]["ATK"]
+            DEF = "DEF: " + bench_l[key][i]["DEF"]
+            ACC = "ACC: " + bench_l[key][i]["ACC"]
+            CRT = "CRT: " + bench_l[key][i]["CRT"]
+            CD  = "CD:  " + bench_l[key][i]["CD"]
+            CLU = "CLU: " + bench_l[key][i]["CLU"]
+            W   = "Weight: " + bench_l[key][i]["Weight"]
+            AVG = "AVG: " +
+                Math.floor(
+                    (parseInt(bench_l[key][i]["HP"])+
+                        parseInt(bench_l[key][i]["ATK"])+
+                        parseInt(bench_l[key][i]["DEF"]) +
+                        parseInt(bench_l[key][i]["ACC"]) +
+                        parseInt(bench_l[key][i]["CRT"]) +
+                        parseInt(bench_l[key][i]["CD"]) +
+                        parseInt(bench_l[key][i]["CLU"])
+                    ) / 7)
+
+
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'blue';
+            ctx.fillRect(x + x_offset,y1+ 94 + (60*i),ctx.measureText(name).width,ctx.measureText('M').width);
+
+            ctx.font = '11px monospace';
+            ctx.fillStyle = 'white';
+            ctx.fillText(s,x*0 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(name,x*1 + x_offset, y1+ 100 + (60*i));
+            ctx.fillText(HP,x*0 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(ATK,x*1 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*i));
+            ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CD,x*2 + x_offset, y1+ 120 + (60*i));
+            ctx.fillText(CLU,x*0 + x_offset, y1+ 130 + (60*i));
+            ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*i));
+            ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*i));
+
+            if(i == 4) {i = bench_l[key].length} // only show 5 parts
+        }
+
+        for(let i = 0; i<bench_l[key].length;i++){
+            let a = (i%5) * 5
+            let b = Math.floor(i/5)*5
+
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'green';
+            ctx.fillRect(70 + a + x_offset,775+b,3,3);
+        }
+
+        if(h_index + 5 < bench_l[key].length) {
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'white';
+            ctx.font = '11px monospace';
+            ctx.fillText("▼",80 + x_offset, y1+400);
+        }
+        if(h_index > 0) {
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'white';
+            ctx.font = '11px monospace';
+            ctx.fillText("▲",80 + x_offset, y1+200);
+        }
     }
 
 

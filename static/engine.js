@@ -1234,7 +1234,7 @@ function drawError(){
         err_count = err_count + 1
     }
 
-    if(err_count==10) {
+    if(err_count==25) {
         err_msg_index = 0
         err_count = 0
     }

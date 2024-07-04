@@ -129,7 +129,7 @@ func m_read(m *match_socket) {
 
 			msg.When = time.Now()
 			msg.Name = m.u.email
-			fmt.Println(msg.When, "message~", msg.Name, ", Event: ", msg.Event, ", Message: ", msg.Message)
+			fmt.Println("Event: ", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
 			if msg.Event == "act" {

@@ -239,7 +239,7 @@ func m_read(m *match_socket) {
 			indices := strings.Split(msg.Message, `;`)
 
 			if indices[1] == indices[4] {
-
+				fmt.Println("GOTHERE")
 				if indices[1] == "0" { //head
 					if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
 						fmt.Println("GOTHERE1")

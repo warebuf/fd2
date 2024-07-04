@@ -926,7 +926,7 @@ function drawBench() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(42 + x_offset_2, y1 + 72, ctx.measureText("BENCH (LEFT ARM)").width, 1);
+        ctx.fillRect(28 + x_offset_2, y1 + 72, ctx.measureText("BENCH (LEFT ARM)").width, 1);
         ctx.fillText("BENCH (LEFT ARM)",80 + x_offset_2, y1 + 70);
 
 
@@ -1011,7 +1011,7 @@ function drawBench() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(30 + x_offset_3, y1 + 72, ctx.measureText("BENCH (RIGHT ARM)").width, 1);
+        ctx.fillRect(28 + x_offset_3, y1 + 72, ctx.measureText("BENCH (RIGHT ARM)").width, 1);
         ctx.fillText("BENCH (RIGHT ARM)",80 + x_offset_3, y1 + 70);
 
 
@@ -1095,7 +1095,7 @@ function drawBench() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillRect(42 + x_offset_4, y1 + 72, ctx.measureText("BENCH (BOTTOM)").width, 1);
+        ctx.fillRect(38 + x_offset_4, y1 + 72, ctx.measureText("BENCH (BOTTOM)").width, 1);
         ctx.fillText("BENCH (BOTTOM)",80 + x_offset_4, y1 + 70);
 
 

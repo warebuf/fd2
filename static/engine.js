@@ -55,6 +55,7 @@ function anime() {
         drawBench()
         drawStarters()
         drawSelect()
+        drawError()
     } else if (match_data.length > 0) {
         drawPos()
         drawState()

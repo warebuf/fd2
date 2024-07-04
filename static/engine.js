@@ -54,6 +54,7 @@ function anime() {
         drawLog()
         drawBench()
         drawStarters()
+        drawSelect()
     } else if (match_data.length > 0) {
         drawPos()
         drawState()
@@ -1177,9 +1178,13 @@ function drawBench() {
         }
     }
 
+}
+
+function drawSelect() {
+
     ctx.beginPath();
-    ctx.lineWidth = "4";
-    ctx.strokeStyle = "green";
+    ctx.lineWidth = "1";
+    ctx.strokeStyle = "red";
     ctx.rect(20, 20, 150, 100);
     ctx.stroke();
 

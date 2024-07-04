@@ -1199,7 +1199,7 @@ function drawSelect() {
         } else {
 
             if(x_index_2==0) {
-                if((y_index_2<h_index+5) && (y_index_2>h_index)) {
+                if((y_index_2<h_index+5) && (y_index_2>=h_index)) {
                     ctx.beginPath();
                     ctx.lineWidth = "1";
                     ctx.strokeStyle = "pink";

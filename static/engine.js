@@ -965,7 +965,7 @@ function drawBench() {
             ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*(i-l_index)));
             ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*(i-l_index)));
 
-            if(i == 4) {i = bench_l[key].length} // only show 5 parts
+            if(i >= 4 + l_index) {i = bench_l[key].length} // only show 5 parts
         }
 
         // draw dot legend

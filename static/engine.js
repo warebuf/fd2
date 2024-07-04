@@ -1186,13 +1186,13 @@ function drawSelect() {
         ctx.beginPath();
         ctx.lineWidth = "1";
         ctx.strokeStyle = "red";
-        ctx.rect(72+(225*x_index_1), 90+(60*x_index_1), 170, 55);
+        ctx.rect(72+(225*x_index_1), 90+(60*y_index_1), 170, 55);
         ctx.stroke();
     } else if(screen_index==1) {
         ctx.beginPath();
         ctx.lineWidth = "1";
         ctx.strokeStyle = "red";
-        ctx.rect(772+(225*x_index_2), 790+(60*x_index_2), 170, 55);
+        ctx.rect(772+(225*x_index_2), 350+(70*y_index_2), 170, 55);
         ctx.stroke();
     }
 

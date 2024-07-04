@@ -1189,11 +1189,34 @@ function drawSelect() {
     ctx.stroke();
 
     if(second_index==true) {
-        ctx.beginPath();
-        ctx.lineWidth = "1";
-        ctx.strokeStyle = "pink";
-        ctx.rect(72+(225*x_index_2), 90+(60*y_index_2)+(350*screen_index_2), 170, 55);
-        ctx.stroke();
+
+        if(screen_index_2==0) {
+            ctx.beginPath();
+            ctx.lineWidth = "1";
+            ctx.strokeStyle = "pink";
+            ctx.rect(72+(225*x_index_2), 90+(60*y_index_2)+(350*screen_index_2), 170, 55);
+            ctx.stroke();
+        } else {
+
+            if(x_index_2==0) {
+                if((y_index_2<h_index+5) && (y_index_2>h_index)) {
+                    ctx.beginPath();
+                    ctx.lineWidth = "1";
+                    ctx.strokeStyle = "pink";
+                    ctx.rect(72+(225*x_index_2), 90+(60*y_index_2)+(350*screen_index_2), 170, 55);
+                    ctx.stroke();
+                }
+            } else if(x_index_2==1) {
+
+            } else if(x_index_2==2) {
+
+            } else if(x_index_2==3) {
+
+            }
+
+
+        }
+
     }
 
 }

@@ -308,7 +308,16 @@ func main() {
 func indexHandler(res http.ResponseWriter, req *http.Request) {
 	log.Println("/")
 	t := template.Must(template.ParseFiles(filepath.Join("static", "index.html")))
-	t.Execute(res, nil)
+	mottos := []string{
+		"Better than sex.",
+		"Est. 1882.",
+		"Bringing back the memories.",
+		"A sign of the times.",
+		"Love, Laugh, Live.",
+		"Style? Impetuous. Defense? Impregnable. Archtype? Ferocious.",
+	}
+
+	t.Execute(res, mottos[rand.Intn(len(mottos))])
 }
 
 func loginHandler(res http.ResponseWriter, req *http.Request) {

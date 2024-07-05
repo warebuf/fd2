@@ -643,6 +643,9 @@
                 }
                 else if(msg.Event == 'sel_finished') {
                     event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' finished unit selection.')
+                    if(event_log.length >= 25) {
+                        event_log.shift()
+                    }
                 }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")

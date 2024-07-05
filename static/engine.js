@@ -266,6 +266,9 @@ function drawPos() {
 
                         if ((draw_attacks==59) && (a2 < atk_data[animating_state].length)) {
                             event_log.push(atk_data[animating_state][a2])
+                            if(event_log.length >= 25) {
+                                event_log.shift()
+                            }
                             a2++
                         }
 
@@ -294,6 +297,9 @@ function drawPos() {
             total_units_of_time += parseFloat(t)
             total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
             event_log.push(t.toString() + " units of time has passed")
+            if(event_log.length >= 25) {
+                event_log.shift()
+            }
         }
     }
 

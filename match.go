@@ -500,7 +500,7 @@ func createMatch(pl *permission_list) *match {
 					SERIAL:      0,
 					NAME:        "DEFAULT",
 					HP:          100,
-					ATK:         0,
+					ATK:         10,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
@@ -516,7 +516,7 @@ func createMatch(pl *permission_list) *match {
 					LORR:   false,
 
 					HP:          100,
-					ATK:         0,
+					ATK:         10,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
@@ -532,7 +532,7 @@ func createMatch(pl *permission_list) *match {
 					LORR:   true,
 
 					HP:          100,
-					ATK:         0,
+					ATK:         10,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
@@ -547,7 +547,7 @@ func createMatch(pl *permission_list) *match {
 					NAME:   "DEFAULT",
 
 					HP:          100,
-					ATK:         0,
+					ATK:         10,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
@@ -1144,11 +1144,25 @@ func (m *match) run() {
 				a.Attacker[0] = list_of_attackers[i][0]
 				a.Attacker[1] = list_of_attackers[i][1]
 				a.Attacker[2] = list_of_attackers[i][2]
-				a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
-				a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
 
-				if len(a.Defender) > 0 {
-					atk_list = append(atk_list, a)
+				can_attack := false
+				if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 0) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].H.HP > 0) {
+					can_attack = true
+				} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 1) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].L.HP > 0) {
+					can_attack = true
+				} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 2) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].R.HP > 0) {
+					can_attack = true
+				} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 3) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].B.HP > 0) {
+					can_attack = true
+				}
+
+				if can_attack {
+					a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
+					a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
+
+					if len(a.Defender) > 0 {
+						atk_list = append(atk_list, a)
+					}
 				}
 
 				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Direction = 0
@@ -1337,7 +1351,17 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 	closest_k := def[0][2]
 
 	// attack first closest enemy
-	dmg := 100
+	atk_power := 0
+	if (state[atk_t][atk_u][atk_b].Move == 0) && (state[atk_t][atk_u][atk_b].H.HP > 0) {
+		atk_power = state[atk_t][atk_u][atk_b].H.ATK
+	} else if (state[atk_t][atk_u][atk_b].Move == 1) && (state[atk_t][atk_u][atk_b].L.HP > 0) {
+		atk_power = state[atk_t][atk_u][atk_b].L.ATK
+	} else if (state[atk_t][atk_u][atk_b].Move == 2) && (state[atk_t][atk_u][atk_b].R.HP > 0) {
+		atk_power = state[atk_t][atk_u][atk_b].R.ATK
+	} else if (state[atk_t][atk_u][atk_b].Move == 3) && (state[atk_t][atk_u][atk_b].B.HP > 0) {
+		atk_power = state[atk_t][atk_u][atk_b].B.ATK
+	}
+
 	hweight := int(0)
 	lweight := int(0)
 	rweight := int(0)
@@ -1361,15 +1385,31 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 	random_number := rand.Intn(hweight + lweight + rweight + bweight)
 
 	if random_number < hweight {
+		dmg := 0
+		if atk_power-state[closest_i][closest_j][closest_k].H.DEF-atk_power > 0 {
+			dmg = atk_power - state[closest_i][closest_j][closest_k].H.DEF
+		}
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
 		dmg_list = append(dmg_list, []string{"H;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else if random_number < hweight+lweight {
+		dmg := 0
+		if atk_power-state[closest_i][closest_j][closest_k].L.DEF-atk_power > 0 {
+			dmg = atk_power - state[closest_i][closest_j][closest_k].L.DEF
+		}
 		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
 		dmg_list = append(dmg_list, []string{"L;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else if random_number < hweight+lweight+rweight {
+		dmg := 0
+		if atk_power-state[closest_i][closest_j][closest_k].R.DEF-atk_power > 0 {
+			dmg = atk_power - state[closest_i][closest_j][closest_k].R.DEF
+		}
 		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
 		dmg_list = append(dmg_list, []string{"R;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else {
+		dmg := 0
+		if atk_power-state[closest_i][closest_j][closest_k].B.DEF-atk_power > 0 {
+			dmg = atk_power - state[closest_i][closest_j][closest_k].B.DEF
+		}
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
 		dmg_list = append(dmg_list, []string{"B;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	}

@@ -1156,6 +1156,8 @@ func (m *match) run() {
 					can_attack = true
 				}
 
+				fmt.Println("can_attack", can_attack)
+
 				if can_attack {
 					a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
 					a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
@@ -1389,6 +1391,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		if atk_power-state[closest_i][closest_j][closest_k].H.DEF-atk_power > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].H.DEF
 		}
+		fmt.Println("DMG", dmg)
 		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
 		dmg_list = append(dmg_list, []string{"H;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else if random_number < hweight+lweight {
@@ -1396,6 +1399,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		if atk_power-state[closest_i][closest_j][closest_k].L.DEF-atk_power > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].L.DEF
 		}
+		fmt.Println("DMG", dmg)
 		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
 		dmg_list = append(dmg_list, []string{"L;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else if random_number < hweight+lweight+rweight {
@@ -1403,6 +1407,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		if atk_power-state[closest_i][closest_j][closest_k].R.DEF-atk_power > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].R.DEF
 		}
+		fmt.Println("DMG", dmg)
 		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
 		dmg_list = append(dmg_list, []string{"R;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else {
@@ -1410,6 +1415,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		if atk_power-state[closest_i][closest_j][closest_k].B.DEF-atk_power > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].B.DEF
 		}
+		fmt.Println("DMG", dmg)
 		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
 		dmg_list = append(dmg_list, []string{"B;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	}

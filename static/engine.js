@@ -58,6 +58,7 @@ function anime() {
         drawSelect()
         drawError()
         drawTable1()
+        drawTable2()
     } else if (match_data.length > 0) {
         drawGrid()
         drawPos()

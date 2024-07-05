@@ -1388,7 +1388,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 
 	if random_number < hweight {
 		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].H.DEF-atk_power > 0 {
+		if atk_power-state[closest_i][closest_j][closest_k].H.DEF > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].H.DEF
 		}
 		fmt.Println("DMG", dmg)
@@ -1396,7 +1396,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		dmg_list = append(dmg_list, []string{"H;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else if random_number < hweight+lweight {
 		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].L.DEF-atk_power > 0 {
+		if atk_power-state[closest_i][closest_j][closest_k].L.DEF > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].L.DEF
 		}
 		fmt.Println("DMG", dmg)
@@ -1404,7 +1404,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		dmg_list = append(dmg_list, []string{"L;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else if random_number < hweight+lweight+rweight {
 		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].R.DEF-atk_power > 0 {
+		if atk_power-state[closest_i][closest_j][closest_k].R.DEF > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].R.DEF
 		}
 		fmt.Println("DMG", dmg)
@@ -1412,7 +1412,7 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 		dmg_list = append(dmg_list, []string{"R;100;" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
 	} else {
 		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].B.DEF-atk_power > 0 {
+		if atk_power-state[closest_i][closest_j][closest_k].B.DEF > 0 {
 			dmg = atk_power - state[closest_i][closest_j][closest_k].B.DEF
 		}
 		fmt.Println("DMG", dmg)

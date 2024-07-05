@@ -1325,6 +1325,8 @@ function drawTable() {
         ctx.fillText("L",x_offset+25, y_offset )
         ctx.fillText("R",x_offset+45, y_offset )
         ctx.fillText("B",x_offset+65, y_offset )
+        ctx.fillText("TOT",x_offset+85, y_offset )
+
         ctx.fillText("HP",x_offset-20, y_offset+20 )
         ctx.fillText("ATK",x_offset-20, y_offset+40 )
         ctx.fillText("DEF",x_offset-20, y_offset+60 )
@@ -1334,5 +1336,7 @@ function drawTable() {
         ctx.fillText("CLU",x_offset-20, y_offset+140 )
         ctx.fillText("SPD",x_offset-20, y_offset+160 )
         ctx.fillText("DOG",x_offset-20, y_offset+180 )
+        ctx.fillText("WGT",x_offset-20, y_offset+200 )
+
     }
 }

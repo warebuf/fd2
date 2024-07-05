@@ -1314,9 +1314,16 @@ function drawGrid() {
 
 function drawTable() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
+
+        let x_offset = 1000
+        let y_offset = 100
+
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillText("H",1000, 100 );
+        ctx.fillText("H",x_offset, y_offset+5 );
+        ctx.fillText("L",x_offset, y_offset+25 )
+        ctx.fillText("R",x_offset, y_offset+45 )
+        ctx.fillText("B",x_offset, y_offset+65 )
     }
 }

@@ -829,7 +829,6 @@ function drawBench() {
         ctx.fillRect(42 + x_offset, y1 + 72, ctx.measureText("BENCH (HEAD)").width, 1);
         ctx.fillText("BENCH (HEAD)",80 + x_offset, y1 + 70);
 
-
         let key = my_team + ';' + my_int
 
         for (let i=0+h_index;i<bench_h[key].length;i++) {
@@ -976,7 +975,10 @@ function drawBench() {
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            if((i >= l_index) && (i < l_index+5)) {
+            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==1)&&(i==y_index_2)) {
+                ctx.fillStyle = 'yellow';
+            }
+            else if((i >= l_index) && (i < l_index+5)) {
                 ctx.fillStyle = 'red';
             } else{
                 ctx.fillStyle = 'green';
@@ -1062,7 +1064,10 @@ function drawBench() {
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            if((i >= r_index) && (i < r_index+5)) {
+            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==2)&&(i==y_index_2)) {
+                ctx.fillStyle = 'yellow';
+            }
+            else if((i >= r_index) && (i < r_index+5)) {
                 ctx.fillStyle = 'red';
             } else{
                 ctx.fillStyle = 'green';
@@ -1156,7 +1161,10 @@ function drawBench() {
             let b = Math.floor(i/5)*5
 
             ctx.textAlign = "left";
-            if((i >= b_index) && (i < b_index+5)) {
+            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==3)&&(i==y_index_2)) {
+                ctx.fillStyle = 'yellow';
+            }
+            else if((i >= b_index) && (i < b_index+5)) {
                 ctx.fillStyle = 'red';
             } else{
                 ctx.fillStyle = 'green';

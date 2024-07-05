@@ -1391,41 +1391,42 @@ function drawTable1() {
         ctx.fillText(0 |(state[my_team][my_int][0].H.Weight+state[my_team][my_int][0].L.Weight+state[my_team][my_int][0].R.Weight+state[my_team][my_int][0].B.Weight)/4,x_offset+90, y_offset+200 )
 
         ctx.textAlign = "left";
-        ctx.fillText(ser,x_offset+110, y_offset+10 )
-        ctx.fillRect(x_offset+110,y_offset+20,ctx.measureText(state[my_team][my_int][0].H.NAME).width,ctx.measureText('M').width);
-        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset+110, y_offset+20 )
         let ser   = state[my_team][my_int][0].H.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser
         }
         ser = 'H' + ser
+        ctx.fillText(ser,x_offset+110, y_offset+10 )
+        ctx.fillRect(x_offset+110,y_offset+20,ctx.measureText(state[my_team][my_int][0].H.NAME).width,ctx.measureText('M').width);
+        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset+110, y_offset+20 )
 
-        ctx.fillText(ser,x_offset+110, y_offset+60 )
-        ctx.fillRect(x_offset+110,y_offset+70,ctx.measureText(state[my_team][my_int][0].L.NAME).width,ctx.measureText('M').width);
-        ctx.fillText(state[my_team][my_int][0].L.NAME,x_offset+110, y_offset+70 )
         ser   = state[my_team][my_int][0].L.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser
         }
         ser = 'L' + ser
+        ctx.fillText(ser,x_offset+110, y_offset+60 )
+        ctx.fillRect(x_offset+110,y_offset+70,ctx.measureText(state[my_team][my_int][0].L.NAME).width,ctx.measureText('M').width);
+        ctx.fillText(state[my_team][my_int][0].L.NAME,x_offset+110, y_offset+70 )
 
-        ctx.fillText(ser,x_offset+110, y_offset+110 )
-        ctx.fillRect(x_offset+110,y_offset+120,ctx.measureText(state[my_team][my_int][0].R.NAME).width,ctx.measureText('M').width);
-        ctx.fillText(state[my_team][my_int][0].R.NAME,x_offset+120, y_offset+110 )
         ser   = state[my_team][my_int][0].R.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser
         }
         ser = 'R' + ser
+        ctx.fillText(ser,x_offset+110, y_offset+110 )
+        ctx.fillRect(x_offset+110,y_offset+120,ctx.measureText(state[my_team][my_int][0].R.NAME).width,ctx.measureText('M').width);
+        ctx.fillText(state[my_team][my_int][0].R.NAME,x_offset+120, y_offset+110 )
 
-        ctx.fillText(ser,x_offset+110, y_offset+160 )
-        ctx.fillRect(x_offset+110,y_offset+170,ctx.measureText(state[my_team][my_int][0].B.NAME).width,ctx.measureText('M').width);
-        ctx.fillText(state[my_team][my_int][0].B.NAME,x_offset+110, y_offset+170 )
         ser   = state[my_team][my_int][0].B.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser
         }
         ser = 'B' + ser
+        ctx.fillText(ser,x_offset+110, y_offset+160 )
+        ctx.fillRect(x_offset+110,y_offset+170,ctx.measureText(state[my_team][my_int][0].B.NAME).width,ctx.measureText('M').width);
+        ctx.fillText(state[my_team][my_int][0].B.NAME,x_offset+110, y_offset+170 )
+
     }
 }
 

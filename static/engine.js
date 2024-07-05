@@ -1397,7 +1397,7 @@ function drawTable1() {
         }
         s = 'H' + s
         ctx.fillText(ser,x_offset+110, y_offset+20 )
-        ctx.fillText(state[my_team][my_int][0].H.Name,x_offset+110, y_offset+30 )
+        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset+110, y_offset+30 )
     }
 }
 

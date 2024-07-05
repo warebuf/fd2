@@ -1455,7 +1455,21 @@ function drawTable2() {
         ctx.fillStyle = 'white';
 
         ctx.textAlign = "center";
-        ctx.fillRect(x_offset,y_offset - (0 | state[my_team][my_int][0].H.HP/2),4,0 | state[my_team][my_int][0].H.HP/2);
+        ctx.fillRect(x_offset-2+0,y_offset - (0 | state[my_team][my_int][0].H.HP/2),4,0 | state[my_team][my_int][0].H.HP/2);
         ctx.fillText("HP",x_offset, y_offset+10 )
+        ctx.fillRect(x_offset-2+20,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
+        ctx.fillText("ATK",x_offset+20, y_offset+10 )
+        ctx.fillRect(x_offset-2+40,y_offset - (0 | state[my_team][my_int][0].H.DEF/2),4,0 | state[my_team][my_int][0].H.DEF/2);
+        ctx.fillText("DEF",x_offset+40, y_offset+10 )
+        ctx.fillRect(x_offset-2+60,y_offset - (0 | state[my_team][my_int][0].H.ACC/2),4,0 | state[my_team][my_int][0].H.ACC/2);
+        ctx.fillText("ACC",x_offset+60, y_offset+10 )
+        ctx.fillRect(x_offset-2+80,y_offset - (0 | state[my_team][my_int][0].H.CRT/2),4,0 | state[my_team][my_int][0].H.CRT/2);
+        ctx.fillText("CRT",x_offset+80, y_offset+10 )
+        ctx.fillRect(x_offset-2+100,y_offset - (0 | state[my_team][my_int][0].H.CD/2),4,0 | state[my_team][my_int][0].H.CD/2);
+        ctx.fillText("CD",x_offset+100, y_offset+10 )
+        ctx.fillRect(x_offset-2+120,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillText("CLU",x_offset+120, y_offset+10 )
+        ctx.fillRect(x_offset-2+140,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
+        ctx.fillText("WGT",x_offset+140, y_offset+10 )
     }
 }

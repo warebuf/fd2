@@ -1453,8 +1453,8 @@ function drawTable2() {
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
 
+        ctx.textAlign = "end";
         ctx.fillRect(x_offset,y_offset,4,0 | state[my_team][my_int][0].H.HP/3);
     }
 }

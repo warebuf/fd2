@@ -1395,7 +1395,9 @@ function drawTable1() {
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser
         }
+        s = 'H' + s
         ctx.fillText(ser,x_offset+110, y_offset+20 )
+        ctx.fillText(state[my_team][my_int][0].H.Name,x_offset+110, y_offset+30 )
     }
 }
 

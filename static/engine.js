@@ -1215,11 +1215,23 @@ function drawSelect() {
                     ctx.stroke();
                 }
             } else if(x_index_2==1) {
-
+                ctx.beginPath();
+                ctx.lineWidth = "1";
+                ctx.strokeStyle = "pink";
+                ctx.rect(72+(225*x_index_2), 90+(60*(y_index_2-l_index))+(350*screen_index_2), 170, 55);
+                ctx.stroke();
             } else if(x_index_2==2) {
-
+                ctx.beginPath();
+                ctx.lineWidth = "1";
+                ctx.strokeStyle = "pink";
+                ctx.rect(72+(225*x_index_2), 90+(60*(y_index_2-r_index))+(350*screen_index_2), 170, 55);
+                ctx.stroke();
             } else if(x_index_2==3) {
-
+                ctx.beginPath();
+                ctx.lineWidth = "1";
+                ctx.strokeStyle = "pink";
+                ctx.rect(72+(225*x_index_2), 90+(60*(y_index_2-b_index))+(350*screen_index_2), 170, 55);
+                ctx.stroke();
             }
 
 

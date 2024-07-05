@@ -1390,6 +1390,7 @@ function drawTable1() {
         ctx.fillText(state[my_team][my_int][0].B.DOG,x_offset+90, y_offset+180 )
         ctx.fillText(0 |(state[my_team][my_int][0].H.Weight+state[my_team][my_int][0].L.Weight+state[my_team][my_int][0].R.Weight+state[my_team][my_int][0].B.Weight)/4,x_offset+90, y_offset+200 )
 
+        ctx.textAlign = "left";
         let ser   = state[my_team][my_int][0].H.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser

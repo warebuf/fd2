@@ -1321,9 +1321,9 @@ function drawTable() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillText("H",x_offset, y_offset+5 );
-        ctx.fillText("L",x_offset, y_offset+25 )
-        ctx.fillText("R",x_offset, y_offset+45 )
-        ctx.fillText("B",x_offset, y_offset+65 )
+        ctx.fillText("H",x_offset+5, y_offset );
+        ctx.fillText("L",x_offset+25, y_offset )
+        ctx.fillText("R",x_offset+45, y_offset )
+        ctx.fillText("B",x_offset+65, y_offset )
     }
 }

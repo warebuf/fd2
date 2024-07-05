@@ -573,9 +573,21 @@ func createMatch(pl *permission_list) *match {
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
-			names := []string{
-				"EYE OF GOD", "TERRACOTTA PINCER", "GNOCCHI GUCCI", "OOGLY GOOGLY", "LEFT HAND FREE", "SENT TO HELL", "ULTRA MIAMI BLASTER",
-				"PEANUT BUTTER SOCKS", "OOGA BOOGA", "JUNK WARRIOR", "BLUE EYES WHITE DRAGON", "PIKACHU", "FINN", "MEGAN FOX", "MUMEN RIDER",
+			namesh := []string{
+				"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER", "RAINMAN",
+				"CARMACK", "CAGED",
+			}
+			namesl := []string{
+				"TERRACOTTA PINCER", "LEFT HAND FREE", "ULTRA MIAMI BLASTER", "LEFT HOOK", "ONE INCH PUNCH", "DEATH BEAM",
+				"ONE EDGE BLADE", "QUICKSHOT",
+			}
+			namesr := []string{
+				"SUPER SWORD", "DEATHBLADE", "ONE HIT KILL", "CARNAGE", "WESTERN LIGHT", "EAST BEAST", "ECOLOGICAL DISASTER",
+				"NUCLEAR UPPERCUT", "LONG BOMB",
+			}
+			namesb := []string{
+				"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",
+				"SOUND OF THE RAIN", "HOG WILD", "CAT TAIL", "HELLKICK", "YEAR ZERO",
 			}
 
 			ans.benchH[ans.uuid_to_team_int[i].ab] = make([]*head, 0)
@@ -585,10 +597,13 @@ func createMatch(pl *permission_list) *match {
 
 			for y := 0; y < 10; y++ {
 
-				temp := rand.Intn(len(names))
+				temph := rand.Intn(len(namesh))
+				templ := rand.Intn(len(namesl))
+				tempr := rand.Intn(len(namesr))
+				tempb := rand.Intn(len(namesb))
 				h := &head{
-					SERIAL:      temp,
-					NAME:        names[temp],
+					SERIAL:      temph,
+					NAME:        namesh[temph],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
 					DEF:         rand.Intn(99) + 1,
@@ -601,9 +616,9 @@ func createMatch(pl *permission_list) *match {
 					Weight:      rand.Intn(99) + 1,
 				}
 				larm := &arm{
-					SERIAL: 99,
-					LORR:   false,
-
+					SERIAL:      templ,
+					LORR:        false,
+					NAME:        namesl[templ],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
 					DEF:         rand.Intn(99) + 1,
@@ -616,9 +631,9 @@ func createMatch(pl *permission_list) *match {
 					Weight:      rand.Intn(99) + 1,
 				}
 				rarm := &arm{
-					SERIAL: 99,
-					LORR:   true,
-
+					SERIAL:      templ,
+					LORR:        true,
+					NAME:        namesr[tempr],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
 					DEF:         rand.Intn(99) + 1,
@@ -631,7 +646,8 @@ func createMatch(pl *permission_list) *match {
 					Weight:      rand.Intn(99) + 1,
 				}
 				btm := &bottom{
-					SERIAL: 0,
+					SERIAL: tempb,
+					NAME:   namesb[tempb],
 
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,

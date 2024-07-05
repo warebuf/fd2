@@ -314,7 +314,6 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 		"Bringing back the memories.",
 		"A sign of the times.",
 		"Love, Laugh, Live.",
-		"Style? Impetuous. Defense? Impregnable. Archtype? Ferocious.",
 	}
 
 	t.Execute(res, mottos[rand.Intn(len(mottos))])

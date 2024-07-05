@@ -1322,7 +1322,9 @@ function drawTable1() {
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
 
+        ctx.fillStyle = 'red';
         ctx.fillText("0",x_offset-20, y_offset )
+        ctx.fillStyle = 'white';
 
         ctx.fillText("H",x_offset+5, y_offset );
         ctx.fillText("L",x_offset+25, y_offset )

@@ -57,6 +57,7 @@ function anime() {
         drawStarters()
         drawSelect()
         drawError()
+        drawTable()
     } else if (match_data.length > 0) {
         drawGrid()
         drawPos()
@@ -1308,5 +1309,14 @@ function drawGrid() {
             ctx.fillStyle = 'grey';
             ctx.fillRect((i*10),(j*10),1,1);
         }
+    }
+}
+
+function drawTable() {
+    if((state!=null) && (my_team != -1) && (my_int != -1)) {
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+        ctx.fillText("H",500, 50 );
     }
 }

@@ -310,7 +310,7 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 	t := template.Must(template.ParseFiles(filepath.Join("static", "index.html")))
 	mottos := []string{
 		"Better than sex.",
-		"Est. 1882.",
+		"est. 1776.",
 		"Bringing back the memories.",
 		"A sign of the times.",
 		"Love, Laugh, Live.",

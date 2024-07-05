@@ -1126,11 +1126,14 @@ func (m *match) run() {
 								}
 								m.team_client_hero[i][j][k].Position = new_pos
 							}
+
+							fmt.Println(i, j, k, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Direction)
 						}
 					}
 				}
 			}
 			fmt.Println("finished unit movement")
+			fmt.Println("listofattackers", list_of_attackers)
 			m.sharepos(nil)
 
 			// simulate all attacks

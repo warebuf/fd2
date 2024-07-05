@@ -1317,6 +1317,6 @@ function drawTable() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
-        ctx.fillText("H",500, 50 );
+        ctx.fillText("H",1000, 100 );
     }
 }

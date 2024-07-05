@@ -562,7 +562,7 @@ function drawLog() {
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.fillStyle = 'black';
-        ctx.fillRect(0,1000 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.fillRect(0,500 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.fillText(event_log[i],0, 4000 + (10*i));

@@ -1109,7 +1109,7 @@ func (m *match) run() {
 							if m.team_client_hero[i][j][k].Direction == 0 {
 
 								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
-								if new_pos <= 0.01 {
+								if new_pos <= 0.1 {
 									new_pos = 0
 									has_cmds = true
 									if m.team_client_hero[i][j][k].Bot == false {
@@ -1120,7 +1120,7 @@ func (m *match) run() {
 
 							} else if m.team_client_hero[i][j][k].Direction == 1 {
 								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
-								if new_pos >= 99.99 {
+								if new_pos >= 99.9 {
 									new_pos = 100
 									list_of_attackers = append(list_of_attackers, []int{i, j, k})
 								}

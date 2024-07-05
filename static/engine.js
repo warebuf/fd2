@@ -1455,6 +1455,6 @@ function drawTable2() {
         ctx.fillStyle = 'white';
 
         ctx.textAlign = "end";
-        ctx.fillRect(x_offset,y_offset,4,0 | state[my_team][my_int][0].H.HP/3);
+        ctx.fillRect(x_offset,y_offset - (0 | state[my_team][my_int][0].H.HP/3),4,0 | state[my_team][my_int][0].H.HP/3);
     }
 }

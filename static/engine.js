@@ -1389,6 +1389,8 @@ function drawTable1() {
         ctx.fillText(state[my_team][my_int][0].B.SPD,x_offset+90, y_offset+160 )
         ctx.fillText(state[my_team][my_int][0].B.DOG,x_offset+90, y_offset+180 )
         ctx.fillText(0 |(state[my_team][my_int][0].H.Weight+state[my_team][my_int][0].L.Weight+state[my_team][my_int][0].R.Weight+state[my_team][my_int][0].B.Weight)/4,x_offset+90, y_offset+200 )
+
+        ctx.fillText(state[my_team][my_int][0].H.SERIAL,x_offset+110, y_offset+20 )
     }
 }
 

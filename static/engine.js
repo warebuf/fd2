@@ -57,7 +57,7 @@ function anime() {
         drawStarters()
         drawSelect()
         drawError()
-        drawTable()
+        drawTable1()
     } else if (match_data.length > 0) {
         drawGrid()
         drawPos()
@@ -1312,7 +1312,7 @@ function drawGrid() {
     }
 }
 
-function drawTable() {
+function drawTable1() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 1000
@@ -1321,6 +1321,9 @@ function drawTable() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
+
+        ctx.fillText("0",x_offset-20, y_offset )
+
         ctx.fillText("H",x_offset+5, y_offset );
         ctx.fillText("L",x_offset+25, y_offset )
         ctx.fillText("R",x_offset+45, y_offset )
@@ -1375,5 +1378,16 @@ function drawTable() {
         ctx.fillText(state[my_team][my_int][0].B.SPD,x_offset+65, y_offset+160 )
         ctx.fillText(state[my_team][my_int][0].B.DOG,x_offset+65, y_offset+180 )
         ctx.fillText(state[my_team][my_int][0].B.Weight,x_offset+65, y_offset+200 )
+
+        ctx.fillText(state[my_team][my_int][0].H.HP+state[my_team][my_int][0].L.HP+state[my_team][my_int][0].R.HP+state[my_team][my_int][0].B.HP,x_offset+90, y_offset+20 )
+        ctx.fillText(state[my_team][my_int][0].H.ATK+state[my_team][my_int][0].L.ATK+state[my_team][my_int][0].R.ATK+state[my_team][my_int][0].B.ATK,x_offset+90, y_offset+40 )
+        ctx.fillText(state[my_team][my_int][0].H.DEF+state[my_team][my_int][0].L.DEF+state[my_team][my_int][0].R.DEF+state[my_team][my_int][0].B.DEF,x_offset+90, y_offset+60 )
+        ctx.fillText(state[my_team][my_int][0].H.ACC+state[my_team][my_int][0].L.ACC+state[my_team][my_int][0].R.ACC+state[my_team][my_int][0].B.ACC,x_offset+90, y_offset+80 )
+        ctx.fillText(state[my_team][my_int][0].H.CRT+state[my_team][my_int][0].L.CRT+state[my_team][my_int][0].R.CRT+state[my_team][my_int][0].B.CRT,x_offset+90, y_offset+100 )
+        ctx.fillText(state[my_team][my_int][0].H.CD+state[my_team][my_int][0].L.CD+state[my_team][my_int][0].R.CD+state[my_team][my_int][0].B.CD,x_offset+90, y_offset+120 )
+        ctx.fillText(state[my_team][my_int][0].H.CLU+state[my_team][my_int][0].L.CLU+state[my_team][my_int][0].R.CLU+state[my_team][my_int][0].B.CLU,x_offset+90, y_offset+140 )
+        ctx.fillText(state[my_team][my_int][0].B.SPD,x_offset+90, y_offset+160 )
+        ctx.fillText(state[my_team][my_int][0].B.DOG,x_offset+90, y_offset+180 )
+        ctx.fillText(state[my_team][my_int][0].H.Weight+state[my_team][my_int][0].L.Weight+state[my_team][my_int][0].R.Weight+state[my_team][my_int][0].B.Weight,x_offset+90, y_offset+200 )
     }
 }

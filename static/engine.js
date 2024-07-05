@@ -1345,8 +1345,6 @@ function drawTable() {
         ctx.fillText(state[my_team][my_int][0].H.CRT,x_offset+5, y_offset+100 )
         ctx.fillText(state[my_team][my_int][0].H.CD,x_offset+5, y_offset+120 )
         ctx.fillText(state[my_team][my_int][0].H.CLU,x_offset+5, y_offset+140 )
-        ctx.fillText(state[my_team][my_int][0].H.SPD,x_offset+5, y_offset+160 )
-        ctx.fillText(state[my_team][my_int][0].H.DOG,x_offset+5, y_offset+180 )
         ctx.fillText(state[my_team][my_int][0].H.WGT,x_offset+5, y_offset+200 )
 
         ctx.fillText(state[my_team][my_int][0].L.HP,x_offset+25, y_offset+20 )
@@ -1356,8 +1354,6 @@ function drawTable() {
         ctx.fillText(state[my_team][my_int][0].L.CRT,x_offset+25, y_offset+100 )
         ctx.fillText(state[my_team][my_int][0].L.CD,x_offset+25, y_offset+120 )
         ctx.fillText(state[my_team][my_int][0].L.CLU,x_offset+25, y_offset+140 )
-        ctx.fillText(state[my_team][my_int][0].L.SPD,x_offset+25, y_offset+160 )
-        ctx.fillText(state[my_team][my_int][0].L.DOG,x_offset+25, y_offset+180 )
         ctx.fillText(state[my_team][my_int][0].L.WGT,x_offset+25, y_offset+200 )
 
         ctx.fillText(state[my_team][my_int][0].R.HP,x_offset+45, y_offset+20 )
@@ -1367,8 +1363,6 @@ function drawTable() {
         ctx.fillText(state[my_team][my_int][0].R.CRT,x_offset+45, y_offset+100 )
         ctx.fillText(state[my_team][my_int][0].R.CD,x_offset+45, y_offset+120 )
         ctx.fillText(state[my_team][my_int][0].R.CLU,x_offset+45, y_offset+140 )
-        ctx.fillText(state[my_team][my_int][0].R.SPD,x_offset+45, y_offset+160 )
-        ctx.fillText(state[my_team][my_int][0].R.DOG,x_offset+45, y_offset+180 )
         ctx.fillText(state[my_team][my_int][0].R.WGT,x_offset+45, y_offset+200 )
 
         ctx.fillText(state[my_team][my_int][0].B.HP,x_offset+65, y_offset+20 )

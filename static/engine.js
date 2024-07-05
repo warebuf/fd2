@@ -1398,7 +1398,7 @@ function drawTable1() {
         ser = 'H' + ser
         ctx.fillText(ser,x_offset+110, y_offset+10 )
         ctx.fillStyle = 'blue';
-        ctx.fillRect(x_offset+110,y_offset+12,ctx.measureText(state[my_team][my_int][0].H.NAME).width,ctx.measureText('M').width);
+        ctx.fillRect(x_offset+110,y_offset+13,ctx.measureText(state[my_team][my_int][0].H.NAME).width,ctx.measureText('M').width);
         ctx.fillStyle = 'white';
         ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset+110, y_offset+20 )
         ctx.fillText("A basic close attack.",x_offset+110, y_offset+30 )
@@ -1410,7 +1410,7 @@ function drawTable1() {
         ser = 'L' + ser
         ctx.fillText(ser,x_offset+110, y_offset+60 )
         ctx.fillStyle = 'blue';
-        ctx.fillRect(x_offset+110,y_offset+62,ctx.measureText(state[my_team][my_int][0].L.NAME).width,ctx.measureText('M').width);
+        ctx.fillRect(x_offset+110,y_offset+63,ctx.measureText(state[my_team][my_int][0].L.NAME).width,ctx.measureText('M').width);
         ctx.fillStyle = 'white';
         ctx.fillText(state[my_team][my_int][0].L.NAME,x_offset+110, y_offset+70 )
         ctx.fillText("A basic close attack.",x_offset+110, y_offset+80 )
@@ -1422,7 +1422,7 @@ function drawTable1() {
         ser = 'R' + ser
         ctx.fillText(ser,x_offset+110, y_offset+110 )
         ctx.fillStyle = 'blue';
-        ctx.fillRect(x_offset+110,y_offset+112,ctx.measureText(state[my_team][my_int][0].R.NAME).width,ctx.measureText('M').width);
+        ctx.fillRect(x_offset+110,y_offset+113,ctx.measureText(state[my_team][my_int][0].R.NAME).width,ctx.measureText('M').width);
         ctx.fillStyle = 'white';
         ctx.fillText(state[my_team][my_int][0].R.NAME,x_offset+110, y_offset+120 )
         ctx.fillText("A basic close attack.",x_offset+110, y_offset+130 )
@@ -1434,7 +1434,7 @@ function drawTable1() {
         ser = 'B' + ser
         ctx.fillText(ser,x_offset+110, y_offset+160 )
         ctx.fillStyle = 'blue';
-        ctx.fillRect(x_offset+110,y_offset+162,ctx.measureText(state[my_team][my_int][0].B.NAME).width,ctx.measureText('M').width);
+        ctx.fillRect(x_offset+110,y_offset+163,ctx.measureText(state[my_team][my_int][0].B.NAME).width,ctx.measureText('M').width);
         ctx.fillStyle = 'white';
         ctx.fillText(state[my_team][my_int][0].B.NAME,x_offset+110, y_offset+170 )
         ctx.fillText("A basic close attack.",x_offset+110, y_offset+180 )

@@ -1445,5 +1445,15 @@ function drawTable1() {
 }
 
 function drawTable2() {
+    if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
+        let x_offset = 1400
+        let y_offset = 100
+
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
+
+        ctx.fillRect(x_offset,y_offset,4,0 | state[my_team][my_int][0].H.HP/10);
+    }
 }

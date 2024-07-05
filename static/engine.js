@@ -50,6 +50,7 @@ function anime() {
     }
 
     if(phase=="CHARACTER SELECTION") {
+        drawGrid()
         drawPhase()
         drawLog()
         drawBench()
@@ -57,6 +58,7 @@ function anime() {
         drawSelect()
         drawError()
     } else if (match_data.length > 0) {
+        drawGrid()
         drawPos()
         drawState()
         drawStats()

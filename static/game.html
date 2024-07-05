@@ -83,7 +83,16 @@
 
                             let y1 = ""
                             if(screen_index==1){
-                                y1 = y_index_1+h_index
+                                if(x_index_1==0){
+                                    y1 = y_index_1+h_index
+                                } else if(x_index_1==1) {
+                                    y1 = y_index_1+l_index
+                                } else if(x_index_1==2) {
+                                    y1 = y_index_1+r_index
+                                } else if(x_index_1==3) {
+                                    y1 = y_index_1+b_index
+                                }
+
                             } else{
                                 y1 = y_index_1
                             }

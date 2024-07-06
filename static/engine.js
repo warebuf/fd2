@@ -61,7 +61,7 @@ function anime() {
         drawTable3()
         //drawStartersTable()
         //drawSelect()
-        ctx.fillRect(1140,40 , 1, 800);
+        ctx.fillRect(1150,40 , 1, 800);
 
     } else if (match_data.length > 0) {
         drawGrid()
@@ -1657,7 +1657,7 @@ function drawTable2() {
 function drawTable3() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 1190
+        let x_offset = 1200
         let y_offset = 170
         let unit_shift = 150
         ctx.font = '11px monospace';

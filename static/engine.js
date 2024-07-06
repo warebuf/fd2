@@ -337,7 +337,7 @@ function drawPos() {
 }
 
 function drawState() {
-    x0 = 1060
+    x0 = 50
     y0 = 100
 
     ctx.textAlign = "left";
@@ -427,6 +427,7 @@ function drawUnitsOfTime() {
     time_string = total_units_of_time+" units of time"
     ctx.fillText(time_string,c.width/2, 35);
 }
+
 function drawStats() {
     ctx.fillStyle = 'white'
 

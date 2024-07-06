@@ -1505,9 +1505,9 @@ function drawTable2() {
 
         ctx.fillStyle = 'white';
         ctx.textAlign = "left";
-        ctx.fillRect(x_offset-20,y_offset-100, 250, 1);
+        ctx.fillRect(x_offset-20,y_offset-110, 250, 1);
         ctx.fillRect(x_offset-20,y_offset, 250, 1);
-        ctx.fillRect(x_offset-20,y_offset-100, 1, 100);
-        ctx.fillRect(x_offset-20+250,y_offset-100, 1, 100);
+        ctx.fillRect(x_offset-20,y_offset-110, 1, 130);
+        ctx.fillRect(x_offset-20+250,y_offset-110, 1, 130);
     }
 }

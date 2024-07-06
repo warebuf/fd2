@@ -248,7 +248,7 @@ function drawPos() {
                         if(a1 < atk_data[animating_state].length) {
                             let b = JSON.parse(atk_data[animating_state][a1])
                             let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
-                            let x2 = 285 + (pos*6.08)
+                            let x2 = 185 + (pos*6.08)
                             let y2 = ((b.Defender[0][0]+b.Defender[0][1])*115) + 100 + (b.Defender[0][2]*20)
 
                             let perc = draw_attacks / 30
@@ -257,7 +257,7 @@ function drawPos() {
                             }
 
                             // calculate a vector to draw
-                            let x1 = 890
+                            let x1 = 790
                             let y1 = ((i+j)*115) + 98 + (k*20)
                             let x2_x1 = (x2 - x1)*perc
                             let y2_y1 = (y2 - y1)*perc

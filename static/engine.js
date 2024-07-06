@@ -576,10 +576,10 @@ function drawLog() {
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.fillStyle = 'black';
-        ctx.fillRect(1000,500 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
+        ctx.fillRect(1000,900 + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
-        ctx.fillText(event_log[i],1000, 500 + (10*i));
+        ctx.fillText(event_log[i],1000, 900 + (10*i));
     }
 }
 

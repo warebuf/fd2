@@ -1895,10 +1895,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.HP,x_offset-0+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+25+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ATK/2) + (i*unit_shift),4,0 | state[j][k][i].H.ATK/2);
-                    ctx.fillRect(x_offset-1+40+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ATK/2) + (i*unit_shift),4,0 | state[j][k][i].L.ATK/2);
-                    ctx.fillRect(x_offset-1+55+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ATK/2) + (i*unit_shift),4,0 | state[j][k][i].R.ATK/2);
-                    ctx.fillRect(x_offset-1+70+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ATK/2) + (i*unit_shift),4,0 | state[j][k][i].B.ATK/2);
+                    ctx.fillRect(x_offset-1+25+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].H.ATK/2);
+                    ctx.fillRect(x_offset-1+40+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].L.ATK/2);
+                    ctx.fillRect(x_offset-1+55+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].R.ATK/2);
+                    ctx.fillRect(x_offset-1+70+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].B.ATK/2);
                     ctx.fillText("ATK",x_offset+47.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.ATK,x_offset+25+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1907,10 +1907,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.ATK,x_offset+70+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+95+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].H.DEF/2);
-                    ctx.fillRect(x_offset-1+110+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].L.DEF/2);
-                    ctx.fillRect(x_offset-1+125+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].R.DEF/2);
-                    ctx.fillRect(x_offset-1+140+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].B.DEF/2);
+                    ctx.fillRect(x_offset-1+95+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].H.DEF/2);
+                    ctx.fillRect(x_offset-1+110+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].L.DEF/2);
+                    ctx.fillRect(x_offset-1+125+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].R.DEF/2);
+                    ctx.fillRect(x_offset-1+140+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].B.DEF/2);
                     ctx.fillText("DEF",x_offset+117.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.DEF,x_offset+95+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1919,10 +1919,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.DEF,x_offset+140+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].H.ACC/2);
-                    ctx.fillRect(x_offset-1+180+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].L.ACC/2);
-                    ctx.fillRect(x_offset-1+195+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].R.ACC/2);
-                    ctx.fillRect(x_offset-1+210+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].B.ACC/2);
+                    ctx.fillRect(x_offset-1+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].H.ACC/2);
+                    ctx.fillRect(x_offset-1+180+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].L.ACC/2);
+                    ctx.fillRect(x_offset-1+195+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].R.ACC/2);
+                    ctx.fillRect(x_offset-1+210+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].B.ACC/2);
                     ctx.fillText("ACC",x_offset+187.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.ACC,x_offset+165+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1931,10 +1931,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.ACC,x_offset+210+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+235+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].H.CRT/2);
-                    ctx.fillRect(x_offset-1+250+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].L.CRT/2);
-                    ctx.fillRect(x_offset-1+265+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].R.CRT/2);
-                    ctx.fillRect(x_offset-1+280+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].B.CRT/2);
+                    ctx.fillRect(x_offset-1+235+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CRT/2) + (i*unit_shift),3,0 | state[j][k][i].H.CRT/2);
+                    ctx.fillRect(x_offset-1+250+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CRT/2) + (i*unit_shift),3,0 | state[j][k][i].L.CRT/2);
+                    ctx.fillRect(x_offset-1+265+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CRT/2) + (i*unit_shift),3,0 | state[j][k][i].R.CRT/2);
+                    ctx.fillRect(x_offset-1+280+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CRT/2) + (i*unit_shift),3,0 | state[j][k][i].B.CRT/2);
                     ctx.fillText("CRT",x_offset+257.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.CRT,x_offset+235+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1943,10 +1943,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.CRT,x_offset+280+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+305+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CD/2) + (i*unit_shift),4,0 | state[j][k][i].H.CD/2);
-                    ctx.fillRect(x_offset-1+320+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CD/2) + (i*unit_shift),4,0 | state[j][k][i].L.CD/2);
-                    ctx.fillRect(x_offset-1+335+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CD/2) + (i*unit_shift),4,0 | state[j][k][i].R.CD/2);
-                    ctx.fillRect(x_offset-1+350+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CD/2) + (i*unit_shift),4,0 | state[j][k][i].B.CD/2);
+                    ctx.fillRect(x_offset-1+305+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CD/2) + (i*unit_shift),3,0 | state[j][k][i].H.CD/2);
+                    ctx.fillRect(x_offset-1+320+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CD/2) + (i*unit_shift),3,0 | state[j][k][i].L.CD/2);
+                    ctx.fillRect(x_offset-1+335+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CD/2) + (i*unit_shift),3,0 | state[j][k][i].R.CD/2);
+                    ctx.fillRect(x_offset-1+350+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CD/2) + (i*unit_shift),3,0 | state[j][k][i].B.CD/2);
                     ctx.fillText("CD",x_offset+327.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.CD,x_offset+305+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1955,10 +1955,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.CD,x_offset+350+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
-                    ctx.fillRect(x_offset-1+390+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].L.CLU/2);
-                    ctx.fillRect(x_offset-1+405+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].R.CLU/2);
-                    ctx.fillRect(x_offset-1+420+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].B.CLU/2);
+                    ctx.fillRect(x_offset-1+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),30 | state[j][k][i].H.CLU/2);
+                    ctx.fillRect(x_offset-1+390+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].L.CLU/2);
+                    ctx.fillRect(x_offset-1+405+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].R.CLU/2);
+                    ctx.fillRect(x_offset-1+420+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].B.CLU/2);
                     ctx.fillText("CLU",x_offset+397.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.CLU,x_offset+375+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1967,10 +1967,10 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.CLU,x_offset+420+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+445+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].H.Weight/2);
-                    ctx.fillRect(x_offset-1+460+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].L.Weight/2);
-                    ctx.fillRect(x_offset-1+475+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].R.Weight/2);
-                    ctx.fillRect(x_offset-1+490+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].B.Weight/2);
+                    ctx.fillRect(x_offset-1+445+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].H.Weight/2);
+                    ctx.fillRect(x_offset-1+460+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].L.Weight/2);
+                    ctx.fillRect(x_offset-1+475+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].R.Weight/2);
+                    ctx.fillRect(x_offset-1+490+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].B.Weight/2);
                     ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.Weight,x_offset+445+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1979,13 +1979,13 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),4,0 | state[j][k][i].B.SPD/2);
+                    ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),3,0 | state[j][k][i].B.SPD/2);
                     ctx.fillText("SPD",x_offset+515+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].B.SPD,x_offset+515+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+540+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),4,0 | state[j][k][i].B.DOG/2);
+                    ctx.fillRect(x_offset-1+540+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),3,0 | state[j][k][i].B.DOG/2);
                     ctx.fillText("DOG",x_offset+540+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].B.DOG,x_offset+540+(user_shift*user_count), y_offset+10 + (i*unit_shift) )

@@ -66,7 +66,7 @@ function anime() {
 
 
     } else if (match_data.length > 0) {
-        //drawGrid()
+        drawGrid()
         drawPos()
         drawState()
         drawStats()

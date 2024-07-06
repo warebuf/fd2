@@ -1866,7 +1866,7 @@ function drawStartersTable() {
         let x_offset = 50
         let y_offset = 400
         let unit_shift = 100
-        let user_shift = 500
+        let user_shift = 600
         let user_count = 0;
 
         ctx.font = '11px monospace';
@@ -1946,7 +1946,7 @@ function drawStartersTable() {
 
 
                     ctx.fillStyle = 'white';
-                    ctx.fillRect(x_offset-40+(user_shift*user_count),y_offset + (i*unit_shift) ,400,1);
+                    ctx.fillRect(x_offset-40+(user_shift*user_count),y_offset + (i*unit_shift) ,425,1);
                 }
                 user_count = user_count + 1
             }

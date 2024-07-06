@@ -1668,7 +1668,7 @@ function drawTable3() {
         for (let i=0+h_index;i<bench_h[key].length;i++) {
 
         }
-        }
+
 
         for(let i=0;i<state[my_team][my_int].length;i++){
 

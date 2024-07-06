@@ -61,10 +61,10 @@ function anime() {
         //drawTable3()
         //drawStartersTable()
         drawSelect()
-        ctx.fillRect(1150,40 , 1, 800);
+        //ctx.fillRect(1150,40 , 1, 800);
 
     } else if (match_data.length > 0) {
-        drawGrid()
+        //drawGrid()
         drawPos()
         drawState()
         drawStats()

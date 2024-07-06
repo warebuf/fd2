@@ -1542,6 +1542,7 @@ function drawStartersTable() {
         ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
 
         // draw 10 per bar lines
+        ctx.fillStyle = 'black';
         ctx.fillRect(x_offset-50,y_offset-5 ,400,1);
         ctx.fillRect(x_offset-50,y_offset-10 ,400,1);
         ctx.fillRect(x_offset-50,y_offset-15 ,400,1);

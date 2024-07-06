@@ -1603,13 +1603,8 @@ function drawStartersTable() {
         ctx.fillRect(x_offset-40,y_offset ,400,1);
 
         ctx.fillStyle = 'black';
-        ctx.fillRect(x_offset-40,y_offset-20 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-30 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-40 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-50 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-60 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-70 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-80 ,400,1);
-        ctx.fillRect(x_offset-40,y_offset-90 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-20 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-30 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-40 ,400,1);
     }
 }

@@ -1487,7 +1487,7 @@ function drawTable2() {
             for (let k = ser.length; k < 7; k++) {
                 ser = '0' + ser
             }
-            ser = 'B' + ser
+            ser = 'H' + ser
             ctx.textAlign = "left";
             ctx.fillText(ser,x_offset-15, y_offset-95 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.NAME,x_offset-15, y_offset-85 + (i*unit_shift) )
@@ -1499,6 +1499,8 @@ function drawTable2() {
             ctx.fillRect(x_offset-20,y_offset+30 + (i*unit_shift), 250, 1);
             ctx.fillRect(x_offset-20,y_offset-110 + (i*unit_shift), 1, 140);
             ctx.fillRect(x_offset-20+250,y_offset-110 + (i*unit_shift), 1, 140);
+            
+            ctx.fillRect(x_offset,y_offset + (i*unit_shift) ,400,1);// draw bottom plot line
         }
 
 

@@ -61,7 +61,7 @@ function anime() {
         //drawTable2()
         //drawTable3()
         //drawStartersTable()
-        //drawSelect()
+        drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
 
 

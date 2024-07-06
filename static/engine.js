@@ -1906,88 +1906,88 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.ATK,x_offset+70+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+75+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].H.DEF/2);
-                    ctx.fillRect(x_offset-2+90+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].L.DEF/2);
-                    ctx.fillRect(x_offset-2+105+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].R.DEF/2);
-                    ctx.fillRect(x_offset-2+120+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].B.DEF/2);
+                    ctx.fillRect(x_offset-2+95+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].H.DEF/2);
+                    ctx.fillRect(x_offset-2+110+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].L.DEF/2);
+                    ctx.fillRect(x_offset-2+125+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].R.DEF/2);
+                    ctx.fillRect(x_offset-2+140+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),4,0 | state[j][k][i].B.DEF/2);
                     ctx.fillText("DEF",x_offset+97.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.DEF,x_offset+75+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.DEF,x_offset+90+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.DEF,x_offset+105+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.DEF,x_offset+120+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.DEF,x_offset+95+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.DEF,x_offset+110+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.DEF,x_offset+125+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.DEF,x_offset+140+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+135+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].H.ACC/2);
-                    ctx.fillRect(x_offset-2+150+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].L.ACC/2);
-                    ctx.fillRect(x_offset-2+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].R.ACC/2);
-                    ctx.fillRect(x_offset-2+180+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].B.ACC/2);
+                    ctx.fillRect(x_offset-2+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].H.ACC/2);
+                    ctx.fillRect(x_offset-2+180+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].L.ACC/2);
+                    ctx.fillRect(x_offset-2+195+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].R.ACC/2);
+                    ctx.fillRect(x_offset-2+210+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ACC/2) + (i*unit_shift),4,0 | state[j][k][i].B.ACC/2);
                     ctx.fillText("ACC",x_offset+157.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.ACC,x_offset+135+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.ACC,x_offset+150+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.ACC,x_offset+165+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.ACC,x_offset+180+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.ACC,x_offset+165+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.ACC,x_offset+180+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.ACC,x_offset+195+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.ACC,x_offset+210+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+195+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].H.CRT/2);
-                    ctx.fillRect(x_offset-2+210+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].L.CRT/2);
-                    ctx.fillRect(x_offset-2+225+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].R.CRT/2);
-                    ctx.fillRect(x_offset-2+240+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].B.CRT/2);
+                    ctx.fillRect(x_offset-2+235+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].H.CRT/2);
+                    ctx.fillRect(x_offset-2+250+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].L.CRT/2);
+                    ctx.fillRect(x_offset-2+265+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].R.CRT/2);
+                    ctx.fillRect(x_offset-2+280+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CRT/2) + (i*unit_shift),4,0 | state[j][k][i].B.CRT/2);
                     ctx.fillText("CRT",x_offset+217.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.CRT,x_offset+195+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.CRT,x_offset+210+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.CRT,x_offset+225+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.CRT,x_offset+240+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.CRT,x_offset+235+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.CRT,x_offset+250+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.CRT,x_offset+265+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.CRT,x_offset+280+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+255+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CD/2) + (i*unit_shift),4,0 | state[j][k][i].H.CD/2);
-                    ctx.fillRect(x_offset-2+270+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CD/2) + (i*unit_shift),4,0 | state[j][k][i].L.CD/2);
-                    ctx.fillRect(x_offset-2+285+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CD/2) + (i*unit_shift),4,0 | state[j][k][i].R.CD/2);
-                    ctx.fillRect(x_offset-2+300+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CD/2) + (i*unit_shift),4,0 | state[j][k][i].B.CD/2);
+                    ctx.fillRect(x_offset-2+305+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CD/2) + (i*unit_shift),4,0 | state[j][k][i].H.CD/2);
+                    ctx.fillRect(x_offset-2+320+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CD/2) + (i*unit_shift),4,0 | state[j][k][i].L.CD/2);
+                    ctx.fillRect(x_offset-2+335+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CD/2) + (i*unit_shift),4,0 | state[j][k][i].R.CD/2);
+                    ctx.fillRect(x_offset-2+350+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CD/2) + (i*unit_shift),4,0 | state[j][k][i].B.CD/2);
                     ctx.fillText("CD",x_offset+277.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.CD,x_offset+255+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.CD,x_offset+270+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.CD,x_offset+285+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.CD,x_offset+300+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.CD,x_offset+305+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.CD,x_offset+320+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.CD,x_offset+335+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.CD,x_offset+350+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+315+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
-                    ctx.fillRect(x_offset-2+330+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].L.CLU/2);
-                    ctx.fillRect(x_offset-2+345+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].R.CLU/2);
-                    ctx.fillRect(x_offset-2+360+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].B.CLU/2);
+                    ctx.fillRect(x_offset-2+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
+                    ctx.fillRect(x_offset-2+390+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].L.CLU/2);
+                    ctx.fillRect(x_offset-2+415+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].R.CLU/2);
+                    ctx.fillRect(x_offset-2+430+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].B.CLU/2);
                     ctx.fillText("CLU",x_offset+337.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.CLU,x_offset+315+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.CLU,x_offset+330+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.CLU,x_offset+345+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.CLU,x_offset+360+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.CLU,x_offset+375+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.CLU,x_offset+390+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.CLU,x_offset+415+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.CLU,x_offset+430+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].H.Weight/2);
-                    ctx.fillRect(x_offset-2+390+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].L.Weight/2);
-                    ctx.fillRect(x_offset-2+405+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].R.Weight/2);
-                    ctx.fillRect(x_offset-2+420+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].B.Weight/2);
+                    ctx.fillRect(x_offset-2+455+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].H.Weight/2);
+                    ctx.fillRect(x_offset-2+470+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].L.Weight/2);
+                    ctx.fillRect(x_offset-2+485+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].R.Weight/2);
+                    ctx.fillRect(x_offset-2+500+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].B.Weight/2);
                     ctx.fillText("WGT",x_offset+397.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.Weight,x_offset+375+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.Weight,x_offset+390+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.Weight,x_offset+405+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.Weight,x_offset+420+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.Weight,x_offset+455+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.Weight,x_offset+470+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.Weight,x_offset+485+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.Weight,x_offset+500+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+435+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),4,0 | state[j][k][i].B.SPD/2);
-                    ctx.fillText("SPD",x_offset+435+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillRect(x_offset-2+525+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),4,0 | state[j][k][i].B.SPD/2);
+                    ctx.fillText("SPD",x_offset+525+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].B.SPD,x_offset+435+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.SPD,x_offset+525+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-2+450+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),4,0 | state[j][k][i].B.DOG/2);
-                    ctx.fillText("DOG",x_offset+450+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillRect(x_offset-2+550+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),4,0 | state[j][k][i].B.DOG/2);
+                    ctx.fillText("DOG",x_offset+550+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].B.DOG,x_offset+450+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.DOG,x_offset+550+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
                     /*

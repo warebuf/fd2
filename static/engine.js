@@ -257,7 +257,7 @@ function drawPos() {
                             }
 
                             // calculate a vector to draw
-                            let x1 = 200
+                            let x1 = 1690
                             let y1 = ((i+j)*115) + 98 + (k*20)
                             let x2_x1 = (x2 - x1)*perc
                             let y2_y1 = (y2 - y1)*perc

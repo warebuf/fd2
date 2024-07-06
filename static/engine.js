@@ -1925,6 +1925,12 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-2+340+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].B.Weight/2);
                     ctx.fillText("WGT",x_offset+325+(user_shift*user_count), y_offset+15 + (i*unit_shift) )
 
+                    ctx.fillRect(x_offset-2+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),4,0 | state[j][k][i].B.SPD/2);
+                    ctx.fillText("SPD",x_offset+375+(user_shift*user_count), y_offset+15 + (i*unit_shift) )
+
+                    ctx.fillRect(x_offset-2+425+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),4,0 | state[j][k][i].B.DOG/2);
+                    ctx.fillText("DOG",x_offset+425+(user_shift*user_count), y_offset+15 + (i*unit_shift) )
+
                     /*
                     // write part desc
                     ctx.font = '11px monospace';
@@ -1940,7 +1946,7 @@ function drawStartersTable() {
 
 
                     ctx.fillStyle = 'white';
-                    ctx.fillRect(x_offset-40,y_offset + (i*unit_shift) ,400,1);
+                    ctx.fillRect(x_offset-40+(user_shift*user_count),y_offset + (i*unit_shift) ,400,1);
                 }
                 user_count = user_count + 1
             }

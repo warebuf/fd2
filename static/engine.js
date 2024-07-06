@@ -1956,7 +1956,7 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.CD,x_offset+350+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),30 | state[j][k][i].H.CLU/2);
+                    ctx.fillRect(x_offset-1+375+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),3, 0 | state[j][k][i].H.CLU/2);
                     ctx.fillRect(x_offset-1+390+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].L.CLU/2);
                     ctx.fillRect(x_offset-1+405+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].R.CLU/2);
                     ctx.fillRect(x_offset-1+420+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].B.CLU/2);

@@ -1505,7 +1505,7 @@ function drawStartersTable() {
 
         let x_offset = 1400
         let y_offset = 360
-        let unit_shift = 200
+        let unit_shift = 100
 
 
         ctx.font = '11px monospace';
@@ -1579,7 +1579,7 @@ function drawStartersTable() {
             ctx.fillStyle = 'white';
             ctx.fillRect(x_offset-40,y_offset + (i*unit_shift) ,400,1);
         }
-        
+
         ctx.fillStyle = 'black';
 
     }

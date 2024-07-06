@@ -1866,7 +1866,7 @@ function drawStartersTable() {
         let x_offset = 50
         let y_offset = 400
         let unit_shift = 100
-        let user_shift = 200
+        let user_shift = 500
         let user_count = 0;
 
         ctx.font = '11px monospace';

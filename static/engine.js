@@ -1554,6 +1554,7 @@ function drawStartersTable() {
         ctx.fillRect(x_offset-50,y_offset-45 ,400,1);
 
         // draw numbers
+        ctx.fillStyle = 'white';
         if(state[my_team][my_int][0].H.HP==100){}
         else{
             ctx.font = '8px monospace';

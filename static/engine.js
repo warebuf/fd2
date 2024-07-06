@@ -51,7 +51,7 @@ function anime() {
 
     if(phase=="CHARACTER SELECTION") {
 
-        drawGrid()
+        //drawGrid()
         drawPhase()
         drawLog()
         //drawBench()

@@ -1450,7 +1450,7 @@ function drawTable2() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 700
-        let y_offset = 160
+        let y_offset = 170
         let unit_shift = 150
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
@@ -1598,6 +1598,57 @@ function drawTable2() {
             ctx.fillRect(x_offset-20+250+520,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5+520,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
+
+
+
+
+
+            ctx.textAlign = "center";
+            ctx.fillRect(x_offset-2+0+780,y_offset - (0 | state[my_team][my_int][i].B.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.HP/2);
+            ctx.fillText("HP",x_offset+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.HP,x_offset+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+30+780,y_offset - (0 | state[my_team][my_int][i].B.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.ATK/2);
+            ctx.fillText("ATK",x_offset+30+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.ATK,x_offset+30+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+60+780,y_offset - (0 | state[my_team][my_int][i].B.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.DEF/2);
+            ctx.fillText("DEF",x_offset+60+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.DEF,x_offset+60+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+90+780,y_offset - (0 | state[my_team][my_int][i].B.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.ACC/2);
+            ctx.fillText("ACC",x_offset+90+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.ACC,x_offset+90+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+120+780,y_offset - (0 | state[my_team][my_int][i].B.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.CRT/2);
+            ctx.fillText("CRT",x_offset+120+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.CRT,x_offset+120+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+150+780,y_offset - (0 | state[my_team][my_int][i].B.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.CD/2);
+            ctx.fillText("CD",x_offset+150+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.CD,x_offset+150+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+180+780,y_offset - (0 | state[my_team][my_int][i].B.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.CLU/2);
+            ctx.fillText("CLU",x_offset+180+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.CLU,x_offset+180+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+210+780,y_offset - (0 | state[my_team][my_int][i].B.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.Weight/2);
+            ctx.fillText("WGT",x_offset+210+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.Weight,x_offset+210+780, y_offset+20 + (i*unit_shift) )
+
+            ser   = state[my_team][my_int][i].B.SERIAL.toString()
+            for (let k = ser.length; k < 7; k++) {
+                ser = '0' + ser
+            }
+            ser = 'B' + ser
+            ctx.textAlign = "left";
+            ctx.fillText(ser,x_offset-15+780, y_offset-95 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.NAME,x_offset-15+780, y_offset-85 + (i*unit_shift) )
+            ctx.fillText("  Basic close attack",x_offset-15+780, y_offset-65 + (i*unit_shift) )
+
+            ctx.fillStyle = 'white';
+            ctx.textAlign = "left";
+            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+250+780,y_offset-110 + (i*unit_shift), 1, 140);
+
+            ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
+
+
 
         }
 

@@ -1449,7 +1449,7 @@ function drawTable1() {
 function drawTable2() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 50
+        let x_offset = 700
         let y_offset = 160
         let unit_shift = 150
         ctx.font = '11px monospace';

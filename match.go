@@ -500,7 +500,7 @@ func createMatch(pl *permission_list) *match {
 					SERIAL:      0,
 					NAME:        "DEFAULT",
 					HP:          100,
-					ATK:         10,
+					ATK:         100,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,

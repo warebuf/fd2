@@ -1543,10 +1543,10 @@ function drawStartersTable() {
 
         // draw 10 per bar lines
         ctx.fillStyle = '#101010';
-        ctx.fillRect(x_offset-50,y_offset-10 ,40,1);
-        ctx.fillRect(x_offset-50,y_offset-20 ,40,1);
-        ctx.fillRect(x_offset-50,y_offset-30 ,40,1);
-        ctx.fillRect(x_offset-50,y_offset-40 ,40,1);
+        ctx.fillRect(x_offset-50,y_offset-10 ,50,1);
+        ctx.fillRect(x_offset-50,y_offset-20 ,50,1);
+        ctx.fillRect(x_offset-50,y_offset-30 ,50,1);
+        ctx.fillRect(x_offset-50,y_offset-40 ,50,1);
 
         // draw numbers
         ctx.fillStyle = 'white';

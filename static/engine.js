@@ -330,14 +330,14 @@ function drawPos() {
                 }
                 let road = 'o' + "-".repeat(99) + 'x';
                 road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
-                ctx.fillText(road, 200, ((i+j)*115) + 102 + (k*20));
+                ctx.fillText(road, 150, ((i+j)*115) + 102 + (k*20));
             }
         }
     }
 }
 
 function drawState() {
-    x0 = 100
+    x0 = 110
     y0 = 100
 
     ctx.textAlign = "left";

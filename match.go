@@ -495,84 +495,6 @@ func createMatch(pl *permission_list) *match {
 			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)} // assigning a pair of ints (team, pos in team) to each client
 			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))
 
-			for y := 0; y < 5; y++ {
-				h := head{
-					SERIAL:      0,
-					NAME:        "DEFAULT",
-					HP:          100,
-					ATK:         100,
-					DEF:         0,
-					ACC:         0,
-					CRT:         0,
-					CD:          0,
-					CLU:         0,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      1,
-				}
-				larm := arm{
-					SERIAL: 0,
-					NAME:   "DEFAULT",
-					LORR:   false,
-
-					HP:          100,
-					ATK:         100,
-					DEF:         0,
-					ACC:         0,
-					CRT:         0,
-					CD:          0,
-					CLU:         0,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      1,
-				}
-				rarm := arm{
-					SERIAL: 0,
-					NAME:   "DEFAULT",
-					LORR:   true,
-
-					HP:          100,
-					ATK:         100,
-					DEF:         0,
-					ACC:         0,
-					CRT:         0,
-					CD:          0,
-					CLU:         0,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      1,
-				}
-				btm := bottom{
-					SERIAL: 0,
-					NAME:   "DEFAULT",
-
-					HP:          100,
-					ATK:         100,
-					DEF:         0,
-					ACC:         0,
-					CRT:         0,
-					CD:          0,
-					CLU:         0,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      1,
-
-					DOG: 0,
-					SPD: rand.Intn(10) * 10,
-				}
-				temp := &hero{
-					Bot:       j.bot_status,
-					Position:  0,
-					Direction: 0,
-					Move:      -1,
-					H:         h,
-					L:         larm,
-					R:         rarm,
-					B:         btm,
-				}
-				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
-			}
-
 			namesh := []string{
 				"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER", "RAINMAN",
 				"CARMACK", "CAGED",
@@ -589,6 +511,164 @@ func createMatch(pl *permission_list) *match {
 				"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",
 				"SOUND OF THE RAIN", "HOG WILD", "CAT TAIL", "HELLKICK", "YEAR ZERO",
 			}
+
+			for y := 0; y < 5; y++ {
+				temph := rand.Intn(len(namesh))
+				templ := rand.Intn(len(namesl))
+				tempr := rand.Intn(len(namesr))
+				tempb := rand.Intn(len(namesb))
+				h := head{
+					SERIAL:      temph,
+					NAME:        namesh[temph],
+					HP:          rand.Intn(99) + 1,
+					ATK:         rand.Intn(99) + 1,
+					DEF:         rand.Intn(99) + 1,
+					ACC:         rand.Intn(99) + 1,
+					CRT:         rand.Intn(99) + 1,
+					CD:          rand.Intn(99) + 1,
+					CLU:         rand.Intn(99) + 1,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      rand.Intn(99) + 1,
+				}
+				larm := arm{
+					SERIAL:      templ,
+					LORR:        false,
+					NAME:        namesl[templ],
+					HP:          rand.Intn(99) + 1,
+					ATK:         rand.Intn(99) + 1,
+					DEF:         rand.Intn(99) + 1,
+					ACC:         rand.Intn(99) + 1,
+					CRT:         rand.Intn(99) + 1,
+					CD:          rand.Intn(99) + 1,
+					CLU:         rand.Intn(99) + 1,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      rand.Intn(99) + 1,
+				}
+				rarm := arm{
+					SERIAL:      templ,
+					LORR:        true,
+					NAME:        namesr[tempr],
+					HP:          rand.Intn(99) + 1,
+					ATK:         rand.Intn(99) + 1,
+					DEF:         rand.Intn(99) + 1,
+					ACC:         rand.Intn(99) + 1,
+					CRT:         rand.Intn(99) + 1,
+					CD:          rand.Intn(99) + 1,
+					CLU:         rand.Intn(99) + 1,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      rand.Intn(99) + 1,
+				}
+				btm := bottom{
+					SERIAL: tempb,
+					NAME:   namesb[tempb],
+
+					HP:          rand.Intn(99) + 1,
+					ATK:         rand.Intn(99) + 1,
+					DEF:         rand.Intn(99) + 1,
+					ACC:         rand.Intn(99) + 1,
+					CRT:         rand.Intn(99) + 1,
+					CD:          rand.Intn(99) + 1,
+					CLU:         rand.Intn(99) + 1,
+					SPD:         rand.Intn(99) + 1,
+					DOG:         rand.Intn(99) + 1,
+					Use_current: 0,
+					Use_outof:   0,
+					Weight:      rand.Intn(99) + 1,
+				}
+				temp := &hero{
+					Bot:       j.bot_status,
+					Position:  0,
+					Direction: 0,
+					Move:      -1,
+					H:         h,
+					L:         larm,
+					R:         rarm,
+					B:         btm,
+				}
+				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
+			}
+			/*
+				for y := 0; y < 5; y++ {
+					h := head{
+						SERIAL:      0,
+						NAME:        "DEFAULT",
+						HP:          100,
+						ATK:         100,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      1,
+					}
+					larm := arm{
+						SERIAL: 0,
+						NAME:   "DEFAULT",
+						LORR:   false,
+
+						HP:          100,
+						ATK:         100,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      1,
+					}
+					rarm := arm{
+						SERIAL: 0,
+						NAME:   "DEFAULT",
+						LORR:   true,
+
+						HP:          100,
+						ATK:         100,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      1,
+					}
+					btm := bottom{
+						SERIAL: 0,
+						NAME:   "DEFAULT",
+
+						HP:          100,
+						ATK:         100,
+						DEF:         0,
+						ACC:         0,
+						CRT:         0,
+						CD:          0,
+						CLU:         0,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      1,
+
+						DOG: 0,
+						SPD: rand.Intn(10) * 10,
+					}
+					temp := &hero{
+						Bot:       j.bot_status,
+						Position:  0,
+						Direction: 0,
+						Move:      -1,
+						H:         h,
+						L:         larm,
+						R:         rarm,
+						B:         btm,
+					}
+					ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
+				}
+			*/
 
 			ans.benchH[ans.uuid_to_team_int[i].ab] = make([]*head, 0)
 			ans.benchL[ans.uuid_to_team_int[i].ab] = make([]*arm, 0)

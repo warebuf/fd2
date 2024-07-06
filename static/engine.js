@@ -435,6 +435,7 @@ function drawStats() {
     y1 = 100
 
     a0 = 975
+    /*
     ctx.textAlign = "center";
     ctx.fillText("UNIT", a0+(60/2), y0);
     ctx.beginPath()
@@ -447,8 +448,9 @@ function drawStats() {
     ctx.fillText("D", a0 +(25*0), y0+20);
     ctx.fillText("POS", a0 +(25*1), y0+20);
     ctx.fillText("ACT", a0 +(25*2), y0+20);
-
+    */
     a1 = 10
+    /*
     ctx.fillText("HEAD", a1+(260/2), y0);
     ctx.beginPath()
     ctx.lineWidth = 1;
@@ -466,8 +468,9 @@ function drawStats() {
     ctx.fillText("CLU", a1 +(25*7), y0+20) // H CLU
     ctx.fillText("USE", a1 +(25*8), y0+20) // H USE
     ctx.fillText("WGH", a1 +(25*9), y0+20) // H WEIGHT
-
+    */
     a2 = 300
+    /*
     ctx.fillText("ARMS", a2+(250/2), y0);
     ctx.beginPath()
     ctx.lineWidth = 1;
@@ -485,8 +488,9 @@ function drawStats() {
     ctx.fillText("CLU", a2 +(25*7), y0+20) // ARM CLU
     ctx.fillText("USE", a2 +(25*8), y0+20) // ARM USE
     ctx.fillText("WGT", a2 +(25*9), y0+20) // ARM WEIGHT
-
+    */
     a3 = 575
+    /*
     ctx.fillText("LEGS", a3+(375/2), y0);
     ctx.beginPath()
     ctx.lineWidth = 1;
@@ -506,7 +510,7 @@ function drawStats() {
     ctx.fillText("WGT", a3 +(25*9), y0+20) // LEG WEIGHT
     ctx.fillText("DOG", a3 +(25*10), y0+20) // LEG DOG
     ctx.fillText("SPD", a3 +(25*11), y0+20) // LEG SPE
-
+    */
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
@@ -520,6 +524,7 @@ function drawStats() {
                 else if(state[i][j][k].Move==3){temp='B'}
                 ctx.fillText(temp, a0+(2*25), ((i+j)*115) + y1+2 + (k*20))
 
+                /*
                 ctx.fillText(state[i][j][k].H.SERIAL, a1 +(25*0), ((i+j)*115) + y1+2 + (k*20)) // H HP
                 ctx.fillText(state[i][j][k].H.HP, a1 +(25*1), ((i+j)*115) + y1+2 + (k*20)) // H HP
                 ctx.fillText(state[i][j][k].H.ATK, a1 +(25*2), ((i+j)*115) + y1+2 + (k*20)) // H ATK
@@ -568,7 +573,7 @@ function drawStats() {
                 ctx.fillText(state[i][j][k].B.Weight, a3 +(25*9), ((i+j)*115) + y1+2 + (k*20)) // LEG WEIGHT
                 ctx.fillText(state[i][j][k].B.DOG, a3 +(25*10), ((i+j)*115) + y1+2 + (k*20)) // LEG DOG
                 ctx.fillText(state[i][j][k].B.SPD, a3 +(25*11), ((i+j)*115) + y1+2 + (k*20)) // LEG SPE
-                
+                */
             }
         }
     }

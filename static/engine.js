@@ -1506,11 +1506,7 @@ function drawStartersTable() {
         let x_offset = 1400
         let y_offset = 360
 
-        ctx.fillStyle = 'white';
-        ctx.fillRect(x_offset-40,y_offset ,400,1);
 
-        ctx.fillStyle = 'green';
-        ctx.fillRect(x_offset-40,y_offset-10 ,400,1);
 
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
@@ -1607,5 +1603,12 @@ function drawStartersTable() {
         //ctx.fillRect(x_offset-20,y_offset+30, 250, 1);
         //ctx.fillRect(x_offset-20,y_offset-110, 1, 140);
         //ctx.fillRect(x_offset-20+250,y_offset-110, 1, 140);
+
+
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x_offset-40,y_offset ,400,1);
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(x_offset-40,y_offset-10 ,400,1);
     }
 }

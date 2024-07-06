@@ -70,6 +70,7 @@ function anime() {
         drawStats()
         drawTurn()
         drawUnitsOfTime()
+        drawStartersTable()
         drawLog()
     }
 
@@ -1862,8 +1863,8 @@ function drawTable3() {
 function drawStartersTable() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 1400
-        let y_offset = 360
+        let x_offset = 50
+        let y_offset = 500
         let unit_shift = 100
 
 

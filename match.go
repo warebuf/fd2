@@ -516,7 +516,7 @@ func createMatch(pl *permission_list) *match {
 					LORR:   false,
 
 					HP:          100,
-					ATK:         10,
+					ATK:         100,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
@@ -532,7 +532,7 @@ func createMatch(pl *permission_list) *match {
 					LORR:   true,
 
 					HP:          100,
-					ATK:         10,
+					ATK:         100,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,
@@ -547,7 +547,7 @@ func createMatch(pl *permission_list) *match {
 					NAME:   "DEFAULT",
 
 					HP:          100,
-					ATK:         10,
+					ATK:         100,
 					DEF:         0,
 					ACC:         0,
 					CRT:         0,

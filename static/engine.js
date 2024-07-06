@@ -1485,6 +1485,7 @@ function drawTable2() {
             ser = '0' + ser
         }
         ser = 'B' + ser
+        ctx.textAlign = "left";
         ctx.fillText(ser,x_offset+0, y_offset+30 )
         ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset+0, y_offset+40 )
 

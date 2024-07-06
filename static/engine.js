@@ -1480,8 +1480,13 @@ function drawTable2() {
         ctx.fillText("WGT",x_offset+210, y_offset+10 )
         ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
 
-        ctx.fillText(state[my_team][my_int][0].H.SERIAL,x_offset+0, y_offset+30 )
-        ctx.fillText(state[my_team][my_int][0].H.Name,x_offset+0, y_offset+40 )
+        ser   = state[my_team][my_int][0].B.SERIAL.toString()
+        for (let k = ser.length; k < 7; k++) {
+            ser = '0' + ser
+        }
+        ser = 'B' + ser
+        ctx.fillText(ser,x_offset+0, y_offset+30 )
+        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset+0, y_offset+40 )
 
 
     }

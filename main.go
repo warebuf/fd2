@@ -308,11 +308,11 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 	log.Println("/")
 	t := template.Must(template.ParseFiles(filepath.Join("static", "index.html")))
 	mottos := []string{
-		"Better than sex.",
-		"est. 1776.",
-		"Bringing back the memories.",
-		"A sign of the times.",
-		"Love, Laugh, Live.",
+		"Better than sex",
+		"est. 1776",
+		"Bringing back the memories",
+		"A sign of the times",
+		"Love, Laugh, Live",
 	}
 
 	t.Execute(res, mottos[rand.Intn(len(mottos))])

@@ -1483,7 +1483,7 @@ function drawTable2() {
         ctx.beginPath();
         ctx.lineWidth = "1";
         ctx.strokeStyle = "blue";
-        ctx.rect(x_offset-10, y_offset-50, 230, 70);
+        ctx.rect(x_offset-15, y_offset-55, 240, 80);
         ctx.stroke();
 
         ser   = state[my_team][my_int][0].B.SERIAL.toString()

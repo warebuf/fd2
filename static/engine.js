@@ -55,10 +55,11 @@ function anime() {
         drawLog()
         drawBench()
         drawStarters()
-        drawSelect()
         drawError()
         drawTable1()
         drawTable2()
+        drawStartersTable()
+        drawSelect()
     } else if (match_data.length > 0) {
         drawGrid()
         drawPos()
@@ -1480,18 +1481,59 @@ function drawTable2() {
         ctx.fillText("WGT",x_offset+210, y_offset+10 )
         ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
 
-        //ctx.beginPath();
-        //ctx.lineWidth = "1";
-        //ctx.strokeStyle = "white";
-        //ctx.rect(x_offset-15, y_offset-55, 240, 80);
-        //ctx.stroke();
+        ser   = state[my_team][my_int][0].B.SERIAL.toString()
+        for (let k = ser.length; k < 7; k++) {
+            ser = '0' + ser
+        }
+        ser = 'B' + ser
+        ctx.textAlign = "left";
+        ctx.fillText(ser,x_offset-15, y_offset-95 )
+        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85 )
+        ctx.fillText("Basic close attack",x_offset-15, y_offset-70 )
 
         ctx.fillStyle = 'white';
         ctx.textAlign = "left";
-        //ctx.fillRect(x_offset-20,y_offset-60, 250, 1);
-        //ctx.fillRect(x_offset-20,y_offset-60+90, 250, 1);
-        //ctx.fillRect(x_offset-20,y_offset-60, 1, 90);
-        //ctx.fillRect(x_offset-20+250,y_offset-60, 1, 90);
+        ctx.fillRect(x_offset-20,y_offset-110, 250, 1);
+        ctx.fillRect(x_offset-20,y_offset+30, 250, 1);
+        ctx.fillRect(x_offset-20,y_offset-110, 1, 140);
+        ctx.fillRect(x_offset-20+250,y_offset-110, 1, 140);
+    }
+}
+
+function drawStartersTable() {
+    if((state!=null) && (my_team != -1) && (my_int != -1)) {
+
+        let x_offset = 1400
+        let y_offset = 360
+
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
+
+        ctx.textAlign = "center";
+        ctx.fillRect(x_offset-2+0,y_offset - (0 | state[my_team][my_int][0].H.HP/2),4,0 | state[my_team][my_int][0].H.HP/2);
+        ctx.fillText("HP",x_offset, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.HP,x_offset, y_offset+20 )
+        ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
+        ctx.fillText("ATK",x_offset+30, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.ATK,x_offset+30, y_offset+20 )
+        ctx.fillRect(x_offset-2+60,y_offset - (0 | state[my_team][my_int][0].H.DEF/2),4,0 | state[my_team][my_int][0].H.DEF/2);
+        ctx.fillText("DEF",x_offset+60, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.DEF,x_offset+60, y_offset+20 )
+        ctx.fillRect(x_offset-2+90,y_offset - (0 | state[my_team][my_int][0].H.ACC/2),4,0 | state[my_team][my_int][0].H.ACC/2);
+        ctx.fillText("ACC",x_offset+90, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.ACC,x_offset+90, y_offset+20 )
+        ctx.fillRect(x_offset-2+120,y_offset - (0 | state[my_team][my_int][0].H.CRT/2),4,0 | state[my_team][my_int][0].H.CRT/2);
+        ctx.fillText("CRT",x_offset+120, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.CRT,x_offset+120, y_offset+20 )
+        ctx.fillRect(x_offset-2+150,y_offset - (0 | state[my_team][my_int][0].H.CD/2),4,0 | state[my_team][my_int][0].H.CD/2);
+        ctx.fillText("CD",x_offset+150, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.CD,x_offset+150, y_offset+20 )
+        ctx.fillRect(x_offset-2+180,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillText("CLU",x_offset+180, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.CLU,x_offset+180, y_offset+20 )
+        ctx.fillRect(x_offset-2+210,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
+        ctx.fillText("WGT",x_offset+210, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
 
         ser   = state[my_team][my_int][0].B.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {

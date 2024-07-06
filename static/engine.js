@@ -56,7 +56,7 @@ function anime() {
         drawBench()
         drawStarters()
         drawError()
-        drawTable1()
+        //drawTable1()
         //drawTable2()
         //drawTable3()
         drawStartersTable()

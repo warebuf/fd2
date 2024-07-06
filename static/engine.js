@@ -1567,7 +1567,6 @@ function drawStartersTable() {
 
 
 
-        ctx.fillText(state[my_team][my_int][0].H.ATK,x_offset+30, y_offset+20 )
         ctx.fillRect(x_offset-2+60,y_offset - (0 | state[my_team][my_int][0].H.DEF/2),4,0 | state[my_team][my_int][0].H.DEF/2);
         ctx.fillText("DEF",x_offset+60, y_offset+10 )
         ctx.fillText(state[my_team][my_int][0].H.DEF,x_offset+60, y_offset+20 )

@@ -1517,79 +1517,49 @@ function drawStartersTable() {
         ctx.fillRect(x_offset-2-20,y_offset - (0 | state[my_team][my_int][0].R.HP/2),4,0 | state[my_team][my_int][0].R.HP/2);
         ctx.fillRect(x_offset-2-10,y_offset - (0 | state[my_team][my_int][0].B.HP/2),4,0 | state[my_team][my_int][0].B.HP/2);
         ctx.fillText("HP",x_offset-25, y_offset+15 )
+
         ctx.fillRect(x_offset-2+10,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
         ctx.fillRect(x_offset-2+20,y_offset - (0 | state[my_team][my_int][0].L.ATK/2),4,0 | state[my_team][my_int][0].L.ATK/2);
         ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].R.ATK/2),4,0 | state[my_team][my_int][0].R.ATK/2);
         ctx.fillRect(x_offset-2+40,y_offset - (0 | state[my_team][my_int][0].B.ATK/2),4,0 | state[my_team][my_int][0].B.ATK/2);
-        ctx.fillText("ATK",x_offset+20, y_offset+15 )
+        ctx.fillText("ATK",x_offset+25, y_offset+15 )
+
         ctx.fillRect(x_offset-2+60,y_offset - (0 | state[my_team][my_int][0].H.DEF/2),4,0 | state[my_team][my_int][0].H.DEF/2);
-        ctx.fillText("DEF",x_offset+60, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.DEF,x_offset+60, y_offset+20 )
-        ctx.fillRect(x_offset-2+90,y_offset - (0 | state[my_team][my_int][0].H.ACC/2),4,0 | state[my_team][my_int][0].H.ACC/2);
-        ctx.fillText("ACC",x_offset+90, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.ACC,x_offset+90, y_offset+20 )
-        ctx.fillRect(x_offset-2+120,y_offset - (0 | state[my_team][my_int][0].H.CRT/2),4,0 | state[my_team][my_int][0].H.CRT/2);
-        ctx.fillText("CRT",x_offset+120, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.CRT,x_offset+120, y_offset+20 )
-        ctx.fillRect(x_offset-2+150,y_offset - (0 | state[my_team][my_int][0].H.CD/2),4,0 | state[my_team][my_int][0].H.CD/2);
-        ctx.fillText("CD",x_offset+150, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.CD,x_offset+150, y_offset+20 )
-        ctx.fillRect(x_offset-2+180,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
-        ctx.fillText("CLU",x_offset+180, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.CLU,x_offset+180, y_offset+20 )
-        ctx.fillRect(x_offset-2+210,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
-        ctx.fillText("WGT",x_offset+210, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
+        ctx.fillRect(x_offset-2+70,y_offset - (0 | state[my_team][my_int][0].L.DEF/2),4,0 | state[my_team][my_int][0].L.DEF/2);
+        ctx.fillRect(x_offset-2+80,y_offset - (0 | state[my_team][my_int][0].R.DEF/2),4,0 | state[my_team][my_int][0].R.DEF/2);
+        ctx.fillRect(x_offset-2+90,y_offset - (0 | state[my_team][my_int][0].B.DEF/2),4,0 | state[my_team][my_int][0].B.DEF/2);
+        ctx.fillText("DEF",x_offset+75, y_offset+10 )
 
-        // draw 10 per bar lines
-        ctx.fillStyle = '#101010';
-        ctx.fillRect(x_offset-50,y_offset-10 ,50,1);
-        ctx.fillRect(x_offset-50,y_offset-20 ,50,1);
-        ctx.fillRect(x_offset-50,y_offset-30 ,50,1);
-        ctx.fillRect(x_offset-50,y_offset-40 ,50,1);
+        ctx.fillRect(x_offset-2+110,y_offset - (0 | state[my_team][my_int][0].H.ACC/2),4,0 | state[my_team][my_int][0].H.ACC/2);
+        ctx.fillRect(x_offset-2+120,y_offset - (0 | state[my_team][my_int][0].L.ACC/2),4,0 | state[my_team][my_int][0].L.ACC/2);
+        ctx.fillRect(x_offset-2+130,y_offset - (0 | state[my_team][my_int][0].R.ACC/2),4,0 | state[my_team][my_int][0].R.ACC/2);
+        ctx.fillRect(x_offset-2+140,y_offset - (0 | state[my_team][my_int][0].B.ACC/2),4,0 | state[my_team][my_int][0].B.ACC/2);
+        ctx.fillText("ACC",x_offset+125, y_offset+10 )
 
-        // draw numbers
-        ctx.fillStyle = 'white';
-        if(state[my_team][my_int][0].H.HP==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].H.HP,x_offset-40, y_offset-5 - (0 | state[my_team][my_int][0].H.HP/2) )
-        }
-        if(state[my_team][my_int][0].L.HP==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].L.HP,x_offset-30, y_offset-5 - (0 | state[my_team][my_int][0].L.HP/2) )
-        }
-        if(state[my_team][my_int][0].R.HP==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].R.HP,x_offset-20, y_offset-5 - (0 | state[my_team][my_int][0].R.HP/2) )
-        }
-        if(state[my_team][my_int][0].B.HP==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].B.HP,x_offset-10, y_offset-5 - (0 | state[my_team][my_int][0].B.HP/2) )
-        }
-        if(state[my_team][my_int][0].H.ATK==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].H.ATK,x_offset+10, y_offset-5 - (0 | state[my_team][my_int][0].H.ATK/2) )
-        }
-        if(state[my_team][my_int][0].L.ATK==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].L.ATK,x_offset+20, y_offset-5 - (0 | state[my_team][my_int][0].L.ATK/2)  )
-        }
-        if(state[my_team][my_int][0].R.ATK==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].R.ATK,x_offset+30, y_offset-5 - (0 | state[my_team][my_int][0].R.ATK/2)  )
-        }
-        if(state[my_team][my_int][0].B.ATK==100){}
-        else{
-            ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].B.ATK,x_offset+40, y_offset-5 - (0 | state[my_team][my_int][0].B.ATK/2) )
-        }
+
+        ctx.fillRect(x_offset-2+160,y_offset - (0 | state[my_team][my_int][0].H.CRT/2),4,0 | state[my_team][my_int][0].H.CRT/2);
+        ctx.fillRect(x_offset-2+170,y_offset - (0 | state[my_team][my_int][0].L.CRT/2),4,0 | state[my_team][my_int][0].L.CRT/2);
+        ctx.fillRect(x_offset-2+180,y_offset - (0 | state[my_team][my_int][0].R.CRT/2),4,0 | state[my_team][my_int][0].R.CRT/2);
+        ctx.fillRect(x_offset-2+190,y_offset - (0 | state[my_team][my_int][0].B.CRT/2),4,0 | state[my_team][my_int][0].B.CRT/2);
+        ctx.fillText("CRT",x_offset+175, y_offset+10 )
+
+        ctx.fillRect(x_offset-2+210,y_offset - (0 | state[my_team][my_int][0].H.CD/2),4,0 | state[my_team][my_int][0].H.CD/2);
+        ctx.fillRect(x_offset-2+220,y_offset - (0 | state[my_team][my_int][0].L.CD/2),4,0 | state[my_team][my_int][0].L.CD/2);
+        ctx.fillRect(x_offset-2+230,y_offset - (0 | state[my_team][my_int][0].R.CD/2),4,0 | state[my_team][my_int][0].R.CD/2);
+        ctx.fillRect(x_offset-2+240,y_offset - (0 | state[my_team][my_int][0].B.CD/2),4,0 | state[my_team][my_int][0].B.CD/2);
+        ctx.fillText("CD",x_offset+225, y_offset+10 )
+
+        ctx.fillRect(x_offset-2+260,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillRect(x_offset-2+270,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillRect(x_offset-2+280,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillRect(x_offset-2+290,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillText("CLU",x_offset+275, y_offset+10 )
+
+        ctx.fillRect(x_offset-2+310,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
+        ctx.fillRect(x_offset-2+320,y_offset - (0 | state[my_team][my_int][0].L.Weight/2),4,0 | state[my_team][my_int][0].L.Weight/2);
+        ctx.fillRect(x_offset-2+330,y_offset - (0 | state[my_team][my_int][0].R.Weight/2),4,0 | state[my_team][my_int][0].R.Weight/2);
+        ctx.fillRect(x_offset-2+340,y_offset - (0 | state[my_team][my_int][0].B.Weight/2),4,0 | state[my_team][my_int][0].B.Weight/2);
+        ctx.fillText("WGT",x_offset+325, y_offset+10 )
 
 
         // write part desc

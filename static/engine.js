@@ -337,7 +337,7 @@ function drawPos() {
 }
 
 function drawState() {
-    x0 = 50
+    x0 = 150
     y0 = 100
 
     ctx.textAlign = "left";
@@ -434,7 +434,7 @@ function drawStats() {
     y0 = 60
     y1 = 100
 
-    a0 = 70
+    a0 = 20
 
     ctx.textAlign = "center";
     ctx.fillText("UNIT", a0+(60/2), y0);

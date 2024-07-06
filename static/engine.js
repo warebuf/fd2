@@ -1597,18 +1597,19 @@ function drawStartersTable() {
         ctx.fillText(ser,x_offset-15, y_offset-95 )
         ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85 )
 
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "left";
-        //ctx.fillRect(x_offset-20,y_offset-110, 250, 1);
-        //ctx.fillRect(x_offset-20,y_offset+30, 250, 1);
-        //ctx.fillRect(x_offset-20,y_offset-110, 1, 140);
-        //ctx.fillRect(x_offset-20+250,y_offset-110, 1, 140);
 
 
         ctx.fillStyle = 'white';
         ctx.fillRect(x_offset-40,y_offset ,400,1);
 
         ctx.fillStyle = 'black';
-        ctx.fillRect(x_offset-40,y_offset-10 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-20 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-30 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-40 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-50 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-60 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-70 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-80 ,400,1);
+        ctx.fillRect(x_offset-40,y_offset-90 ,400,1);
     }
 }

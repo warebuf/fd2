@@ -1914,9 +1914,9 @@ function drawStartersTable() {
                     ctx.fillText("CD",x_offset+225+(user_shift*user_count), y_offset+15 + (i*unit_shift) )
 
                     ctx.fillRect(x_offset-2+260+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
-                    ctx.fillRect(x_offset-2+270+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
-                    ctx.fillRect(x_offset-2+280+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
-                    ctx.fillRect(x_offset-2+290+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].H.CLU/2);
+                    ctx.fillRect(x_offset-2+270+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].L.CLU/2);
+                    ctx.fillRect(x_offset-2+280+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].R.CLU/2);
+                    ctx.fillRect(x_offset-2+290+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),4,0 | state[j][k][i].B.CLU/2);
                     ctx.fillText("CLU",x_offset+275+(user_shift*user_count), y_offset+15 + (i*unit_shift) )
 
                     ctx.fillRect(x_offset-2+310+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.Weight/2) + (i*unit_shift),4,0 | state[j][k][i].H.Weight/2);

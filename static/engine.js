@@ -1480,11 +1480,15 @@ function drawTable2() {
         ctx.fillText("WGT",x_offset+210, y_offset+10 )
         ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
 
-        ctx.beginPath();
-        ctx.lineWidth = "1";
-        ctx.strokeStyle = "white";
-        ctx.rect(x_offset-15, y_offset-55, 240, 80);
-        ctx.stroke();
+        //ctx.beginPath();
+        //ctx.lineWidth = "1";
+        //ctx.strokeStyle = "white";
+        //ctx.rect(x_offset-15, y_offset-55, 240, 80);
+        //ctx.stroke();
+
+        ctx.fillStyle = 'white';
+        ctx.textAlign = "left";
+        ctx.fillRect(x_offset-15,y_offset-55, 240, 1);
 
         ser   = state[my_team][my_int][0].B.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {

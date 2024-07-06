@@ -715,11 +715,11 @@ func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 	//c, _ := req.Cookie("session-name")
 
 	// plays music in lobby
-	files, err := os.ReadDir("./music")
-	if err != nil {
-		log.Fatal(err)
-	}
-	randNum := rand.Intn(len(files))
+	//files, err := os.ReadDir("./music")
+	//if err != nil {
+	//	log.Fatal(err)
+	/}
+	//randNum := rand.Intn(len(files))
 
 	// Check if user is already authenticated
 	session, err := store.Get(req, "session-name")
@@ -731,8 +731,8 @@ func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 
 	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
 		t := template.Must(template.ParseFiles(filepath.Join("static", "waitroom.html")))
-		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "song": files[randNum].Name()}
-		//data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
+		//data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host, "song": files[randNum].Name()}
+		data := map[string]string{"email": session.Values["Email"].(string), "host": req.Host}
 		t.Execute(res, data)
 	} else {
 		fmt.Println("User is not authenticated, redirecting to home page")

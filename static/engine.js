@@ -2007,7 +2007,7 @@ function drawStartersTable() {
 
 
                     ctx.fillStyle = 'white';
-                    ctx.fillRect(x_offset-40+(user_shift*user_count),y_offset + (i*unit_shift) ,475,1);
+                    ctx.fillRect(x_offset-50+(user_shift*user_count),y_offset + (i*unit_shift) ,540,1);
                 }
                 user_count = user_count + 1
             }

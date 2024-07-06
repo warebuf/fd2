@@ -1482,7 +1482,7 @@ function drawTable2() {
 
         ctx.beginPath();
         ctx.lineWidth = "1";
-        ctx.strokeStyle = "blue";
+        ctx.strokeStyle = "white";
         ctx.rect(x_offset-15, y_offset-55, 240, 80);
         ctx.stroke();
 

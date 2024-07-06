@@ -51,6 +51,7 @@ function anime() {
 
     if(phase=="CHARACTER SELECTION") {
 
+        drawGrid()
         drawPhase()
         drawLog()
         //drawBench()
@@ -62,7 +63,7 @@ function anime() {
         drawStartersTable()
         //drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
-        drawGrid()
+
 
     } else if (match_data.length > 0) {
         //drawGrid()
@@ -1319,7 +1320,7 @@ function drawGrid() {
     for(i=0;i<200;i++) {
         for(j=0;j<200;j++) {
             ctx.textAlign = "left";
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = 'grey';
             ctx.fillRect((i*10),(j*10),1,1);
         }
     }

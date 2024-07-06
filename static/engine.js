@@ -1515,8 +1515,11 @@ function drawStartersTable() {
         ctx.fillRect(x_offset-2-20,y_offset - (0 | state[my_team][my_int][0].R.HP/2),4,0 | state[my_team][my_int][0].R.HP/2);
         ctx.fillRect(x_offset-2-10,y_offset - (0 | state[my_team][my_int][0].B.HP/2),4,0 | state[my_team][my_int][0].B.HP/2);
         ctx.fillText("HP",x_offset-25, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.HP,x_offset-25, y_offset+20 )
-        
+        ctx.fillText(state[my_team][my_int][0].H.HP,x_offset-40, y_offset+20 )
+        ctx.fillText(state[my_team][my_int][0].L.HP,x_offset-30, y_offset+20 )
+        ctx.fillText(state[my_team][my_int][0].R.HP,x_offset-20, y_offset+20 )
+        ctx.fillText(state[my_team][my_int][0].B.HP,x_offset-10, y_offset+20 )
+
         ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
         ctx.fillText("ATK",x_offset+30, y_offset+10 )
         ctx.fillText(state[my_team][my_int][0].H.ATK,x_offset+30, y_offset+20 )

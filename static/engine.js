@@ -67,7 +67,7 @@ function anime() {
         //drawGrid()
         drawPos()
         drawState()
-        //drawStats()
+        drawStats()
         drawTurn()
         drawUnitsOfTime()
         drawStartersTable()
@@ -448,7 +448,7 @@ function drawStats() {
     ctx.fillText("D", a0 +(25*0), y0+20);
     ctx.fillText("POS", a0 +(25*1), y0+20);
     ctx.fillText("ACT", a0 +(25*2), y0+20);
-    
+
     a1 = 10
     /*
     ctx.fillText("HEAD", a1+(260/2), y0);

@@ -1887,6 +1887,7 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-2-20+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.HP/2) + (i*unit_shift),4,0 | state[j][k][i].R.HP/2);
                     ctx.fillRect(x_offset-2-10+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.HP/2) + (i*unit_shift),4,0 | state[j][k][i].B.HP/2);
                     ctx.fillText("HP",x_offset-25+(user_shift*user_count), y_offset+15 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.HP,x_offset-2-40, y_offset+25 + (i*unit_shift) )
 
                     ctx.fillRect(x_offset-2+10+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ATK/2) + (i*unit_shift),4,0 | state[j][k][i].H.ATK/2);
                     ctx.fillRect(x_offset-2+20+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ATK/2) + (i*unit_shift),4,0 | state[j][k][i].L.ATK/2);

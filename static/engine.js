@@ -1489,7 +1489,7 @@ function drawTable2() {
         ctx.textAlign = "left";
         ctx.fillText(ser,x_offset-15, y_offset-95 )
         ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85 )
-        ctx.fillText("Basic close attack",x_offset-15, y_offset-70 )
+        ctx.fillText("Basic close attack",x_offset-15, y_offset-65 )
 
         ctx.fillStyle = 'white';
         ctx.textAlign = "left";
@@ -1545,22 +1545,22 @@ function drawStartersTable() {
         if(state[my_team][my_int][0].H.ATK==100){}
         else{
             ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].H.ATK,x_offset+10, y_offset+20 )
+            ctx.fillText(state[my_team][my_int][0].H.ATK,x_offset+10, y_offset-5 - (0 | state[my_team][my_int][0].H.ATK/2) )
         }
         if(state[my_team][my_int][0].L.ATK==100){}
         else{
             ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].L.ATK,x_offset+20, y_offset+20  )
+            ctx.fillText(state[my_team][my_int][0].L.ATK,x_offset+20, y_offset-5 - (0 | state[my_team][my_int][0].L.ATK/2)  )
         }
         if(state[my_team][my_int][0].R.ATK==100){}
         else{
             ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].R.ATK,x_offset+30, y_offset+20  )
+            ctx.fillText(state[my_team][my_int][0].R.ATK,x_offset+30, y_offset-5 - (0 | state[my_team][my_int][0].R.ATK/2)  )
         }
         if(state[my_team][my_int][0].B.ATK==100){}
         else{
             ctx.font = '8px monospace';
-            ctx.fillText(state[my_team][my_int][0].B.ATK,x_offset+40, y_offset+20 )
+            ctx.fillText(state[my_team][my_int][0].B.ATK,x_offset+40, y_offset-5 - (0 | state[my_team][my_int][0].B.ATK/2) )
         }
         ctx.font = '11px monospace';
 

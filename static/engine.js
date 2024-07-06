@@ -1537,10 +1537,10 @@ function drawStartersTable() {
         }
         ctx.font = '11px monospace';
 
-        ctx.fillRect(x_offset-2+10,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),3,0 | state[my_team][my_int][0].H.ATK/2);
-        ctx.fillRect(x_offset-2+20,y_offset - (0 | state[my_team][my_int][0].L.ATK/2),3,0 | state[my_team][my_int][0].L.ATK/2);
-        ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].R.ATK/2),3,0 | state[my_team][my_int][0].R.ATK/2);
-        ctx.fillRect(x_offset-2+40,y_offset - (0 | state[my_team][my_int][0].B.ATK/2),3,0 | state[my_team][my_int][0].B.ATK/2);
+        ctx.fillRect(x_offset-2+10,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
+        ctx.fillRect(x_offset-2+20,y_offset - (0 | state[my_team][my_int][0].L.ATK/2),4,0 | state[my_team][my_int][0].L.ATK/2);
+        ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].R.ATK/2),4,0 | state[my_team][my_int][0].R.ATK/2);
+        ctx.fillRect(x_offset-2+40,y_offset - (0 | state[my_team][my_int][0].B.ATK/2),4,0 | state[my_team][my_int][0].B.ATK/2);
         ctx.fillText("ATK",x_offset+20, y_offset+10 )
         if(state[my_team][my_int][0].H.ATK==100){}
         else{

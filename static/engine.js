@@ -1864,7 +1864,7 @@ function drawStartersTable() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 50
-        let y_offset = 300
+        let y_offset = 400
         let unit_shift = 100
 
 

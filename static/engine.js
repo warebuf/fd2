@@ -67,7 +67,7 @@ function anime() {
         //drawGrid()
         drawPos()
         drawState()
-        drawStats()
+        //drawStats()
         drawTurn()
         drawUnitsOfTime()
         drawStartersTable()

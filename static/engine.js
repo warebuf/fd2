@@ -434,7 +434,7 @@ function drawStats() {
     y0 = 60
     y1 = 100
 
-    a0 = 975
+    a0 = 70
 
     ctx.textAlign = "center";
     ctx.fillText("UNIT", a0+(60/2), y0);

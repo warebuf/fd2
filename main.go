@@ -718,7 +718,7 @@ func waitroomHandler(res http.ResponseWriter, req *http.Request) {
 	//files, err := os.ReadDir("./music")
 	//if err != nil {
 	//	log.Fatal(err)
-	/}
+	//}
 	//randNum := rand.Intn(len(files))
 
 	// Check if user is already authenticated

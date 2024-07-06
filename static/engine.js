@@ -1499,8 +1499,8 @@ function drawTable2() {
             ctx.fillRect(x_offset-20,y_offset+30 + (i*unit_shift), 250, 1);
             ctx.fillRect(x_offset-20,y_offset-110 + (i*unit_shift), 1, 140);
             ctx.fillRect(x_offset-20+250,y_offset-110 + (i*unit_shift), 1, 140);
-            
-            ctx.fillRect(x_offset,y_offset + (i*unit_shift) ,400,1);// draw bottom plot line
+
+            ctx.fillRect(x_offset,y_offset + (i*unit_shift) ,230,1);// draw bottom plot line
         }
 
 

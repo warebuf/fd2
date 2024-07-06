@@ -1489,6 +1489,9 @@ function drawTable2() {
         ctx.fillStyle = 'white';
         ctx.textAlign = "left";
         ctx.fillRect(x_offset-15,y_offset-55, 240, 1);
+        ctx.fillRect(x_offset-15,y_offset-55+80, 240, 1);
+        ctx.fillRect(x_offset-15,y_offset-55, 1, 80);
+        ctx.fillRect(x_offset-15+240,y_offset-55, 1, 80);
 
         ser   = state[my_team][my_int][0].B.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {

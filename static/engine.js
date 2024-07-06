@@ -1517,6 +1517,42 @@ function drawStartersTable() {
         ctx.fillRect(x_offset-2-20,y_offset - (0 | state[my_team][my_int][0].R.HP/2),4,0 | state[my_team][my_int][0].R.HP/2);
         ctx.fillRect(x_offset-2-10,y_offset - (0 | state[my_team][my_int][0].B.HP/2),4,0 | state[my_team][my_int][0].B.HP/2);
         ctx.fillText("HP",x_offset-25, y_offset+15 )
+        ctx.fillRect(x_offset-2+10,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
+        ctx.fillRect(x_offset-2+20,y_offset - (0 | state[my_team][my_int][0].L.ATK/2),4,0 | state[my_team][my_int][0].L.ATK/2);
+        ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].R.ATK/2),4,0 | state[my_team][my_int][0].R.ATK/2);
+        ctx.fillRect(x_offset-2+40,y_offset - (0 | state[my_team][my_int][0].B.ATK/2),4,0 | state[my_team][my_int][0].B.ATK/2);
+        ctx.fillText("ATK",x_offset+20, y_offset+15 )
+        ctx.fillRect(x_offset-2+60,y_offset - (0 | state[my_team][my_int][0].H.DEF/2),4,0 | state[my_team][my_int][0].H.DEF/2);
+        ctx.fillText("DEF",x_offset+60, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.DEF,x_offset+60, y_offset+20 )
+        ctx.fillRect(x_offset-2+90,y_offset - (0 | state[my_team][my_int][0].H.ACC/2),4,0 | state[my_team][my_int][0].H.ACC/2);
+        ctx.fillText("ACC",x_offset+90, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.ACC,x_offset+90, y_offset+20 )
+        ctx.fillRect(x_offset-2+120,y_offset - (0 | state[my_team][my_int][0].H.CRT/2),4,0 | state[my_team][my_int][0].H.CRT/2);
+        ctx.fillText("CRT",x_offset+120, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.CRT,x_offset+120, y_offset+20 )
+        ctx.fillRect(x_offset-2+150,y_offset - (0 | state[my_team][my_int][0].H.CD/2),4,0 | state[my_team][my_int][0].H.CD/2);
+        ctx.fillText("CD",x_offset+150, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.CD,x_offset+150, y_offset+20 )
+        ctx.fillRect(x_offset-2+180,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
+        ctx.fillText("CLU",x_offset+180, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.CLU,x_offset+180, y_offset+20 )
+        ctx.fillRect(x_offset-2+210,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
+        ctx.fillText("WGT",x_offset+210, y_offset+10 )
+        ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
+
+        // draw 10 per bar lines
+        ctx.fillRect(x_offset-50,y_offset-5 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-10 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-15 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-20 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-25 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-30 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-35 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-40 ,400,1);
+        ctx.fillRect(x_offset-50,y_offset-45 ,400,1);
+
+        // draw numbers
         if(state[my_team][my_int][0].H.HP==100){}
         else{
             ctx.font = '8px monospace';
@@ -1537,13 +1573,6 @@ function drawStartersTable() {
             ctx.font = '8px monospace';
             ctx.fillText(state[my_team][my_int][0].B.HP,x_offset-10, y_offset-5 - (0 | state[my_team][my_int][0].B.HP/2) )
         }
-        ctx.font = '11px monospace';
-
-        ctx.fillRect(x_offset-2+10,y_offset - (0 | state[my_team][my_int][0].H.ATK/2),4,0 | state[my_team][my_int][0].H.ATK/2);
-        ctx.fillRect(x_offset-2+20,y_offset - (0 | state[my_team][my_int][0].L.ATK/2),4,0 | state[my_team][my_int][0].L.ATK/2);
-        ctx.fillRect(x_offset-2+30,y_offset - (0 | state[my_team][my_int][0].R.ATK/2),4,0 | state[my_team][my_int][0].R.ATK/2);
-        ctx.fillRect(x_offset-2+40,y_offset - (0 | state[my_team][my_int][0].B.ATK/2),4,0 | state[my_team][my_int][0].B.ATK/2);
-        ctx.fillText("ATK",x_offset+20, y_offset+15 )
         if(state[my_team][my_int][0].H.ATK==100){}
         else{
             ctx.font = '8px monospace';
@@ -1564,30 +1593,10 @@ function drawStartersTable() {
             ctx.font = '8px monospace';
             ctx.fillText(state[my_team][my_int][0].B.ATK,x_offset+40, y_offset-5 - (0 | state[my_team][my_int][0].B.ATK/2) )
         }
+
+
+        // write part desc
         ctx.font = '11px monospace';
-
-
-
-
-        ctx.fillRect(x_offset-2+60,y_offset - (0 | state[my_team][my_int][0].H.DEF/2),4,0 | state[my_team][my_int][0].H.DEF/2);
-        ctx.fillText("DEF",x_offset+60, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.DEF,x_offset+60, y_offset+20 )
-        ctx.fillRect(x_offset-2+90,y_offset - (0 | state[my_team][my_int][0].H.ACC/2),4,0 | state[my_team][my_int][0].H.ACC/2);
-        ctx.fillText("ACC",x_offset+90, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.ACC,x_offset+90, y_offset+20 )
-        ctx.fillRect(x_offset-2+120,y_offset - (0 | state[my_team][my_int][0].H.CRT/2),4,0 | state[my_team][my_int][0].H.CRT/2);
-        ctx.fillText("CRT",x_offset+120, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.CRT,x_offset+120, y_offset+20 )
-        ctx.fillRect(x_offset-2+150,y_offset - (0 | state[my_team][my_int][0].H.CD/2),4,0 | state[my_team][my_int][0].H.CD/2);
-        ctx.fillText("CD",x_offset+150, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.CD,x_offset+150, y_offset+20 )
-        ctx.fillRect(x_offset-2+180,y_offset - (0 | state[my_team][my_int][0].H.CLU/2),4,0 | state[my_team][my_int][0].H.CLU/2);
-        ctx.fillText("CLU",x_offset+180, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.CLU,x_offset+180, y_offset+20 )
-        ctx.fillRect(x_offset-2+210,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
-        ctx.fillText("WGT",x_offset+210, y_offset+10 )
-        ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
-
         ser   = state[my_team][my_int][0].B.SERIAL.toString()
         for (let k = ser.length; k < 7; k++) {
             ser = '0' + ser
@@ -1604,14 +1613,6 @@ function drawStartersTable() {
 
         ctx.fillStyle = 'black';
 
-        ctx.fillRect(x_offset-50,y_offset-5 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-10 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-15 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-20 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-25 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-30 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-35 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-40 ,400,1);
-        ctx.fillRect(x_offset-50,y_offset-45 ,400,1);
+
     }
 }

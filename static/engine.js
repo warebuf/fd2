@@ -61,7 +61,7 @@ function anime() {
         drawTable3()
         //drawStartersTable()
         //drawSelect()
-        ctx.fillRect(1090,40 , 1, 800);
+        ctx.fillRect(1140,40 , 1, 800);
 
     } else if (match_data.length > 0) {
         drawGrid()
@@ -1639,10 +1639,10 @@ function drawTable2() {
 
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 250, 1);
-            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 300, 1);
+            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 300, 1);
             ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+250+780,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+300+780,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,270,1);// draw bottom plot line
 
@@ -1657,7 +1657,7 @@ function drawTable2() {
 function drawTable3() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 1140
+        let x_offset = 1190
         let y_offset = 170
         let unit_shift = 150
         ctx.font = '11px monospace';

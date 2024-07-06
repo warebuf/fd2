@@ -1479,5 +1479,10 @@ function drawTable2() {
         ctx.fillRect(x_offset-2+210,y_offset - (0 | state[my_team][my_int][0].H.Weight/2),4,0 | state[my_team][my_int][0].H.Weight/2);
         ctx.fillText("WGT",x_offset+210, y_offset+10 )
         ctx.fillText(state[my_team][my_int][0].H.Weight,x_offset+210, y_offset+20 )
+
+        ctx.fillText(state[my_team][my_int][0].H.SERIAL,x_offset+0, y_offset+30 )
+        ctx.fillText(state[my_team][my_int][0].H.Name,x_offset+0, y_offset+40 )
+
+
     }
 }

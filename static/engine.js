@@ -1578,11 +1578,9 @@ function drawStartersTable() {
 
             ctx.fillStyle = 'white';
             ctx.fillRect(x_offset-40,y_offset + (i*unit_shift) ,400,1);
-
-            ctx.fillStyle = 'black';
         }
-
-
+        
+        ctx.fillStyle = 'black';
 
     }
 }

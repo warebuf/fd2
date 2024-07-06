@@ -1639,12 +1639,12 @@ function drawTable2() {
 
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 300, 1);
-            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 300, 1);
+            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 310, 1);
+            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 310, 1);
             ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+300+780,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+310+780,y_offset-110 + (i*unit_shift), 1, 140);
 
-            ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,270,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,280,1);// draw bottom plot line
 
 
 

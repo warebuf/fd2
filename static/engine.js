@@ -1510,10 +1510,10 @@ function drawStartersTable() {
         ctx.fillStyle = 'white';
 
         ctx.textAlign = "center";
-        ctx.fillRect(x_offset-2-40,y_offset - (0 | state[my_team][my_int][0].H.HP/2),4,0 | state[my_team][my_int][0].H.HP/2);
-        ctx.fillRect(x_offset-2-30,y_offset - (0 | state[my_team][my_int][0].L.HP/2),4,0 | state[my_team][my_int][0].L.HP/2);
-        ctx.fillRect(x_offset-2-20,y_offset - (0 | state[my_team][my_int][0].R.HP/2),4,0 | state[my_team][my_int][0].R.HP/2);
-        ctx.fillRect(x_offset-2-10,y_offset - (0 | state[my_team][my_int][0].B.HP/2),4,0 | state[my_team][my_int][0].B.HP/2);
+        ctx.fillRect(x_offset-2-40,y_offset - (0 | state[my_team][my_int][0].H.HP/2),3,0 | state[my_team][my_int][0].H.HP/2);
+        ctx.fillRect(x_offset-2-30,y_offset - (0 | state[my_team][my_int][0].L.HP/2),3,0 | state[my_team][my_int][0].L.HP/2);
+        ctx.fillRect(x_offset-2-20,y_offset - (0 | state[my_team][my_int][0].R.HP/2),3,0 | state[my_team][my_int][0].R.HP/2);
+        ctx.fillRect(x_offset-2-10,y_offset - (0 | state[my_team][my_int][0].B.HP/2),3,0 | state[my_team][my_int][0].B.HP/2);
         ctx.fillText("HP",x_offset-25, y_offset+10 )
         ctx.font = '8px monospace';
         if(state[my_team][my_int][0].H.HP==100){ctx.font = '5px monospace';}

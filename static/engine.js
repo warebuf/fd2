@@ -60,7 +60,7 @@ function anime() {
         drawTable2()
         //drawStartersTable()
         drawSelect()
-        ctx.fillRect(1000,40 , 1, 400);
+        ctx.fillRect(1090,40 , 1, 800);
 
     } else if (match_data.length > 0) {
         drawGrid()

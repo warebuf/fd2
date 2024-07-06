@@ -1449,7 +1449,7 @@ function drawTable1() {
 function drawTable2() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 700
+        let x_offset = 50
         let y_offset = 170
         let unit_shift = 150
         ctx.font = '11px monospace';
@@ -1502,10 +1502,6 @@ function drawTable2() {
 
             ctx.fillRect(x_offset-5,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
 
-
-
-
-
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+260,y_offset - (0 | state[my_team][my_int][i].L.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.HP/2);
             ctx.fillText("HP",x_offset+260, y_offset+10 + (i*unit_shift) )
@@ -1551,9 +1547,6 @@ function drawTable2() {
 
             ctx.fillRect(x_offset-5+260,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
 
-
-
-
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+520,y_offset - (0 | state[my_team][my_int][i].R.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.HP/2);
             ctx.fillText("HP",x_offset+520, y_offset+10 + (i*unit_shift) )
@@ -1598,10 +1591,6 @@ function drawTable2() {
             ctx.fillRect(x_offset-20+250+520,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5+520,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
-
-
-
-
 
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+780,y_offset - (0 | state[my_team][my_int][i].B.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.HP/2);

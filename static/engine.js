@@ -1620,12 +1620,12 @@ function drawTable2() {
             ctx.fillRect(x_offset-2+210+780,y_offset - (0 | state[my_team][my_int][i].B.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.Weight/2);
             ctx.fillText("WGT",x_offset+210+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.Weight,x_offset+210+780, y_offset+20 + (i*unit_shift) )
-            //ctx.fillRect(x_offset-2+240+780,y_offset - (0 | state[my_team][my_int][i].B.SPD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.SPD/2);
-            //ctx.fillText("SPD",x_offset+240+780, y_offset+10 + (i*unit_shift) )
-            //ctx.fillText(state[my_team][my_int][i].B.SPD,x_offset+240+780, y_offset+20 + (i*unit_shift) )
-            //ctx.fillRect(x_offset-2+270+780,y_offset - (0 | state[my_team][my_int][i].B.DOG/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.DOG/2);
-            //ctx.fillText("DOG",x_offset+270+780, y_offset+10 + (i*unit_shift) )
-            //ctx.fillText(state[my_team][my_int][i].B.DOG,x_offset+270+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+240+780,y_offset - (0 | state[my_team][my_int][i].B.SPD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.SPD/2);
+            ctx.fillText("SPD",x_offset+240+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.SPD,x_offset+240+780, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+270+780,y_offset - (0 | state[my_team][my_int][i].B.DOG/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.DOG/2);
+            ctx.fillText("DOG",x_offset+270+780, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].B.DOG,x_offset+270+780, y_offset+20 + (i*unit_shift) )
 
             ser   = state[my_team][my_int][i].B.SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -1665,9 +1665,8 @@ function drawTable3() {
 
         let bench_count = 0;
 
-        for (let i=0+h_index;i<bench_h[key].length;i++) {
-
-        }
+        //for (let i=0+h_index;i<bench_h[key].length;i++) {
+        //}
 
 
         for(let i=0;i<state[my_team][my_int].length;i++){

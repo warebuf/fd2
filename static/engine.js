@@ -1506,6 +1506,10 @@ function drawStartersTable() {
         let x_offset = 1400
         let y_offset = 360
 
+        ctx.fillStyle = 'white';
+        ctx.fillRect(x_offset-2-40,y_offset ,400,1);
+
+
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 

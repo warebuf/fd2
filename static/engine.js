@@ -1499,8 +1499,8 @@ function drawTable2() {
         }
         ser = 'B' + ser
         ctx.textAlign = "left";
-        ctx.fillText(ser,x_offset-15, y_offset-100 )
-        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-90 )
+        ctx.fillText(ser,x_offset-15, y_offset-95 )
+        ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85 )
         ctx.fillText("Basic close attack",x_offset-15, y_offset-70 )
 
         ctx.fillStyle = 'white';

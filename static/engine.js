@@ -1925,14 +1925,14 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1+140+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].B.DEF/2);
                     ctx.fillText("DEF",x_offset+117.5+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.DEF,x_offset+95+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].L.DEF,x_offset+110+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].R.DEF,x_offset+125+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText(state[j][k][i].B.DEF,x_offset+140+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("H",x_offset+95+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
-                    ctx.fillText("L",x_offset+110+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
-                    ctx.fillText("R",x_offset+125+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
-                    ctx.fillText("B",x_offset+140+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].H.DEF,x_offset+95+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.DEF,x_offset+110+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.DEF,x_offset+125+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.DEF,x_offset+140+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText("H",x_offset+95+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText("L",x_offset+110+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText("R",x_offset+125+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    ctx.fillText("B",x_offset+140+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
                     ctx.fillRect(x_offset-1+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].H.ACC/2);

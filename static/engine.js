@@ -60,7 +60,7 @@ function anime() {
         //drawTable1()
         //drawTable2()
         drawTable3()
-        drawStartersTable()
+        //drawStartersTable()
         drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
 
@@ -1877,7 +1877,7 @@ function drawStartersTable() {
         let x_offset = 60
         let y_offset = 400
         let unit_shift = 120
-        let user_shift = 700
+        let user_shift = 1000
         let user_count = 0;
 
         ctx.font = '11px monospace';

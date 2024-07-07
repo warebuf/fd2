@@ -2016,16 +2016,16 @@ function drawStartersTable() {
                     ctx.font = '11px monospace';
 
                     ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),3,0 | state[j][k][i].B.SPD/2);
-                    ctx.fillText("SPD",x_offset+515+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillText("SPD",x_offset+515+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].B.SPD,x_offset+515+(user_shift*user_count), y_offset + 10 )
+                    ctx.fillText(state[j][k][i].B.SPD,x_offset+515+(user_shift*user_count), y_offset + 10 + (i*unit_shift) )
                     ctx.fillText("B",x_offset+515+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
                     ctx.fillRect(x_offset-1+540+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),3,0 | state[j][k][i].B.DOG/2);
-                    ctx.fillText("DOG",x_offset+540+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillText("DOG",x_offset+540+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].B.DOG,x_offset+540+(user_shift*user_count), y_offset + 10 )
+                    ctx.fillText(state[j][k][i].B.DOG,x_offset+540+(user_shift*user_count), y_offset + 10 + (i*unit_shift) )
                     ctx.fillText("B",x_offset+540+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 

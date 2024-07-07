@@ -1989,10 +1989,10 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1+420+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].B.CLU/2);
                     ctx.fillText("CLU",x_offset+397.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.CLU,x_offset+375+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.CLU/2))
-                    ctx.fillText(state[j][k][i].L.CLU,x_offset+390+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.CLU/2))
-                    ctx.fillText(state[j][k][i].R.CLU,x_offset+405+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.CLU/2))
-                    ctx.fillText(state[j][k][i].B.CLU,x_offset+420+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.CLU/2))
+                    ctx.fillText(state[j][k][i].H.CLU,x_offset+375+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].L.CLU,x_offset+390+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].R.CLU,x_offset+405+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].B.CLU,x_offset+420+(user_shift*user_count), y_offset+20 )
                     ctx.fillText("H",x_offset+375+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("L",x_offset+390+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("R",x_offset+405+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -2003,12 +2003,12 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1+460+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].L.Weight/2);
                     ctx.fillRect(x_offset-1+475+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].R.Weight/2);
                     ctx.fillRect(x_offset-1+490+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].B.Weight/2);
-                    ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.Weight,x_offset+445+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.Weight/2))
-                    ctx.fillText(state[j][k][i].L.Weight,x_offset+460+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.Weight/2))
-                    ctx.fillText(state[j][k][i].R.Weight,x_offset+475+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.Weight/2))
-                    ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.Weight/2))
+                    ctx.fillText(state[j][k][i].H.Weight,x_offset+445+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].L.Weight,x_offset+460+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].R.Weight,x_offset+475+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset+20 )
                     ctx.fillText("H",x_offset+445+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("L",x_offset+460+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("R",x_offset+475+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -2029,7 +2029,7 @@ function drawStartersTable() {
                     ctx.fillText("B",x_offset+540+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    /*
+
                     // write part desc
                     ctx.font = '11px monospace';
                     ser   = state[my_team][my_int][0].B.SERIAL.toString()
@@ -2040,7 +2040,7 @@ function drawStartersTable() {
                     ctx.textAlign = "left";
                     ctx.fillText(ser,x_offset-15, y_offset-95 )
                     ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85 )
-                    */
+
 
 
                     ctx.fillStyle = 'white';

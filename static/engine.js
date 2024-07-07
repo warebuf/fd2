@@ -1915,7 +1915,7 @@ function drawStartersTable() {
                     ctx.fillText(state[j][k][i].B.ATK,x_offset+70+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("H",x_offset+25+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.fillText("L",x_offset+40+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
-                    ctx.fillText("R".R.ATK,x_offset+55+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText("R",x_offset+55+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.fillText("B",x_offset+70+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 

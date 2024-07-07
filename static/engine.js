@@ -51,7 +51,7 @@ function anime() {
 
     if(phase=="CHARACTER SELECTION") {
 
-        //drawGrid()
+        drawGrid()
         drawPhase()
         drawLog()
         drawBench()
@@ -60,7 +60,7 @@ function anime() {
         //drawTable1()
         //drawTable2()
         //drawTable3()
-        //drawStartersTable()
+        drawStartersTable()
         drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
 

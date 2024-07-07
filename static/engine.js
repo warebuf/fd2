@@ -1989,10 +1989,10 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1+420+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.CLU/2) + (i*unit_shift),3,0 | state[j][k][i].B.CLU/2);
                     ctx.fillText("CLU",x_offset+397.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.CLU,x_offset+375+(user_shift*user_count), y_offset+20 )
-                    ctx.fillText(state[j][k][i].L.CLU,x_offset+390+(user_shift*user_count), y_offset+20 )
-                    ctx.fillText(state[j][k][i].R.CLU,x_offset+405+(user_shift*user_count), y_offset+20 )
-                    ctx.fillText(state[j][k][i].B.CLU,x_offset+420+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].H.CLU,x_offset+375+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.CLU,x_offset+390+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.CLU,x_offset+405+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.CLU,x_offset+420+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.fillText("H",x_offset+375+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("L",x_offset+390+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("R",x_offset+405+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -2005,10 +2005,10 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1+490+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].B.Weight/2);
                     ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.Weight,x_offset+445+(user_shift*user_count), y_offset+20 )
-                    ctx.fillText(state[j][k][i].L.Weight,x_offset+460+(user_shift*user_count), y_offset+20 )
-                    ctx.fillText(state[j][k][i].R.Weight,x_offset+475+(user_shift*user_count), y_offset+20 )
-                    ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset+20 )
+                    ctx.fillText(state[j][k][i].H.Weight,x_offset+445+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].L.Weight,x_offset+460+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].R.Weight,x_offset+475+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
+                    ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset+20 + (i*unit_shift) )
                     ctx.fillText("H",x_offset+445+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("L",x_offset+460+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("R",x_offset+475+(user_shift*user_count), y_offset+10 + (i*unit_shift) )

@@ -1891,7 +1891,7 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1-30+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.HP/2) + (i*unit_shift),3,0 | state[j][k][i].L.HP/2);
                     ctx.fillRect(x_offset-1-15+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.HP/2) + (i*unit_shift),3,0 | state[j][k][i].R.HP/2);
                     ctx.fillRect(x_offset-1-0+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.HP/2) + (i*unit_shift),3,0 | state[j][k][i].B.HP/2);
-                    ctx.fillText("HP",x_offset-22.5+(user_shift*user_count), y_offset-60 + (i*unit_shift) )
+                    ctx.fillText("HP",x_offset-22.5+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.HP,x_offset-45+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText(state[j][k][i].L.HP,x_offset-30+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
@@ -1907,7 +1907,7 @@ function drawStartersTable() {
                     ctx.fillRect(x_offset-1+40+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].L.ATK/2);
                     ctx.fillRect(x_offset-1+55+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].R.ATK/2);
                     ctx.fillRect(x_offset-1+70+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].B.ATK/2);
-                    ctx.fillText("ATK",x_offset+47.5+(user_shift*user_count), y_offset-60 + (i*unit_shift) )
+                    ctx.fillText("ATK",x_offset+47.5+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.ATK,x_offset+25+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText(state[j][k][i].L.ATK,x_offset+40+(user_shift*user_count), y_offset+10 + (i*unit_shift) )

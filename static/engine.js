@@ -1320,8 +1320,8 @@ function drawError(){
 }
 
 function drawGrid() {
-    for(i=0;i<250;i++) {
-        for(j=0;j<250;j++) {
+    for(i=0;i<150;i++) {
+        for(j=0;j<150;j++) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'grey';
             ctx.fillRect((i*10),(j*10),1,1);

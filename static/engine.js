@@ -2111,9 +2111,9 @@ function drawPoint(center_x,center_y,radius,angle,distance,label){
 
     ctx.beginPath();
     ctx.fillStyle = 'pink';
-    ctx.arc(x, y, point_size, 0, 2 * Math.PI);
+    ctx.arc(x, y, 1, 0, 2 * Math.PI);
     ctx.fill();
 
-    ctx.font = font_size;
+    ctx.font = 11;
     ctx.fillText(label,x + 10,y);
 }

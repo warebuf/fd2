@@ -1932,31 +1932,34 @@ function drawBenchTable() {
         let key = my_team + ';' + my_int
 
         for (let i=0;i<bench_h[key].length;i++) {
+
+            second_slot = 230*(bench_count%2)
+
             ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].HP/2) + (i*unit_shift),3,0 | bench_h[key][i].HP/2);
-            ctx.fillText("HP",x_offset+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].HP,x_offset+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+25+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].ATK/2) + (i*unit_shift),3,0 | bench_h[key][i].ATK/2);
-            ctx.fillText("ATK",x_offset+25+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].ATK,x_offset+25+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+50+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].DEF/2) + (i*unit_shift),3,0 | bench_h[key][i].DEF/2);
-            ctx.fillText("DEF",x_offset+50+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].DEF,x_offset+50+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+75+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].ACC/2) + (i*unit_shift),3,0 | bench_h[key][i].ACC/2);
-            ctx.fillText("ACC",x_offset+75+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].ACC,x_offset+75+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+100+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].CRT/2) + (i*unit_shift),3,0 | bench_h[key][i].CRT/2);
-            ctx.fillText("CRT",x_offset+100+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].CRT,x_offset+100+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+125+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].CD/2) + (i*unit_shift),3,0 | bench_h[key][i].CD/2);
-            ctx.fillText("CD",x_offset+125+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].CD,x_offset+125+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+150+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].CLU/2) + (i*unit_shift),3,0 | bench_h[key][i].CLU/2);
-            ctx.fillText("CLU",x_offset+150+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].CLU,x_offset+150+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+175+(260*(bench_count%2)),y_offset - (0 | bench_h[key][i].Weight/2) + (i*unit_shift),3,0 | bench_h[key][i].Weight/2);
-            ctx.fillText("WGT",x_offset+175+(260*(bench_count%2)), y_offset+10 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].Weight,x_offset+175+(260*(bench_count%2)), y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_h[key][i].HP/2) + (i*unit_shift),3,0 | bench_h[key][i].HP/2);
+            ctx.fillText("HP",x_offset+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].HP,x_offset+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_h[key][i].ATK/2) + (i*unit_shift),3,0 | bench_h[key][i].ATK/2);
+            ctx.fillText("ATK",x_offset+25+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].ATK,x_offset+25+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_h[key][i].DEF/2) + (i*unit_shift),3,0 | bench_h[key][i].DEF/2);
+            ctx.fillText("DEF",x_offset+50+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].DEF,x_offset+50+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_h[key][i].ACC/2) + (i*unit_shift),3,0 | bench_h[key][i].ACC/2);
+            ctx.fillText("ACC",x_offset+75+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].ACC,x_offset+75+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_h[key][i].CRT/2) + (i*unit_shift),3,0 | bench_h[key][i].CRT/2);
+            ctx.fillText("CRT",x_offset+100+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].CRT,x_offset+100+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_h[key][i].CD/2) + (i*unit_shift),3,0 | bench_h[key][i].CD/2);
+            ctx.fillText("CD",x_offset+125+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].CD,x_offset+125+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_h[key][i].CLU/2) + (i*unit_shift),3,0 | bench_h[key][i].CLU/2);
+            ctx.fillText("CLU",x_offset+150+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].CLU,x_offset+150+second_slot, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_h[key][i].Weight/2) + (i*unit_shift),3,0 | bench_h[key][i].Weight/2);
+            ctx.fillText("WGT",x_offset+175+second_slot, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].Weight,x_offset+175+second_slot, y_offset+20 + (i*unit_shift) )
 
             ser   = bench_h[key][i].SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -1964,19 +1967,19 @@ function drawBenchTable() {
             }
             ser = 'H' + ser
             ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+(260*(bench_count%2)), y_offset-95 + (i*unit_shift) )
-            ctx.fillText(bench_h[key][i].NAME,x_offset-15+(260*(bench_count%2)), y_offset-85 + (i*unit_shift) ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+(260*(bench_count%2)), y_offset-65 + (i*unit_shift) ) // draw desc
+            ctx.fillText(ser,x_offset-15+second_slot, y_offset-95 + (i*unit_shift) )
+            ctx.fillText(bench_h[key][i].NAME,x_offset-15+second_slot, y_offset-85 + (i*unit_shift) ) // draw name
+            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-65 + (i*unit_shift) ) // draw desc
 
             // draw outer box
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+(260*(bench_count%2)),y_offset-110 + (i*unit_shift), 215, 1);
-            ctx.fillRect(x_offset-20+(260*(bench_count%2)),y_offset+30 + (i*unit_shift), 215, 1);
-            ctx.fillRect(x_offset-20+(260*(bench_count%2)),y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+215+(260*(bench_count%2)),y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + (i*unit_shift), 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + (i*unit_shift), 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-110 + (i*unit_shift), 1, 140);
 
-            ctx.fillRect(x_offset-5+(260*(bench_count%2)),y_offset + (i*unit_shift) ,185,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5+second_slot,y_offset + (i*unit_shift) ,185,1);// draw bottom plot line
 
             bench_count++
         }

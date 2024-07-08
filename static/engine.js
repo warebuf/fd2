@@ -1763,10 +1763,10 @@ function drawBenchTable() {
 
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20,y_offset-110 + (i*unit_shift), 250, 1);
-            ctx.fillRect(x_offset-20,y_offset+30 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20,y_offset-110 + (i*unit_shift), 210, 1);
+            ctx.fillRect(x_offset-20,y_offset+30 + (i*unit_shift), 210, 1);
             ctx.fillRect(x_offset-20,y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+250,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+210,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5,y_offset + (i*unit_shift) ,185,1);// draw bottom plot line
 
@@ -1808,10 +1808,10 @@ function drawBenchTable() {
 
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+260,y_offset-110 + (i*unit_shift), 250, 1);
-            ctx.fillRect(x_offset-20+260,y_offset+30 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20+260,y_offset-110 + (i*unit_shift), 210, 1);
+            ctx.fillRect(x_offset-20+260,y_offset+30 + (i*unit_shift), 210, 1);
             ctx.fillRect(x_offset-20+260,y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+250+260,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+210+260,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5+260,y_offset + (i*unit_shift) ,185,1);// draw bottom plot line
 
@@ -1853,10 +1853,10 @@ function drawBenchTable() {
 
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+520,y_offset-110 + (i*unit_shift), 250, 1);
-            ctx.fillRect(x_offset-20+520,y_offset+30 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20+520,y_offset-110 + (i*unit_shift), 210, 1);
+            ctx.fillRect(x_offset-20+520,y_offset+30 + (i*unit_shift), 210, 1);
             ctx.fillRect(x_offset-20+520,y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+250+520,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+210+520,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5+520,y_offset + (i*unit_shift) ,185,1);// draw bottom plot line
 
@@ -1898,10 +1898,10 @@ function drawBenchTable() {
 
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 250, 1);
-            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 250, 1);
+            ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 210, 1);
+            ctx.fillRect(x_offset-20+780,y_offset+30 + (i*unit_shift), 210, 1);
             ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 1, 140);
-            ctx.fillRect(x_offset-20+250+780,y_offset-110 + (i*unit_shift), 1, 140);
+            ctx.fillRect(x_offset-20+210+780,y_offset-110 + (i*unit_shift), 1, 140);
 
             ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,185,1);// draw bottom plot line
 

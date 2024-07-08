@@ -1768,7 +1768,7 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-20,y_offset-110 + (i*unit_shift), 1, 140);
             ctx.fillRect(x_offset-20+250,y_offset-110 + (i*unit_shift), 1, 140);
 
-            ctx.fillRect(x_offset-5,y_offset + (i*unit_shift) ,180,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5,y_offset + (i*unit_shift) ,190,1);// draw bottom plot line
 
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+260,y_offset - (0 | state[my_team][my_int][i].L.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.HP/2);
@@ -1813,7 +1813,7 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-20+260,y_offset-110 + (i*unit_shift), 1, 140);
             ctx.fillRect(x_offset-20+250+260,y_offset-110 + (i*unit_shift), 1, 140);
 
-            ctx.fillRect(x_offset-5+260,y_offset + (i*unit_shift) ,180,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5+260,y_offset + (i*unit_shift) ,190,1);// draw bottom plot line
 
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+520,y_offset - (0 | state[my_team][my_int][i].R.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.HP/2);
@@ -1858,7 +1858,7 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-20+520,y_offset-110 + (i*unit_shift), 1, 140);
             ctx.fillRect(x_offset-20+250+520,y_offset-110 + (i*unit_shift), 1, 140);
 
-            ctx.fillRect(x_offset-5+520,y_offset + (i*unit_shift) ,180,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5+520,y_offset + (i*unit_shift) ,190,1);// draw bottom plot line
 
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+780,y_offset - (0 | state[my_team][my_int][i].B.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.HP/2);
@@ -1903,7 +1903,7 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-20+780,y_offset-110 + (i*unit_shift), 1, 140);
             ctx.fillRect(x_offset-20+250+780,y_offset-110 + (i*unit_shift), 1, 140);
 
-            ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,180,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5+780,y_offset + (i*unit_shift) ,190,1);// draw bottom plot line
 
 
 

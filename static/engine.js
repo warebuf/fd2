@@ -355,7 +355,7 @@ function drawPos() {
                 road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
                 ctx.fillText(road, 150, ((i+j)*115) + 102 + (k*20));
 
-                ctx.fillRect(700+(k+(k*j)+(i*j*k))*10,400,100,1);
+                ctx.fillRect(700+(k+(5*j)+(5*5*k))*10,400,100,1);
             }
         }
     }

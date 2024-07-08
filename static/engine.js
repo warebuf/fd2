@@ -1711,7 +1711,7 @@ function drawTable2() {
 function drawBenchTable() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 1150
+        let x_offset = 1050
         let y_offset = 170
         let unit_shift = 150
         ctx.font = '11px monospace';

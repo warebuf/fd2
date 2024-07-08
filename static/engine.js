@@ -2100,6 +2100,7 @@ function drawStartersTable() {
 
 function drawCircle(center_x,center_y,radius){
     ctx.beginPath();
+    ctx.fillStyle = 'white';
     ctx.arc(center_x, center_y, radius, 0, 2 * Math.PI);
     ctx.stroke();
 }
@@ -2109,6 +2110,7 @@ function drawPoint(center_x,center_y,radius,angle,distance,label){
     var y = center_y + radius * Math.sin(-angle*Math.PI/180) * distance;
 
     ctx.beginPath();
+    ctx.fillStyle = 'red';
     ctx.arc(x, y, point_size, 0, 2 * Math.PI);
     ctx.fill();
 

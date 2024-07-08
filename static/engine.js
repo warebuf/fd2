@@ -1713,7 +1713,7 @@ function drawTable2() {
 function drawStartersTable1() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
-        let x_offset = 1000
+        let x_offset = 100
         let y_offset = 170
         let unit_shift = 150
         ctx.font = '11px monospace';

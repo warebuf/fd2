@@ -2115,6 +2115,4 @@ function drawPoint(center_x,center_y,radius,angle,distance,label){
     ctx.arc(x, y, 1, 0, 2 * Math.PI);
     ctx.fill();
 
-    ctx.font = 11;
-    ctx.fillText(label,x + 10,y);
 }

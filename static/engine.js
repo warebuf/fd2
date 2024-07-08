@@ -356,13 +356,13 @@ function drawPos() {
                 ctx.fillText(road, 150, ((i+j)*115) + 102 + (k*20));
 
                 if(i%2==0) {
-                    ctx.fillRect(700+(150*i),400+(k*120),100,1);
-                    ctx.fillText('o', 700+(150*i), 400+(k*120) );
-                    ctx.fillText('x', 700+(150*i)+100, 400+(k*120) );
+                    ctx.fillRect(700+(260*i),400+(k*120)+(j*700),100,1);
+                    ctx.fillText('o', 700+(260*i), 400+(k*120)+(j*700) );
+                    ctx.fillText('x', 700+(260*i)+100, 400+(k*120)+(j*700) );
                 } else {
-                    ctx.fillRect(700+(150*i),400+(k*120),100,1);
-                    ctx.fillText('x', 700+(150*i)-5, 400+(k*120) );
-                    ctx.fillText('o', 700+(150*i)+100, 400+(k*120) );
+                    ctx.fillRect(700+(260*i),400+(k*120)+(j*700),100,1);
+                    ctx.fillText('x', 700+(260*i)-5, 400+(k*120)+(j*700) );
+                    ctx.fillText('o', 700+(260*i)+100, 400+(k*120)+(j*700) );
                 }
 
             }

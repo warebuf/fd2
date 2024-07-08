@@ -373,10 +373,10 @@ function drawPos() {
         }
     }
 
-    drawCircle(100,100,10)
-    drawPoint(100,100,10,0,1,'a')
-    drawPoint(100,100,10,265,1,'c')
-    drawPoint(100,100,10,180,1,'b')
+    drawCircle(500,500,50)
+    drawPoint(500,500,50,0,1,'a')
+    drawPoint(500,500,50,265,1,'c')
+    drawPoint(500,500,50,180,1,'b')
 
 }
 

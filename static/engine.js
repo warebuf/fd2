@@ -356,6 +356,7 @@ function drawPos() {
                 ctx.fillText(road, 150, ((i+j)*115) + 102 + (k*20));
 
                 if(i%2==0) {
+                    if(symbol=='d'){symbol=''}
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
                     ctx.fillText('o', 700+(270*i)-5, 400+(k*120)+(j*700) );
                     ctx.fillText('x', 700+(270*i)+250, 400+(k*120)+(j*700) );
@@ -363,6 +364,7 @@ function drawPos() {
                 } else {
                     if(symbol=='>'){symbol='<'}
                     else if(symbol=='<'){symbol='>'}
+                    else if(symbol=='d'){symbol=''}
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
                     ctx.fillText('x', 700+(270*i)-5, 400+(k*120)+(j*700) );
                     ctx.fillText('o', 700+(270*i)+250, 400+(k*120)+(j*700) );

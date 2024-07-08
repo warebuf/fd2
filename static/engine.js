@@ -355,9 +355,16 @@ function drawPos() {
                 road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
                 ctx.fillText(road, 150, ((i+j)*115) + 102 + (k*20));
 
-                ctx.fillRect(700+(150*i),400+(k*10)+(j*60),100,1);
-                ctx.fillText('o', 700+(150*i), 400+(k*10)+(j*60) );
-                ctx.fillText('x', 700+(150*i)+100, 400+(k*10)+(j*60) );
+                if(i%2) {
+                    ctx.fillRect(700+(150*i),400+(k*10)+(j*60),100,1);
+                    ctx.fillText('o', 700+(150*i), 400+(k*10)+(j*60) );
+                    ctx.fillText('x', 700+(150*i)+100, 400+(k*10)+(j*60) );
+                } else {
+                    ctx.fillRect(700+(150*i),400+(k*10)+(j*60),100,1);
+                    ctx.fillText('x', 700+(150*i), 400+(k*10)+(j*60) );
+                    ctx.fillText('o', 700+(150*i)+100, 400+(k*10)+(j*60) );
+                }
+
             }
         }
     }

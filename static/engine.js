@@ -1924,6 +1924,7 @@ function drawBenchTable() {
         let x_offset = 1000
         let y_offset = 170
         let unit_shift = 150
+        let second_slot_shift = 280
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 
@@ -1933,7 +1934,7 @@ function drawBenchTable() {
 
         for (let i=0;i<bench_h[key].length;i++) {
 
-            second_slot = 230*(bench_count%2)
+            second_slot = second_slot_shift*(bench_count%2)
             third_slot = unit_shift * (0 | bench_count/2)
 
             ctx.textAlign = "center";
@@ -1987,7 +1988,7 @@ function drawBenchTable() {
 
         for (let i=0;i<bench_l[key].length;i++) {
 
-            second_slot = 230*(bench_count%2)
+            second_slot = second_slot_shift*(bench_count%2)
             third_slot = unit_shift * (0 | bench_count/2)
 
             ctx.textAlign = "center";
@@ -2041,7 +2042,7 @@ function drawBenchTable() {
 
         for (let i=0;i<bench_r[key].length;i++) {
 
-            second_slot = 230*(bench_count%2)
+            second_slot = second_slot_shift*(bench_count%2)
             third_slot = unit_shift * (0 | bench_count/2)
 
             ctx.textAlign = "center";
@@ -2095,7 +2096,7 @@ function drawBenchTable() {
 
         for (let i=0;i<bench_b[key].length;i++) {
 
-            second_slot = 230*(bench_count%2)
+            second_slot = second_slot_shift*(bench_count%2)
             third_slot = unit_shift * (0 | bench_count/2)
 
             ctx.textAlign = "center";

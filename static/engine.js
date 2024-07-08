@@ -212,7 +212,7 @@ function drawPos() {
                         for(let k = 0; k < state[i][j].length; k++) {
                             if(state[i][j][k].H.HP <= 0) {
                             } else if(state[i][j][k].Direction == 0) {
-                                state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.01)
+                                state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.02)
                                 if(
                                     (match_data[animating_state][i][j][k].Direction == 0) &&
                                     (state[i][j][k].Position < match_data[animating_state][i][j][k].Position)
@@ -221,7 +221,7 @@ function drawPos() {
                                 }
                                 else if(state[i][j][k].Position < 0){state[i][j][k].Position = 0}
                             } else if(state[i][j][k].Direction == 1) {
-                                state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.01)
+                                state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.02)
                                 if(
                                     (match_data[animating_state][i][j][k].Direction == 1) &&
                                     (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)

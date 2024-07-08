@@ -626,7 +626,7 @@ function drawStats() {
 
 function drawLog() {
 
-    let x = 1400
+    let x = 1440
     let y = 100
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
@@ -2359,5 +2359,9 @@ function drawPoint(center_x,center_y,radius,num,distance,label){
         ctx.fill();
 
     }
+
+}
+
+function drawPart() {
 
 }

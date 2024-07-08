@@ -676,7 +676,7 @@ func createMatch(pl *permission_list) *match {
 			ans.benchR[ans.uuid_to_team_int[i].ab] = make([]*arm, 0)
 			ans.benchB[ans.uuid_to_team_int[i].ab] = make([]*bottom, 0)
 
-			for y := 0; y < 10; y++ {
+			for y := 0; y < 3; y++ {
 
 				temph := rand.Intn(len(namesh))
 				templ := rand.Intn(len(namesl))

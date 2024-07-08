@@ -374,8 +374,8 @@ function drawPos() {
     }
 
     drawCircle(100,100,10)
-    drawPoint(100,100,10,0,'a')
-    drawPoint(100,100,10,180,'b')
+    drawPoint(100,100,10,0,0,'a')
+    drawPoint(100,100,10,180,0,'b')
 
 }
 
@@ -2110,7 +2110,7 @@ function drawPoint(center_x,center_y,radius,angle,distance,label){
     var y = center_y + radius * Math.sin(-angle*Math.PI/180) * distance;
 
     ctx.beginPath();
-    ctx.fillStyle = 'red';
+    ctx.fillStyle = 'pink';
     ctx.arc(x, y, point_size, 0, 2 * Math.PI);
     ctx.fill();
 

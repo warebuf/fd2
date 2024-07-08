@@ -378,8 +378,8 @@ function drawPos() {
 }
 
 function drawState() {
-    x0 = 700
-    y0 = 400
+    x0 = 650
+    y0 = 100
 
     ctx.textAlign = "left";
     for(let i = 0; i < state.length; i++) {

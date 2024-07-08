@@ -361,7 +361,7 @@ function drawPos() {
                     ctx.fillText('x', 700+(150*i)+100, 400+(k*10)+(j*60) );
                 } else {
                     ctx.fillRect(700+(150*i),400+(k*10)+(j*60),100,1);
-                    ctx.fillText('x', 700+(150*i), 400+(k*10)+(j*60) );
+                    ctx.fillText('x', 700+(150*i)-5, 400+(k*10)+(j*60) );
                     ctx.fillText('o', 700+(150*i)+100, 400+(k*10)+(j*60) );
                 }
 

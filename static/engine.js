@@ -58,9 +58,9 @@ function anime() {
         drawStarters()
         drawError()
         //drawTable1()
-        //drawTable2()
+        drawTable2()
         drawBenchTable()
-        drawStartersTable()
+        //drawStartersTable()
         drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
 

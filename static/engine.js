@@ -1726,28 +1726,28 @@ function drawBenchTable() {
         for(let i=0;i<state[my_team][my_int].length;i++){
 
             ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0,y_offset - (0 | state[my_team][my_int][i].H.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.HP/2);
+            ctx.fillRect(x_offset-2+0,y_offset - (0 | state[my_team][my_int][i].H.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.HP/2);
             ctx.fillText("HP",x_offset, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.HP,x_offset, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+25,y_offset - (0 | state[my_team][my_int][i].H.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.ATK/2);
+            ctx.fillRect(x_offset-2+25,y_offset - (0 | state[my_team][my_int][i].H.ATK/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.ATK/2);
             ctx.fillText("ATK",x_offset+25, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.ATK,x_offset+25, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+50,y_offset - (0 | state[my_team][my_int][i].H.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.DEF/2);
+            ctx.fillRect(x_offset-2+50,y_offset - (0 | state[my_team][my_int][i].H.DEF/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.DEF/2);
             ctx.fillText("DEF",x_offset+50, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.DEF,x_offset+50, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+75,y_offset - (0 | state[my_team][my_int][i].H.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.ACC/2);
+            ctx.fillRect(x_offset-2+75,y_offset - (0 | state[my_team][my_int][i].H.ACC/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.ACC/2);
             ctx.fillText("ACC",x_offset+75, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.ACC,x_offset+75, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+100,y_offset - (0 | state[my_team][my_int][i].H.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.CRT/2);
+            ctx.fillRect(x_offset-2+100,y_offset - (0 | state[my_team][my_int][i].H.CRT/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.CRT/2);
             ctx.fillText("CRT",x_offset+100, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.CRT,x_offset+100, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+125,y_offset - (0 | state[my_team][my_int][i].H.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.CD/2);
+            ctx.fillRect(x_offset-2+125,y_offset - (0 | state[my_team][my_int][i].H.CD/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.CD/2);
             ctx.fillText("CD",x_offset+125, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.CD,x_offset+125, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+150,y_offset - (0 | state[my_team][my_int][i].H.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.CLU/2);
+            ctx.fillRect(x_offset-2+150,y_offset - (0 | state[my_team][my_int][i].H.CLU/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.CLU/2);
             ctx.fillText("CLU",x_offset+150, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.CLU,x_offset+150, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+175,y_offset - (0 | state[my_team][my_int][i].H.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].H.Weight/2);
+            ctx.fillRect(x_offset-2+175,y_offset - (0 | state[my_team][my_int][i].H.Weight/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].H.Weight/2);
             ctx.fillText("WGT",x_offset+175, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].H.Weight,x_offset+175, y_offset+20 + (i*unit_shift) )
 
@@ -1771,28 +1771,28 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-5,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
 
             ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+260,y_offset - (0 | state[my_team][my_int][i].L.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.HP/2);
+            ctx.fillRect(x_offset-2+0+260,y_offset - (0 | state[my_team][my_int][i].L.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.HP/2);
             ctx.fillText("HP",x_offset+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.HP,x_offset+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+25+260,y_offset - (0 | state[my_team][my_int][i].L.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.ATK/2);
+            ctx.fillRect(x_offset-2+25+260,y_offset - (0 | state[my_team][my_int][i].L.ATK/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.ATK/2);
             ctx.fillText("ATK",x_offset+25+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.ATK,x_offset+25+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+50+260,y_offset - (0 | state[my_team][my_int][i].L.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.DEF/2);
+            ctx.fillRect(x_offset-2+50+260,y_offset - (0 | state[my_team][my_int][i].L.DEF/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.DEF/2);
             ctx.fillText("DEF",x_offset+50+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.DEF,x_offset+50+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+75+260,y_offset - (0 | state[my_team][my_int][i].L.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.ACC/2);
+            ctx.fillRect(x_offset-2+75+260,y_offset - (0 | state[my_team][my_int][i].L.ACC/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.ACC/2);
             ctx.fillText("ACC",x_offset+75+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.ACC,x_offset+75+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+100+260,y_offset - (0 | state[my_team][my_int][i].L.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.CRT/2);
+            ctx.fillRect(x_offset-2+100+260,y_offset - (0 | state[my_team][my_int][i].L.CRT/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.CRT/2);
             ctx.fillText("CRT",x_offset+100+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.CRT,x_offset+100+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+125+260,y_offset - (0 | state[my_team][my_int][i].L.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.CD/2);
+            ctx.fillRect(x_offset-2+125+260,y_offset - (0 | state[my_team][my_int][i].L.CD/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.CD/2);
             ctx.fillText("CD",x_offset+125+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.CD,x_offset+125+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+150+260,y_offset - (0 | state[my_team][my_int][i].L.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.CLU/2);
+            ctx.fillRect(x_offset-2+150+260,y_offset - (0 | state[my_team][my_int][i].L.CLU/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.CLU/2);
             ctx.fillText("CLU",x_offset+150+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.CLU,x_offset+150+260, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+175+260,y_offset - (0 | state[my_team][my_int][i].L.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].L.Weight/2);
+            ctx.fillRect(x_offset-2+175+260,y_offset - (0 | state[my_team][my_int][i].L.Weight/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].L.Weight/2);
             ctx.fillText("WGT",x_offset+175+260, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].L.Weight,x_offset+175+260, y_offset+20 + (i*unit_shift) )
 
@@ -1816,28 +1816,28 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-5+260,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
 
             ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+520,y_offset - (0 | state[my_team][my_int][i].R.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.HP/2);
+            ctx.fillRect(x_offset-2+0+520,y_offset - (0 | state[my_team][my_int][i].R.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.HP/2);
             ctx.fillText("HP",x_offset+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.HP,x_offset+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+25+520,y_offset - (0 | state[my_team][my_int][i].R.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.ATK/2);
+            ctx.fillRect(x_offset-2+25+520,y_offset - (0 | state[my_team][my_int][i].R.ATK/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.ATK/2);
             ctx.fillText("ATK",x_offset+25+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.ATK,x_offset+25+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+50+520,y_offset - (0 | state[my_team][my_int][i].R.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.DEF/2);
+            ctx.fillRect(x_offset-2+50+520,y_offset - (0 | state[my_team][my_int][i].R.DEF/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.DEF/2);
             ctx.fillText("DEF",x_offset+50+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.DEF,x_offset+50+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+75+520,y_offset - (0 | state[my_team][my_int][i].R.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.ACC/2);
+            ctx.fillRect(x_offset-2+75+520,y_offset - (0 | state[my_team][my_int][i].R.ACC/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.ACC/2);
             ctx.fillText("ACC",x_offset+75+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.ACC,x_offset+75+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+100+520,y_offset - (0 | state[my_team][my_int][i].R.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CRT/2);
+            ctx.fillRect(x_offset-2+100+520,y_offset - (0 | state[my_team][my_int][i].R.CRT/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.CRT/2);
             ctx.fillText("CRT",x_offset+100+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.CRT,x_offset+100+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+125+520,y_offset - (0 | state[my_team][my_int][i].R.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CD/2);
+            ctx.fillRect(x_offset-2+125+520,y_offset - (0 | state[my_team][my_int][i].R.CD/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.CD/2);
             ctx.fillText("CD",x_offset+125+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.CD,x_offset+125+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+150+520,y_offset - (0 | state[my_team][my_int][i].R.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CLU/2);
+            ctx.fillRect(x_offset-2+150+520,y_offset - (0 | state[my_team][my_int][i].R.CLU/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.CLU/2);
             ctx.fillText("CLU",x_offset+150+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.CLU,x_offset+150+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+175+520,y_offset - (0 | state[my_team][my_int][i].R.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.Weight/2);
+            ctx.fillRect(x_offset-2+175+520,y_offset - (0 | state[my_team][my_int][i].R.Weight/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].R.Weight/2);
             ctx.fillText("WGT",x_offset+175+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.Weight,x_offset+175+520, y_offset+20 + (i*unit_shift) )
 
@@ -1861,28 +1861,28 @@ function drawBenchTable() {
             ctx.fillRect(x_offset-5+520,y_offset + (i*unit_shift) ,220,1);// draw bottom plot line
 
             ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+780,y_offset - (0 | state[my_team][my_int][i].B.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.HP/2);
+            ctx.fillRect(x_offset-2+0+780,y_offset - (0 | state[my_team][my_int][i].B.HP/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.HP/2);
             ctx.fillText("HP",x_offset+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.HP,x_offset+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+25+780,y_offset - (0 | state[my_team][my_int][i].B.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.ATK/2);
+            ctx.fillRect(x_offset-2+25+780,y_offset - (0 | state[my_team][my_int][i].B.ATK/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.ATK/2);
             ctx.fillText("ATK",x_offset+25+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.ATK,x_offset+25+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+50+780,y_offset - (0 | state[my_team][my_int][i].B.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.DEF/2);
+            ctx.fillRect(x_offset-2+50+780,y_offset - (0 | state[my_team][my_int][i].B.DEF/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.DEF/2);
             ctx.fillText("DEF",x_offset+50+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.DEF,x_offset+50+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+75+780,y_offset - (0 | state[my_team][my_int][i].B.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.ACC/2);
+            ctx.fillRect(x_offset-2+75+780,y_offset - (0 | state[my_team][my_int][i].B.ACC/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.ACC/2);
             ctx.fillText("ACC",x_offset+75+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.ACC,x_offset+75+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+100+780,y_offset - (0 | state[my_team][my_int][i].B.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.CRT/2);
+            ctx.fillRect(x_offset-2+100+780,y_offset - (0 | state[my_team][my_int][i].B.CRT/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.CRT/2);
             ctx.fillText("CRT",x_offset+100+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.CRT,x_offset+100+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+125+780,y_offset - (0 | state[my_team][my_int][i].B.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.CD/2);
+            ctx.fillRect(x_offset-2+125+780,y_offset - (0 | state[my_team][my_int][i].B.CD/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.CD/2);
             ctx.fillText("CD",x_offset+125+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.CD,x_offset+125+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+150+780,y_offset - (0 | state[my_team][my_int][i].B.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.CLU/2);
+            ctx.fillRect(x_offset-2+150+780,y_offset - (0 | state[my_team][my_int][i].B.CLU/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.CLU/2);
             ctx.fillText("CLU",x_offset+150+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.CLU,x_offset+150+780, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+175+780,y_offset - (0 | state[my_team][my_int][i].B.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].B.Weight/2);
+            ctx.fillRect(x_offset-2+175+780,y_offset - (0 | state[my_team][my_int][i].B.Weight/2) + (i*unit_shift),3,0 | state[my_team][my_int][i].B.Weight/2);
             ctx.fillText("WGT",x_offset+175+780, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].B.Weight,x_offset+175+780, y_offset+20 + (i*unit_shift) )
 

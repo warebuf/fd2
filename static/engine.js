@@ -1928,6 +1928,8 @@ function drawBenchTable() {
         ctx.fillStyle = 'white';
 
         let bench_count = 0;
+        
+        let key = my_team + ';' + my_int
 
         for (let i=0;i<bench_h[key].length;i++) {
             ctx.textAlign = "center";

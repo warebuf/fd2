@@ -2124,12 +2124,12 @@ function drawBenchTable() {
             ctx.fillText("WGT",x_offset+175+second_slot, y_offset+10 + third_slot )
             ctx.fillText(bench_b[key][i].Weight,x_offset+175+second_slot, y_offset+20 + third_slot )
 
-            ctx.fillRect(x_offset-2+225+second_slot,y_offset - (0 | bench_b[key][i].SPD/2) + third_slot,3,0 | bench_b[key][i].SPD/2);
-            ctx.fillText("SPD",x_offset+225+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].SPD,x_offset+225+second_slot, y_offset+20 + third_slot )
-            ctx.fillRect(x_offset-2+250+second_slot,y_offset - (0 | bench_b[key][i].DOG/2) + third_slot,3,0 | bench_b[key][i].DOG/2);
-            ctx.fillText("DOG",x_offset+250+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].DOG,x_offset+250+second_slot, y_offset+20 + third_slot )
+            ctx.fillRect(x_offset-2+200+second_slot,y_offset - (0 | bench_b[key][i].SPD/2) + third_slot,3,0 | bench_b[key][i].SPD/2);
+            ctx.fillText("SPD",x_offset+200+second_slot, y_offset+10 + third_slot )
+            ctx.fillText(bench_b[key][i].SPD,x_offset+200+second_slot, y_offset+20 + third_slot )
+            ctx.fillRect(x_offset-2+225+second_slot,y_offset - (0 | bench_b[key][i].DOG/2) + third_slot,3,0 | bench_b[key][i].DOG/2);
+            ctx.fillText("DOG",x_offset+225+second_slot, y_offset+10 + third_slot )
+            ctx.fillText(bench_b[key][i].DOG,x_offset+225+second_slot, y_offset+20 + third_slot )
 
             ser   = bench_b[key][i].SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -2144,12 +2144,12 @@ function drawBenchTable() {
             // draw outer box
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 290, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 290, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 265, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 265, 1);
             ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 140);
-            ctx.fillRect(x_offset-20+290+second_slot,y_offset-110 + third_slot, 1, 140);
+            ctx.fillRect(x_offset-20+265+second_slot,y_offset-110 + third_slot, 1, 140);
 
-            ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,260,1);// draw bottom plot line
+            ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,235,1);// draw bottom plot line
 
             bench_count++
         }

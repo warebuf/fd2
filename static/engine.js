@@ -54,15 +54,15 @@ function anime() {
         drawGrid()
         drawPhase()
         drawLog()
-        drawBench()
-        drawStarters()
+        //drawBench()
+        //drawStarters()
         drawError()
         //drawTable1()
         //drawTable2()
         drawStartersTable1()
         drawBenchTable()
         //drawStartersTable2()
-        drawSelect()
+        //drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
 
 

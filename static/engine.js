@@ -2112,7 +2112,7 @@ function drawPoint(center_x,center_y,radius,angle,distance,label){
 
     ctx.beginPath();
     ctx.fillStyle = 'pink';
-    ctx.arc(x, y, 3, 0, 2 * Math.PI);
+    ctx.arc(x, y, 2, 0, 2 * Math.PI);
     ctx.fill();
 
 }

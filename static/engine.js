@@ -351,9 +351,6 @@ function drawPos() {
                 } else if(state[i][j][k].Direction == 1) {
                     symbol = '>'
                 }
-                let road = 'o' + "-".repeat(99) + 'x';
-                road = road.substring(0, Math.round(state[i][j][k].Position)) + symbol + road.substring(Math.round(state[i][j][k].Position) + 1);
-                ctx.fillText(road, 150, ((i+j)*115) + 102 + (k*20));
 
                 if(i%2==0) {
                     if(symbol=='d'){symbol=''}

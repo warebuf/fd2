@@ -59,7 +59,7 @@ function anime() {
         drawError()
         //drawTable1()
         //drawTable2()
-        drawTable3()
+        drawBenchTable()
         //drawStartersTable()
         drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
@@ -1708,7 +1708,7 @@ function drawTable2() {
     }
 }
 
-function drawTable3() {
+function drawBenchTable() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 1200
@@ -1819,27 +1819,27 @@ function drawTable3() {
             ctx.fillRect(x_offset-2+0+520,y_offset - (0 | state[my_team][my_int][i].R.HP/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.HP/2);
             ctx.fillText("HP",x_offset+520, y_offset+10 + (i*unit_shift) )
             ctx.fillText(state[my_team][my_int][i].R.HP,x_offset+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+30+520,y_offset - (0 | state[my_team][my_int][i].R.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.ATK/2);
-            ctx.fillText("ATK",x_offset+30+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.ATK,x_offset+30+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+60+520,y_offset - (0 | state[my_team][my_int][i].R.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.DEF/2);
-            ctx.fillText("DEF",x_offset+60+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.DEF,x_offset+60+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+90+520,y_offset - (0 | state[my_team][my_int][i].R.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.ACC/2);
-            ctx.fillText("ACC",x_offset+90+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.ACC,x_offset+90+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+120+520,y_offset - (0 | state[my_team][my_int][i].R.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CRT/2);
-            ctx.fillText("CRT",x_offset+120+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.CRT,x_offset+120+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+150+520,y_offset - (0 | state[my_team][my_int][i].R.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CD/2);
-            ctx.fillText("CD",x_offset+150+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.CD,x_offset+150+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+180+520,y_offset - (0 | state[my_team][my_int][i].R.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CLU/2);
-            ctx.fillText("CLU",x_offset+180+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.CLU,x_offset+180+520, y_offset+20 + (i*unit_shift) )
-            ctx.fillRect(x_offset-2+210+520,y_offset - (0 | state[my_team][my_int][i].R.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.Weight/2);
-            ctx.fillText("WGT",x_offset+210+520, y_offset+10 + (i*unit_shift) )
-            ctx.fillText(state[my_team][my_int][i].R.Weight,x_offset+210+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+20+520,y_offset - (0 | state[my_team][my_int][i].R.ATK/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.ATK/2);
+            ctx.fillText("ATK",x_offset+20+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.ATK,x_offset+20+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+40+520,y_offset - (0 | state[my_team][my_int][i].R.DEF/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.DEF/2);
+            ctx.fillText("DEF",x_offset+40+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.DEF,x_offset+40+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+60+520,y_offset - (0 | state[my_team][my_int][i].R.ACC/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.ACC/2);
+            ctx.fillText("ACC",x_offset+60+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.ACC,x_offset+60+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+80+520,y_offset - (0 | state[my_team][my_int][i].R.CRT/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CRT/2);
+            ctx.fillText("CRT",x_offset+80+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.CRT,x_offset+80+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+100+520,y_offset - (0 | state[my_team][my_int][i].R.CD/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CD/2);
+            ctx.fillText("CD",x_offset+100+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.CD,x_offset+100+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+120+520,y_offset - (0 | state[my_team][my_int][i].R.CLU/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.CLU/2);
+            ctx.fillText("CLU",x_offset+120+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.CLU,x_offset+120+520, y_offset+20 + (i*unit_shift) )
+            ctx.fillRect(x_offset-2+140+520,y_offset - (0 | state[my_team][my_int][i].R.Weight/2) + (i*unit_shift),4,0 | state[my_team][my_int][i].R.Weight/2);
+            ctx.fillText("WGT",x_offset+140+520, y_offset+10 + (i*unit_shift) )
+            ctx.fillText(state[my_team][my_int][i].R.Weight,x_offset+140+520, y_offset+20 + (i*unit_shift) )
 
             ser   = state[my_team][my_int][i].R.SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -2106,13 +2106,20 @@ function drawCircle(center_x,center_y,radius){
     ctx.stroke();
 }
 
-function drawPoint(center_x,center_y,radius,angle,distance,label){
-    var x = center_x + radius * Math.cos(-angle*Math.PI/180) * distance;
-    var y = center_y + radius * Math.sin(-angle*Math.PI/180) * distance;
+function drawPoint(center_x,center_y,radius,num,distance,label){
 
-    ctx.beginPath();
-    ctx.fillStyle = 'pink';
-    ctx.arc(x, y, 2, 0, 2 * Math.PI);
-    ctx.fill();
+    if(num==0){return}
+    divs = num+1
+
+    for(let i = 0; i < num; i++) {
+        var x = center_x + radius * Math.cos(-angle*Math.PI/180) * distance;
+        var y = center_y + radius * Math.sin(-angle*Math.PI/180) * distance;
+
+        ctx.beginPath();
+        ctx.fillStyle = 'pink';
+        ctx.arc(x, y, 2, 0, 2 * Math.PI);
+        ctx.fill();
+
+    }
 
 }

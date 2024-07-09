@@ -358,6 +358,7 @@ function drawPos() {
 
                 if(i%2==0) {
                     if(symbol=='d'){symbol=''}
+                    ctx.textAlign = "center";
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700) );
 
@@ -373,6 +374,7 @@ function drawPos() {
                     if(symbol=='>'){symbol='<'}
                     else if(symbol=='<'){symbol='>'}
                     else if(symbol=='d'){symbol=''}
+                    ctx.textAlign = "center";
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700) );
 

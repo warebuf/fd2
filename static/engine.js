@@ -361,7 +361,7 @@ function drawPos() {
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700) );
                     ctx.textAlign = "center";
-                    ctx.fillText("ACT", 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700)-10);
+                    ctx.fillText("ACT", 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700)+30);
                     ctx.textAlign = "left";
                 } else {
                     if(symbol=='>'){symbol='<'}
@@ -370,7 +370,7 @@ function drawPos() {
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, 400+(k*120)+(j*700) );
                     ctx.textAlign = "center";
-                    ctx.fillText("ACT", 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700)-10);
+                    ctx.fillText("ACT", 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700)+30);
                     ctx.textAlign = "left";
                 }
 

@@ -362,13 +362,6 @@ function drawPos() {
                     ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700) );
                     ctx.textAlign = "center";
 
-                    let temp = '-'
-                    if(state[i][j][k].Move==0){temp='H'}
-                    else if(state[i][j][k].Move==1){temp='L'}
-                    else if(state[i][j][k].Move==2){temp='R'}
-                    else if(state[i][j][k].Move==3){temp='B'}
-                    ctx.fillText(temp, 700+(270*i)+(250*(state[i][j][k].Position/100))+3, 400+(k*120)+(j*700)-20);
-                    ctx.textAlign = "left";
                 } else {
                     if(symbol=='>'){symbol='<'}
                     else if(symbol=='<'){symbol='>'}
@@ -377,13 +370,7 @@ function drawPos() {
                     ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, 400+(k*120)+(j*700) );
                     ctx.textAlign = "center";
 
-                    let temp = '-'
-                    if(state[i][j][k].Move==0){temp='H'}
-                    else if(state[i][j][k].Move==1){temp='L'}
-                    else if(state[i][j][k].Move==2){temp='R'}
-                    else if(state[i][j][k].Move==3){temp='B'}
-                    ctx.fillText(temp, 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5+3, 400+(k*120)+(j*700)-20);
-                    ctx.textAlign = "left";
+
                 }
 
             }
@@ -430,6 +417,14 @@ function drawState() {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0+(space*i), y0+1 + (k*120)+(j*700), 5, 7);
+
+                // draw move
+                let temp = '-'
+                if(state[i][j][k].Move==0){temp='H'}
+                else if(state[i][j][k].Move==1){temp='L'}
+                else if(state[i][j][k].Move==2){temp='R'}
+                else if(state[i][j][k].Move==3){temp='B'}
+                ctx.fillText(temp, x0+(space*i), 0+1 + (k*120)+(j*700);
 
                 if(turn.substring(0,4) == "TURN") {
                     if (

@@ -422,11 +422,13 @@ function drawState() {
                 ctx.fillStyle = 'white';
                 ctx.textAlign = "left";
                 let temp = '-'
-                if(state[i][j][k].Move==0){temp='H'}
-                else if(state[i][j][k].Move==1){temp='L'}
-                else if(state[i][j][k].Move==2){temp='R'}
-                else if(state[i][j][k].Move==3){temp='B'}
-                ctx.fillText(temp, x0+(space*i), y0+1 + (k*120)+(j*700)-20);
+                if(state[i][j][k].H.HP>0) {
+                    if(state[i][j][k].Move==0){temp='H'}
+                    else if(state[i][j][k].Move==1){temp='L'}
+                    else if(state[i][j][k].Move==2){temp='R'}
+                    else if(state[i][j][k].Move==3){temp='B'}
+                }
+                ctx.fillText(temp, x0+(space*i)+(20*(i+1%2)-(20*(i%2))), y0+1 + (k*120)+(j*700));
 
                 if(turn.substring(0,4) == "TURN") {
                     if (

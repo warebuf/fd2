@@ -655,8 +655,6 @@ function drawLog() {
     let y = 800
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
-        ctx.fillStyle = 'black';
-        ctx.fillRect(x,y + (10*i),ctx.measureText(remaining_time).width,ctx.measureText('M').width);
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
         ctx.fillText(event_log[i],x, y + (10*i));

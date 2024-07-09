@@ -652,7 +652,7 @@ function drawStats() {
 function drawLog() {
 
     let x = 1440
-    let y = 100
+    let y = 700
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.fillStyle = 'black';

@@ -392,7 +392,7 @@ function drawPos() {
 
 function drawState() {
     x0 = 660
-    y0 = 400
+    y0 = 100
     let space = 590
 
     ctx.textAlign = "left";

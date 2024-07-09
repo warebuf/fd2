@@ -85,6 +85,7 @@ anime()
 
 function drawPos() {
 
+    let y_offset = 200
     time_event_ready = false
 
     // if there are states updates, update the position
@@ -255,7 +256,7 @@ function drawPos() {
                             let b = JSON.parse(atk_data[animating_state][a1])
                             let pos = state[b.Defender[0][0]][b.Defender[0][1]][b.Defender[0][2]].Position
                             let x1 = 700+(270*b.Attacker[0])
-                            let y1 = 400+b.Attacker[2] * 120
+                            let y1 = y_offset+b.Attacker[2] * 120
 
                             let perc = draw_attacks / 30
                             if(draw_attacks>30){
@@ -264,7 +265,7 @@ function drawPos() {
 
                             // calculate a vector to draw
                             let x2 = 700+(270*b.Defender[0][0])
-                            let y2 = 400+b.Defender[0][2] * 120
+                            let y2 = y_offset+b.Defender[0][2] * 120
                             let x2_x1 = (x2 - x1)*perc
                             let y2_y1 = (y2 - y1)*perc
                             dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[5,2])
@@ -343,7 +344,6 @@ function drawPos() {
     }
     */
 
-    let y_offset = 200
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';

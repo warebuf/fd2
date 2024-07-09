@@ -420,6 +420,7 @@ function drawState() {
 
                 // draw move
                 ctx.fillStyle = 'white';
+                ctx.textAlign = "left";
                 let temp = '-'
                 if(state[i][j][k].Move==0){temp='H'}
                 else if(state[i][j][k].Move==1){temp='L'}

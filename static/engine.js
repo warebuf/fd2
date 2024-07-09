@@ -375,9 +375,7 @@ function drawPos() {
     }
 
     drawCircle(800,500,50)
-    drawPoint(800,500,50,0,1,'a')
-    drawPoint(800,500,50,265,1,'c')
-    drawPoint(800,500,50,180,1,'b')
+    drawPoint(800,500,50,5,1,)
 
 }
 
@@ -2352,14 +2350,14 @@ function drawCircle(center_x,center_y,radius){
     ctx.stroke();
 }
 
-function drawPoint(center_x,center_y,radius,num,distance,label){
+function drawPoint(center_x,center_y,radius,num,distance){
 
     if(num==0){return}
-    divs = num+1
+    let divs = num+1
 
     for(let i = 0; i < num; i++) {
-        var x = center_x + radius * Math.cos(-angle*Math.PI/180) * distance;
-        var y = center_y + radius * Math.sin(-angle*Math.PI/180) * distance;
+        var x = center_x + radius * Math.cos(-(i/divs)*360*Math.PI/180) * distance;
+        var y = center_y + radius * Math.sin(-(i/divs)*360*Math.PI/180) * distance;
 
         ctx.beginPath();
         ctx.fillStyle = 'pink';
@@ -2367,9 +2365,5 @@ function drawPoint(center_x,center_y,radius,num,distance,label){
         ctx.fill();
 
     }
-
-}
-
-function drawPart() {
 
 }

@@ -2367,6 +2367,10 @@ function drawPoint(center_x,center_y,radius,num,distance){
         ctx.arc(x2, y2, 2, 0, 2 * Math.PI);
         ctx.fill();
 
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
     }
 
 }

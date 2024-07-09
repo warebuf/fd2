@@ -426,7 +426,7 @@ function drawState() {
                 else if(state[i][j][k].Move==1){temp='L'}
                 else if(state[i][j][k].Move==2){temp='R'}
                 else if(state[i][j][k].Move==3){temp='B'}
-                ctx.fillText(temp, x0+(space*i), y0+1 + (k*120)+(j*700)-10);
+                ctx.fillText(temp, x0+(space*i), y0+1 + (k*120)+(j*700)-20);
 
                 if(turn.substring(0,4) == "TURN") {
                     if (

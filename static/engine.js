@@ -343,7 +343,7 @@ function drawPos() {
     }
     */
 
-    let y_offset = 100
+    let y_offset = 200
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';

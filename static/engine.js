@@ -2355,9 +2355,9 @@ function drawPoint(center_x,center_y,radius,num,distance){
     if(num==0){return}
     let divs = num+1
 
-    for(let i = 0; i < num; i++) {
-        var x = center_x + radius * Math.cos(-(i/divs)*360*Math.PI/180) * distance;
-        var y = center_y + radius * Math.sin(-(i/divs)*360*Math.PI/180) * distance;
+    for(let i = i; i <= num; i++) {
+        var x = center_x + radius * Math.cos(-(i/divs)*2*Math.PI) * distance;
+        var y = center_y + radius * Math.sin(-(i/divs)*2*Math.PI) * distance;
 
         ctx.beginPath();
         ctx.fillStyle = 'pink';

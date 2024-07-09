@@ -350,43 +350,40 @@ function drawPos() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
+                
+                if(state[i][j][k].H.HP <= 0) {
+                    symbol = 'd'
+                } else if(state[i][j][k].Direction == 0) {
+                    symbol = '<'
+                } else if(state[i][j][k].Direction == 1) {
+                    symbol = '>'
+                }
 
-                if(state[i][j][k].H.HP > 0) {
-                    if(state[i][j][k].H.HP <= 0) {
-                        symbol = 'd'
-                    } else if(state[i][j][k].Direction == 0) {
-                        symbol = '<'
-                    } else if(state[i][j][k].Direction == 1) {
-                        symbol = '>'
-                    }
+                if(i%2==0) {
+                    if(symbol=='d'){symbol=''}
+                    ctx.textAlign = "center";
+                    //.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
+                    ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
 
-                    if(i%2==0) {
-                        if(symbol=='d'){symbol=''}
-                        ctx.textAlign = "center";
-                        //.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
-                        ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
+                    ctx.fillStyle = 'white';
+                    ctx.textAlign = "center";
+                    ctx.font = '8px monospace';
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+15 );
+                    ctx.font = '11px monospace';
 
-                        ctx.fillStyle = 'white';
-                        ctx.textAlign = "center";
-                        ctx.font = '8px monospace';
-                        ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+15 );
-                        ctx.font = '11px monospace';
+                } else {
+                    if(symbol=='>'){symbol='<'}
+                    else if(symbol=='<'){symbol='>'}
+                    else if(symbol=='d'){symbol=''}
+                    ctx.textAlign = "center";
+                    //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
+                    ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
 
-                    } else {
-                        if(symbol=='>'){symbol='<'}
-                        else if(symbol=='<'){symbol='>'}
-                        else if(symbol=='d'){symbol=''}
-                        ctx.textAlign = "center";
-                        //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
-                        ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
-
-                        ctx.fillStyle = 'white';
-                        ctx.textAlign = "left";
-                        ctx.font = '8px monospace';
-                        ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
-                        ctx.font = '11px monospace';
-                    }
-
+                    ctx.fillStyle = 'white';
+                    ctx.textAlign = "left";
+                    ctx.font = '8px monospace';
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
+                    ctx.font = '11px monospace';
                 }
 
             }

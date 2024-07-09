@@ -2355,12 +2355,16 @@ function drawPoint(center_x,center_y,radius,num,distance){
     if(num==0){return}
 
     for(let i = 1; i <= num; i++) {
-        var x = center_x + radius * Math.cos(-(i/num)*2*Math.PI) * distance;
-        var y = center_y + radius * Math.sin(-(i/num)*2*Math.PI) * distance;
+        let x = center_x + radius * Math.cos(-(i/num)*2*Math.PI) * distance;
+        let y = center_y + radius * Math.sin(-(i/num)*2*Math.PI) * distance;
+
+        let x2 = center_x + (radius*10) * Math.cos(-(i/num)*2*Math.PI) * distance;
+        let y2 = center_y + (radius*10) * Math.sin(-(i/num)*2*Math.PI) * distance;
 
         ctx.beginPath();
         ctx.fillStyle = 'pink';
         ctx.arc(x, y, 2, 0, 2 * Math.PI);
+        ctx.arc(x2, y2, 2, 0, 2 * Math.PI);
         ctx.fill();
 
     }

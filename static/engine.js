@@ -395,7 +395,7 @@ function drawPos() {
 
 function drawState() {
     x0 = 660
-    y0 = 100
+    y0 = 200
     let space = 590
 
     ctx.textAlign = "left";
@@ -2188,7 +2188,7 @@ function drawStartersTable2() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 60
-        let y_offset = 100
+        let y_offset = 200
         let unit_shift = 120
         let user_shift = 1300
         let user_count = 0;

@@ -73,7 +73,7 @@ function anime() {
         drawStats()
         drawTurn()
         drawUnitsOfTime()
-        drawStartersTable()
+        drawStartersTable2()
         drawLog()
     }
 

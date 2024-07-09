@@ -376,7 +376,7 @@ function drawPos() {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
                     ctx.fillRect(700+(270*i)+250-(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700),1,4 );
-                    ctx.fillText(state[i][j][k].Position, 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, 400+(k*120)+(j*700)+20 );
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, 400+(k*120)+(j*700)+20 );
                 }
 
             }

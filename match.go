@@ -505,7 +505,7 @@ func createMatch(pl *permission_list) *match {
 			}
 			namesr := []string{
 				"SUPER SWORD", "DEATHBLADE", "ONE HIT KILL", "CARNAGE", "WESTERN LIGHT", "EAST BEAST", "ECOLOGICAL DISASTER",
-				"NUCLEAR UPPERCUT", "LONG BOMB", "Guinsoo",
+				"NUCLEAR UPPERCUT", "LONG BOMB", "GUINSOO",
 			}
 			namesb := []string{
 				"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",

@@ -381,9 +381,9 @@ function drawPos() {
 }
 
 function drawState() {
-    x0 = 650
+    x0 = 660
     y0 = 400
-    let space = 600
+    let space = 590
 
     ctx.textAlign = "left";
     for(let i = 0; i < state.length; i++) {

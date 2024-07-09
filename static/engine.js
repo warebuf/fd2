@@ -70,7 +70,7 @@ function anime() {
         drawGrid()
         drawPos()
         drawState()
-        drawStats()
+        //drawStats()
         drawTurn()
         drawUnitsOfTime()
         drawStartersTable2()
@@ -517,7 +517,7 @@ function drawStats() {
     ctx.fillText("ACT", a0 +(25*2), y0+20);
 
     a1 = 10
-    /*
+
     ctx.fillText("HEAD", a1+(260/2), y0);
     ctx.beginPath()
     ctx.lineWidth = 1;
@@ -535,9 +535,9 @@ function drawStats() {
     ctx.fillText("CLU", a1 +(25*7), y0+20) // H CLU
     ctx.fillText("USE", a1 +(25*8), y0+20) // H USE
     ctx.fillText("WGH", a1 +(25*9), y0+20) // H WEIGHT
-    */
+
     a2 = 300
-    /*
+
     ctx.fillText("ARMS", a2+(250/2), y0);
     ctx.beginPath()
     ctx.lineWidth = 1;
@@ -555,9 +555,9 @@ function drawStats() {
     ctx.fillText("CLU", a2 +(25*7), y0+20) // ARM CLU
     ctx.fillText("USE", a2 +(25*8), y0+20) // ARM USE
     ctx.fillText("WGT", a2 +(25*9), y0+20) // ARM WEIGHT
-    */
+
     a3 = 575
-    /*
+
     ctx.fillText("LEGS", a3+(375/2), y0);
     ctx.beginPath()
     ctx.lineWidth = 1;
@@ -577,7 +577,7 @@ function drawStats() {
     ctx.fillText("WGT", a3 +(25*9), y0+20) // LEG WEIGHT
     ctx.fillText("DOG", a3 +(25*10), y0+20) // LEG DOG
     ctx.fillText("SPD", a3 +(25*11), y0+20) // LEG SPE
-    */
+
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {

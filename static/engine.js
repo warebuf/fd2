@@ -367,7 +367,7 @@ function drawPos() {
                     else if(state[i][j][k].Move==1){temp='L'}
                     else if(state[i][j][k].Move==2){temp='R'}
                     else if(state[i][j][k].Move==3){temp='B'}
-                    ctx.fillText(temp, 700+(270*i)+(250*(state[i][j][k].Position/100))+5, 400+(k*120)+(j*700)-20);
+                    ctx.fillText(temp, 700+(270*i)+(250*(state[i][j][k].Position/100))+3, 400+(k*120)+(j*700)-20);
                     ctx.textAlign = "left";
                 } else {
                     if(symbol=='>'){symbol='<'}
@@ -382,7 +382,7 @@ function drawPos() {
                     else if(state[i][j][k].Move==1){temp='L'}
                     else if(state[i][j][k].Move==2){temp='R'}
                     else if(state[i][j][k].Move==3){temp='B'}
-                    ctx.fillText(temp, 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5+5, 400+(k*120)+(j*700)-20);
+                    ctx.fillText(temp, 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5+3, 400+(k*120)+(j*700)-20);
                     ctx.textAlign = "left";
                 }
 

@@ -381,7 +381,7 @@ function drawPos() {
 }
 
 function drawState() {
-    x0 = 650
+    x0 = 700
     y0 = 400
     let space = 540
 

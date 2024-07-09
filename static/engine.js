@@ -320,6 +320,7 @@ function drawPos() {
 
 
     // draw the position
+    /*
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';
@@ -340,7 +341,9 @@ function drawPos() {
             }
         }
     }
+    */
 
+    let y_offset = 100
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';
@@ -359,13 +362,13 @@ function drawPos() {
                 if(i%2==0) {
                     if(symbol=='d'){symbol=''}
                     ctx.textAlign = "center";
-                    ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
-                    ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700) );
+                    ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
+                    ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "center";
                     ctx.font = '8px monospace';
-                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700)+15 );
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
 
                 } else {
@@ -374,12 +377,12 @@ function drawPos() {
                     else if(symbol=='d'){symbol=''}
                     ctx.textAlign = "center";
                     ctx.fillRect(700+(270*i),400+(k*120)+(j*700),250,1);
-                    ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), 400+(k*120)+(j*700) );
+                    ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
                     ctx.font = '8px monospace';
-                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, 400+(k*120)+(j*700)+15 );
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
                 }
 

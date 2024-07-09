@@ -76,7 +76,7 @@ function anime() {
         drawStartersTable2()
         drawLog()
         //(800,500,50)
-        drawPoint(800,500,50,5,1,)
+        drawPoint(960,540,10,5,1,)
 
     }
 
@@ -1363,7 +1363,7 @@ function drawError(){
 
 function drawGrid() {
     for(i=0;i<200;i++) {
-        for(j=0;j<150;j++) {
+        for(j=0;j<100;j++) {
             ctx.textAlign = "left";
             ctx.fillStyle = 'grey';
             ctx.fillRect((i*10),(j*10),1,1);

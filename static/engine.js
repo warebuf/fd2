@@ -263,8 +263,8 @@ function drawPos() {
                             }
 
                             // calculate a vector to draw
-                            let x2 = 700+(270*b.Attacker[0][0])
-                            let y2 = b.Attacker[0][2] * 120
+                            let x2 = 700+(270*b.Attacker[0])
+                            let y2 = b.Attacker[2] * 120
                             let x2_x1 = (x2 - x1)*perc
                             let y2_y1 = (y2 - y1)*perc
                             dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[5,2])

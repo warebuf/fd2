@@ -459,8 +459,8 @@ function drawState() {
                         ctx.lineTo(x0-10+(space*i), y0-4 + (k*120)+(j*700) +5 + 10);
                         ctx.stroke();
                         ctx.beginPath();
-                        ctx.moveTo(x0+(space*i)+10, y0-9 -5 + (k*120)+(j*700));
-                        ctx.lineTo(x0+(space*i)+20, y0-9 -5 + (k*120)+(j*700));
+                        ctx.moveTo(x0-10+(space*i), y0-4 + (k*120)+(j*700) +5 + 10 );
+                        ctx.lineTo(x0-10+(space*i)-10, y0-4 + (k*120)+(j*700) +5 + 10 );
                         ctx.stroke();
                     }
 

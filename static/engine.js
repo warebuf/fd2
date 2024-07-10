@@ -405,8 +405,7 @@ function drawState() {
                 if (state[i][j][k].H.HP > 0) {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
-                    ctx.fillText("%", x0+(space*i),  y0-9 + (k*120)+(j*700) );
-                    ctx.textAlign = "left";
+                    ctx.fillText("%", x0+(space*i),  y0-9 +10 + (k*120)+(j*700) );
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
 
@@ -417,8 +416,7 @@ function drawState() {
                 if (state[i][j][k].L.HP > 0) {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
-                    ctx.fillText("%", x0-5+(space*i),  y0-4 + (k*120)+(j*700) );
-                    ctx.textAlign = "left";
+                    ctx.fillText("%", x0-5+(space*i) - 10,  y0-4 + (k*120)+(j*700) );
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
 
@@ -429,8 +427,7 @@ function drawState() {
                 if (state[i][j][k].R.HP > 0) {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
-                    ctx.fillText("%", x0+5+(space*i),  y0-4 + (k*120)+(j*700) );
-                    ctx.textAlign = "left";
+                    ctx.fillText("%", x0+5+(space*i) + 10,  y0-4 + (k*120)+(j*700) );
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
 
@@ -441,8 +438,7 @@ function drawState() {
                 if (state[i][j][k].B.HP > 0) {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
-                    ctx.fillText("%", x0+(space*i),  y0+1 + (k*120)+(j*700) );
-                    ctx.textAlign = "left";
+                    ctx.fillText("%", x0+(space*i),  y0+1 -10 + (k*120)+(j*700) );
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
 

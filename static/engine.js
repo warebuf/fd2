@@ -2316,7 +2316,6 @@ function drawStartersTable2() {
                     ctx.fillRect(x_offset-1+460+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].L.Weight/2);
                     ctx.fillRect(x_offset-1+475+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].R.Weight/2);
                     ctx.fillRect(x_offset-1+490+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.Weight/2) + (i*unit_shift),3,0 | state[j][k][i].B.Weight/2);
-                    ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
                     ctx.fillText(state[j][k][i].H.Weight,x_offset+445+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.Weight/2) )
                     ctx.fillText(state[j][k][i].L.Weight,x_offset+460+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.Weight/2) )
@@ -2329,7 +2328,7 @@ function drawStartersTable2() {
                     ctx.font = '11px monospace';
 
                     if(state[j][k][i].H.HP>0) {
-
+                        ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+30 + (i*unit_shift) )
                         let total_prob = 0
                         if(state[j][k][i].H.HP>0){total_prob=total_prob+state[j][k][i].H.Weight}
                         if(state[j][k][i].L.HP>0){total_prob=total_prob+state[j][k][i].L.Weight}
@@ -2348,6 +2347,8 @@ function drawStartersTable2() {
                             ctx.fillText((0|(100*state[j][k][i].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset+20 + (i*unit_shift) );
                         }
                         ctx.font = '11px monospace';
+                    } else {
+                        ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     }
 
 

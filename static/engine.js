@@ -404,7 +404,7 @@ function drawState() {
             for(let k = 0; k < state[i][j].length; k++) {
                 if (state[i][j][k].H.HP > 0) {
                     ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
+                    ctx.textAlign = "left";
                     ctx.fillText("%", x0+(space*i),  y0-9 + (k*120)+(j*700) );
                     ctx.textAlign = "left";
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
@@ -416,7 +416,7 @@ function drawState() {
                 ctx.fillRect(x0+(space*i), y0-9 + (k*120)+(j*700), 5, 5);
                 if (state[i][j][k].L.HP > 0) {
                     ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
+                    ctx.textAlign = "left";
                     ctx.fillText("%", x0-5+(space*i),  y0-4 + (k*120)+(j*700) );
                     ctx.textAlign = "left";
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
@@ -428,7 +428,7 @@ function drawState() {
                 ctx.fillRect(x0-5+(space*i), y0-4 + (k*120)+(j*700), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (state[i][j][k].R.HP > 0) {
                     ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
+                    ctx.textAlign = "left";
                     ctx.fillText("%", x0+5+(space*i),  y0-4 + (k*120)+(j*700) );
                     ctx.textAlign = "left";
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
@@ -440,7 +440,7 @@ function drawState() {
                 ctx.fillRect(x0+5+(space*i), y0-4 + (k*120)+(j*700), 5, 7);
                 if (state[i][j][k].B.HP > 0) {
                     ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
+                    ctx.textAlign = "left";
                     ctx.fillText("%", x0+(space*i),  y0+1 + (k*120)+(j*700) );
                     ctx.textAlign = "left";
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}

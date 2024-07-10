@@ -480,7 +480,7 @@ function drawState() {
                     }
 
                     if (state[i][j][k].B.HP > 0) {
-                        ctx.fillText("%", x0+(space*i),  y0+1 +30 + (k*120)+(j*700) );
+                        ctx.fillText("%", x0+(space*i)+2-15-10,  yy0+8 + (k*120)+(j*700)+5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';

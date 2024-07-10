@@ -486,10 +486,10 @@ function drawState() {
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
-                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("->", x0-25+(space*i),  y0+2 + (k*120)+(j*700) );
                         }
                         else {
-                            ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("*", x0-25+(space*i),  y0+2 + (k*120)+(j*700) );
                         }
                     }
                 }

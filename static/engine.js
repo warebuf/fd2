@@ -441,8 +441,8 @@ function drawState() {
                     ctx.beginPath();
                     ctx.strokeStyle = 'white';
                     ctx.lineWidth = 1;
-                    ctx.moveTo(x0+(space*i), y0-9 -10 + (k*120)+(j*700));
-                    ctx.lineTo(x0+(space*i), y0-9 + (k*120)+(j*700));
+                    ctx.moveTo(x0+(space*i)+10, y0-9 -5 + (k*120)+(j*700));
+                    ctx.lineTo(x0+(space*i)+5, y0-9 + (k*120)+(j*700));
                     ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {

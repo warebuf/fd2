@@ -443,7 +443,7 @@ function drawState() {
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
-                    ctx.font = '6px monospace';
+                    ctx.font = '8px monospace';
                     ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x0+(space*i)+25,  y0-9 -5 + (k*120)+(j*700) );
 
                     ctx.beginPath();
@@ -458,7 +458,7 @@ function drawState() {
                     ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {
-                        ctx.font = '6px monospace';
+                        ctx.font = '8px monospace';
                         ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x0-10+(space*i)-10-10,  y0-4 + (k*120)+(j*700) +5 + 5 );
 
                         ctx.beginPath();
@@ -474,7 +474,7 @@ function drawState() {
                     }
 
                     if (state[i][j][k].R.HP > 0) {
-                        ctx.font = '6px monospace';
+                        ctx.font = '8px monospace';
                         ctx.fillText((0|(100*state[i][j][k].R.Weight/total_prob))+"%", x0+5+(space*i)+5+15+10,  y0-4 + (k*120)+(j*700) +5 -5 );
 
                         ctx.beginPath();
@@ -490,7 +490,7 @@ function drawState() {
                     }
 
                     if (state[i][j][k].B.HP > 0) {
-                        ctx.font = '6px monospace';
+                        ctx.font = '8px monospace';
                         ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i)+2-15-10,  y0+8 + (k*120)+(j*700)+5 );
 
                         ctx.beginPath();

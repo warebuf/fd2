@@ -2339,15 +2339,15 @@ function drawStartersTable2() {
                         ctx.fillStyle = 'white';
                         ctx.textAlign = "center";
                         ctx.font = '9px monospace';
-                        ctx.fillText((0|(100*state[j][k][i].H.Weight/total_prob))+"%", x_offset+445+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        ctx.fillText((0|(100*state[j][k][i].H.Weight/total_prob))+"%", x_offset+445+(user_shift*user_count),  y_offset-60 + (i*unit_shift) );
                         if (state[j][k][i].L.HP > 0) {
-                            ctx.fillText((0|(100*state[j][k][i].L.Weight/total_prob))+"%", x_offset+460+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                            ctx.fillText((0|(100*state[j][k][i].L.Weight/total_prob))+"%", x_offset+460+(user_shift*user_count),  y_offset-60 + (i*unit_shift) );
                         }
                         if (state[j][k][i].R.HP > 0) {
-                            ctx.fillText((0|(100*state[j][k][i].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                            ctx.fillText((0|(100*state[j][k][i].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  y_offset-60 + (i*unit_shift) );
                         }
                         if (state[j][k][i].B.HP > 0) {
-                            ctx.fillText((0|(100*state[j][k][i].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                            ctx.fillText((0|(100*state[j][k][i].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset-60 + (i*unit_shift) );
                         }
                     }
                     ctx.font = '11px monospace';

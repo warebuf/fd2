@@ -382,7 +382,7 @@ function drawPos()  {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
                     ctx.font = '8px monospace';
-                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
+                    ctx.fillText( state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
                 }
 
@@ -481,6 +481,17 @@ function drawState() {
 
                     if (state[i][j][k].B.HP > 0) {
                         ctx.fillText("%", x0+(space*i),  y0+1 +30 + (k*120)+(j*700) );
+
+                        ctx.beginPath();
+                        ctx.strokeStyle = 'white';
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(x0+(space*i), y0+1 + (k*120)+(j*700) );
+                        ctx.lineTo(x0+(space*i)-10, y0+1 + (k*120)+(j*700)-10);
+                        ctx.stroke();
+                        ctx.beginPath();
+                        ctx.moveTo(x0+(space*i)-10, y0+1 + (k*120)+(j*700)-10 );
+                        ctx.lineTo(x0-x0+(space*i)-20, y0+1 + (k*120)+(j*700)-10 );
+                        ctx.stroke();
                     }
                 }
 

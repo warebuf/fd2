@@ -443,7 +443,7 @@ function drawState() {
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "center";
-                    ctx.font = '8px monospace';
+                    ctx.font = '9px monospace';
                     ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x0+(space*i)+3,  y0-15 + (k*120)+(j*700) );
                     if (state[i][j][k].L.HP > 0) {
                         ctx.textAlign = "right";

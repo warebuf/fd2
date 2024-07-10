@@ -2342,7 +2342,7 @@ function drawStartersTable2() {
                             ctx.fillText((0|(100*state[j][k][i].L.Weight/total_prob))+"%", x_offset+460+(user_shift*user_count),  y_offset-20 + (i*unit_shift) - (0 | state[j][k][i].H.Weight/2) );
                         }
                         if (state[j][k][i].R.HP > 0) {
-                            ctx.fillText((0|(100*state[j][k][i].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  yy_offset-20 + (i*unit_shift) - (0 | state[j][k][i].H.Weight/2) );
+                            ctx.fillText((0|(100*state[j][k][i].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  y_offset-20 + (i*unit_shift) - (0 | state[j][k][i].H.Weight/2) );
                         }
                         if (state[j][k][i].B.HP > 0) {
                             ctx.fillText((0|(100*state[j][k][i].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset-20 + (i*unit_shift) - (0 | state[j][k][i].H.Weight/2) );

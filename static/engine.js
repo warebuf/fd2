@@ -337,7 +337,7 @@ function drawPos()  {
                 if(i%2==0) {
                     if(symbol=='d'){symbol=''}
                     ctx.textAlign = "center";
-                    ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
+                    //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
 
                     ctx.fillStyle = 'white';
@@ -351,7 +351,7 @@ function drawPos()  {
                     else if(symbol=='<'){symbol='>'}
                     else if(symbol=='d'){symbol=''}
                     ctx.textAlign = "center";
-                    ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
+                    //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
 
                     ctx.fillStyle = 'white';
@@ -371,7 +371,7 @@ function drawPos()  {
 function drawState() {
     x0 = 660
     y0 = 200
-    let space = 610
+    let space = 590
 
     ctx.textAlign = "left";
     for(let i = 0; i < state.length; i++) {
@@ -428,16 +428,16 @@ function drawState() {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
-                            ctx.fillText("->", x0-35+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("->", x0-25+(space*i),  y0+2 + (k*120)+(j*700) );
                         }
                         else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
-                            ctx.fillText("->", x0-35+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("->", x0-25+(space*i),  y0+2 + (k*120)+(j*700) );
                         }
                         else {
-                            ctx.fillText("*", x0-35+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("*", x0-25+(space*i),  y0+2 + (k*120)+(j*700) );
                         }
                     }
                 }

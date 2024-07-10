@@ -2328,7 +2328,7 @@ function drawStartersTable2() {
                     ctx.font = '11px monospace';
 
                     if(state[j][k][i].H.HP>0) {
-                        ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+30 + (i*unit_shift) )
+                        ctx.fillText("WGT",x_offset+467.5+(user_shift*user_count), y_offset+35 + (i*unit_shift) )
                         let total_prob = 0
                         if(state[j][k][i].H.HP>0){total_prob=total_prob+state[j][k][i].H.Weight}
                         if(state[j][k][i].L.HP>0){total_prob=total_prob+state[j][k][i].L.Weight}

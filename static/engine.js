@@ -450,7 +450,7 @@ function drawState() {
                     ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {
-                        ctx.fillText("%", x0-5+(space*i) - 20,  y0-4 +10 + (k*120)+(j*700) );
+                        ctx.fillText("%", x0-10+(space*i)-10-5,  y0-4 + (k*120)+(j*700) +5 + 5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';

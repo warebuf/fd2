@@ -444,7 +444,7 @@ function drawState() {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "center";
                     ctx.font = '8px monospace';
-                    ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x0+(space*i)-3,  y0-15 + (k*120)+(j*700) );
+                    ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x0+(space*i),  y0-15 + (k*120)+(j*700) );
                     if (state[i][j][k].L.HP > 0) {
                         ctx.textAlign = "right";
                         ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x0-10+(space*i),  y0 + (k*120)+(j*700) );
@@ -455,7 +455,7 @@ function drawState() {
                     }
                     if (state[i][j][k].B.HP > 0) {
                         ctx.textAlign = "center";
-                        ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i)-3,  y0+20+(k*120)+(j*700) );
+                        ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i),  y0+20+(k*120)+(j*700) );
                     }
                 }
                 ctx.font = '11px monospace';

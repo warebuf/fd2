@@ -434,9 +434,16 @@ function drawState() {
                 ctx.fillRect(x0+(space*i), y0+1 + (k*120)+(j*700), 5, 7);
 
                 if(state[i][j][k].H.HP>0) {
+
+                    let total_prob = 0
+                    if(state[i][j][k].H.HP>0){total_prob=total_prob+state[i][j][k].H.Weight}
+                    if(state[i][j][k].L.HP>0){total_prob=total_prob+state[i][j][k].L.Weight}
+                    if(state[i][j][k].R.HP>0){total_prob=total_prob+state[i][j][k].R.Weight}
+                    if(state[i][j][k].B.HP>0){total_prob=total_prob+state[i][j][k].B.Weight}
+
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
-                    ctx.fillText("%", x0+(space*i)+25,  y0-9 -5 + (k*120)+(j*700) );
+                    ctx.fillText((0|(state[i][j][k].H.Weight/total_prob))+"%", x0+(space*i)+25,  y0-9 -5 + (k*120)+(j*700) );
 
                     ctx.beginPath();
                     ctx.strokeStyle = 'white';
@@ -450,7 +457,7 @@ function drawState() {
                     ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {
-                        ctx.fillText("%", x0-10+(space*i)-10-10,  y0-4 + (k*120)+(j*700) +5 + 5 );
+                        ctx.fillText((0|(state[i][j][k].L.Weight/total_prob))+"%", x0-10+(space*i)-10-10,  y0-4 + (k*120)+(j*700) +5 + 5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';
@@ -465,7 +472,7 @@ function drawState() {
                     }
 
                     if (state[i][j][k].R.HP > 0) {
-                        ctx.fillText("%", x0+5+(space*i)+5+15+10,  y0-4 + (k*120)+(j*700) +5 -5 );
+                        ctx.fillText((0|(state[i][j][k].R.Weight/total_prob))+"%", x0+5+(space*i)+5+15+10,  y0-4 + (k*120)+(j*700) +5 -5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';
@@ -480,7 +487,7 @@ function drawState() {
                     }
 
                     if (state[i][j][k].B.HP > 0) {
-                        ctx.fillText("%", x0+(space*i)+2-15-10,  y0+8 + (k*120)+(j*700)+5 );
+                        ctx.fillText((0|(state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i)+2-15-10,  y0+8 + (k*120)+(j*700)+5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';

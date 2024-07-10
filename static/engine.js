@@ -467,18 +467,15 @@ function drawState() {
                     if (state[i][j][k].R.HP > 0) {
                         ctx.fillText("%", x0+5+(space*i) + 20,  y0-4 +10 + (k*120)+(j*700) );
 
-
-                        //ctx.fillRect(x0+5+(space*i), y0-4 + (k*120)+(j*700), 5, 7);
-
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';
                         ctx.lineWidth = 1;
-                        ctx.moveTo(x0+5+(space*i), y0-4 + (k*120)+(j*700) );
-                        ctx.lineTo(x0+5+(space*i)+5, y0-4 + (k*120)+(j*700) +5);
+                        ctx.moveTo(x0+5+(space*i)+5, y0-4 + (k*120)+(j*700) +5);
+                        ctx.lineTo(x0+5+(space*i)+5+5, y0-4 + (k*120)+(j*700) +10);
                         ctx.stroke();
                         ctx.beginPath();
-                        ctx.moveTo(x0+5+(space*i)+5, y0-4 + (k*120)+(j*700) +5);
-                        ctx.lineTo(x0+5+(space*i)+5, y0-4 + (k*120)+(j*700) +10);
+                        ctx.moveTo(x0+5+(space*i)+5+5, y0-4 + (k*120)+(j*700) +10);
+                        ctx.lineTo(x0+5+(space*i)+5+15, y0-4 + (k*120)+(j*700) +10);
                         ctx.stroke();
                     }
 

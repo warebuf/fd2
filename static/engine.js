@@ -433,33 +433,6 @@ function drawState() {
                 }
                 ctx.fillRect(x0+(space*i), y0+1 + (k*120)+(j*700), 5, 7);
 
-                if(state[i][j][k].H.HP>0) {
-
-                    let total_prob = 0
-                    if(state[i][j][k].H.HP>0){total_prob=total_prob+state[i][j][k].H.Weight}
-                    if(state[i][j][k].L.HP>0){total_prob=total_prob+state[i][j][k].L.Weight}
-                    if(state[i][j][k].R.HP>0){total_prob=total_prob+state[i][j][k].R.Weight}
-                    if(state[i][j][k].B.HP>0){total_prob=total_prob+state[i][j][k].B.Weight}
-
-                    ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
-                    ctx.font = '9px monospace';
-                    ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x0+(space*i)+3,  y0-15 + (k*120)+(j*700) );
-                    if (state[i][j][k].L.HP > 0) {
-                        ctx.textAlign = "right";
-                        ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x0-10+(space*i),  y0 + (k*120)+(j*700) );
-                    }
-                    if (state[i][j][k].R.HP > 0) {
-                        ctx.textAlign = "left";
-                        ctx.fillText((0|(100*state[i][j][k].R.Weight/total_prob))+"%", x0+15+(space*i),  y0 + (k*120)+(j*700) );
-                    }
-                    if (state[i][j][k].B.HP > 0) {
-                        ctx.textAlign = "center";
-                        ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i)+3,  y0+20+(k*120)+(j*700) );
-                    }
-                }
-                ctx.font = '11px monospace';
-
                 // draw move
                 ctx.fillStyle = 'white';
                 ctx.textAlign = "left";
@@ -2354,6 +2327,31 @@ function drawStartersTable2() {
                     ctx.fillText("R",x_offset+475+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.fillText("B",x_offset+490+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
+
+                    if(state[i][j][k].H.HP>0) {
+
+                        let total_prob = 0
+                        if(state[i][j][k].H.HP>0){total_prob=total_prob+state[i][j][k].H.Weight}
+                        if(state[i][j][k].L.HP>0){total_prob=total_prob+state[i][j][k].L.Weight}
+                        if(state[i][j][k].R.HP>0){total_prob=total_prob+state[i][j][k].R.Weight}
+                        if(state[i][j][k].B.HP>0){total_prob=total_prob+state[i][j][k].B.Weight}
+
+                        ctx.fillStyle = 'white';
+                        ctx.textAlign = "center";
+                        ctx.font = '9px monospace';
+                        ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x_offset+445+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        if (state[i][j][k].L.HP > 0) {
+                            ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x_offset+460+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        }
+                        if (state[i][j][k].R.HP > 0) {
+                            ctx.fillText((0|(100*state[i][j][k].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        }
+                        if (state[i][j][k].B.HP > 0) {
+                            ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        }
+                    }
+                    ctx.font = '11px monospace';
+
 
                     ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),3,0 | state[j][k][i].B.SPD/2);
                     ctx.fillText("SPD",x_offset+515+(user_shift*user_count), y_offset+25 + (i*unit_shift) )

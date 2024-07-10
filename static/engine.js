@@ -437,7 +437,10 @@ function drawState() {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
                     ctx.fillText("%", x0+(space*i),  y0-9 -10 + (k*120)+(j*700) );
+
                     ctx.beginPath();
+                    ctx.strokeStyle = 'white';
+                    ctx.lineWidth = 1;
                     ctx.moveTo(1000, 500);
                     ctx.lineTo(300, 150);
                     ctx.stroke();

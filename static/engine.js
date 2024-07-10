@@ -2328,26 +2328,26 @@ function drawStartersTable2() {
                     ctx.fillText("B",x_offset+490+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    if(state[i][j][k].H.HP>0) {
+                    if(state[j][k][i].H.HP>0) {
 
                         let total_prob = 0
-                        if(state[i][j][k].H.HP>0){total_prob=total_prob+state[i][j][k].H.Weight}
-                        if(state[i][j][k].L.HP>0){total_prob=total_prob+state[i][j][k].L.Weight}
-                        if(state[i][j][k].R.HP>0){total_prob=total_prob+state[i][j][k].R.Weight}
-                        if(state[i][j][k].B.HP>0){total_prob=total_prob+state[i][j][k].B.Weight}
+                        if(state[j][k][i].H.HP>0){total_prob=total_prob+state[j][k][i].H.Weight}
+                        if(state[j][k][i].L.HP>0){total_prob=total_prob+state[j][k][i].L.Weight}
+                        if(state[j][k][i].R.HP>0){total_prob=total_prob+state[j][k][i].R.Weight}
+                        if(state[j][k][i].B.HP>0){total_prob=total_prob+state[j][k][i].B.Weight}
 
                         ctx.fillStyle = 'white';
                         ctx.textAlign = "center";
                         ctx.font = '9px monospace';
-                        ctx.fillText((0|(100*state[i][j][k].H.Weight/total_prob))+"%", x_offset+445+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
-                        if (state[i][j][k].L.HP > 0) {
-                            ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x_offset+460+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        ctx.fillText((0|(100*state[j][k][i].H.Weight/total_prob))+"%", x_offset+445+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        if (state[j][k][i].L.HP > 0) {
+                            ctx.fillText((0|(100*state[j][k][i].L.Weight/total_prob))+"%", x_offset+460+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
                         }
-                        if (state[i][j][k].R.HP > 0) {
-                            ctx.fillText((0|(100*state[i][j][k].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        if (state[j][k][i].R.HP > 0) {
+                            ctx.fillText((0|(100*state[j][k][i].R.Weight/total_prob))+"%", x_offset+475+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
                         }
-                        if (state[i][j][k].B.HP > 0) {
-                            ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
+                        if (state[j][k][i].B.HP > 0) {
+                            ctx.fillText((0|(100*state[j][k][i].B.Weight/total_prob))+"%", x_offset+490+(user_shift*user_count),  y_offset-50 + (i*unit_shift) );
                         }
                     }
                     ctx.font = '11px monospace';

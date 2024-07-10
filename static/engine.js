@@ -83,7 +83,7 @@ function anime() {
 }
 anime()
 
-function drawPos() {
+function drawPos()  {
 
     let y_offset = 200
     time_event_ready = false
@@ -350,7 +350,7 @@ function drawPos() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                
+
                 if(state[i][j][k].H.HP <= 0) {
                     symbol = 'd'
                 } else if(state[i][j][k].Direction == 0) {
@@ -405,6 +405,7 @@ function drawState() {
                 if (state[i][j][k].H.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
+                    ctx.fillText("%", x0+(space*i),  y0-9 + (k*120)+(j*700) );
                 } else {
                     ctx.fillStyle = 'red';
                 }
@@ -412,6 +413,7 @@ function drawState() {
                 if (state[i][j][k].L.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
+                    ctx.fillText("%", x0-5+(space*i),  y0-4 + (k*120)+(j*700) );
                 } else {
                     ctx.fillStyle = 'red';
                 }
@@ -419,6 +421,7 @@ function drawState() {
                 if (state[i][j][k].R.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
+                    ctx.fillText("%", x0+5+(space*i),  y0-4 + (k*120)+(j*700) );
                 } else {
                     ctx.fillStyle = 'red';
                 }
@@ -426,6 +429,7 @@ function drawState() {
                 if (state[i][j][k].B.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
+                    ctx.fillText("%", x0+(space*i),  y0+1 + (k*120)+(j*700) );
                 } else {
                     ctx.fillStyle = 'red';
                 }

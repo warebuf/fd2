@@ -454,7 +454,7 @@ function drawState() {
                     ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {
-                        ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x0-10+(space*i)-5,  y0-4 + (k*120)+(j*700) +5 + 5 );
+                        ctx.fillText((0|(100*state[i][j][k].L.Weight/total_prob))+"%", x0-10+(space*i)-10,  y0-4 + (k*120)+(j*700) +5 + 5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';
@@ -476,7 +476,7 @@ function drawState() {
                     }
 
                     if (state[i][j][k].B.HP > 0) {
-                        ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i)+2-5-5,  y0+8 + (k*120)+(j*700)+5 );
+                        ctx.fillText((0|(100*state[i][j][k].B.Weight/total_prob))+"%", x0+(space*i)+2-5-10,  y0+8 + (k*120)+(j*700)+5 );
 
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';

@@ -439,15 +439,15 @@ function drawState() {
                     ctx.fillText("%", x0+(space*i),  y0-9 -10 + (k*120)+(j*700) );
 
                     if (state[i][j][k].L.HP > 0) {
-                        ctx.fillText("%", x0-5+(space*i) - 10,  y0-4 +10 + (k*120)+(j*700) );
+                        ctx.fillText("%", x0-5+(space*i) - 20,  y0-4 +10 + (k*120)+(j*700) );
                     }
 
                     if (state[i][j][k].R.HP > 0) {
-                        ctx.fillText("%", x0+5+(space*i) + 10,  y0-4 +10 + (k*120)+(j*700) );
+                        ctx.fillText("%", x0+5+(space*i) + 20,  y0-4 +10 + (k*120)+(j*700) );
                     }
 
                     if (state[i][j][k].B.HP > 0) {
-                        ctx.fillText("%", x0+(space*i),  y0+1 +20 + (k*120)+(j*700) );
+                        ctx.fillText("%", x0+(space*i),  y0+1 +30 + (k*120)+(j*700) );
                     }
                 }
 

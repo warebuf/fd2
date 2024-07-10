@@ -444,6 +444,10 @@ function drawState() {
                     ctx.moveTo(x0+(space*i)+10, y0-9 -5 + (k*120)+(j*700));
                     ctx.lineTo(x0+(space*i)+5, y0-9 + (k*120)+(j*700));
                     ctx.stroke();
+                    ctx.beginPath();
+                    ctx.moveTo(x0+(space*i)+10, y0-9 -5 + (k*120)+(j*700));
+                    ctx.lineTo(x0+(space*i)+20, y0-9 -5 + (k*120)+(j*700));
+                    ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {
                         ctx.fillText("%", x0-5+(space*i) - 20,  y0-4 +10 + (k*120)+(j*700) );

@@ -459,7 +459,6 @@ function drawState() {
                     }
                 }
                 ctx.font = '11px monospace';
-                ctx.textAlign = "left";
 
                 // draw move
                 ctx.fillStyle = 'white';

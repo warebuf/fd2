@@ -486,11 +486,11 @@ function drawState() {
                         ctx.strokeStyle = 'white';
                         ctx.lineWidth = 1;
                         ctx.moveTo(x0+(space*i), y0+1 + (k*120)+(j*700) );
-                        ctx.lineTo(x0+(space*i)-10, y0+1 + (k*120)+(j*700)-10);
+                        ctx.lineTo(x0+(space*i)-10, y0+1 + (k*120)+(j*700)+10);
                         ctx.stroke();
                         ctx.beginPath();
-                        ctx.moveTo(x0+(space*i)-10, y0+1 + (k*120)+(j*700)-10 );
-                        ctx.lineTo(x0-x0+(space*i)-20, y0+1 + (k*120)+(j*700)-10 );
+                        ctx.moveTo(x0+(space*i)-10, y0+1 + (k*120)+(j*700)+10 );
+                        ctx.lineTo(x0+(space*i)-20, y0+1 + (k*120)+(j*700)+10 );
                         ctx.stroke();
                     }
                 }

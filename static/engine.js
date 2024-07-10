@@ -441,12 +441,12 @@ function drawState() {
                     ctx.beginPath();
                     ctx.strokeStyle = 'white';
                     ctx.lineWidth = 1;
-                    ctx.moveTo(x0+(space*i)+10, y0-9 -5 + (k*120)+(j*700));
-                    ctx.lineTo(x0+(space*i)+5, y0-9 + (k*120)+(j*700));
+                    ctx.moveTo(x0+(space*i)-3+10, y0-9 -5 + (k*120)+(j*700));
+                    ctx.lineTo(x0+(space*i)-3+5, y0-9 + (k*120)+(j*700));
                     ctx.stroke();
                     ctx.beginPath();
-                    ctx.moveTo(x0+(space*i)+10, y0-9 -5 + (k*120)+(j*700));
-                    ctx.lineTo(x0+(space*i)+20, y0-9 -5 + (k*120)+(j*700));
+                    ctx.moveTo(x0+(space*i)-3+10, y0-9 -5 + (k*120)+(j*700));
+                    ctx.lineTo(x0+(space*i)-3+20, y0-9 -5 + (k*120)+(j*700));
                     ctx.stroke();
 
                     if (state[i][j][k].L.HP > 0) {
@@ -485,12 +485,12 @@ function drawState() {
                         ctx.beginPath();
                         ctx.strokeStyle = 'white';
                         ctx.lineWidth = 1;
-                        ctx.moveTo(x0+(space*i), y0+8 + (k*120)+(j*700) );
-                        ctx.lineTo(x0+(space*i)-5, y0+8 + (k*120)+(j*700)+5);
+                        ctx.moveTo(x0+(space*i)+2, y0+8 + (k*120)+(j*700) );
+                        ctx.lineTo(x0+(space*i)+2-5, y0+8 + (k*120)+(j*700)+5);
                         ctx.stroke();
                         ctx.beginPath();
-                        ctx.moveTo(x0+(space*i)-5, y0+8 + (k*120)+(j*700)+5 );
-                        ctx.lineTo(x0+(space*i)-15, y0+8 + (k*120)+(j*700)+5 );
+                        ctx.moveTo(x0+(space*i)+2-5, y0+8 + (k*120)+(j*700)+5 );
+                        ctx.lineTo(x0+(space*i)+2-15, y0+8 + (k*120)+(j*700)+5 );
                         ctx.stroke();
                     }
                 }

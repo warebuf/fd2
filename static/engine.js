@@ -1977,9 +1977,9 @@ function drawBenchTable() {
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
             ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+20 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 150);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 150);
+            ctx.fillRect(x_offset-20+second_slot,y_offset+25 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 155);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 155);
 
             ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
 

@@ -2023,9 +2023,9 @@ function drawBenchTable() {
             }
             ser = 'L' + ser
             ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-105 + third_slot )
-            ctx.fillText(bench_l[key][i].NAME,x_offset-15+second_slot, y_offset-95 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-75 + third_slot ) // draw desc
+            ctx.fillText(ser,x_offset-15+second_slot, y_offset-115 + third_slot )
+            ctx.fillText(bench_l[key][i].NAME,x_offset-15+second_slot, y_offset-105 + third_slot ) // draw name
+            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-85 + third_slot ) // draw desc
 
             // draw outer box
             ctx.fillStyle = 'white';

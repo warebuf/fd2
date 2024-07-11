@@ -1976,10 +1976,10 @@ function drawBenchTable() {
             // draw outer box
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+40 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 150);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-110 + third_slot, 1, 150);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-120 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-120 + third_slot, 1, 150);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-120 + third_slot, 1, 150);
 
             ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
 

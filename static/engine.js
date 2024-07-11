@@ -1977,9 +1977,9 @@ function drawBenchTable() {
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
             ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 140);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-110 + third_slot, 1, 140);
+            ctx.fillRect(x_offset-20+second_slot,y_offset+40 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 150);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-110 + third_slot, 1, 150);
 
             ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
 
@@ -2023,17 +2023,17 @@ function drawBenchTable() {
             }
             ser = 'L' + ser
             ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-105 + third_slot )
-            ctx.fillText(bench_l[key][i].NAME,x_offset-15+second_slot, y_offset-95 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-75 + third_slot ) // draw desc
+            ctx.fillText(ser,x_offset-15+second_slot, y_offset-95 + third_slot )
+            ctx.fillText(bench_l[key][i].NAME,x_offset-15+second_slot, y_offset-85 + third_slot ) // draw name
+            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-65 + third_slot ) // draw desc
 
             // draw outer box
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-120 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+20 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-120 + third_slot, 1, 140);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-120 + third_slot, 1, 140);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 140);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-110 + third_slot, 1, 140);
 
             ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
 

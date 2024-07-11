@@ -1922,7 +1922,7 @@ function drawBenchTable() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 1000
-        let y_offset = 180
+        let y_offset = 190
         let unit_shift = 150
         let second_slot_shift = 280
         ctx.font = '11px monospace';
@@ -1969,9 +1969,9 @@ function drawBenchTable() {
             }
             ser = 'H' + ser
             ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-95 + third_slot )
-            ctx.fillText(bench_h[key][i].NAME,x_offset-15+second_slot, y_offset-85 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-65 + third_slot ) // draw desc
+            ctx.fillText(ser,x_offset-15+second_slot, y_offset-105 + third_slot )
+            ctx.fillText(bench_h[key][i].NAME,x_offset-15+second_slot, y_offset-95 + third_slot ) // draw name
+            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-75 + third_slot ) // draw desc
 
             // draw outer box
             ctx.fillStyle = 'white';

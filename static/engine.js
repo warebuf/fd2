@@ -1924,7 +1924,7 @@ function drawBenchTable() {
         let x_offset = 1000
         let y_offset = 190
         let unit_shift = 150
-        let second_slot_shift = 280
+        let second_slot_shift = 300
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 
@@ -1978,8 +1978,8 @@ function drawBenchTable() {
             ctx.textAlign = "left";
             ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 215, 1);
             ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 140);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 140);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 150);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 150);
 
             ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
 

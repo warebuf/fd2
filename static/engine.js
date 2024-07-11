@@ -1924,7 +1924,7 @@ function drawBenchTable() {
         let x_offset = 1000
         let y_offset = 190
         let unit_shift = 170
-        let second_slot_shift = 280
+        let second_slot_shift = 270
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 

@@ -1943,25 +1943,25 @@ function drawBenchTable() {
             ctx.fillText(bench_h[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].HP/2) )
             ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_h[key][i].ATK/2) + third_slot,3,0 | bench_h[key][i].ATK/2);
             ctx.fillText("ATK",x_offset+25+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].ATK,x_offset+25+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].ATK/2) )
             ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_h[key][i].DEF/2) + third_slot,3,0 | bench_h[key][i].DEF/2);
             ctx.fillText("DEF",x_offset+50+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].DEF,x_offset+50+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].DEF/2) )
             ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_h[key][i].ACC/2) + third_slot,3,0 | bench_h[key][i].ACC/2);
             ctx.fillText("ACC",x_offset+75+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].ACC,x_offset+75+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].ACC/2) )
             ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_h[key][i].CRT/2) + third_slot,3,0 | bench_h[key][i].CRT/2);
             ctx.fillText("CRT",x_offset+100+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].CRT,x_offset+100+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].CRT/2) )
             ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_h[key][i].CD/2) + third_slot,3,0 | bench_h[key][i].CD/2);
             ctx.fillText("CD",x_offset+125+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].CD,x_offset+125+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].CD/2) )
             ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_h[key][i].CLU/2) + third_slot,3,0 | bench_h[key][i].CLU/2);
             ctx.fillText("CLU",x_offset+150+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].CLU,x_offset+150+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].CLU/2) )
             ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_h[key][i].Weight/2) + third_slot,3,0 | bench_h[key][i].Weight/2);
             ctx.fillText("WGT",x_offset+175+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_h[key][i].Weight,x_offset+175+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_h[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].Weight/2) )
 
             ser   = bench_h[key][i].SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -1994,28 +1994,28 @@ function drawBenchTable() {
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_l[key][i].HP/2) + third_slot,3,0 | bench_l[key][i].HP/2);
             ctx.fillText("HP",x_offset+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].HP,x_offset+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot  - (0 | bench_l[key][i].HP/2) )
             ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_l[key][i].ATK/2) + third_slot,3,0 | bench_l[key][i].ATK/2);
             ctx.fillText("ATK",x_offset+25+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].ATK,x_offset+25+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].ATK/2) )
             ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_l[key][i].DEF/2) + third_slot,3,0 | bench_l[key][i].DEF/2);
             ctx.fillText("DEF",x_offset+50+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].DEF,x_offset+50+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].DEF/2) )
             ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_l[key][i].ACC/2) + third_slot,3,0 | bench_l[key][i].ACC/2);
             ctx.fillText("ACC",x_offset+75+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].ACC,x_offset+75+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].ACC/2) )
             ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_l[key][i].CRT/2) + third_slot,3,0 | bench_l[key][i].CRT/2);
             ctx.fillText("CRT",x_offset+100+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].CRT,x_offset+100+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].CRT/2) )
             ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_l[key][i].CD/2) + third_slot,3,0 | bench_l[key][i].CD/2);
             ctx.fillText("CD",x_offset+125+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].CD,x_offset+125+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].CD/2) )
             ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_l[key][i].CLU/2) + third_slot,3,0 | bench_l[key][i].CLU/2);
             ctx.fillText("CLU",x_offset+150+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].CLU,x_offset+150+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].CLU/2) )
             ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_l[key][i].Weight/2) + third_slot,3,0 | bench_l[key][i].Weight/2);
             ctx.fillText("WGT",x_offset+175+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_l[key][i].Weight,x_offset+175+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_l[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].Weight/2) )
 
             ser   = bench_l[key][i].SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -2048,28 +2048,28 @@ function drawBenchTable() {
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_r[key][i].HP/2) + third_slot,3,0 | bench_r[key][i].HP/2);
             ctx.fillText("HP",x_offset+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].HP,x_offset+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].HP/2) )
             ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_r[key][i].ATK/2) + third_slot,3,0 | bench_r[key][i].ATK/2);
             ctx.fillText("ATK",x_offset+25+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].ATK,x_offset+25+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].ATK/2) )
             ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_r[key][i].DEF/2) + third_slot,3,0 | bench_r[key][i].DEF/2);
             ctx.fillText("DEF",x_offset+50+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].DEF,x_offset+50+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].DEF/2) )
             ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_r[key][i].ACC/2) + third_slot,3,0 | bench_r[key][i].ACC/2);
             ctx.fillText("ACC",x_offset+75+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].ACC,x_offset+75+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].ACC/2) )
             ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_r[key][i].CRT/2) + third_slot,3,0 | bench_r[key][i].CRT/2);
             ctx.fillText("CRT",x_offset+100+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].CRT,x_offset+100+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].CRT/2) )
             ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_r[key][i].CD/2) + third_slot,3,0 | bench_r[key][i].CD/2);
             ctx.fillText("CD",x_offset+125+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].CD,x_offset+125+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].CD/2) )
             ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_r[key][i].CLU/2) + third_slot,3,0 | bench_r[key][i].CLU/2);
             ctx.fillText("CLU",x_offset+150+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].CLU,x_offset+150+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].CLU/2) )
             ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_r[key][i].Weight/2) + third_slot,3,0 | bench_r[key][i].Weight/2);
             ctx.fillText("WGT",x_offset+175+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_r[key][i].Weight,x_offset+175+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_r[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].Weight/2) )
 
             ser   = bench_r[key][i].SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {
@@ -2102,35 +2102,34 @@ function drawBenchTable() {
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_b[key][i].HP/2) + third_slot,3,0 | bench_b[key][i].HP/2);
             ctx.fillText("HP",x_offset+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].HP,x_offset+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].HP/2) )
             ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_b[key][i].ATK/2) + third_slot,3,0 | bench_b[key][i].ATK/2);
             ctx.fillText("ATK",x_offset+25+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].ATK,x_offset+25+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].ATK/2) )
             ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_b[key][i].DEF/2) + third_slot,3,0 | bench_b[key][i].DEF/2);
             ctx.fillText("DEF",x_offset+50+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].DEF,x_offset+50+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].DEF/2) )
             ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_b[key][i].ACC/2) + third_slot,3,0 | bench_b[key][i].ACC/2);
             ctx.fillText("ACC",x_offset+75+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].ACC,x_offset+75+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].ACC/2) )
             ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_b[key][i].CRT/2) + third_slot,3,0 | bench_b[key][i].CRT/2);
             ctx.fillText("CRT",x_offset+100+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].CRT,x_offset+100+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].CRT/2) )
             ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_b[key][i].CD/2) + third_slot,3,0 | bench_b[key][i].CD/2);
             ctx.fillText("CD",x_offset+125+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].CD,x_offset+125+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].CD/2))
             ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_b[key][i].CLU/2) + third_slot,3,0 | bench_b[key][i].CLU/2);
             ctx.fillText("CLU",x_offset+150+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].CLU,x_offset+150+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].CLU/2) )
             ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_b[key][i].Weight/2) + third_slot,3,0 | bench_b[key][i].Weight/2);
             ctx.fillText("WGT",x_offset+175+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].Weight,x_offset+175+second_slot, y_offset+20 + third_slot )
-
+            ctx.fillText(bench_b[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].Weight/2))
             ctx.fillRect(x_offset-2+200+second_slot,y_offset - (0 | bench_b[key][i].SPD/2) + third_slot,3,0 | bench_b[key][i].SPD/2);
             ctx.fillText("SPD",x_offset+200+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].SPD,x_offset+200+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].SPD,x_offset+200+second_slot, y_offset-10 + third_slot  - (0 | bench_b[key][i].SPD/2))
             ctx.fillRect(x_offset-2+225+second_slot,y_offset - (0 | bench_b[key][i].DOG/2) + third_slot,3,0 | bench_b[key][i].DOG/2);
             ctx.fillText("DOG",x_offset+225+second_slot, y_offset+10 + third_slot )
-            ctx.fillText(bench_b[key][i].DOG,x_offset+225+second_slot, y_offset+20 + third_slot )
+            ctx.fillText(bench_b[key][i].DOG,x_offset+225+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].DOG/2) )
 
             ser   = bench_b[key][i].SERIAL.toString()
             for (let k = ser.length; k < 7; k++) {

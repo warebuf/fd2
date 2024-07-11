@@ -2325,7 +2325,7 @@ function drawStartersTable2() {
                         ctx.fillText(state[j][k][i].R.Weight,x_offset+475+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.Weight/2) )
                     }
                     if (state[j][k][i].B.HP > 0) {
-                        ctx.fillText('('+(0|(100*state[j][k][i].B.Weight/total_prob))+"%)", x_offset+490+(user_shift*user_count),  y_offset-15 (i*unit_shift) - (0 | state[j][k][i].B.Weight/2) );
+                        ctx.fillText('('+(0|(100*state[j][k][i].B.Weight/total_prob))+"%)", x_offset+490+(user_shift*user_count),  y_offset-15 + (i*unit_shift) - (0 | state[j][k][i].B.Weight/2) );
                         ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset-5 + (i*unit_shift) - (0 | state[j][k][i].B.Weight/2) )
                     } else {
                         ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.Weight/2) )

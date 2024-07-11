@@ -1939,10 +1939,10 @@ function drawBenchTable() {
 
             ctx.textAlign = "center";
             ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_h[key][i].HP/2) + third_slot,3,0 | bench_h[key][i].HP/2);
-            ctx.fillText("HP",x_offset+second_slot, y_offset+10 + third_slot )
+            ctx.fillText("HP",x_offset+second_slot, y_offset - 10 + third_slot - (0 | bench_h[key][i].HP/2) )
             ctx.fillText(bench_h[key][i].HP,x_offset+second_slot, y_offset+20 + third_slot )
             ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_h[key][i].ATK/2) + third_slot,3,0 | bench_h[key][i].ATK/2);
-            ctx.fillText("ATK",x_offset+25+second_slot, y_offset+10 + third_slot )
+            ctx.fillText("ATK",x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].ATK/2) )
             ctx.fillText(bench_h[key][i].ATK,x_offset+25+second_slot, y_offset+20 + third_slot )
             ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_h[key][i].DEF/2) + third_slot,3,0 | bench_h[key][i].DEF/2);
             ctx.fillText("DEF",x_offset+50+second_slot, y_offset+10 + third_slot )

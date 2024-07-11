@@ -1969,17 +1969,17 @@ function drawBenchTable() {
             }
             ser = 'H' + ser
             ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-105 + third_slot )
-            ctx.fillText(bench_h[key][i].NAME,x_offset-15+second_slot, y_offset-95 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-75 + third_slot ) // draw desc
+            ctx.fillText(ser,x_offset-15+second_slot, y_offset-115 + third_slot )
+            ctx.fillText(bench_h[key][i].NAME,x_offset-15+second_slot, y_offset-105 + third_slot ) // draw name
+            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-85 + third_slot ) // draw desc
 
             // draw outer box
             ctx.fillStyle = 'white';
             ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-120 + third_slot, 215, 1);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 215, 1);
             ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-120 + third_slot, 1, 150);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-120 + third_slot, 1, 150);
+            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 140);
+            ctx.fillRect(x_offset-20+215+second_slot,y_offset-110 + third_slot, 1, 140);
 
             ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
 
@@ -2404,4 +2404,43 @@ function drawPoint(center_x,center_y,radius,num,distance){
         ctx.stroke();
     }
 
+}
+
+function wrap(ctx, text, fontSize, fontColor) {
+    var max_width  = 250;
+    var fontSize   =  12;
+    var lines      =  new Array();
+    var width = 0, i, j;
+    var result;
+    var color = fontColor || "white";
+
+    // Font and size is required for ctx.measureText()
+    ctx.font   = fontSize + "px Arial";
+
+
+    // Start calculation
+    while ( text.length ) {
+        for( i=text.length; ctx.measureText(text.substr(0,i)).width > max_width; i-- );
+
+        result = text.substr(0,i);
+
+        if ( i !== text.length )
+            for( j=0; result.indexOf(" ",j) !== -1; j=result.indexOf(" ",j)+1 );
+
+        lines.push( result.substr(0, j|| result.length) );
+        width = Math.max( width, ctx.measureText(lines[ lines.length-1 ]).width );
+        text  = text.substr( lines[ lines.length-1 ].length, text.length );
+    }
+
+
+    // Calculate canvas size, add margin
+    ctx.canvas.width  = 14 + width;
+    ctx.canvas.height =  8 + ( fontSize + 5 ) * lines.length;
+    ctx.font   = fontSize + "px Arial";
+
+    // Render
+    ctx.fillStyle = color;
+    for ( i=0, j=lines.length; i<j; ++i ) {
+        ctx.fillText( lines[i], 8, 5 + fontSize + (fontSize+5) * i );
+    }
 }

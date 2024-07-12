@@ -1544,7 +1544,7 @@ function drawBenchTable() {
 
         let x_offset = 1000
         let y_offset = 190
-        let unit_shift = 155
+        let unit_shift = 165
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 

@@ -491,7 +491,7 @@ func createMatch(pl *permission_list) *match {
 
 			namesh := []string{
 				"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER", "RAINMAN",
-				"CARMACK", "CAGED",
+				"CARMACK", "CAGED", "JINZO",
 			}
 			namesl := []string{
 				"TERRACOTTA PINCER", "LEFT HAND FREE", "ULTRA MIAMI BLASTER", "LEFT HOOK", "ONE INCH PUNCH", "DEATH BEAM",

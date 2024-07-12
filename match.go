@@ -668,7 +668,7 @@ func createMatch(pl *permission_list) *match {
 
 			ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
 
-			for y := 0; y < 2; y++ {
+			for y := 0; y < 5; y++ {
 
 				pick := rand.Intn(4)
 

@@ -884,379 +884,6 @@ function drawStarters() {
     }
 }
 
-function drawBench() {
-
-    if((bench_h!=null) && (my_team != -1) && (my_int != -1)) {
-
-        let x = 60
-        let y1 = 350
-        let x_offset = 75
-
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
-        ctx.fillRect(42 + x_offset, y1 + 72, ctx.measureText("BENCH (HEAD)").width, 1);
-        ctx.fillText("BENCH (HEAD)",80 + x_offset, y1 + 70);
-
-        let key = my_team + ';' + my_int
-
-        for (let i=0+h_index;i<bench_h[key].length;i++) {
-
-            // ALL HEAD RELATED BENCH
-            s   = "H000000"
-            name = bench_h[key][i]["NAME"]
-            HP  = "HP:  " + bench_h[key][i]["HP"]
-            ATK = "ATK: " + bench_h[key][i]["ATK"]
-            DEF = "DEF: " + bench_h[key][i]["DEF"]
-            ACC = "ACC: " + bench_h[key][i]["ACC"]
-            CRT = "CRT: " + bench_h[key][i]["CRT"]
-            CD  = "CD:  " + bench_h[key][i]["CD"]
-            CLU = "CLU: " + bench_h[key][i]["CLU"]
-            W   = "Weight: " + bench_h[key][i]["Weight"]
-            AVG = "AVG: " +
-                Math.floor(
-                    (parseInt(bench_h[key][i]["HP"])+
-                        parseInt(bench_h[key][i]["ATK"])+
-                        parseInt(bench_h[key][i]["DEF"]) +
-                        parseInt(bench_h[key][i]["ACC"]) +
-                        parseInt(bench_h[key][i]["CRT"]) +
-                        parseInt(bench_h[key][i]["CD"]) +
-                        parseInt(bench_h[key][i]["CLU"])
-                    ) / 7)
-
-
-
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset,y1+ 94 + (60*(i-h_index)),ctx.measureText(name).width,ctx.measureText('M').width);
-
-            ctx.font = '11px monospace';
-            ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0 + x_offset, y1+ 100 + (60*(i-h_index)));
-            ctx.fillText(name,x*1 + x_offset, y1+ 100 + (60*(i-h_index)));
-            ctx.fillText(HP,x*0 + x_offset, y1+ 110 + (60*(i-h_index)));
-            ctx.fillText(ATK,x*1 + x_offset, y1+ 110 + (60*(i-h_index)));
-            ctx.fillText(DEF,x*2 + x_offset, y1+ 110 + (60*(i-h_index)));
-            ctx.fillText(ACC,x*0 + x_offset, y1+ 120 + (60*(i-h_index)));
-            ctx.fillText(CRT,x*1 + x_offset, y1+ 120 + (60*(i-h_index)));
-            ctx.fillText(CD,x*2 + x_offset, y1+ 120 + (60*(i-h_index)));
-            ctx.fillText(CLU,x*0 + x_offset, y1+ 130 + (60*(i-h_index)));
-            ctx.fillText(W,x*0 + x_offset, y1+ 140 + (60*(i-h_index)));
-            ctx.fillText(AVG,x*2 + x_offset, y1+ 140 + (60*(i-h_index)));
-
-            if(i >= 4+h_index) {i = bench_h[key].length} // only show 5 parts
-        }
-
-        // draw dot legend
-        for(let i = 0; i<bench_h[key].length;i++){
-            let a = (i%5) * 5
-            let b = Math.floor(i/5)*5
-
-            ctx.textAlign = "left";
-            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==0)&&(i==y_index_2)) {
-                ctx.fillStyle = 'yellow';
-            }
-            else if((i >= h_index) && (i < h_index+5)) {
-                ctx.fillStyle = 'red';
-            } else{
-                ctx.fillStyle = 'green';
-            }
-            ctx.fillRect(70 + a + x_offset,775+b,3,3);
-        }
-
-        if(h_index + 5 < bench_h[key].length) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▼",80 + x_offset, y1+400);
-        }
-        if(h_index > 0) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset, y1+85);
-        }
-    }
-    if((bench_l!=null) && (my_team != -1) && (my_int != -1)) {
-
-        let x = 60
-        let y1 = 350
-        let x_offset_2 = 300
-
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
-        ctx.fillRect(28 + x_offset_2, y1 + 72, ctx.measureText("BENCH (LEFT ARM)").width, 1);
-        ctx.fillText("BENCH (LEFT ARM)",80 + x_offset_2, y1 + 70);
-
-        let key = my_team + ';' + my_int
-
-        for (let i=0+l_index;i<bench_l[key].length;i++) {
-
-            // ALL HEAD RELATED BENCH
-            s   = "L000000"
-            name = bench_l[key][i]["NAME"]
-            HP  = "HP:  " + bench_l[key][i]["HP"]
-            ATK = "ATK: " + bench_l[key][i]["ATK"]
-            DEF = "DEF: " + bench_l[key][i]["DEF"]
-            ACC = "ACC: " + bench_l[key][i]["ACC"]
-            CRT = "CRT: " + bench_l[key][i]["CRT"]
-            CD  = "CD:  " + bench_l[key][i]["CD"]
-            CLU = "CLU: " + bench_l[key][i]["CLU"]
-            W   = "Weight: " + bench_l[key][i]["Weight"]
-            AVG = "AVG: " +
-                Math.floor(
-                    (parseInt(bench_l[key][i]["HP"])+
-                        parseInt(bench_l[key][i]["ATK"])+
-                        parseInt(bench_l[key][i]["DEF"]) +
-                        parseInt(bench_l[key][i]["ACC"]) +
-                        parseInt(bench_l[key][i]["CRT"]) +
-                        parseInt(bench_l[key][i]["CD"]) +
-                        parseInt(bench_l[key][i]["CLU"])
-                    ) / 7)
-
-
-
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset_2,y1+ 94 + (60*(i-l_index)),ctx.measureText(name).width,ctx.measureText('M').width);
-
-            ctx.font = '11px monospace';
-            ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0 + x_offset_2, y1+ 100 + (60*(i-l_index)));
-            ctx.fillText(name,x*1 + x_offset_2, y1+ 100 + (60*(i-l_index)));
-            ctx.fillText(HP,x*0 + x_offset_2, y1+ 110 + (60*(i-l_index)));
-            ctx.fillText(ATK,x*1 + x_offset_2, y1+ 110 + (60*(i-l_index)));
-            ctx.fillText(DEF,x*2 + x_offset_2, y1+ 110 + (60*(i-l_index)));
-            ctx.fillText(ACC,x*0 + x_offset_2, y1+ 120 + (60*(i-l_index)));
-            ctx.fillText(CRT,x*1 + x_offset_2, y1+ 120 + (60*(i-l_index)));
-            ctx.fillText(CD,x*2 + x_offset_2, y1+ 120 + (60*(i-l_index)));
-            ctx.fillText(CLU,x*0 + x_offset_2, y1+ 130 + (60*(i-l_index)));
-            ctx.fillText(W,x*0 + x_offset_2, y1+ 140 + (60*(i-l_index)));
-            ctx.fillText(AVG,x*2 + x_offset_2, y1+ 140 + (60*(i-l_index)));
-
-            if(i >= 4 + l_index) {i = bench_l[key].length} // only show 5 parts
-        }
-
-        // draw dot legend
-        for(let i = 0; i<bench_l[key].length;i++){
-            let a = (i%5) * 5
-            let b = Math.floor(i/5)*5
-
-            ctx.textAlign = "left";
-            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==1)&&(i==y_index_2)) {
-                ctx.fillStyle = 'yellow';
-            }
-            else if((i >= l_index) && (i < l_index+5)) {
-                ctx.fillStyle = 'red';
-            } else{
-                ctx.fillStyle = 'green';
-            }
-            ctx.fillRect(70 + a + x_offset_2,775+b,3,3);
-        }
-
-        if(l_index + 5 < bench_l[key].length) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▼",80 + x_offset_2, y1+400);
-        }
-        if(l_index > 0) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_2, y1+85);
-        }
-    }
-    if((bench_r!=null) && (my_team != -1) && (my_int != -1)) {
-
-        let x = 60
-        let y1 = 350
-        let x_offset_3 = 525
-
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
-        ctx.fillRect(28 + x_offset_3, y1 + 72, ctx.measureText("BENCH (RIGHT ARM)").width, 1);
-        ctx.fillText("BENCH (RIGHT ARM)",80 + x_offset_3, y1 + 70);
-
-        let key = my_team + ';' + my_int
-
-        for (let i=0+r_index;i<bench_r[key].length;i++) {
-            s   = "R000000"
-            name = bench_r[key][i]["NAME"]
-            HP  = "HP:  " + bench_r[key][i]["HP"]
-            ATK = "ATK: " + bench_r[key][i]["ATK"]
-            DEF = "DEF: " + bench_r[key][i]["DEF"]
-            ACC = "ACC: " + bench_r[key][i]["ACC"]
-            CRT = "CRT: " + bench_r[key][i]["CRT"]
-            CD  = "CD:  " + bench_r[key][i]["CD"]
-            CLU = "CLU: " + bench_r[key][i]["CLU"]
-            W   = "Weight: " + bench_r[key][i]["Weight"]
-            AVG = "AVG: " +
-                Math.floor(
-                    (parseInt(bench_r[key][i]["HP"])+
-                        parseInt(bench_r[key][i]["ATK"])+
-                        parseInt(bench_r[key][i]["DEF"]) +
-                        parseInt(bench_r[key][i]["ACC"]) +
-                        parseInt(bench_r[key][i]["CRT"]) +
-                        parseInt(bench_r[key][i]["CD"]) +
-                        parseInt(bench_r[key][i]["CLU"])
-                    ) / 7)
-
-
-
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset_3,y1+ 94 + (60*(i-r_index)),ctx.measureText(name).width,ctx.measureText('M').width);
-
-            ctx.font = '11px monospace';
-            ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0 + x_offset_3, y1+ 100 + (60*(i-r_index)));
-            ctx.fillText(name,x*1 + x_offset_3, y1+ 100 + (60*(i-r_index)));
-            ctx.fillText(HP,x*0 + x_offset_3, y1+ 110 + (60*(i-r_index)));
-            ctx.fillText(ATK,x*1 + x_offset_3, y1+ 110 + (60*(i-r_index)));
-            ctx.fillText(DEF,x*2 + x_offset_3, y1+ 110 + (60*(i-r_index)));
-            ctx.fillText(ACC,x*0 + x_offset_3, y1+ 120 + (60*(i-r_index)));
-            ctx.fillText(CRT,x*1 + x_offset_3, y1+ 120 + (60*(i-r_index)));
-            ctx.fillText(CD,x*2 + x_offset_3, y1+ 120 + (60*(i-r_index)));
-            ctx.fillText(CLU,x*0 + x_offset_3, y1+ 130 + (60*(i-r_index)));
-            ctx.fillText(W,x*0 + x_offset_3, y1+ 140 + (60*(i-r_index)));
-            ctx.fillText(AVG,x*2 + x_offset_3, y1+ 140 + (60*(i-r_index)));
-
-            if(i >= 4+r_index) {i = bench_r[key].length} // only show 5 parts
-        }
-
-        // draw dot legend
-        for(let i = 0; i<bench_r[key].length;i++){
-            let a = (i%5) * 5
-            let b = Math.floor(i/5)*5
-
-            ctx.textAlign = "left";
-            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==2)&&(i==y_index_2)) {
-                ctx.fillStyle = 'yellow';
-            }
-            else if((i >= r_index) && (i < r_index+5)) {
-                ctx.fillStyle = 'red';
-            } else{
-                ctx.fillStyle = 'green';
-            }
-            ctx.fillRect(70 + a + x_offset_3,775+b,3,3);
-        }
-
-        if(r_index + 5 < bench_r[key].length) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▼",80 + x_offset_3, y1+400);
-        }
-        if(r_index > 0) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_3, y1+85);
-        }
-    }
-    if((bench_b!=null) && (my_team != -1) && (my_int != -1)) {
-
-        let x = 60
-        let y1 = 350
-        let x_offset_4 = 750
-
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
-        ctx.fillRect(38 + x_offset_4, y1 + 72, ctx.measureText("BENCH (BOTTOM)").width, 1);
-        ctx.fillText("BENCH (BOTTOM)",80 + x_offset_4, y1 + 70);
-
-        let key = my_team + ';' + my_int
-
-        for (let i=0+b_index;i<bench_b[key].length;i++) {
-
-            s   = "B000000"
-            name = bench_b[key][i]["NAME"]
-            HP  = "HP:  " + bench_b[key][i]["HP"]
-            ATK = "ATK: " + bench_b[key][i]["ATK"]
-            DEF = "DEF: " + bench_b[key][i]["DEF"]
-            ACC = "ACC: " + bench_b[key][i]["ACC"]
-            CRT = "CRT: " + bench_b[key][i]["CRT"]
-            CD  = "CD:  " + bench_b[key][i]["CD"]
-            CLU = "CLU: " + bench_b[key][i]["CLU"]
-            SPD = "SPD: " + bench_b[key][i]["SPD"]
-            DOG = "DOG: " + bench_b[key][i]["DOG"]
-
-            W   = "Weight: " + bench_b[key][i]["Weight"]
-            AVG = "AVG: " +
-                Math.floor(
-                    (parseInt(bench_b[key][i]["HP"])+
-                        parseInt(bench_b[key][i]["ATK"])+
-                        parseInt(bench_b[key][i]["DEF"]) +
-                        parseInt(bench_b[key][i]["ACC"]) +
-                        parseInt(bench_b[key][i]["CRT"]) +
-                        parseInt(bench_b[key][i]["CD"]) +
-                        parseInt(bench_b[key][i]["CLU"]) +
-                        parseInt(bench_b[key][i]["SPD"]) +
-                        parseInt(bench_b[key][i]["DOG"])
-                    ) / 9)
-
-
-
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'blue';
-            ctx.fillRect(x + x_offset_4,y1+ 94 + (60*(i-b_index)),ctx.measureText(name).width,ctx.measureText('M').width);
-
-            ctx.font = '11px monospace';
-            ctx.fillStyle = 'white';
-            ctx.fillText(s,x*0 + x_offset_4, y1+ 100 + (60*(i-b_index)));
-            ctx.fillText(name,x*1 + x_offset_4, y1+ 100 + (60*(i-b_index)));
-            ctx.fillText(HP,x*0 + x_offset_4, y1+ 110 + (60*(i-b_index)));
-            ctx.fillText(ATK,x*1 + x_offset_4, y1+ 110 + (60*(i-b_index)));
-            ctx.fillText(DEF,x*2 + x_offset_4, y1+ 110 + (60*(i-b_index)));
-            ctx.fillText(ACC,x*0 + x_offset_4, y1+ 120 + (60*(i-b_index)));
-            ctx.fillText(CRT,x*1 + x_offset_4, y1+ 120 + (60*(i-b_index)));
-            ctx.fillText(CD,x*2 + x_offset_4, y1+ 120 + (60*(i-b_index)));
-            ctx.fillText(CLU,x*0 + x_offset_4, y1+ 130 + (60*(i-b_index)));
-            ctx.fillText(SPD,x*1 + x_offset_4, y1+ 130 + (60*(i-b_index)));
-            ctx.fillText(DOG,x*2 + x_offset_4, y1+ 130 + (60*(i-b_index)));
-            ctx.fillText(W,x*0 + x_offset_4, y1+ 140 + (60*(i-b_index)));
-            ctx.fillText(AVG,x*2 + x_offset_4, y1+ 140 + (60*(i-b_index)));
-
-            if(i >= 4 + b_index) {i = bench_b[key].length} // only show 5 parts
-        }
-
-        // draw dot legend
-        for(let i = 0; i<bench_b[key].length;i++){
-            let a = (i%5) * 5
-            let b = Math.floor(i/5)*5
-
-            ctx.textAlign = "left";
-            if((second_index==true)&&(screen_index_2==1)&&(x_index_2==3)&&(i==y_index_2)) {
-                ctx.fillStyle = 'yellow';
-            }
-            else if((i >= b_index) && (i < b_index+5)) {
-                ctx.fillStyle = 'red';
-            } else{
-                ctx.fillStyle = 'green';
-            }
-            ctx.fillRect(70 + a + x_offset_4,775+b,3,3);
-        }
-
-        if(b_index + 5 < bench_b[key].length) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▼",80 + x_offset_4, y1+400);
-        }
-        if(b_index > 0) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'white';
-            ctx.font = '11px monospace';
-            ctx.fillText("▲",80 + x_offset_4, y1+85);
-        }
-    }
-
-}
-
 function drawSelect() {
 
     ctx.beginPath();
@@ -1718,12 +1345,6 @@ function drawStartersTable1() {
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 
-        let bench_count = 0;
-
-        //for (let i=0+h_index;i<bench_h[key].length;i++) {
-        //}
-
-
         for(let i=0;i<state[my_team][my_int].length;i++){
 
             ctx.textAlign = "center";
@@ -1924,237 +1545,15 @@ function drawBenchTable() {
         let x_offset = 1000
         let y_offset = 190
         let unit_shift = 155
-        let second_slot_shift = 270
         ctx.font = '11px monospace';
         ctx.fillStyle = 'white';
 
-        let bench_count = 0;
-
         let key = my_team + ';' + my_int
 
-        for (let i=0;i<bench_h[key].length;i++) {
-
-            second_slot = second_slot_shift*(bench_count%2)
-            third_slot = unit_shift * (0 | bench_count/2)
-
-            ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_h[key][i].HP/2) + third_slot,3,0 | bench_h[key][i].HP/2);
-            ctx.fillText("HP",x_offset+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].HP/2) )
-            ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_h[key][i].ATK/2) + third_slot,3,0 | bench_h[key][i].ATK/2);
-            ctx.fillText("ATK",x_offset+25+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].ATK/2) )
-            ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_h[key][i].DEF/2) + third_slot,3,0 | bench_h[key][i].DEF/2);
-            ctx.fillText("DEF",x_offset+50+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].DEF/2) )
-            ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_h[key][i].ACC/2) + third_slot,3,0 | bench_h[key][i].ACC/2);
-            ctx.fillText("ACC",x_offset+75+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].ACC/2) )
-            ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_h[key][i].CRT/2) + third_slot,3,0 | bench_h[key][i].CRT/2);
-            ctx.fillText("CRT",x_offset+100+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].CRT/2) )
-            ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_h[key][i].CD/2) + third_slot,3,0 | bench_h[key][i].CD/2);
-            ctx.fillText("CD",x_offset+125+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].CD/2) )
-            ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_h[key][i].CLU/2) + third_slot,3,0 | bench_h[key][i].CLU/2);
-            ctx.fillText("CLU",x_offset+150+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].CLU/2) )
-            ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_h[key][i].Weight/2) + third_slot,3,0 | bench_h[key][i].Weight/2);
-            ctx.fillText("WGT",x_offset+175+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_h[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_h[key][i].Weight/2) )
-
-            ser   = bench_h[key][i].SERIAL.toString()
-            for (let k = ser.length; k < 7; k++) {
-                ser = '0' + ser
-            }
-            ser = 'H' + ser
-            ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-115 + third_slot )
-            ctx.fillText(bench_h[key][i].NAME,x_offset-15+second_slot, y_offset-105 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-85 + third_slot ) // draw desc
-
-            // draw outer box
-            ctx.fillStyle = 'white';
-            ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+25 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 155);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 155);
-
-            ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
-
-            bench_count++
+        for (let i=0;i<bench[key].length;i++) {
+            if(bench[key][i].SECTION == 3) {drawBPart(x_offset,y_offset +(i*unit_shift),bench[key][i])}
+            else {drawPart(x_offset,y_offset +(i*unit_shift),bench[key][i])}
         }
-
-        for (let i=0;i<bench_l[key].length;i++) {
-
-            second_slot = second_slot_shift*(bench_count%2)
-            third_slot = unit_shift * (0 | bench_count/2)
-
-            ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_l[key][i].HP/2) + third_slot,3,0 | bench_l[key][i].HP/2);
-            ctx.fillText("HP",x_offset+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot  - (0 | bench_l[key][i].HP/2) )
-            ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_l[key][i].ATK/2) + third_slot,3,0 | bench_l[key][i].ATK/2);
-            ctx.fillText("ATK",x_offset+25+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].ATK/2) )
-            ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_l[key][i].DEF/2) + third_slot,3,0 | bench_l[key][i].DEF/2);
-            ctx.fillText("DEF",x_offset+50+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].DEF/2) )
-            ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_l[key][i].ACC/2) + third_slot,3,0 | bench_l[key][i].ACC/2);
-            ctx.fillText("ACC",x_offset+75+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].ACC/2) )
-            ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_l[key][i].CRT/2) + third_slot,3,0 | bench_l[key][i].CRT/2);
-            ctx.fillText("CRT",x_offset+100+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].CRT/2) )
-            ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_l[key][i].CD/2) + third_slot,3,0 | bench_l[key][i].CD/2);
-            ctx.fillText("CD",x_offset+125+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].CD/2) )
-            ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_l[key][i].CLU/2) + third_slot,3,0 | bench_l[key][i].CLU/2);
-            ctx.fillText("CLU",x_offset+150+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].CLU/2) )
-            ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_l[key][i].Weight/2) + third_slot,3,0 | bench_l[key][i].Weight/2);
-            ctx.fillText("WGT",x_offset+175+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_l[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_l[key][i].Weight/2) )
-
-            ser   = bench_l[key][i].SERIAL.toString()
-            for (let k = ser.length; k < 7; k++) {
-                ser = '0' + ser
-            }
-            ser = 'L' + ser
-            ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-115 + third_slot )
-            ctx.fillText(bench_l[key][i].NAME,x_offset-15+second_slot, y_offset-105 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-85 + third_slot ) // draw desc
-
-            // draw outer box
-            ctx.fillStyle = 'white';
-            ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+25 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 155);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 155);
-
-            ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
-
-            bench_count++
-        }
-
-        for (let i=0;i<bench_r[key].length;i++) {
-
-            second_slot = second_slot_shift*(bench_count%2)
-            third_slot = unit_shift * (0 | bench_count/2)
-
-            ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_r[key][i].HP/2) + third_slot,3,0 | bench_r[key][i].HP/2);
-            ctx.fillText("HP",x_offset+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].HP/2) )
-            ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_r[key][i].ATK/2) + third_slot,3,0 | bench_r[key][i].ATK/2);
-            ctx.fillText("ATK",x_offset+25+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].ATK/2) )
-            ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_r[key][i].DEF/2) + third_slot,3,0 | bench_r[key][i].DEF/2);
-            ctx.fillText("DEF",x_offset+50+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].DEF/2) )
-            ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_r[key][i].ACC/2) + third_slot,3,0 | bench_r[key][i].ACC/2);
-            ctx.fillText("ACC",x_offset+75+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].ACC/2) )
-            ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_r[key][i].CRT/2) + third_slot,3,0 | bench_r[key][i].CRT/2);
-            ctx.fillText("CRT",x_offset+100+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].CRT/2) )
-            ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_r[key][i].CD/2) + third_slot,3,0 | bench_r[key][i].CD/2);
-            ctx.fillText("CD",x_offset+125+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].CD/2) )
-            ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_r[key][i].CLU/2) + third_slot,3,0 | bench_r[key][i].CLU/2);
-            ctx.fillText("CLU",x_offset+150+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].CLU/2) )
-            ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_r[key][i].Weight/2) + third_slot,3,0 | bench_r[key][i].Weight/2);
-            ctx.fillText("WGT",x_offset+175+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_r[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_r[key][i].Weight/2) )
-
-            ser   = bench_r[key][i].SERIAL.toString()
-            for (let k = ser.length; k < 7; k++) {
-                ser = '0' + ser
-            }
-            ser = 'R' + ser
-            ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-115 + third_slot )
-            ctx.fillText(bench_r[key][i].NAME,x_offset-15+second_slot, y_offset-105 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-85 + third_slot ) // draw desc
-
-            // draw outer box
-            ctx.fillStyle = 'white';
-            ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+25 + third_slot, 215, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-130 + third_slot, 1, 155);
-            ctx.fillRect(x_offset-20+215+second_slot,y_offset-130 + third_slot, 1, 155);
-
-            ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,185,1);// draw bottom plot line
-
-            bench_count++
-        }
-
-        for (let i=0;i<bench_b[key].length;i++) {
-
-            second_slot = second_slot_shift*(bench_count%2)
-            third_slot = unit_shift * (0 | bench_count/2)
-
-            ctx.textAlign = "center";
-            ctx.fillRect(x_offset-2+0+second_slot,y_offset - (0 | bench_b[key][i].HP/2) + third_slot,3,0 | bench_b[key][i].HP/2);
-            ctx.fillText("HP",x_offset+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].HP,x_offset+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].HP/2) )
-            ctx.fillRect(x_offset-2+25+second_slot,y_offset - (0 | bench_b[key][i].ATK/2) + third_slot,3,0 | bench_b[key][i].ATK/2);
-            ctx.fillText("ATK",x_offset+25+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].ATK,x_offset+25+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].ATK/2) )
-            ctx.fillRect(x_offset-2+50+second_slot,y_offset - (0 | bench_b[key][i].DEF/2) + third_slot,3,0 | bench_b[key][i].DEF/2);
-            ctx.fillText("DEF",x_offset+50+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].DEF,x_offset+50+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].DEF/2) )
-            ctx.fillRect(x_offset-2+75+second_slot,y_offset - (0 | bench_b[key][i].ACC/2) + third_slot,3,0 | bench_b[key][i].ACC/2);
-            ctx.fillText("ACC",x_offset+75+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].ACC,x_offset+75+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].ACC/2) )
-            ctx.fillRect(x_offset-2+100+second_slot,y_offset - (0 | bench_b[key][i].CRT/2) + third_slot,3,0 | bench_b[key][i].CRT/2);
-            ctx.fillText("CRT",x_offset+100+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].CRT,x_offset+100+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].CRT/2) )
-            ctx.fillRect(x_offset-2+125+second_slot,y_offset - (0 | bench_b[key][i].CD/2) + third_slot,3,0 | bench_b[key][i].CD/2);
-            ctx.fillText("CD",x_offset+125+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].CD,x_offset+125+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].CD/2))
-            ctx.fillRect(x_offset-2+150+second_slot,y_offset - (0 | bench_b[key][i].CLU/2) + third_slot,3,0 | bench_b[key][i].CLU/2);
-            ctx.fillText("CLU",x_offset+150+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].CLU,x_offset+150+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].CLU/2) )
-            ctx.fillRect(x_offset-2+175+second_slot,y_offset - (0 | bench_b[key][i].Weight/2) + third_slot,3,0 | bench_b[key][i].Weight/2);
-            ctx.fillText("WGT",x_offset+175+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].Weight,x_offset+175+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].Weight/2))
-            ctx.fillRect(x_offset-2+200+second_slot,y_offset - (0 | bench_b[key][i].SPD/2) + third_slot,3,0 | bench_b[key][i].SPD/2);
-            ctx.fillText("SPD",x_offset+200+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].SPD,x_offset+200+second_slot, y_offset-10 + third_slot  - (0 | bench_b[key][i].SPD/2))
-            ctx.fillRect(x_offset-2+225+second_slot,y_offset - (0 | bench_b[key][i].DOG/2) + third_slot,3,0 | bench_b[key][i].DOG/2);
-            ctx.fillText("DOG",x_offset+225+second_slot, y_offset+15 + third_slot )
-            ctx.fillText(bench_b[key][i].DOG,x_offset+225+second_slot, y_offset-10 + third_slot - (0 | bench_b[key][i].DOG/2) )
-
-            ser   = bench_b[key][i].SERIAL.toString()
-            for (let k = ser.length; k < 7; k++) {
-                ser = '0' + ser
-            }
-            ser = 'B' + ser
-            ctx.textAlign = "left";
-            ctx.fillText(ser,x_offset-15+second_slot, y_offset-95 + third_slot )
-            ctx.fillText(bench_b[key][i].NAME,x_offset-15+second_slot, y_offset-85 + third_slot ) // draw name
-            ctx.fillText("  Basic close attack",x_offset-15+second_slot, y_offset-65 + third_slot ) // draw desc
-
-            // draw outer box
-            ctx.fillStyle = 'white';
-            ctx.textAlign = "left";
-            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 265, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset+30 + third_slot, 265, 1);
-            ctx.fillRect(x_offset-20+second_slot,y_offset-110 + third_slot, 1, 140);
-            ctx.fillRect(x_offset-20+265+second_slot,y_offset-110 + third_slot, 1, 140);
-
-            ctx.fillRect(x_offset-5+second_slot,y_offset + third_slot ,235,1);// draw bottom plot line
-
-            bench_count++
-        }
-
-
     }
 }
 
@@ -2443,4 +1842,118 @@ function wrap(ctx, text, fontSize, fontColor) {
     for ( i=0, j=lines.length; i<j; ++i ) {
         ctx.fillText( lines[i], 8, 5 + fontSize + (fontSize+5) * i );
     }
+}
+
+function drawPart(x,y,part) {
+    ctx.textAlign = "center";
+    ctx.fillRect(x-2+0,y - (0 | part.HP/2),3,0 | part.HP/2);
+    ctx.fillText("HP",x, y_offset+15 )
+    ctx.fillText(part.HP,x, y-10 - (0 | part.HP/2) )
+    ctx.fillRect(x-2+25,y - (0 | part.ATK/2),3,0 | part.ATK/2);
+    ctx.fillText("ATK",x+25, y+15 )
+    ctx.fillText(part.ATK,x+25, y-10 - (0 | part.ATK/2) )
+    ctx.fillRect(x-2+50,y - (0 | part.DEF/2),3,0 | part.DEF/2);
+    ctx.fillText("DEF",x+50, y+15 )
+    ctx.fillText(part.DEF,x+50, y-10 - (0 | part.DEF/2) )
+    ctx.fillRect(x-2+75,y - (0 | part.ACC/2),3,0 | part.ACC/2);
+    ctx.fillText("ACC",x+75, y+15 )
+    ctx.fillText(part.ACC,x+75, y-10 - (0 | part.ACC/2) )
+    ctx.fillRect(x-2+100,y - (0 | part.CRT/2),3,0 | part.CRT/2);
+    ctx.fillText("CRT",x+100, y+15 )
+    ctx.fillText(part.CRT,x+100, y-10 - (0 | part.CRT/2) )
+    ctx.fillRect(x-2+125,y - (0 | part.CD/2),3,0 | part.CD/2);
+    ctx.fillText("CD",x+125, y+15 )
+    ctx.fillText(part.CD,x+125, y-10 - (0 | part.CD/2) )
+    ctx.fillRect(x-2+150,y - (0 | part.CLU/2),3,0 | part.CLU/2);
+    ctx.fillText("CLU",x+150, y+15 )
+    ctx.fillText(part.CLU,x+150, y-10 - (0 | part.CLU/2) )
+    ctx.fillRect(x-2+175, y - (0 | part.Weight/2),3,0 | part.Weight/2);
+    ctx.fillText("WGT",x+175, y+15 )
+    ctx.fillText(part.Weight,x+175, y-10 - (0 | part.Weight/2) )
+
+    ser   = part.SERIAL.toString()
+    for (let k = ser.length; k < 7; k++) {
+        ser = '0' + ser
+    }
+    if(part.SECTION == 0){
+        ser = 'H' + ser
+    } else if(part.SECTION == 1){
+        ser = 'L' + ser
+    } else if(part.SECTION == 2){
+        ser = 'R' + ser
+    } else {
+        ser = 'B' + ser
+    }
+
+    ctx.textAlign = "left";
+    ctx.fillText(ser,x-15, y-115 )
+    ctx.fillText(part.NAME,x-15, y-105 ) // draw name
+    ctx.fillText("  Basic close attack",x-15, y-85 ) // draw desc
+
+    // draw outer box
+    ctx.fillStyle = 'white';
+    ctx.textAlign = "left";
+    ctx.fillRect(x-20,y-130, 215, 1);
+    ctx.fillRect(x-20,y+25, 215, 1);
+    ctx.fillRect(x-20,y-130, 1, 155);
+    ctx.fillRect(x-20+215,y-130, 1, 155);
+
+    ctx.fillRect(x-5,y ,185,1);// draw bottom plot line
+}
+
+function drawBPart(x,y,part) {
+    ctx.textAlign = "center";
+    ctx.fillRect(x-2+0,y - (0 | part.HP/2),3,0 | part.HP/2);
+    ctx.fillText("HP",x, y_offset+15 )
+    ctx.fillText(part.HP,x, y-10 - (0 | part.HP/2) )
+    ctx.fillRect(x-2+25,y - (0 | part.ATK/2),3,0 | part.ATK/2);
+    ctx.fillText("ATK",x+25, y+15 )
+    ctx.fillText(part.ATK,x+25, y-10 - (0 | part.ATK/2) )
+    ctx.fillRect(x-2+50,y - (0 | part.DEF/2),3,0 | part.DEF/2);
+    ctx.fillText("DEF",x+50, y+15 )
+    ctx.fillText(part.DEF,x+50, y-10 - (0 | part.DEF/2) )
+    ctx.fillRect(x-2+75,y - (0 | part.ACC/2),3,0 | part.ACC/2);
+    ctx.fillText("ACC",x+75, y+15 )
+    ctx.fillText(part.ACC,x+75, y-10 - (0 | part.ACC/2) )
+    ctx.fillRect(x-2+100,y - (0 | part.CRT/2),3,0 | part.CRT/2);
+    ctx.fillText("CRT",x+100, y+15 )
+    ctx.fillText(part.CRT,x+100, y-10 - (0 | part.CRT/2) )
+    ctx.fillRect(x-2+125,y - (0 | part.CD/2),3,0 | part.CD/2);
+    ctx.fillText("CD",x+125, y+15 )
+    ctx.fillText(part.CD,x+125, y-10 - (0 | part.CD/2) )
+    ctx.fillRect(x-2+150,y - (0 | part.CLU/2),3,0 | part.CLU/2);
+    ctx.fillText("CLU",x+150, y+15 )
+    ctx.fillText(part.CLU,x+150, y-10 - (0 | part.CLU/2) )
+    ctx.fillRect(x-2+175, y - (0 | part.Weight/2),3,0 | part.Weight/2);
+    ctx.fillText("WGT",x+175, y+15 )
+    ctx.fillText(part.Weight,x+175, y-10 - (0 | part.Weight/2) )
+
+    ser   = part.SERIAL.toString()
+    for (let k = ser.length; k < 7; k++) {
+        ser = '0' + ser
+    }
+    if(part.SECTION == 0){
+        ser = 'H' + ser
+    } else if(part.SECTION == 1){
+        ser = 'L' + ser
+    } else if(part.SECTION == 2){
+        ser = 'R' + ser
+    } else {
+        ser = 'B' + ser
+    }
+
+    ctx.textAlign = "left";
+    ctx.fillText(ser,x-15, y-115 )
+    ctx.fillText(part.NAME,x-15, y-105 ) // draw name
+    ctx.fillText("  Basic close attack",x-15, y-85 ) // draw desc
+
+    // draw outer box
+    ctx.fillStyle = 'white';
+    ctx.textAlign = "left";
+    ctx.fillRect(x-20,y-130, 215, 1);
+    ctx.fillRect(x-20,y+25, 215, 1);
+    ctx.fillRect(x-20,y-130, 1, 155);
+    ctx.fillRect(x-20+215,y-130, 1, 155);
+
+    ctx.fillRect(x-5,y ,185,1);// draw bottom plot line
 }

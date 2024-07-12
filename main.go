@@ -81,52 +81,22 @@ type room struct {
 	open chan bool
 }
 
-type head struct {
-	SERIAL int
-	NAME   string
+type part struct {
+	SECTION int // 0 is H, 1 is L, 2 is R, 3 is B
+	SERIAL  int
+	NAME    string
 
-	HP          int
-	ATK         int
-	DEF         int
-	ACC         int
-	CRT         int
-	CD          int
-	CLU         int
+	HP     int
+	ATK    int
+	DEF    int
+	ACC    int
+	CRT    int
+	CD     int
+	CLU    int
+	Weight int
+
 	Use_current int
 	Use_outof   int
-	Weight      int
-}
-
-type arm struct {
-	SERIAL int
-	NAME   string
-	LORR   bool
-
-	HP          int
-	ATK         int
-	DEF         int
-	ACC         int
-	CRT         int
-	CD          int
-	CLU         int
-	Use_current int
-	Use_outof   int
-	Weight      int
-}
-
-type bottom struct {
-	SERIAL      int
-	NAME        string
-	HP          int
-	ATK         int
-	DEF         int
-	ACC         int
-	CRT         int
-	CD          int
-	CLU         int
-	Use_current int
-	Use_outof   int
-	Weight      int
 
 	DOG int
 	SPD int
@@ -139,10 +109,10 @@ type hero struct {
 	Direction int
 	Move      int
 
-	H head
-	L arm
-	R arm
-	B bottom
+	H part
+	L part
+	R part
+	B part
 }
 
 type attack struct {

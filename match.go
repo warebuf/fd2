@@ -27,10 +27,7 @@ type match struct {
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
 
-	benchH map[string][]*head   // team, user index to part
-	benchL map[string][]*arm    // team, user index to part
-	benchR map[string][]*arm    // team, user index to part
-	benchB map[string][]*bottom // team, user index to part
+	bench map[string][]*part // team, user index to part
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^
@@ -258,8 +255,8 @@ func m_read(m *match_socket) {
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H // same as b
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.benchH[tp_index][unit_index_2]
-							m.m.benchH[tp_index][unit_index_2] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
@@ -268,16 +265,16 @@ func m_read(m *match_socket) {
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_2, _ := strconv.Atoi(indices[5])
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].H
-							m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.benchH[tp_index][unit_index_1]
-							m.m.benchH[tp_index][unit_index_1] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.bench[tp_index][unit_index_1]
+							m.m.bench[tp_index][unit_index_1] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.benchH[tp_index][unit_index_1]
+							temp := m.m.bench[tp_index][unit_index_1]
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.benchH[tp_index][unit_index_1] = m.m.benchH[tp_index][unit_index_2]
-							m.m.benchH[tp_index][unit_index_2] = temp
+							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = temp
 						}
 
 					} else if indices[1] == "1" { //larm
@@ -296,8 +293,8 @@ func m_read(m *match_socket) {
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L // same as b
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].L = *m.m.benchL[tp_index][unit_index_2]
-							m.m.benchL[tp_index][unit_index_2] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_1].L = *m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
@@ -306,16 +303,16 @@ func m_read(m *match_socket) {
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_2, _ := strconv.Atoi(indices[5])
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].L
-							m.m.team_client_hero[team_index][player_index][unit_index_2].L = *m.m.benchL[tp_index][unit_index_1]
-							m.m.benchL[tp_index][unit_index_1] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_2].L = *m.m.bench[tp_index][unit_index_1]
+							m.m.bench[tp_index][unit_index_1] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.benchL[tp_index][unit_index_1]
+							temp := m.m.bench[tp_index][unit_index_1]
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.benchL[tp_index][unit_index_1] = m.m.benchL[tp_index][unit_index_2]
-							m.m.benchL[tp_index][unit_index_2] = temp
+							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = temp
 						}
 					} else if indices[1] == "2" { //rarm
 						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
@@ -333,8 +330,8 @@ func m_read(m *match_socket) {
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R // same as b
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].R = *m.m.benchR[tp_index][unit_index_2]
-							m.m.benchR[tp_index][unit_index_2] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_1].R = *m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
@@ -343,16 +340,16 @@ func m_read(m *match_socket) {
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_2, _ := strconv.Atoi(indices[5])
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].R
-							m.m.team_client_hero[team_index][player_index][unit_index_2].R = *m.m.benchR[tp_index][unit_index_1]
-							m.m.benchR[tp_index][unit_index_1] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_2].R = *m.m.bench[tp_index][unit_index_1]
+							m.m.bench[tp_index][unit_index_1] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.benchR[tp_index][unit_index_1]
+							temp := m.m.bench[tp_index][unit_index_1]
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.benchR[tp_index][unit_index_1] = m.m.benchR[tp_index][unit_index_2]
-							m.m.benchR[tp_index][unit_index_2] = temp
+							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = temp
 						}
 					} else if indices[1] == "3" { //bottom
 						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
@@ -370,8 +367,8 @@ func m_read(m *match_socket) {
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B // same as b
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].B = *m.m.benchB[tp_index][unit_index_2]
-							m.m.benchB[tp_index][unit_index_2] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_1].B = *m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
@@ -380,16 +377,16 @@ func m_read(m *match_socket) {
 							player_index := m.m.uuid_to_team_int[m.u.uid].b
 							unit_index_2, _ := strconv.Atoi(indices[5])
 							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].B
-							m.m.team_client_hero[team_index][player_index][unit_index_2].B = *m.m.benchB[tp_index][unit_index_1]
-							m.m.benchB[tp_index][unit_index_1] = &temp
+							m.m.team_client_hero[team_index][player_index][unit_index_2].B = *m.m.bench[tp_index][unit_index_1]
+							m.m.bench[tp_index][unit_index_1] = &temp
 
 						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
 							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
 							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.benchB[tp_index][unit_index_1]
+							temp := m.m.bench[tp_index][unit_index_1]
 							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.benchB[tp_index][unit_index_1] = m.m.benchB[tp_index][unit_index_2]
-							m.m.benchB[tp_index][unit_index_2] = temp
+							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+							m.m.bench[tp_index][unit_index_2] = temp
 						}
 					}
 
@@ -454,10 +451,7 @@ func createMatch(pl *permission_list) *match {
 			turn:         "null",
 			start_ticker: make(chan bool),
 
-			benchH: make(map[string][]*head),
-			benchL: make(map[string][]*arm),
-			benchR: make(map[string][]*arm),
-			benchB: make(map[string][]*bottom),
+			bench: make(map[string][]*part),
 
 			char_sel_done:   make(map[uuid.UUID]bool),
 			char_sel_ticker: make(chan bool),
@@ -517,7 +511,8 @@ func createMatch(pl *permission_list) *match {
 				templ := rand.Intn(len(namesl))
 				tempr := rand.Intn(len(namesr))
 				tempb := rand.Intn(len(namesb))
-				h := head{
+				h := part{
+					SECTION:     0,
 					SERIAL:      temph,
 					NAME:        namesh[temph],
 					HP:          rand.Intn(99) + 1,
@@ -531,9 +526,9 @@ func createMatch(pl *permission_list) *match {
 					Use_outof:   0,
 					Weight:      rand.Intn(99) + 1,
 				}
-				larm := arm{
+				larm := part{
+					SECTION:     1,
 					SERIAL:      templ,
-					LORR:        false,
 					NAME:        namesl[templ],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
@@ -546,9 +541,9 @@ func createMatch(pl *permission_list) *match {
 					Use_outof:   0,
 					Weight:      rand.Intn(99) + 1,
 				}
-				rarm := arm{
+				rarm := part{
+					SECTION:     2,
 					SERIAL:      templ,
-					LORR:        true,
 					NAME:        namesr[tempr],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
@@ -561,10 +556,10 @@ func createMatch(pl *permission_list) *match {
 					Use_outof:   0,
 					Weight:      rand.Intn(99) + 1,
 				}
-				btm := bottom{
-					SERIAL: tempb,
-					NAME:   namesb[tempb],
-
+				btm := part{
+					SECTION:     3,
+					SERIAL:      tempb,
+					NAME:        namesb[tempb],
 					HP:          rand.Intn(99) + 1,
 					ATK:         rand.Intn(99) + 1,
 					DEF:         rand.Intn(99) + 1,
@@ -671,83 +666,87 @@ func createMatch(pl *permission_list) *match {
 				}
 			*/
 
-			ans.benchH[ans.uuid_to_team_int[i].ab] = make([]*head, 0)
-			ans.benchL[ans.uuid_to_team_int[i].ab] = make([]*arm, 0)
-			ans.benchR[ans.uuid_to_team_int[i].ab] = make([]*arm, 0)
-			ans.benchB[ans.uuid_to_team_int[i].ab] = make([]*bottom, 0)
+			ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
 
 			for y := 0; y < 2; y++ {
 
-				temph := rand.Intn(len(namesh))
-				templ := rand.Intn(len(namesl))
-				tempr := rand.Intn(len(namesr))
-				tempb := rand.Intn(len(namesb))
-				h := &head{
-					SERIAL:      temph,
-					NAME:        namesh[temph],
-					HP:          rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
-				larm := &arm{
-					SERIAL:      templ,
-					LORR:        false,
-					NAME:        namesl[templ],
-					HP:          rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
-				rarm := &arm{
-					SERIAL:      templ,
-					LORR:        true,
-					NAME:        namesr[tempr],
-					HP:          rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
-				btm := &bottom{
-					SERIAL: tempb,
-					NAME:   namesb[tempb],
+				pick := rand.Intn(4)
 
-					HP:          rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					SPD:         rand.Intn(99) + 1,
-					DOG:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
+				if pick == 0 {
+					temp := rand.Intn(len(namesh))
+					p := &part{
+						SECTION:     0,
+						SERIAL:      temp,
+						NAME:        namesh[temp],
+						HP:          rand.Intn(99) + 1,
+						ATK:         rand.Intn(99) + 1,
+						DEF:         rand.Intn(99) + 1,
+						ACC:         rand.Intn(99) + 1,
+						CRT:         rand.Intn(99) + 1,
+						CD:          rand.Intn(99) + 1,
+						CLU:         rand.Intn(99) + 1,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      rand.Intn(99) + 1,
+					}
+					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+				} else if pick == 1 {
+					temp := rand.Intn(len(namesl))
+					p := &part{
+						SECTION:     1,
+						SERIAL:      temp,
+						NAME:        namesl[temp],
+						HP:          rand.Intn(99) + 1,
+						ATK:         rand.Intn(99) + 1,
+						DEF:         rand.Intn(99) + 1,
+						ACC:         rand.Intn(99) + 1,
+						CRT:         rand.Intn(99) + 1,
+						CD:          rand.Intn(99) + 1,
+						CLU:         rand.Intn(99) + 1,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      rand.Intn(99) + 1,
+					}
+					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+				} else if pick == 2 {
+					temp := rand.Intn(len(namesr))
+					p := &part{
+						SECTION:     2,
+						SERIAL:      temp,
+						NAME:        namesr[temp],
+						HP:          rand.Intn(99) + 1,
+						ATK:         rand.Intn(99) + 1,
+						DEF:         rand.Intn(99) + 1,
+						ACC:         rand.Intn(99) + 1,
+						CRT:         rand.Intn(99) + 1,
+						CD:          rand.Intn(99) + 1,
+						CLU:         rand.Intn(99) + 1,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      rand.Intn(99) + 1,
+					}
+					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+				} else {
+					temp := rand.Intn(len(namesb))
+					p := &part{
+						SECTION:     3,
+						SERIAL:      temp,
+						NAME:        namesb[temp],
+						HP:          rand.Intn(99) + 1,
+						ATK:         rand.Intn(99) + 1,
+						DEF:         rand.Intn(99) + 1,
+						ACC:         rand.Intn(99) + 1,
+						CRT:         rand.Intn(99) + 1,
+						CD:          rand.Intn(99) + 1,
+						CLU:         rand.Intn(99) + 1,
+						SPD:         rand.Intn(99) + 1,
+						DOG:         rand.Intn(99) + 1,
+						Use_current: 0,
+						Use_outof:   0,
+						Weight:      rand.Intn(99) + 1,
+					}
+					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
 				}
-
-				ans.benchH[ans.uuid_to_team_int[i].ab] = append(ans.benchH[ans.uuid_to_team_int[i].ab], h)
-				ans.benchL[ans.uuid_to_team_int[i].ab] = append(ans.benchL[ans.uuid_to_team_int[i].ab], larm)
-				ans.benchR[ans.uuid_to_team_int[i].ab] = append(ans.benchR[ans.uuid_to_team_int[i].ab], rarm)
-				ans.benchB[ans.uuid_to_team_int[i].ab] = append(ans.benchB[ans.uuid_to_team_int[i].ab], btm)
 			}
 
 			if ans.game_mode == "ffa" {
@@ -1537,29 +1536,20 @@ func game_over_check(state [][][]*hero) bool {
 func (m *match) sharebench() {
 	fmt.Println("sharebench")
 
-	marshalledH, _ := json.Marshal(m.benchH)
-	marshalledL, _ := json.Marshal(m.benchL)
-	marshalledR, _ := json.Marshal(m.benchR)
-	marshalledB, _ := json.Marshal(m.benchB)
+	marshalled, _ := json.Marshal(m.bench)
 
 	// send updated positions to everyone
 	for _, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "bench", Message: string(marshalledH), Team_index: 0, MatchID: m.mid}:
-				j.incoming_message <- &message{Event: "bench", Message: string(marshalledL), Team_index: 1, MatchID: m.mid}
-				j.incoming_message <- &message{Event: "bench", Message: string(marshalledR), Team_index: 2, MatchID: m.mid}
-				j.incoming_message <- &message{Event: "bench", Message: string(marshalledB), Team_index: 3, MatchID: m.mid}
+			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
 			}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "bench", Message: string(marshalledH), Team_index: 0, MatchID: m.mid}:
-				j.incoming_message <- &message{Event: "bench", Message: string(marshalledL), Team_index: 1, MatchID: m.mid}
-				j.incoming_message <- &message{Event: "bench", Message: string(marshalledR), Team_index: 2, MatchID: m.mid}
-				j.incoming_message <- &message{Event: "bench", Message: string(marshalledB), Team_index: 3, MatchID: m.mid}
+			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
 			}
 		}
 	}

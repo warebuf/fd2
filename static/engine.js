@@ -1847,7 +1847,7 @@ function wrap(ctx, text, fontSize, fontColor) {
 function drawPart(x,y,part) {
     ctx.textAlign = "center";
     ctx.fillRect(x-2+0,y - (0 | part.HP/2),3,0 | part.HP/2);
-    ctx.fillText("HP",x, y_offset+15 )
+    ctx.fillText("HP",x, y+15 )
     ctx.fillText(part.HP,x, y-10 - (0 | part.HP/2) )
     ctx.fillRect(x-2+25,y - (0 | part.ATK/2),3,0 | part.ATK/2);
     ctx.fillText("ATK",x+25, y+15 )

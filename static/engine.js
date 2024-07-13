@@ -1956,10 +1956,10 @@ function drawBPart(x,y,part) {
     // draw outer box
     ctx.fillStyle = 'white';
     ctx.textAlign = "left";
-    ctx.fillRect(x-20,y-130, 255, 1);
-    ctx.fillRect(x-20,y+25, 255, 1);
+    ctx.fillRect(x-20,y-130, 260, 1);
+    ctx.fillRect(x-20,y+25, 260, 1);
     ctx.fillRect(x-20,y-130, 1, 155);
-    ctx.fillRect(x-20+255,y-130, 1, 155);
+    ctx.fillRect(x-20+260,y-130, 1, 155);
 
-    ctx.fillRect(x-5,y ,225,1);// draw bottom plot line
+    ctx.fillRect(x-5,y ,235,1);// draw bottom plot line
 }

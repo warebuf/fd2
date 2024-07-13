@@ -261,7 +261,7 @@ function drawPos()  {
                             let y1 = y_offset+(a_2 * 120)+(a_1*700)
                             console.log("testx1",x1)
                             if((a_0%2)==1){
-                                x1 = 700+(270*i)+250-(250*(state[a_0][a_1][a_2].Position/100))
+                                x1 = 700+(270*a_0)+250-(250*(state[a_0][a_1][a_2].Position/100))
                                 console.log("testx11",x1)
                             }
 
@@ -278,7 +278,7 @@ function drawPos()  {
                             let y2 = y_offset+(b_2 * 120)+(b_1*700)
                             console.log("testx2",x2)
                             if((b_0%2)==1){
-                                x2 = 700+(270*i)+250-(250*(state[b_0][b_1][b_2].Position/100))
+                                x2 = 700+(270*b_0)+250-(250*(state[b_0][b_1][b_2].Position/100))
                                 console.log("testx22",x2)
                             }
                             let x2_x1 = (x2 - x1)*perc

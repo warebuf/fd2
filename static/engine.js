@@ -1972,6 +1972,7 @@ function drawImage(){
 
     img.src = "/images/1.png"
     ctx.drawImage(img, 20,20, img.width*.3, img.height*.3);
-
+    img.src = "/images/2.png"
+    ctx.drawImage(img, 20,20, img.width*.3, img.height*.3);
 
 }

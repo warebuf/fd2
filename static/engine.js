@@ -254,8 +254,14 @@ function drawPos()  {
 
                         if(a1 < atk_data[animating_state].length) {
                             let b = JSON.parse(atk_data[animating_state][a1])
-                            let x1 = 700+(270*b.Attacker[0])
-                            let y1 = y_offset+b.Attacker[2] * 120
+                            let a_0 = b.Attacker[0]
+                            let a_1 = b.Attacker[1]
+                            let a_2 = b.Attacker[2]
+                            let x1 = 700+(270*a_0)+(250*(state[a_0][a_1][a_2].Position/100))
+                            let y1 = y_offset+(a_2 * 120)+(a_1*700)
+                            if(a_0%2==1){
+                                x1 = 700+(270*i)+250-(250*(state[a_0][a_1][a_2].Position/100))
+                            }
 
                             let perc = draw_attacks / 30
                             if(draw_attacks>30){
@@ -263,8 +269,14 @@ function drawPos()  {
                             }
 
                             // calculate a vector to draw
-                            let x2 = 700+(270*b.Defender[0][0])
-                            let y2 = y_offset+b.Defender[0][2] * 120
+                            let b_0 = b.Defender[0][0]
+                            let b_1 = b.Defender[0][1]
+                            let b_2 = b.Defender[0][2]
+                            let x2 = 700+(270*b_0)
+                            let y2 = y_offset+b_2 * 120
+                            if(b_0%2==1){
+                                x2 = 700+(270*i)+250-(250*(state[b_0][b_1][b_2].Position/100))
+                            }
                             let x2_x1 = (x2 - x1)*perc
                             let y2_y1 = (y2 - y1)*perc
                             dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[5,2])

@@ -499,7 +499,7 @@ func createMatch(pl *permission_list) *match {
 			}
 			namesr := []string{
 				"SUPER SWORD", "DEATHBLADE", "ONE HIT KILL", "CARNAGE", "WESTERN LIGHT", "EAST BEAST", "ECOLOGICAL DISASTER",
-				"NUCLEAR UPPERCUT", "LONG BOMB", "GUINSOO",
+				"NUCLEAR UPPERCUT", "LONG BOMB", "GUINSOO", "GARTNER HYPE CYCLE",
 			}
 			namesb := []string{
 				"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",

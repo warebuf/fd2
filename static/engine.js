@@ -1927,6 +1927,12 @@ function drawBPart(x,y,part) {
     ctx.fillRect(x-2+175, y - (0 | part.Weight/2),3,0 | part.Weight/2);
     ctx.fillText("WGT",x+175, y+15 )
     ctx.fillText(part.Weight,x+175, y-10 - (0 | part.Weight/2) )
+    ctx.fillRect(x-2+200, y - (0 | part.Weight/2),3,0 | part.SPD/2);
+    ctx.fillText("SPD",x+200, y+15 )
+    ctx.fillText(part.SPD,x+200, y-10 - (0 | part.SPD/2) )
+    ctx.fillRect(x-2+225, y - (0 | part.DOG/2),3,0 | part.DOG/2);
+    ctx.fillText("DOG",x+225, y+15 )
+    ctx.fillText(part.DOG,x+225, y-10 - (0 | part.DOG/2) )
 
     ser   = part.SERIAL.toString()
     for (let k = ser.length; k < 7; k++) {

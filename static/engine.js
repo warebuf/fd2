@@ -1971,8 +1971,7 @@ function drawImage(){
     img = new Image();
 
     img.src = "/images/test.jpg"
-    img.onload = function () {
-        ctx.drawImage(img, 20,20);
-    };
+    ctx.drawImage(img, 20,20);
+
 
 }

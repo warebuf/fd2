@@ -1973,23 +1973,23 @@ function drawImage(){
     ctx.drawImage(img1, 10,10, img1.width*.3, img1.height*.3);
     img2 = new Image();
     img2.src = "/images/2.png"
-    ctx.drawImage(img2, 20,20, img2.width*.3, img2.height*.3);
+    ctx.drawImage(img2, 50,50, img2.width*.3, img2.height*.3);
     img3 = new Image();
     img3.src = "/images/3.png"
-    ctx.drawImage(img3, 30,30, img3.width*.3, img3.height*.3);
+    ctx.drawImage(img3, 100,100, img3.width*.3, img3.height*.3);
     img4 = new Image();
     img4.src = "/images/4.png"
-    ctx.drawImage(img4, 40,40, img4.width*.3, img4.height*.3);
+    ctx.drawImage(img4, 150,150, img4.width*.3, img4.height*.3);
     img5 = new Image();
     img5.src = "/images/5.png"
-    ctx.drawImage(img5, 50,50, img5.width*.3, img5.height*.3);
+    ctx.drawImage(img5, 200,200, img5.width*.3, img5.height*.3);
     img6 = new Image();
     img6.src = "/images/6.png"
-    ctx.drawImage(img6, 60,60, img6.width*.3, img6.height*.3);
+    ctx.drawImage(img6, 250,250, img6.width*.3, img6.height*.3);
     img7 = new Image();
     img7.src = "/images/7.png"
-    ctx.drawImage(img7, 70,70, img7.width*.3, img7.height*.3);
+    ctx.drawImage(img7, 300,300, img7.width*.3, img7.height*.3);
     img8 = new Image();
     img8.src = "/images/8.png"
-    ctx.drawImage(img8, 80,80, img8.width*.3, img8.height*.3);
+    ctx.drawImage(img8, 350,350, img8.width*.3, img8.height*.3);
 }

@@ -1970,7 +1970,7 @@ function drawBPart(x,y,part) {
 function drawImage(){
     img = new Image();
 
-    img.src = "/images/yugioh1.1.png"
+    img.src = "/images/1.png"
     ctx.drawImage(img, 20,20);
 
 

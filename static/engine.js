@@ -1971,8 +1971,19 @@ function drawImage(){
     img = new Image();
 
     img.src = "/images/1.png"
-    ctx.drawImage(img, 20,20, img.width*.3, img.height*.3);
+    ctx.drawImage(img, 10,10, img.width*.3, img.height*.3);
     img.src = "/images/2.png"
     ctx.drawImage(img, 20,20, img.width*.3, img.height*.3);
-
+    img.src = "/images/3.png"
+    ctx.drawImage(img, 30,30, img.width*.3, img.height*.3);
+    img.src = "/images/4.png"
+    ctx.drawImage(img, 40,40, img.width*.3, img.height*.3);
+    img.src = "/images/5.png"
+    ctx.drawImage(img, 50,50, img.width*.3, img.height*.3);
+    img.src = "/images/6.png"
+    ctx.drawImage(img, 60,60, img.width*.3, img.height*.3);
+    img.src = "/images/7.png"
+    ctx.drawImage(img, 70,70, img.width*.3, img.height*.3);
+    img.src = "/images/8.png"
+    ctx.drawImage(img, 80,80, img.width*.3, img.height*.3);
 }

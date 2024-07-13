@@ -1963,6 +1963,8 @@ function drawBPart(x,y,part) {
 
     ctx.fillRect(x-5,y ,235,1);// draw bottom plot line
 
+    drawImage()
+
 }
 
 function drawImage(){

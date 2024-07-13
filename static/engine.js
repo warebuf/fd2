@@ -272,8 +272,8 @@ function drawPos()  {
                             let b_0 = b.Defender[0][0]
                             let b_1 = b.Defender[0][1]
                             let b_2 = b.Defender[0][2]
-                            let x2 = 700+(270*b_0)
-                            let y2 = y_offset+b_2 * 120
+                            let x2 = 700+(270*b_0)+(250*(state[b_0][b_1][b_2].Position/100))
+                            let y2 = y_offset+(b_2 * 120)+(b_1*700)
                             if(b_0%2==1){
                                 x2 = 700+(270*i)+250-(250*(state[b_0][b_1][b_2].Position/100))
                             }

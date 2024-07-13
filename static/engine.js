@@ -1927,7 +1927,7 @@ function drawBPart(x,y,part) {
     ctx.fillRect(x-2+175, y - (0 | part.Weight/2),3,0 | part.Weight/2);
     ctx.fillText("WGT",x+175, y+15 )
     ctx.fillText(part.Weight,x+175, y-10 - (0 | part.Weight/2) )
-    ctx.fillRect(x-2+200, y - (0 | part.Weight/2),3,0 | part.SPD/2);
+    ctx.fillRect(x-2+200, y - (0 | part.SPD/2),3,0 | part.SPD/2);
     ctx.fillText("SPD",x+200, y+15 )
     ctx.fillText(part.SPD,x+200, y-10 - (0 | part.SPD/2) )
     ctx.fillRect(x-2+225, y - (0 | part.DOG/2),3,0 | part.DOG/2);
@@ -1956,10 +1956,10 @@ function drawBPart(x,y,part) {
     // draw outer box
     ctx.fillStyle = 'white';
     ctx.textAlign = "left";
-    ctx.fillRect(x-20,y-130, 215, 1);
-    ctx.fillRect(x-20,y+25, 215, 1);
+    ctx.fillRect(x-20,y-130, 255, 1);
+    ctx.fillRect(x-20,y+25, 255, 1);
     ctx.fillRect(x-20,y-130, 1, 155);
-    ctx.fillRect(x-20+215,y-130, 1, 155);
+    ctx.fillRect(x-20+255,y-130, 1, 155);
 
-    ctx.fillRect(x-5,y ,185,1);// draw bottom plot line
+    ctx.fillRect(x-5,y ,225,1);// draw bottom plot line
 }

@@ -1985,5 +1985,5 @@ function drawImage(){
     img.src = "/images/7.png"
     ctx.drawImage(img, 70,70, img.width*.3, img.height*.3);
     img.src = "/images/8.png"
-    ctx.drawImage(img, 80,80, img.width*.3, img.height*.3);
+    ctx.drawImage(img, 80,80, img.width*.31, img.height*.3);
 }

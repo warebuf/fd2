@@ -1775,7 +1775,7 @@ function drawStartersTable2() {
                     ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85+ (i*unit_shift) )
                     */
 
-                    ctx.fillRect(x_offset-50+(user_shift*user_count),y_offset + (i*unit_shift) ,600,2);
+                    ctx.fillRect(x_offset-50+(user_shift*user_count),y_offset + (i*unit_shift) ,600,1);
                     ctx.fillStyle = 'white';
                 }
                 user_count = user_count + 1

@@ -68,8 +68,8 @@ function anime() {
     } else if (match_data.length > 0) {
 
         //drawBoard()
-        ///drawCircle(c.width/2,c.height/2,25);
-        //drawPoint(960,540,30,10,1,)
+        drawCircle(c.width/2,c.height/2,25);
+        drawPoint(960,540,25,10,1,)
         drawGrid()
         drawPos()
         drawState()
@@ -1810,25 +1810,45 @@ function drawPoint(center_x,center_y,radius,num,distance){
 
     if(num==0){return}
 
+    let count = 1
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length;k++){
+                let x = center_x + radius * Math.cos(-(count/num)*2*Math.PI) * distance;
+                let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * distance;
+
+                ctx.beginPath();
+                ctx.fillStyle = 'pink';
+                ctx.arc(x, y, 2, 0, 2 * Math.PI);
+                ctx.fill();
+
+                count++
+            }
+        }
+    }
+
+    /*
     for(let i = 1; i <= num; i++) {
         let x = center_x + radius * Math.cos(-(i/num)*2*Math.PI) * distance;
         let y = center_y + radius * Math.sin(-(i/num)*2*Math.PI) * distance;
 
-        let x2 = center_x + (radius*10) * Math.cos(-(i/num)*2*Math.PI) * distance;
-        let y2 = center_y + (radius*10) * Math.sin(-(i/num)*2*Math.PI) * distance;
+        //let x2 = center_x + (radius*10) * Math.cos(-(i/num)*2*Math.PI) * distance;
+        //let y2 = center_y + (radius*10) * Math.sin(-(i/num)*2*Math.PI) * distance;
 
         ctx.beginPath();
         ctx.fillStyle = 'pink';
         ctx.arc(x, y, 2, 0, 2 * Math.PI);
-        ctx.arc(x2, y2, 2, 0, 2 * Math.PI);
+        //ctx.arc(x2, y2, 2, 0, 2 * Math.PI);
         ctx.fill();
 
-        ctx.beginPath();
-        ctx.strokeStyle = 'black';
-        ctx.moveTo(x, y);
-        ctx.lineTo(x2, y2);
-        ctx.stroke();
+        //ctx.beginPath();
+        //ctx.strokeStyle = 'black';
+        //ctx.moveTo(x, y);
+        //ctx.lineTo(x2, y2);
+        ///ctx.stroke();
     }
+
+     */
 
 }
 

@@ -1819,7 +1819,7 @@ function drawPoint(center_x,center_y,radius,num,distance){
                     let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * ((100-state[i][j][k].Position)/100);
 
                     ctx.beginPath();
-                    if(i==my_team && j==my_int){ctx.fillStyle = 'pink';}
+                    if(i==my_team && j==my_int){ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
 
                     ctx.arc(x, y, 2, 0, 2 * Math.PI);

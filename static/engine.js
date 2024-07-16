@@ -355,7 +355,7 @@ function drawPos()  {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "center";
                     ctx.font = '8px monospace';
-                    ctx.fillText(k, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)-10 );
+                    ctx.fillText(k, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+25 );
                     ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
 
@@ -370,7 +370,7 @@ function drawPos()  {
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
                     ctx.font = '8px monospace';
-                    ctx.fillText(k, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)-10 );
+                    ctx.fillText(k, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+25 );
                     ctx.fillText( state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
                 }

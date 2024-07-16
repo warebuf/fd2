@@ -76,7 +76,7 @@ function anime() {
         drawUnitsOfTime()
         drawStartersTable2()
         drawLog()
-        /drawCircle(800,500,50);
+        //drawCircle(800,500,50);
         drawPoint(960,540,30,10,1,)
 
     }
@@ -1820,6 +1820,7 @@ function drawPoint(center_x,center_y,radius,num,distance){
         ctx.fill();
 
         ctx.beginPath();
+        ctx.fillStyle = 'black';
         ctx.moveTo(x, y);
         ctx.lineTo(x2, y2);
         ctx.stroke();

@@ -1577,7 +1577,7 @@ function drawStartersTable2() {
 
         let x_offset = 60
         let y_offset = (c.height/2) - 250
-        let unit_shift = 120
+        let unit_shift = 100
         let user_shift = 1300
         let user_count = 0;
 
@@ -2008,6 +2008,7 @@ function drawImage(){
 
 function drawBoard() {
     ctx.beginPath();
+    ctx.lineWidth = "1";
     ctx.strokeStyle = 'white';
     ctx.rect( (c.width/2)-250, (c.height/2)-250, 500, 500);
     ctx.stroke();

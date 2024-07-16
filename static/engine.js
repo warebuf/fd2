@@ -75,7 +75,7 @@ function anime() {
         drawUnitsOfTime()
         drawStartersTable2()
         drawLog()
-        //drawBoard()
+        drawBoard()
         //drawCircle(800,500,50);
         //drawPoint(960,540,30,10,1,)
 
@@ -2009,6 +2009,10 @@ function drawImage(){
 }
 
 function drawBoard() {
+
+    let w = Math.round(c.width/2)-250
+    let h = Math.round(c.height/2)-250
+
     ctx.beginPath();
     ctx.lineWidth = "1";
     ctx.strokeStyle = 'white';

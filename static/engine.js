@@ -2010,7 +2010,7 @@ function drawImage(){
 
 function drawBoard() {
 
-    let w = Math.round(c.width/2)-250
+    let w = Math.round(c.width/2)
     let h = Math.round(c.height/2)-250
     ctx.textAlign = "left";
 

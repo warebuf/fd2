@@ -388,7 +388,7 @@ function drawPos()  {
 
 function drawState() {
 
-    let w = Math.round(c.width/2)-250
+    let w = Math.round(c.width/2)-250 - 30
     let h = Math.round(c.height/2)-250
 
     x0 = Math.round(c.width/2)-250

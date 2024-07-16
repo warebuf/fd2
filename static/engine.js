@@ -1774,7 +1774,7 @@ function drawStartersTable2() {
                     */
 
 
-                    ctx.fillStyle = 'white';
+                    ctx.fillStyle = 'red';
                     ctx.fillRect(x_offset-50+(user_shift*user_count),y_offset + (i*unit_shift) ,600,1);
                 }
                 user_count = user_count + 1

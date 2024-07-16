@@ -1799,7 +1799,7 @@ function drawCircle(center_x,center_y,radius){
 
     for(let i = 0; i < 10; i++){
         ctx.beginPath();
-        ctx.fillStyle = 'white';
+        ctx.strokeStyle = 'pink';
         ctx.arc(center_x, center_y, radius*(i+1), 0, 2 * Math.PI);
         ctx.stroke();
     }

@@ -1587,6 +1587,8 @@ function drawStartersTable2() {
         for (let j=0;j<(state.length);j++) {
             for (let k=0;k<(state[j].length);k++) {
                 for (let i=0;i<(state[j][k].length);i++){
+
+                    if(state[j][k][i].H.HP<=0){ctx.fillStyle='red'}
                     ctx.textAlign = "center";
                     ctx.fillRect(x_offset-1-45+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.HP/2) + (i*unit_shift),3,0 | state[j][k][i].H.HP/2);
                     ctx.fillRect(x_offset-1-30+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.HP/2) + (i*unit_shift),3,0 | state[j][k][i].L.HP/2);
@@ -1773,9 +1775,8 @@ function drawStartersTable2() {
                     ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85+ (i*unit_shift) )
                     */
 
-
-                    ctx.fillStyle = 'red';
                     ctx.fillRect(x_offset-50+(user_shift*user_count),y_offset + (i*unit_shift) ,600,1);
+                    ctx.fillStyle = 'white';
                 }
                 user_count = user_count + 1
             }

@@ -1577,7 +1577,7 @@ function drawStartersTable2() {
 
         let x_offset = 60
         let y_offset = (c.height/2) - 250
-        if(c.height%2==1): y_offset = math.Round(c.height/2) - 250
+        if(c.height%2==1){y_offset = math.Round(c.height/2) - 250}
         let unit_shift = 125
         let user_shift = 1300
         let user_count = 0;

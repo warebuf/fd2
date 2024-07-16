@@ -76,7 +76,7 @@ function anime() {
         drawUnitsOfTime()
         drawStartersTable2()
         drawLog()
-        drawCircle(800,500,300);
+        drawCircle(960,540,300);
         drawPoint(960,540,30,10,1,)
 
     }

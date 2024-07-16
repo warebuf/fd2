@@ -2011,4 +2011,5 @@ function drawBoard() {
     ctx.strokeStyle = 'white';
     ctx.rect( (c.width/2)-250, (c.height/2)-250, 500, 500);
     ctx.stroke();
+    ctx.fillRect(c.width/2,(c.height/2)-250, 1, 500);
 }

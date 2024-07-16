@@ -1577,7 +1577,7 @@ function drawStartersTable2() {
 
         let x_offset = 60
         let y_offset = (c.height/2) - 250
-        let unit_shift = 100
+        let unit_shift = 125
         let user_shift = 1300
         let user_count = 0;
 

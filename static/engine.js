@@ -1814,13 +1814,17 @@ function drawPoint(center_x,center_y,radius,num,distance){
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length;k++){
-                let x = center_x + radius * Math.cos(-(count/num)*2*Math.PI) * (state[i][j][k].Position/100);
-                let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * (state[i][j][k].Position/100);
 
-                ctx.beginPath();
-                ctx.fillStyle = 'pink';
-                ctx.arc(x, y, 2, 0, 2 * Math.PI);
-                ctx.fill();
+                if(state[i][j][k].H.HP>0) {
+                    let x = center_x + radius * Math.cos(-(count/num)*2*Math.PI) * (state[i][j][k].Position/100);
+                    let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * (state[i][j][k].Position/100);
+
+                    ctx.beginPath();
+                    ctx.fillStyle = 'pink';
+                    ctx.arc(x, y, 2, 0, 2 * Math.PI);
+                    ctx.fill();
+                }
+
 
                 count++
             }

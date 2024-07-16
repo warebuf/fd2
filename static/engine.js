@@ -2012,6 +2012,7 @@ function drawBoard() {
 
     let w = Math.round(c.width/2)-250
     let h = Math.round(c.height/2)-250
+    ctx.textAlign = "left";
 
     ctx.beginPath();
     ctx.lineWidth = "1";

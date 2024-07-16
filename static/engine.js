@@ -2009,6 +2009,6 @@ function drawImage(){
 function drawBoard() {
     ctx.beginPath();
     ctx.strokeStyle = 'white';
-    ctx.rect(100, 100, 200, 200);
+    ctx.rect(500, 200, 200, 200);
     ctx.stroke();
 }

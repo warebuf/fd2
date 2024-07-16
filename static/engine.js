@@ -2016,13 +2016,8 @@ function drawBoard() {
 
     ctx.fillRect(w,h ,500,1);
     ctx.fillRect(w,h+500 ,500,1);
-    ctx.fillRect(w+500,h ,1,500);
+    ctx.fillRect(w,h +500,1,500);
     ctx.fillRect(w+500,h+500 ,1,500);
-    ctx.beginPath();
-    ctx.lineWidth = "1";
-    ctx.strokeStyle = 'white';
-    ctx.rect( w, h, 500, 500);
-    ctx.stroke();
 
     ctx.fillStyle = 'white';
     ctx.fillRect(Math.round(c.width/2),h, 1, 500);

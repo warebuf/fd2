@@ -76,8 +76,8 @@ function anime() {
         drawUnitsOfTime()
         drawStartersTable2()
         drawLog()
-        drawCircle(960,540,300);
-        drawPoint(960,540,30,10,1,)
+        drawCircle(960,540,30);
+        //drawPoint(960,540,30,10,1,)
 
     }
 
@@ -1796,10 +1796,14 @@ function drawStartersTable2() {
 }
 
 function drawCircle(center_x,center_y,radius){
-    ctx.beginPath();
-    ctx.fillStyle = 'white';
-    ctx.arc(center_x, center_y, radius, 0, 2 * Math.PI);
-    ctx.stroke();
+
+    for(let i = 0; i < 10; i++){
+        ctx.beginPath();
+        ctx.fillStyle = 'white';
+        ctx.arc(center_x, center_y, radius*(i+1), 0, 2 * Math.PI);
+        ctx.stroke();
+    }
+
 }
 
 function drawPoint(center_x,center_y,radius,num,distance){

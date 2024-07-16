@@ -75,6 +75,7 @@ function anime() {
         drawUnitsOfTime()
         drawStartersTable2()
         drawLog()
+        drawBoard()
         //drawCircle(800,500,50);
         //drawPoint(960,540,30,10,1,)
 
@@ -2003,4 +2004,10 @@ function drawImage(){
     img8 = new Image();
     img8.src = "/images/8.png"
     ctx.drawImage(img8, 350,350, img8.width*.3, img8.height*.3);
+}
+
+function drawBoard() {
+    ctx.beginPath();
+    ctx.rect(100, 100, 200, 200);
+    ctx.stroke();
 }

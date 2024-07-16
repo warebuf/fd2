@@ -1797,10 +1797,10 @@ function drawStartersTable2() {
 
 function drawCircle(center_x,center_y,radius){
 
-    for(let i = 0; i < 10; i++){
+    for(let i = 0; i < 5; i++){
         ctx.beginPath();
         ctx.strokeStyle = 'pink';
-        ctx.arc(center_x, center_y, radius*(i+1), 0, 2 * Math.PI);
+        ctx.arc(center_x, center_y, radius*(i+1)*2, 0, 2 * Math.PI);
         ctx.stroke();
     }
 

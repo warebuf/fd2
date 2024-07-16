@@ -69,7 +69,7 @@ function anime() {
 
         //drawBoard()
         drawCircle(c.width/2,c.height/2,25);
-        drawPoint(c.width/2,c.height/2,25,10,1,)
+        drawPoint(c.width/2,c.height/2,250,10,1,)
         drawGrid()
         drawPos()
         drawState()

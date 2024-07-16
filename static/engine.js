@@ -389,7 +389,7 @@ function drawPos()  {
 function drawState() {
 
 
-    x0 = Math.round(c.width/2)-250 - 30
+    x0 = Math.round(c.width/2)-250 - 45
     y0 = Math.round(c.height/2)-250
     let space = 590
 

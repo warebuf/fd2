@@ -75,7 +75,7 @@ function anime() {
         drawUnitsOfTime()
         drawStartersTable2()
         drawLog()
-        drawBoard()
+        //drawBoard()
         //drawCircle(800,500,50);
         //drawPoint(960,540,30,10,1,)
 
@@ -2012,7 +2012,7 @@ function drawBoard() {
     ctx.strokeStyle = 'white';
     ctx.rect( (c.width/2)-250, (c.height/2)-250, 500, 500);
     ctx.stroke();
-    
+
     ctx.fillStyle = 'white';
     ctx.fillRect(c.width/2,(c.height/2)-250, 1, 500);
 }

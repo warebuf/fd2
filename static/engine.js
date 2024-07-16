@@ -387,8 +387,12 @@ function drawPos()  {
 }
 
 function drawState() {
-    x0 = 660
-    y0 = 200
+
+    let w = Math.round(c.width/2)-250
+    let h = Math.round(c.height/2)-250
+
+    x0 = Math.round(c.width/2)-250
+    y0 = Math.round(c.height/2)-250
     let space = 590
 
     ctx.textAlign = "left";
@@ -401,7 +405,7 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0+(space*i), y0-9 + (k*120)+(j*700), 5, 5);
+                ctx.fillRect(x0+(space*i), y0-9 + (k*125)+(j*700), 5, 5);
                 if (state[i][j][k].L.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
@@ -409,14 +413,14 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0-5+(space*i), y0-4 + (k*120)+(j*700), 5, 7); // make it 270,5,7 OR 269,6,4
+                ctx.fillRect(x0-5+(space*i), y0-4 + (k*125)+(j*700), 5, 7); // make it 270,5,7 OR 269,6,4
                 if (state[i][j][k].R.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0+5+(space*i), y0-4 + (k*120)+(j*700), 5, 7);
+                ctx.fillRect(x0+5+(space*i), y0-4 + (k*125)+(j*700), 5, 7);
                 if (state[i][j][k].B.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
@@ -424,7 +428,7 @@ function drawState() {
                 } else {
                     ctx.fillStyle = 'red';
                 }
-                ctx.fillRect(x0+(space*i), y0+1 + (k*120)+(j*700), 5, 7);
+                ctx.fillRect(x0+(space*i), y0+1 + (k*125)+(j*700), 5, 7);
 
                 // draw move
                 ctx.fillStyle = 'white';
@@ -436,7 +440,7 @@ function drawState() {
                     else if(state[i][j][k].Move==2){temp='R'}
                     else if(state[i][j][k].Move==3){temp='B'}
                 }
-                ctx.fillText(temp, x0+(space*i)+20, y0+1 + (k*120)+(j*700));
+                ctx.fillText(temp, x0+(space*i)+20, y0+1 + (k*125)+(j*700));
 
                 if(turn.substring(0,4) == "TURN") {
                     if (
@@ -446,16 +450,16 @@ function drawState() {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
-                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
                         }
                         else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
-                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
                         }
                         else {
-                            ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*120)+(j*700) );
+                            ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
                         }
                     }
                 }

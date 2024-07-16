@@ -351,6 +351,7 @@ function drawPos()  {
                     ctx.textAlign = "center";
                     //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
+                    ctx.fillText(k, 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+10 );
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "center";
@@ -365,6 +366,7 @@ function drawPos()  {
                     ctx.textAlign = "center";
                     //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
                     ctx.fillText(symbol, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700) );
+                    ctx.fillText(k, 700+(270*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+10 );
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";

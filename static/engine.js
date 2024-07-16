@@ -68,7 +68,7 @@ function anime() {
     } else if (match_data.length > 0) {
 
         //drawBoard()
-        drawCircle(c.width/2,c.height/2,25);
+        drawCircle(c.width/2,c.height/2,250);
         drawPoint(c.width/2,c.height/2,250,10,1,)
         drawGrid()
         drawPos()
@@ -1797,12 +1797,11 @@ function drawStartersTable2() {
 
 function drawCircle(center_x,center_y,radius){
 
-    for(let i = 0; i < 5; i++){
-        ctx.beginPath();
-        ctx.strokeStyle = 'pink';
-        ctx.arc(center_x, center_y, radius*(i+1)*2, 0, 2 * Math.PI);
-        ctx.stroke();
-    }
+    ctx.beginPath();
+    ctx.strokeStyle = 'pink';
+    ctx.arc(center_x, center_y, radius, 0, 2 * Math.PI);
+    ctx.stroke();
+
 
 }
 

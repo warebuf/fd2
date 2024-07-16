@@ -1576,7 +1576,7 @@ function drawStartersTable2() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
         let x_offset = 60
-        let y_offset = 200
+        let y_offset = (c.height/2) - 250
         let unit_shift = 120
         let user_shift = 1300
         let user_count = 0;

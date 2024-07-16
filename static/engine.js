@@ -1776,7 +1776,7 @@ function drawStartersTable2() {
                     ctx.fillText(state[my_team][my_int][0].H.NAME,x_offset-15, y_offset-85+ (i*unit_shift) )
                     */
 
-                    ctx.fillRect(x_offset-50+(user_shift*user_count)+0.5,y_offset + (i*unit_shift) ,600,1);
+                    ctx.fillRect(x_offset-50+(user_shift*user_count),y_offset + (i*unit_shift) ,600,1);
                     ctx.fillStyle = 'white';
                 }
                 user_count = user_count + 1
@@ -2014,6 +2014,10 @@ function drawBoard() {
     let h = Math.round(c.height/2)-250
     ctx.textAlign = "left";
 
+    ctx.fillRect(w,h ,500,1);
+    ctx.fillRect(w,h+500 ,500,1);
+    ctx.fillRect(w+500,h ,1,500);
+    ctx.fillRect(w+500,h+500 ,1,500);
     ctx.beginPath();
     ctx.lineWidth = "1";
     ctx.strokeStyle = 'white';

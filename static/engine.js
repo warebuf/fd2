@@ -262,7 +262,7 @@ function drawPos()  {
                             let a_1 = b.Attacker[1]
                             let a_2 = b.Attacker[2]
                             let x1 = w+(250*a_0)+(250*(state[a_0][a_1][a_2].Position/100))
-                            let y1 = y_offset+(a_2 * 125)+(a_1*700)
+                            let y1 = h+(a_2 * 125)+(a_1*700)
                             if((a_0%2)==1){
                                 x1 = w+(250*a_0)+250-(250*(state[a_0][a_1][a_2].Position/100))
                             }
@@ -277,7 +277,7 @@ function drawPos()  {
                             let b_1 = b.Defender[0][1]
                             let b_2 = b.Defender[0][2]
                             let x2 = w+(250*b_0)+(250*(state[b_0][b_1][b_2].Position/100))
-                            let y2 = y_offset+(b_2 * 125)+(b_1*700)
+                            let y2 = h+(b_2 * 125)+(b_1*700)
                             if((b_0%2)==1){
                                 x2 = w+(250*b_0)+250-(250*(state[b_0][b_1][b_2].Position/100))
                             }
@@ -354,13 +354,13 @@ function drawPos()  {
                     if(symbol=='d'){symbol=''}
                     ctx.textAlign = "center";
                     //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
-                    ctx.fillText(symbol, w+(250*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*125)+(j*700) );
+                    ctx.fillText(symbol, w+(250*i)+(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700) );
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "center";
                     ctx.font = '8px monospace';
-                    ctx.fillText(k, w+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*125)+(j*700)+25 );
-                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(270*i)+(250*(state[i][j][k].Position/100)), y_offset+(k*120)+(j*700)+15 );
+                    ctx.fillText(k, w+(270*i)+(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+25 );
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), 700+(250*i)+(250*(state[i][j][k].Position/100)), h+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
 
                 } else {
@@ -369,13 +369,13 @@ function drawPos()  {
                     else if(symbol=='d'){symbol=''}
                     ctx.textAlign = "center";
                     //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
-                    ctx.fillText(symbol, w+(250*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*125)+(j*700) );
+                    ctx.fillText(symbol, w+(250*i)+250-(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700) );
 
                     ctx.fillStyle = 'white';
                     ctx.textAlign = "left";
                     ctx.font = '8px monospace';
-                    ctx.fillText(k, w+(250*i)+250-(250*(state[i][j][k].Position/100)), y_offset+(k*125)+(j*700)+25 );
-                    ctx.fillText( state[i][j][k].Position.toFixed(1), 700+(270*i)+250-(250*(state[i][j][k].Position/100))-5, y_offset+(k*120)+(j*700)+15 );
+                    ctx.fillText(k, w+(250*i)+250-(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+25 );
+                    ctx.fillText( state[i][j][k].Position.toFixed(1), 700+(250*i)+250-(250*(state[i][j][k].Position/100))-5, h+(k*120)+(j*700)+15 );
                     ctx.font = '11px monospace';
                 }
 
@@ -2017,7 +2017,7 @@ function drawBoard() {
     let h = Math.round(c.height/2)-250
     ctx.textAlign = "left";
     ctx.fillStyle = 'grey';
-    
+
     ctx.fillRect(w,h ,500,1);
     ctx.fillRect(w,h+500 ,500,1);
     ctx.fillRect(w,h,1,500);

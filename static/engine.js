@@ -69,7 +69,7 @@ function anime() {
 
         //drawBoard()
         drawCircle(c.width/2,c.height/2,25);
-        drawPoint(960,540,25,10,1,)
+        drawPoint(c.width/2,c.height/2,25,10,1,)
         drawGrid()
         drawPos()
         drawState()
@@ -1814,8 +1814,8 @@ function drawPoint(center_x,center_y,radius,num,distance){
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length;k++){
-                let x = center_x + radius * Math.cos(-(count/num)*2*Math.PI) * distance;
-                let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * distance;
+                let x = center_x + radius * Math.cos(-(count/num)*2*Math.PI) * state[i][j][k].Position;
+                let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * state[i][j][k].Position;
 
                 ctx.beginPath();
                 ctx.fillStyle = 'pink';

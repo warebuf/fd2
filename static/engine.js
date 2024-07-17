@@ -68,8 +68,8 @@ function anime() {
     } else if (match_data.length > 0) {
 
         //drawBoard()
-        drawCircle(c.width/2,c.height/2,250);
-        drawPoint(c.width/2,c.height/2,250,10,1,)
+        //drawCircle(c.width/2,c.height/2,250);
+        //drawPoint(c.width/2,c.height/2,250,10,1,)
         drawGrid()
         drawPos()
         drawState()

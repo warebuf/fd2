@@ -285,13 +285,13 @@ function drawPos()  {
                             }
                             let x2_x1 = (x2 - x1)*perc
                             let y2_y1 = (y2 - y1)*perc
-                            dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[1,10])
+                            //dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[1,10])
 
                             if(draw_attacks>=30) {
                                 ctx.fillStyle = 'white'
                                 ctx.textAlign = "center";
                                 ctx.font = '9px monospace';
-                                ctx.fillText("BOOM!",x2, y2-7);
+                                //ctx.fillText("BOOM!",x2, y2-7);
                             }
 
                             a1++

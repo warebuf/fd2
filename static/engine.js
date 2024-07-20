@@ -76,7 +76,7 @@ function anime() {
 
 
         drawCircle(c.width/2,c.height/2,250);
-        drawPoint(c.width/2,c.height/2,250,10,1,)
+        drawPoint(c.width/2,c.height/2,250,10,)
 
 
         drawPos()
@@ -1850,18 +1850,26 @@ function drawCircle(center_x,center_y,radius){
 
 }
 
-function drawPoint(center_x,center_y,radius,num,distance){
+function drawPoint(center_x,center_y,radius,num){
 
     if(num==0){return}
 
-    let count = 1
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length;k++){
 
                 if(state[i][j][k].H.HP>0) {
-                    let x = center_x + radius * Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
-                    let y = center_y + radius * Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+
+                    let p = 4*Math.PI/10
+                    if(i==0){
+                        p = p - (2*k*Math.PI/10)
+                    }
+                    else {
+                        p = p + (2*k*Math.PI/10)
+                    }
+
+                    let x = center_x + radius * Math.cos(p) * (100-state[i][j][k].Position)/100;
+                    let y = center_y + radius * Math.sin(p) * (100-state[i][j][k].Position)/100;
 
                     ctx.beginPath();
                     if(i==my_team && j==my_int){ctx.fillStyle = 'blue';}
@@ -1877,9 +1885,6 @@ function drawPoint(center_x,center_y,radius,num,distance){
                     ctx.fillText(state[i][j][k].Position.toFixed(1), x, y+20 );
                     //ctx.font = '11px monospace';
                 }
-
-
-                count++
             }
         }
     }
@@ -2098,20 +2103,27 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
 function calculateCenter(center_x,center_y) {
     let sum_x = 0;
     let sum_y = 0;
-    let count = 1;
 
     for(let i = 0; i < state.length;i++){
         for(let j = 0; j < state[i].length;j++) {
             for(let k = 0; k < state[i][j].length;k++) {
 
                 if(state[i][j][k].H.HP > 0) {
-                    let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
-                    let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+
+                    let p = 4*Math.PI/10
+                    if(i==0){
+                        p = p - (2*k*Math.PI/10)
+                    }
+                    else {
+                        p = p + (2*k*Math.PI/10)
+                    }
+
+                    let x = Math.cos(p) * (100-state[i][j][k].Position)/100;
+                    let y = Math.sin(p) * (100-state[i][j][k].Position)/100;
 
                     sum_x = sum_x + x
                     sum_y = sum_y + y
                 }
-                count = count + 1
 
             }
         }

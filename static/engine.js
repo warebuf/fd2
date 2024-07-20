@@ -404,7 +404,6 @@ function drawState() {
     let space = 590
 
     ctx.textAlign = "left";
-    let count  = 1;
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
@@ -461,16 +460,30 @@ function drawState() {
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
-                            let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
-                            let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+                            let count  = 1;
+                            for(let a = 0; a < length(state); a++) {
+                                for(let b = 0; b < len(state[a]); b++) {
+                                    for(let c = 0; c < len(state[a][b]); c++) {
+                                        if(a==i && b==j && c==k) {
+
+                                        }
+                                        else {
+                                            let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
+                                            let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
+
+                                            ctx.beginPath();
+                                            ctx.moveTo( (x*250)+c.width/2, (y*250)+c.height/2 );
+                                            ctx.lineTo(300, 150);
+                                            ctx.strokeStyle = "red";
+                                            ctx.lineWidth = 1;
+                                            ctx.stroke();
+                                        }
+                                        count = count + 1;
+                                    }
+                                }
+                            }
 
 
-                            ctx.beginPath();
-                            ctx.moveTo( (x*250)+c.width/2, (y*250)+c.height/2 );
-                            ctx.lineTo(300, 150);
-                            ctx.strokeStyle = "red";
-                            ctx.lineWidth = 1;
-                            ctx.stroke();
                         }
                         else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
@@ -483,7 +496,6 @@ function drawState() {
                         }
                     }
                 }
-                count = count + 1;
             }
         }
     }

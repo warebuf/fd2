@@ -2069,8 +2069,8 @@ function calculateCenter(center_x,center_y) {
         for(let j = 0; j < state[i].length;j++) {
             for(let k = 0; k < state[i][j].length;k++) {
 
-                let x = center_x + 250 * Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
-                let y = center_y + 250 * Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+                let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+                let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
 
 
                 sum_x = sum_x + x
@@ -2083,5 +2083,5 @@ function calculateCenter(center_x,center_y) {
 
     console.log("center:",sum_x,sum_y,count)
 
-    return [sum_x/10, sum_y/10]
+    return [ center_x + (250*sum_x/10), center_y + (250*sum_y/10) ]
 }

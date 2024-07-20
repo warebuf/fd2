@@ -465,8 +465,8 @@ function drawState() {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
                             let count  = 1;
-                            let x2 = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
-                            let y2 = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
+                            let x2 = Math.cos((2*Math.PI*(count2)/10) + ((4)*(Math.PI)/10) ) ;
+                            let y2 = Math.sin((2*Math.PI*(count2)/10) + ((4)*(Math.PI)/10) ) ;
 
                             for(let a = 0; a < state.length; a++) {
                                 for(let b = 0; b < state[a].length; b++) {

@@ -71,8 +71,8 @@ function anime() {
         //drawBoard()
         drawSinglePoint(0,0,c.width/2,c.height/2,'red');
 
-        let temp = calculateCenter(c.width/2,c.height/2);
-        drawSinglePoint(temp[0],temp[1],c.width/2,c.height/2,'yellow');
+        let cent = calculateCenter(c.width/2,c.height/2);
+        drawSinglePoint(cent[0],cent[1],c.width/2,c.height/2,'yellow');
 
 
         drawCircle(c.width/2,c.height/2,250);

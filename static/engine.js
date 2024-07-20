@@ -67,11 +67,11 @@ function anime() {
 
     } else if (match_data.length > 0) {
 
+        drawGrid()
         //drawBoard()
         drawSinglePoint(0,0,c.width/2,c.height/2,'red');
         drawCircle(c.width/2,c.height/2,250);
         drawPoint(c.width/2,c.height/2,250,10,1,)
-        drawGrid()
         drawPos()
         drawState()
         //drawStats()
@@ -2049,6 +2049,6 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
     ctx.beginPath();
     ctx.fillStyle = color;
 
-    ctx.arc(center_x+shift_x, center_y+shift_y, 5, 0, 2 * Math.PI);
+    ctx.arc(center_x+shift_x, center_y+shift_y, 3, 0, 2 * Math.PI);
     ctx.fill();
 }

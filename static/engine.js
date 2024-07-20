@@ -2083,5 +2083,5 @@ function calculateCenter(center_x,center_y) {
 
     console.log("center:",sum_x,sum_y,count)
 
-    return [ center_x + (250*sum_x/10), center_y + (250*sum_y/10) ]
+    return [ 250*sum_x/10, 250*sum_y/10 ]
 }

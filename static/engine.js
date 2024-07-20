@@ -483,6 +483,7 @@ function drawState() {
                         }
                     }
                 }
+                count = count + 1;
             }
         }
     }

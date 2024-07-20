@@ -1829,7 +1829,7 @@ function drawPoint(center_x,center_y,radius,num,distance){
                     ctx.textAlign = "center";
                     ctx.font = '8px monospace';
                     ctx.fillText(k, x, y-10 );
-                    ctx.fillText(state[i][j][k].Position.toFixed(1), x, y+10 );
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), x, y+20 );
                     //ctx.font = '11px monospace';
                 }
 

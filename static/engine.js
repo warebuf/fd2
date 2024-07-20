@@ -1862,10 +1862,10 @@ function drawPoint(center_x,center_y,radius,num){
 
                     let p = 4*Math.PI/10
                     if(i==0){
-                        p = p - (2*k*Math.PI/10)
+                        p = (4*Math.PI/10) - (2*k*Math.PI/10)
                     }
                     else {
-                        p = p + (2*k*Math.PI/10)
+                        p = (6*Math.PI/10) + (2*k*Math.PI/10)
                     }
 
                     let x = center_x + radius * Math.cos(p) * (100-state[i][j][k].Position)/100;
@@ -2113,10 +2113,10 @@ function calculateCenter(center_x,center_y) {
 
                     let p = 4*Math.PI/10
                     if(i==0){
-                        p = p - (2*k*Math.PI/10)
+                        p = (4*Math.PI/10) - (2*k*Math.PI/10)
                     }
                     else {
-                        p = p + (2*k*Math.PI/10)
+                        p = (6*Math.PI/10) + (2*k*Math.PI/10)
                     }
 
                     let x = Math.cos(p) * (100-state[i][j][k].Position)/100;

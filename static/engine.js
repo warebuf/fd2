@@ -463,6 +463,7 @@ function drawState() {
                             ctx.beginPath();
                             ctx.moveTo(0, 0);
                             ctx.lineTo(300, 150);
+                            ctx.strokeStyle = "red";
                             ctx.stroke();
                         }
                         else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) { // finds

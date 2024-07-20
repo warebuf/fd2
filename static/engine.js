@@ -481,7 +481,7 @@ function drawState() {
                                         }
                                         else {
                                             let p2 = 4*Math.PI/10
-                                            if(i==1){
+                                            if(a==1){
                                                 p2 = (4*Math.PI/10) - (2*c*Math.PI/10)
                                             }
                                             else {

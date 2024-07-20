@@ -106,8 +106,7 @@ type part struct {
 type hero struct {
 	Bot bool
 
-	PositionX float64
-	PositionY float64
+	Position float64
 
 	Direction int
 	Move      int

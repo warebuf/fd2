@@ -407,7 +407,6 @@ function drawState() {
 
     ctx.textAlign = "left";
 
-    let count2 = 1;
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
@@ -464,9 +463,15 @@ function drawState() {
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
-                            let count  = 1;
-                            let x2 = Math.cos((2*Math.PI*(count2)/10) + ((4)*(Math.PI)/10) ) ;
-                            let y2 = Math.sin((2*Math.PI*(count2)/10) + ((4)*(Math.PI)/10) ) ;
+                            let p1 = 4*Math.PI/10
+                            if(i==1){
+                                p1 = (4*Math.PI/10) - (2*k*Math.PI/10)
+                            }
+                            else {
+                                p1 = (6*Math.PI/10) + (2*k*Math.PI/10)
+                            }
+                            let x1 = Math.cos(p) * (100-state[i][j][k].Position)/100;
+                            let y1 = Math.sin(p) * (100-state[i][j][k].Position)/100;
 
                             for(let a = 0; a < state.length; a++) {
                                 for(let b = 0; b < state[a].length; b++) {
@@ -475,13 +480,18 @@ function drawState() {
 
                                         }
                                         else {
-                                            let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
-                                            let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
-
-                                            //console.log(count,x,y,count2,x2,y2)
+                                            let p2 = 4*Math.PI/10
+                                            if(i==1){
+                                                p2 = (4*Math.PI/10) - (2*c*Math.PI/10)
+                                            }
+                                            else {
+                                                p2 = (6*Math.PI/10) + (2*c*Math.PI/10)
+                                            }
+                                            let x2 = Math.cos(p) * (100-state[a][b][c].Position)/100;
+                                            let y2 = Math.sin(p) * (100-state[a][b][c].Position)/100;
 
                                             ctx.beginPath();
-                                            ctx.moveTo( (x*250)+test1, (y*250)+test2 );
+                                            ctx.moveTo( (x1*250)+test1, (y2*250)+test2 );
                                             ctx.lineTo((x2*250)+test1, (y2*250)+test2);
                                             ctx.strokeStyle = "grey";
                                             ctx.lineWidth = 1;
@@ -1861,7 +1871,7 @@ function drawPoint(center_x,center_y,radius,num){
                 if(state[i][j][k].H.HP>0) {
 
                     let p = 4*Math.PI/10
-                    if(i==0){
+                    if(i==1){
                         p = (4*Math.PI/10) - (2*k*Math.PI/10)
                     }
                     else {
@@ -2112,7 +2122,7 @@ function calculateCenter(center_x,center_y) {
                 if(state[i][j][k].H.HP > 0) {
 
                     let p = 4*Math.PI/10
-                    if(i==0){
+                    if(i==1){
                         p = (4*Math.PI/10) - (2*k*Math.PI/10)
                     }
                     else {

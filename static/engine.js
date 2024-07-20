@@ -472,7 +472,7 @@ function drawState() {
                                             let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
 
                                             ctx.beginPath();
-                                            ctx.moveTo( (x*250)+c.width/2, (y*250)+c.height/2 );
+                                            ctx.moveTo( (x*250)+(c.width/2), (y*250)+(c.height/2) );
                                             ctx.lineTo(300, 150);
                                             ctx.strokeStyle = "red";
                                             ctx.lineWidth = 1;

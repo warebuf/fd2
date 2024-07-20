@@ -459,8 +459,13 @@ function drawState() {
                         ctx.textAlign = "center";
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
+
+                            ctx.beginPath();
+                            ctx.moveTo(0, 0);
+                            ctx.lineTo(300, 150);
+                            ctx.stroke();
                         }
-                        else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) {
+                        else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;

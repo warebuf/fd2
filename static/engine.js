@@ -2063,14 +2063,18 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
 function calculateCenter() {
     let sum_x = 0;
     let sum_y = 0;
-    let count = 0;
+    let count = 1;
 
     for(let i = 0; i < state.length;i++){
         for(let j = 0; j < state[i].length;j++) {
             for(let k = 0; k < state[i][j].length;k++) {
 
-                sum_x = sum_x + state[i][j][k].Position
-                sum_y = sum_y + state[i][j][k].Position
+                let x = center_x + 250 * Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+                let y = center_y + 250 * Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
+
+
+                sum_x = sum_x + x
+                sum_y = sum_y + y
                 count = count + 1
 
             }
@@ -2079,6 +2083,5 @@ function calculateCenter() {
 
     console.log("center:",sum_x,sum_y,count)
 
-    if(count==0){[sum_x,sum_y]}
-    return [sum_x/count, sum_y/count]
+    return [sum_x/10, sum_y/10]
 }

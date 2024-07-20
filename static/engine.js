@@ -471,10 +471,6 @@ function drawState() {
                                             let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
                                             let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
 
-                                            let test1 = c.width/2
-                                            let test2 = c.height/2
-                                            console.log(x,y, test1, test2)
-
                                             ctx.beginPath();
                                             ctx.moveTo( (x*250)+(c.width/2), (y*250)+(c.height/2) );
                                             ctx.lineTo(300, 150);

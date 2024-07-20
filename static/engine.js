@@ -71,7 +71,7 @@ function anime() {
         //drawBoard()
         drawSinglePoint(0,0,c.width/2,c.height/2,'red');
 
-        let temp = calculateCenter();
+        let temp = calculateCenter(c.width/2,c.height/2);
         drawSinglePoint(temp[0],temp[1],c.width/2,c.height/2,'yellow');
 
 
@@ -2060,7 +2060,7 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
     ctx.fill();
 }
 
-function calculateCenter() {
+function calculateCenter(center_x,center_y) {
     let sum_x = 0;
     let sum_y = 0;
     let count = 1;

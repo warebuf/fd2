@@ -2052,3 +2052,26 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
     ctx.arc(center_x+shift_x, center_y+shift_y, 3, 0, 2 * Math.PI);
     ctx.fill();
 }
+
+function calculateCenter() {
+    let sum_x = 0;
+    let sum_y = 0;
+    let count = 0;
+
+    for(let i = 0; i < state.length;i++){
+        for(let j = 0; j < state[i].length;j++) {
+            for(let k = 0; k < state[i][j].length;k++) {
+
+                sum_x = sum_x + state[i][j][k].Position
+                sum_y = sum_y + state[i][j][k].Position
+                count = count + 1
+
+            }
+        }
+    }
+
+    console.log("center:",sum_x,sum_y,count)
+
+    if(count==0){[sum_x,sum_y]}
+    return [sum_x/count, sum_y/count]
+}

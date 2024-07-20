@@ -483,7 +483,7 @@ function drawState() {
                                             ctx.beginPath();
                                             ctx.moveTo( (x*250)+test1, (y*250)+test2 );
                                             ctx.lineTo((x2*250)+test1, (y2*250)+test2);
-                                            ctx.strokeStyle = "red";
+                                            ctx.strokeStyle = "grey";
                                             ctx.lineWidth = 1;
                                             ctx.stroke();
                                         }

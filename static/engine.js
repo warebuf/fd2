@@ -470,8 +470,8 @@ function drawState() {
                             else {
                                 p1 = (6*Math.PI/10) + (2*k*Math.PI/10)
                             }
-                            let x1 = Math.cos(p) * (100-state[i][j][k].Position)/100;
-                            let y1 = Math.sin(p) * (100-state[i][j][k].Position)/100;
+                            let x1 = Math.cos(p1) * (100-state[i][j][k].Position)/100;
+                            let y1 = Math.sin(p1) * (100-state[i][j][k].Position)/100;
 
                             for(let a = 0; a < state.length; a++) {
                                 for(let b = 0; b < state[a].length; b++) {
@@ -487,8 +487,8 @@ function drawState() {
                                             else {
                                                 p2 = (6*Math.PI/10) + (2*c*Math.PI/10)
                                             }
-                                            let x2 = Math.cos(p) * (100-state[a][b][c].Position)/100;
-                                            let y2 = Math.sin(p) * (100-state[a][b][c].Position)/100;
+                                            let x2 = Math.cos(p2) * (100-state[a][b][c].Position)/100;
+                                            let y2 = Math.sin(p2) * (100-state[a][b][c].Position)/100;
 
                                             ctx.beginPath();
                                             ctx.moveTo( (x1*250)+test1, (y2*250)+test2 );

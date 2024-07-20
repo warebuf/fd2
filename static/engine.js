@@ -398,6 +398,8 @@ function drawPos()  {
 
 function drawState() {
 
+    let test1 = c.width/2
+    let test2 = c.height/2
 
     x0 = Math.round(c.width/2)-250 - 45
     y0 = Math.round(c.height/2)-250
@@ -471,8 +473,10 @@ function drawState() {
                                             let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
                                             let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
 
+                                            console.log(x,y,test1,test2)
+
                                             ctx.beginPath();
-                                            ctx.moveTo( (x*250)+(c.width/2), (y*250)+(c.height/2) );
+                                            ctx.moveTo( (x*250)+test1, (y*250)+test2 );
                                             ctx.lineTo(300, 150);
                                             ctx.strokeStyle = "red";
                                             ctx.lineWidth = 1;

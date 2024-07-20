@@ -478,9 +478,11 @@ function drawState() {
                                             let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
                                             let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
 
+                                            //console.log(count,x,y,count2,x2,y2)
+
                                             ctx.beginPath();
                                             ctx.moveTo( (x*250)+test1, (y*250)+test2 );
-                                            ctx.lineTo((x2*250)+test1, (y*250)+test2);
+                                            ctx.lineTo((x2*250)+test1, (y2*250)+test2);
                                             ctx.strokeStyle = "red";
                                             ctx.lineWidth = 1;
                                             ctx.stroke();

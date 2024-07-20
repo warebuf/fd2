@@ -2104,6 +2104,7 @@ function calculateCenter(center_x,center_y) {
     let sum_x = 0;
     let sum_y = 0;
 
+    count = 0
     for(let i = 0; i < state.length;i++){
         for(let j = 0; j < state[i].length;j++) {
             for(let k = 0; k < state[i][j].length;k++) {
@@ -2123,11 +2124,12 @@ function calculateCenter(center_x,center_y) {
 
                     sum_x = sum_x + x
                     sum_y = sum_y + y
+                    count = count + 1
                 }
 
             }
         }
     }
 
-    return [ 250*sum_x/(count-1), 250*sum_y/(count-1) ]
+    return [ 250*sum_x/count, 250*sum_y/count ]
 }

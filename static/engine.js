@@ -1825,8 +1825,8 @@ function drawPoint(center_x,center_y,radius,num,distance){
             for(let k = 0; k < state[i][j].length;k++){
 
                 if(state[i][j][k].H.HP>0) {
-                    let x = center_x + radius * Math.cos(-(count/num)*2*Math.PI) * ((100-state[i][j][k].Position)/100);
-                    let y = center_y + radius * Math.sin(-(count/num)*2*Math.PI) * ((100-state[i][j][k].Position)/100);
+                    let x = center_x + radius * Math.cos((2*Math.PI*(count)/total) + ((9)*(Math.PI)/total) ) * ((100-state[i][j][k].Position)/100);
+                    let y = center_y + radius * Math.sin((2*Math.PI*(count)/total) + ((9)*(Math.PI)/total) ) * ((100-state[i][j][k].Position)/100);
 
                     ctx.beginPath();
                     if(i==my_team && j==my_int){ctx.fillStyle = 'blue';}

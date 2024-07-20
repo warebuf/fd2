@@ -463,12 +463,12 @@ function drawState() {
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
-                            let p1 = 4*Math.PI/10
+                            let p1 = 16*Math.PI/10
                             if(i==1){
-                                p1 = (4*Math.PI/10) - (2*k*Math.PI/10)
+                                p1 = (16*Math.PI/10) + (2*k*Math.PI/10)
                             }
                             else {
-                                p1 = (6*Math.PI/10) + (2*k*Math.PI/10)
+                                p1 = (14*Math.PI/10) - (2*k*Math.PI/10)
                             }
                             let x1 = Math.cos(p1);
                             let y1 = Math.sin(p1);
@@ -480,12 +480,12 @@ function drawState() {
 
                                         }
                                         else {
-                                            let p2 = 4*Math.PI/10
+                                            let p2 = 16*Math.PI/10
                                             if(a==1){
-                                                p2 = (4*Math.PI/10) - (2*c*Math.PI/10)
+                                                p2 = (16*Math.PI/10) + (2*c*Math.PI/10)
                                             }
                                             else {
-                                                p2 = (6*Math.PI/10) + (2*c*Math.PI/10)
+                                                p2 = (14*Math.PI/10) - (2*c*Math.PI/10)
                                             }
                                             let x2 = Math.cos(p2);
                                             let y2 = Math.sin(p2);
@@ -1868,12 +1868,12 @@ function drawPoint(center_x,center_y,radius,num){
 
                 if(state[i][j][k].H.HP>0) {
 
-                    let p = 4*Math.PI/10
+                    let p = 16*Math.PI/10
                     if(i==1){
-                        p = (4*Math.PI/10) - (2*k*Math.PI/10)
+                        p = (16*Math.PI/10) + (2*k*Math.PI/10)
                     }
                     else {
-                        p = (6*Math.PI/10) + (2*k*Math.PI/10)
+                        p = (14*Math.PI/10) - (2*k*Math.PI/10)
                     }
 
                     let x = center_x + radius * Math.cos(p) * (100-state[i][j][k].Position)/100;
@@ -2119,12 +2119,12 @@ function calculateCenter(center_x,center_y) {
 
                 if(state[i][j][k].H.HP > 0) {
 
-                    let p = 4*Math.PI/10
+                    let p = 16*Math.PI/10
                     if(i==1){
-                        p = (4*Math.PI/10) - (2*k*Math.PI/10)
+                        p = (16*Math.PI/10) + (2*k*Math.PI/10)
                     }
                     else {
-                        p = (6*Math.PI/10) + (2*k*Math.PI/10)
+                        p = (14*Math.PI/10) - (2*k*Math.PI/10)
                     }
 
                     let x = Math.cos(p) * (100-state[i][j][k].Position)/100;

@@ -497,7 +497,6 @@ function drawState() {
                                             ctx.lineWidth = 1;
                                             ctx.stroke();
                                         }
-                                        count = count + 1;
                                     }
                                 }
                             }
@@ -515,7 +514,6 @@ function drawState() {
                         }
                     }
                 }
-                count2 = count2 + 1;
             }
         }
     }

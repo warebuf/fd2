@@ -2077,6 +2077,8 @@ function calculateCenter(center_x,center_y) {
                     sum_x = sum_x + x
                     sum_y = sum_y + y
                     count = count + 1
+
+                    console.log(x,y)
                 }
 
             }

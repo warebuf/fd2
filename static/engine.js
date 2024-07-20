@@ -461,9 +461,9 @@ function drawState() {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
                             let count  = 1;
-                            for(let a = 0; a < length(state); a++) {
-                                for(let b = 0; b < len(state[a]); b++) {
-                                    for(let c = 0; c < len(state[a][b]); c++) {
+                            for(let a = 0; a < state.length; a++) {
+                                for(let b = 0; b < state[a].length; b++) {
+                                    for(let c = 0; c < state[a][b].length; c++) {
                                         if(a==i && b==j && c==k) {
 
                                         }

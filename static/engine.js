@@ -471,6 +471,8 @@ function drawState() {
                                             let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
                                             let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
 
+                                            console.log((x*250)+(c.width/2), (y*250)+(c.height/2))
+
                                             ctx.beginPath();
                                             ctx.moveTo( (x*250)+(c.width/2), (y*250)+(c.height/2) );
                                             ctx.lineTo(300, 150);
@@ -2106,8 +2108,6 @@ function calculateCenter(center_x,center_y) {
             }
         }
     }
-
-    console.log("center:",250*sum_x/(count-1), 250*sum_y/(count-1),count-1)
 
     return [ 250*sum_x/(count-1), 250*sum_y/(count-1) ]
 }

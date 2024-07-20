@@ -249,6 +249,8 @@ function drawPos()  {
     }
     else if(draw_attacks>0) {
 
+        if(draw_attacks>0){draw_attacks = 0}
+
         let a1 = 0
         let a2 = 0
         for(let i = 0; i < state.length; i++) {

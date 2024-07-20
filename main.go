@@ -104,8 +104,11 @@ type part struct {
 
 // NOTE: FOR SOME REASON ONLY CONVERTS TO JSON IF CAPITALIZED
 type hero struct {
-	Bot       bool
-	Position  float64
+	Bot bool
+
+	PositionX float64
+	PositionY float64
+
 	Direction int
 	Move      int
 

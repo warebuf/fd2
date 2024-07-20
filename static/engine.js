@@ -406,6 +406,8 @@ function drawState() {
     let space = 590
 
     ctx.textAlign = "left";
+
+    let count2 = 1;
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
@@ -463,6 +465,9 @@ function drawState() {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
                             let count  = 1;
+                            let x2 = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
+                            let y2 = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
+
                             for(let a = 0; a < state.length; a++) {
                                 for(let b = 0; b < state[a].length; b++) {
                                     for(let c = 0; c < state[a][b].length; c++) {
@@ -473,11 +478,9 @@ function drawState() {
                                             let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
                                             let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) ;
 
-                                            console.log(x,y,test1,test2)
-
                                             ctx.beginPath();
                                             ctx.moveTo( (x*250)+test1, (y*250)+test2 );
-                                            ctx.lineTo(300, 150);
+                                            ctx.lineTo((x2*250)+test1, (y*250)+test2);
                                             ctx.strokeStyle = "red";
                                             ctx.lineWidth = 1;
                                             ctx.stroke();
@@ -500,6 +503,7 @@ function drawState() {
                         }
                     }
                 }
+                count = count + 1;
             }
         }
     }

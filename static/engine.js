@@ -2072,7 +2072,7 @@ function calculateCenter(center_x,center_y) {
                 if(state[i][j][k].H.HP > 0) {
                     let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
                     let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
-                    
+
                     sum_x = sum_x + x
                     sum_y = sum_y + y
                     count = count + 1
@@ -2083,7 +2083,7 @@ function calculateCenter(center_x,center_y) {
         }
     }
 
-    console.log("center:",sum_x,sum_y,count)
+    console.log("center:",250*sum_x/(count-1), 250*sum_y/(count-1),count-1)
 
     return [ 250*sum_x/(count-1), 250*sum_y/(count-1) ]
 }

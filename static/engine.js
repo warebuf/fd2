@@ -70,8 +70,15 @@ function anime() {
         drawGrid()
         //drawBoard()
         drawSinglePoint(0,0,c.width/2,c.height/2,'red');
+
+        let temp = calculateCenter();
+        drawSinglePoint(temp[0],temp[1],c.width/2,c.height/2,'yellow');
+
+
         drawCircle(c.width/2,c.height/2,250);
         drawPoint(c.width/2,c.height/2,250,10,1,)
+
+
         drawPos()
         drawState()
         //drawStats()

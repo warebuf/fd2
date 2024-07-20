@@ -2073,10 +2073,12 @@ function calculateCenter(center_x,center_y) {
                     let x = Math.cos((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
                     let y = Math.sin((2*Math.PI*(count)/10) + ((4)*(Math.PI)/10) ) * ((100-state[i][j][k].Position)/100);
 
+
                     sum_x = sum_x + x
                     sum_y = sum_y + y
                     count = count + 1
 
+                    console.log(x,y, sum_x,sum_y)
                 }
 
             }

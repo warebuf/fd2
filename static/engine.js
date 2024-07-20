@@ -1824,6 +1824,13 @@ function drawPoint(center_x,center_y,radius,num,distance){
 
                     ctx.arc(x, y, 2, 0, 2 * Math.PI);
                     ctx.fill();
+
+                    ctx.fillStyle = 'white';
+                    ctx.textAlign = "center";
+                    ctx.font = '8px monospace';
+                    ctx.fillText(k, x, y-10 );
+                    ctx.fillText(state[i][j][k].Position.toFixed(1), x, y+10 );
+                    //ctx.font = '11px monospace';
                 }
 
 

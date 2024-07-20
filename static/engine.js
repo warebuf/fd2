@@ -503,7 +503,7 @@ function drawState() {
                         }
                     }
                 }
-                count = count + 1;
+                count2 = count2 + 1;
             }
         }
     }

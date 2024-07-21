@@ -2154,25 +2154,25 @@ function drawHeatMap(){
 
     ctx.textAlign = "center";
     ctx.font = '8px monospace';
-    ctx.fillText("HP",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("DEF",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("DOG",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("ATK",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("ACC",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("CRT",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("CD",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("CLU",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("WGT",x_offset+x_shift+7.5,y_offset+y_shift-10);
-    x_shift = x_shift+15
-    ctx.fillText("SPD",x_offset+x_shift+7.5,y_offset+y_shift-10);
+    ctx.fillText("HP",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("DEF",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("DOG",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("ATK",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("ACC",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("CRT",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("CD",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("CLU",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("WGT",x_offset+x_shift+10,y_offset+y_shift-10);
+    x_shift = x_shift+20
+    ctx.fillText("SPD",x_offset+x_shift+10,y_offset+y_shift-10);
     x_shift = 0
 
     for(let i = 0; i < state.length; i++) {
@@ -2183,74 +2183,74 @@ function drawHeatMap(){
                 ctx.textAlign = "center";
 
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15
+                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
 
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+10,y_offset+y_shift+10);
+                x_shift = x_shift+20;
 
 
-                y_shift=y_shift+15;
+                y_shift=y_shift+20;
                 x_shift=0;
             }
             x_shift = 0;
-            y_shift=y_shift+15;
+            y_shift=y_shift+20;
         }
     }
 }

@@ -2146,8 +2146,8 @@ function calculateCenter(center_x,center_y) {
 
 function drawHeatMap(){
 
-    let x_offset = 0
-    let y_offset = 0
+    let x_offset = 10
+    let y_offset = 10
 
     let x_shift = 0;
     let y_shift = 0;
@@ -2159,7 +2159,7 @@ function drawHeatMap(){
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+5,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
                 ctx.textAlign = "center";

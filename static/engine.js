@@ -2141,3 +2141,31 @@ function calculateCenter(center_x,center_y) {
 
     return [ 250*sum_x/count, 250*sum_y/count ]
 }
+
+function drawHeatMap(){
+
+    let x_offset = 0
+    let y_offset = 0
+
+    let x_shift = 0;
+    let y_shift = 0;
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                ctx.textAlign = "center";
+                ctx.fillStyle = 'blue';
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
+                ctx.font = '11px monospace';
+                ctx.fillStyle = 'white';
+                ctx.fillText(state[i][j][k].H.HP,0,0);
+                x_shift = x_shift+10;
+
+
+
+
+                y_shift=y_shift+10;
+            }
+            x_shift = 0;
+        }
+    }
+}

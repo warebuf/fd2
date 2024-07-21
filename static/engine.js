@@ -2182,63 +2182,63 @@ function drawHeatMap(){
 
                 ctx.textAlign = "center";
 
-                ctx.fillStyle = "rgb(50, 0, 0)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.HP)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20
 
-                ctx.fillStyle = "rgb(150, 0, 0)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.DEF)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
 
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(255, 0, 0)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(255,128, 0)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.ATK)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(255,255, 0)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.ACC)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(255, 255, 64)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.CRT)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(255, 255, 128)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.CD)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(255, 255, 204)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.CLU)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = "rgb(0, 25, 0)";
+                ctx.fillStyle = calcColour(state[i][j][k].H.Weight)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
@@ -2254,4 +2254,20 @@ function drawHeatMap(){
         }
     }
 
+}
+
+function calcColour(n){
+    if(n<0){
+        return "rgb(0,0,0)"
+    }
+
+    if(n<=20){
+        return "rgb("+80+(9*n)+",0,0)"
+    }
+    else if(n<71){
+        return "rgb(255,"+(n-20)*5+",0)"
+    }
+    else {
+        return "rgb("+255-((n-71)*8)+",255,0)"
+    }
 }

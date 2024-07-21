@@ -2162,6 +2162,7 @@ function drawHeatMap(){
     for(let i = 0; i < state.length; i++) {
 
         ctx.textAlign = "center";
+        ctx.fillStyle = 'white';
         ctx.font = '10px monospace';
         ctx.fillText("HP",x_offset+x_shift+t_shift+12,y_offset+y_shift-5);
         x_shift = x_shift+25

@@ -2420,7 +2420,7 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].B.ACC,x_offset+x_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
 
-                ctx.fillStyle = calcColour(state[i][j][k].BCRT)
+                ctx.fillStyle = calcColour(state[i][j][k].B.CRT)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';

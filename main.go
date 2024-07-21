@@ -86,11 +86,14 @@ type part struct {
 	SERIAL  int
 	NAME    string
 
-	HP     int
-	ATK    int
-	DEF    int
-	ACC    int
-	CRT    int
+	HP  int
+	DEF int
+	DOG int
+
+	ATK int
+	ACC int
+	CRT int
+
 	CD     int
 	CLU    int
 	Weight int
@@ -98,7 +101,6 @@ type part struct {
 	Use_current int
 	Use_outof   int
 
-	DOG int
 	SPD int
 }
 

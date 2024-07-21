@@ -2450,9 +2450,10 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].B.SPD,x_offset+x_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
 
+                y_shift=y_shift+20;
+                x_shift=0;
+
             }
-            x_shift = 0;
-            y_shift=y_shift+100;
         }
     }
 
@@ -2464,15 +2465,12 @@ function calcColour(n){
     }
 
     if(n<=20){
-        console.log(n,"rgb("+(80+(9*n))+",0,0)")
         return "rgb("+80+(9*n)+",0,0)"
     }
     else if(n<71){
-        console.log(n,"rgb(255,"+((n-20)*5)+",0)")
         return "rgb(255,"+(n-20)*5+",0)"
     }
     else {
-        console.log(n,"rgb("+(255-((n-71)*8))+",255,0)")
         return "rgb("+(255-((n-71)*8))+",255,0)"
     }
     return "black"

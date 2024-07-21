@@ -2157,15 +2157,15 @@ function drawHeatMap(){
 
                 ctx.fillStyle = 'blue';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
-                ctx.font = '5px monospace';
+                ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift,y_offset+y_shift+10);
-                x_shift = x_shift+10;
+                x_shift = x_shift+15;
 
                 ctx.textAlign = "left";
                 ctx.fillStyle = 'blue';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
-                ctx.font = '5px monospace';
+                ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift,y_offset+y_shift+10);
                 x_shift = x_shift+15;

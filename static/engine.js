@@ -2153,25 +2153,25 @@ function drawHeatMap(){
     let y_shift = 0;
 
     ctx.textAlign = "center";
-    ctx.fillText("HP",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("HP",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("DEF",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("DEF",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("DOG",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("DOG",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("ATK",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("ATK",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("ACC",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("ACC",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("CRT",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("CRT",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("CD",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("CD",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("CLU",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("CLU",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("WGT",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("WGT",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
-    ctx.fillText("SPD",x_offset+x_shift+7.5,y_offset+y_shift+10);
+    ctx.fillText("SPD",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = 0
 
     for(let i = 0; i < state.length; i++) {

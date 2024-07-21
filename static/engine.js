@@ -2186,63 +2186,63 @@ function drawHeatMap(){
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.DEF)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
 
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.ATK)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.ACC)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.CRT)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.CD)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.CLU)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.Weight)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+10,y_offset+y_shift+10);
+                ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
 
@@ -2262,12 +2262,15 @@ function calcColour(n){
     }
 
     if(n<=20){
+        console.log(n,"rgb("+80+(9*n)+",0,0)")
         return "rgb("+80+(9*n)+",0,0)"
     }
     else if(n<71){
+        console.log(n,"rgb(255,"+(n-20)*5+",0)")
         return "rgb(255,"+(n-20)*5+",0)"
     }
     else {
+        console.log(n,"rgb("+255-((n-71)*8)+",255,0)")
         return "rgb("+255-((n-71)*8)+",255,0)"
     }
     return "black"

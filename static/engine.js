@@ -2262,15 +2262,15 @@ function calcColour(n){
     }
 
     if(n<=20){
-        console.log(n,"rgb("+80+(9*n)+",0,0)")
+        console.log(n,"rgb("+(80+(9*n))+",0,0)")
         return "rgb("+80+(9*n)+",0,0)"
     }
     else if(n<71){
-        console.log(n,"rgb(255,"+(n-20)*5+",0)")
+        console.log(n,"rgb(255,"+((n-20)*5)+",0)")
         return "rgb(255,"+(n-20)*5+",0)"
     }
     else {
-        console.log(n,"rgb("+(255-(n))+",255,0)")
+        console.log(n,"rgb("+(255-((n-71)*8))+",255,0)")
         return "rgb("+255+",255,0)"
     }
     return "black"

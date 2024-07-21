@@ -2159,25 +2159,25 @@ function drawHeatMap(){
                 ctx.textAlign = "center";
 
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+10,y_offset+y_shift+10);
-                x_shift = x_shift+20;
+                x_shift = x_shift+15;
 
                 ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+10);
-                x_shift = x_shift+20;
+                x_shift = x_shift+15;
 
 
-                y_shift=y_shift+20;
+                y_shift=y_shift+15;
                 x_shift=0;
             }
             x_shift = 0;
-            y_shift=y_shift+20;
+            y_shift=y_shift+15;
         }
     }
 }

@@ -2171,7 +2171,7 @@ function drawHeatMap(){
                 x_shift = x_shift+10;
 
 
-
+                y_shift=y_shift+10;
             }
             x_shift = 0;
             y_shift=y_shift+10;

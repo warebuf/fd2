@@ -2159,7 +2159,7 @@ function drawHeatMap(){
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '5px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift,y_offset+y_shift-10);
+                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift,y_offset+y_shift+10);
                 x_shift = x_shift+10;
 
                 ctx.textAlign = "left";
@@ -2167,7 +2167,7 @@ function drawHeatMap(){
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '5px monospace';
                 ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift,y_offset+y_shift);
+                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift,y_offset+y_shift+10);
                 x_shift = x_shift+10;
 
 

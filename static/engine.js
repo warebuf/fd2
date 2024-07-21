@@ -2155,6 +2155,9 @@ function drawHeatMap(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
+
+                ctx.textAlign = "center";
+
                 ctx.fillStyle = 'blue';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '11px monospace';
@@ -2162,7 +2165,6 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+5,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.textAlign = "center";
                 ctx.fillStyle = 'blue';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '11px monospace';

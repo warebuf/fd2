@@ -65,7 +65,6 @@ function anime() {
         //drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
 
-
     } else if (match_data.length > 0) {
 
         drawGrid()
@@ -85,9 +84,15 @@ function anime() {
         //drawStats()
         drawTurn()
         drawUnitsOfTime()
-        drawStartersTable2()
+
         drawLog()
-        drawHeatMap()
+
+
+        if(view){
+            drawStartersTable2()
+        } else {
+            drawHeatMap()
+        }
 
     }
 

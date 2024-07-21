@@ -108,6 +108,12 @@
                     }
                 }
                 break;
+
+            case "c":
+            case "C":
+                if(view==0){view=1}
+                else if(view==1){view=0}
+                break;
             case "ArrowLeft":
 
                 if(phase=="CHARACTER SELECTION"){
@@ -513,6 +519,8 @@
 
     var total_units_of_time = 0;
 
+
+    var view = 0;
 
     function test() {
 

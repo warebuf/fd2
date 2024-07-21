@@ -2172,6 +2172,7 @@ function drawHeatMap(){
 
 
                 y_shift=y_shift+10;
+                x_shift=0;
             }
             x_shift = 0;
             y_shift=y_shift+10;

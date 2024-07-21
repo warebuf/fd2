@@ -2452,7 +2452,7 @@ function drawHeatMap(){
 
             }
             x_shift = 0;
-            y_shift=y_shift+85;
+            y_shift=y_shift+100;
         }
     }
 

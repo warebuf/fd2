@@ -2153,7 +2153,7 @@ function drawHeatMap(){
     let y_shift = 0;
 
     ctx.textAlign = "center";
-    ctx.font = '7px monospace';
+    ctx.font = '8px monospace';
     ctx.fillText("HP",x_offset+x_shift+7.5,y_offset+y_shift-10);
     x_shift = x_shift+15
     ctx.fillText("DEF",x_offset+x_shift+7.5,y_offset+y_shift-10);

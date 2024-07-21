@@ -2270,7 +2270,7 @@ function calcColour(n){
         return "rgb(255,"+(n-20)*5+",0)"
     }
     else {
-        console.log(n,"rgb("+255+",255,0)")
+        console.log(n,"rgb("+(255-((n-71)*8))+",255,0)")
         return "rgb("+255+",255,0)"
     }
     return "black"

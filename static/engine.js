@@ -2455,7 +2455,7 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].B.SPD,x_offset+x_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
 
-                y_shift=y_shift+20;
+                y_shift=y_shift+25;
                 x_shift=0;
 
             }

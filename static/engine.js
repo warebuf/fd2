@@ -2153,6 +2153,7 @@ function drawHeatMap(){
     let y_shift = 0;
 
     ctx.textAlign = "center";
+    ctx.font = '9px monospace';
     ctx.fillText("HP",x_offset+x_shift+7.5,y_offset+y_shift);
     x_shift = x_shift+15
     ctx.fillText("DEF",x_offset+x_shift+7.5,y_offset+y_shift);
@@ -2190,7 +2191,7 @@ function drawHeatMap(){
 
                 ctx.fillStyle = 'red';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
-                ctx.font = '11px monospace';
+
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+7.5,y_offset+y_shift+10);
                 x_shift = x_shift+15;

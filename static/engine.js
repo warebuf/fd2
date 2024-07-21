@@ -2146,8 +2146,8 @@ function calculateCenter(center_x,center_y) {
 
 function drawHeatMap(){
 
-    let x_offset = 10
-    let y_offset = 10
+    let x_offset = 30
+    let y_offset = 30
 
     let x_shift = 0;
     let y_shift = 0;

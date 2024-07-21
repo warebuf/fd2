@@ -2465,7 +2465,7 @@ function drawHeatMap(){
         }
         y_shift = 0;
         x_shift = 0;
-        t_shift = 100;
+        t_shift = t_shift + 200;
     }
 
 }

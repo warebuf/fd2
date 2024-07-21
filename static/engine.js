@@ -2184,63 +2184,63 @@ function drawHeatMap(){
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.HP)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.DEF)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.ATK)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.ACC)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.CRT)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.CD)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.CLU)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;
 
                 ctx.fillStyle = calcColour(state[i][j][k].H.Weight)
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
-                ctx.font = '11px monospace';
+                ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+10,y_offset+y_shift+14);
                 x_shift = x_shift+20;

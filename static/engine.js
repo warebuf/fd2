@@ -2221,12 +2221,6 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].H.WGT,x_offset+x_shift+7.5,y_offset+y_shift+10);
                 x_shift = x_shift+15;
 
-                ctx.fillStyle = 'red';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
-                ctx.font = '11px monospace';
-                ctx.fillStyle = 'white';
-                ctx.fillText(state[i][j][k].H.SPD,x_offset+x_shift+7.5,y_offset+y_shift+10);
-                x_shift = x_shift+15;
 
                 y_shift=y_shift+15;
                 x_shift=0;

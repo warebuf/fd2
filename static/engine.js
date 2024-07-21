@@ -2270,4 +2270,5 @@ function calcColour(n){
     else {
         return "rgb("+255-((n-71)*8)+",255,0)"
     }
+    return "black"
 }

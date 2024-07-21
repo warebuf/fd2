@@ -2156,22 +2156,22 @@ function drawHeatMap(){
             for(let k = 0; k < state[i][j].length; k++) {
 
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                x_shift = x_shift+10;
 
                 ctx.textAlign = "left";
                 ctx.fillStyle = 'blue';
-                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,15,15)
+                ctx.fillRect(x_offset+x_shift,y_offset+y_shift,10,10)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift,y_offset+y_shift+10);
-                x_shift = x_shift+15;
+                x_shift = x_shift+10;
 
 
-                y_shift=y_shift+15;
+                y_shift=y_shift+10;
                 x_shift=0;
             }
             x_shift = 0;

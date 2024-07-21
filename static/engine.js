@@ -2271,7 +2271,7 @@ function calcColour(n){
     }
     else {
         console.log(n,"rgb("+255-((n-71)*8)+",255,0)")
-        return "rgb("+255-((n-71)*8)+",255,0)"
+        return "rgb("+255+",255,0)"
     }
     return "black"
 }

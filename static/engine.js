@@ -2182,7 +2182,7 @@ function drawHeatMap(){
 
                 ctx.textAlign = "center";
 
-                ctx.fillStyle = 'blue';
+                ctx.fillStyle = 'green';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
@@ -2196,14 +2196,14 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = 'yellow';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = 'green';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
@@ -2217,14 +2217,14 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = 'yellow';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
                 ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = 'green';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';
@@ -2238,7 +2238,7 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+10,y_offset+y_shift+10);
                 x_shift = x_shift+20;
 
-                ctx.fillStyle = 'red';
+                ctx.fillStyle = 'yellow';
                 ctx.fillRect(x_offset+x_shift,y_offset+y_shift,20,20)
                 ctx.font = '11px monospace';
                 ctx.fillStyle = 'white';

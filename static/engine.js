@@ -89,9 +89,9 @@ function anime() {
 
 
         if(view){
-            drawStartersTable2()
-        } else {
             drawHeatMap()
+        } else {
+            drawStartersTable2()
         }
 
     }

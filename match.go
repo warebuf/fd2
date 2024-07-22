@@ -128,12 +128,10 @@ func m_read(m *match_socket) {
 			msg.Name = m.u.email
 			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
 
-			if msg.Event == "swapRequest" {
-				fmt.Println("asd")
-			}
-
 			// user requests to create match
-			if msg.Event == "act" {
+			if m.m.ended == true {
+				continue
+			} else if msg.Event == "act" {
 				fmt.Println("received act")
 				// check if the match has started and the action is to a user's own bot
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {

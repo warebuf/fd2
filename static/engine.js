@@ -2223,7 +2223,7 @@ function drawHeatMap(){
                 y_shift = y_shift+20;
 
 
-                ctx.fillStyle = 'grey';
+                ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
                 ctx.fillText("H",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
@@ -2294,7 +2294,7 @@ function drawHeatMap(){
                 y_shift=y_shift+20;
                 x_shift=0;
 
-                ctx.fillStyle = 'grey';
+                ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
                 ctx.fillText("L",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
@@ -2365,7 +2365,7 @@ function drawHeatMap(){
                 y_shift=y_shift+20;
                 x_shift=0;
 
-                ctx.fillStyle = 'grey';
+                ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
                 ctx.fillText("R",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
@@ -2436,7 +2436,7 @@ function drawHeatMap(){
                 y_shift=y_shift+20;
                 x_shift=0;
 
-                ctx.fillStyle = 'grey';
+                ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
                 ctx.fillText("B",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);

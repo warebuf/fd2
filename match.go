@@ -396,6 +396,28 @@ func m_read(m *match_socket) {
 
 				}
 
+			} else if msg.Event == "resign" {
+
+				m.m.ended = true
+				m.m.ticker.Stop()
+
+				msg := &message{Event: "game_over"}
+
+				for _, i := range m.m.gamer_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
+				}
+
+				for _, i := range m.m.spectator_uid_to_msid_to_match_socket {
+					for _, j := range i {
+						select {
+						case j.incoming_message <- msg:
+						}
+					}
+				}
 			} else {
 				fmt.Println("cannot swap incompatible body parts")
 			}
@@ -588,86 +610,6 @@ func createMatch(pl *permission_list) *match {
 				}
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
-
-			/*
-				for y := 0; y < 5; y++ {
-					h := head{
-						SERIAL:      0,
-						NAME:        "DEFAULT",
-						HP:          100,
-						ATK:         100,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-					}
-					larm := arm{
-						SERIAL: 0,
-						NAME:   "DEFAULT",
-						LORR:   false,
-
-						HP:          100,
-						ATK:         100,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-					}
-					rarm := arm{
-						SERIAL: 0,
-						NAME:   "DEFAULT",
-						LORR:   true,
-
-						HP:          100,
-						ATK:         100,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-					}
-					btm := bottom{
-						SERIAL: 0,
-						NAME:   "DEFAULT",
-
-						HP:          100,
-						ATK:         100,
-						DEF:         0,
-						ACC:         0,
-						CRT:         0,
-						CD:          0,
-						CLU:         0,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      1,
-
-						DOG: 0,
-						SPD: rand.Intn(10) * 10,
-					}
-					temp := &hero{
-						Bot:       j.bot_status,
-						Position:  0,
-						Direction: 0,
-						Move:      -1,
-						H:         h,
-						L:         larm,
-						R:         rarm,
-						B:         btm,
-					}
-					ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
-				}
-			*/
 
 			ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
 
@@ -1539,7 +1481,6 @@ func game_over_check(state [][][]*hero) bool {
 
 	return true
 }
-
 func (m *match) sharebench() {
 	fmt.Println("sharebench")
 
@@ -1561,7 +1502,6 @@ func (m *match) sharebench() {
 		}
 	}
 }
-
 func (m *match) shareint() {
 	fmt.Println("shareint")
 

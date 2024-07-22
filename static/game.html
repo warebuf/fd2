@@ -461,7 +461,7 @@
             case "Escape":
                 if(settings_menu==0){
                     settings_menu=1
-                    document.getElementById("settings").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
+                    document.getElementById("settings").insertAdjacentHTML('beforeend',"<button id='resign' onclick=resign()>Resign</button>");
                 }
                 else{
                     settings_menu=0
@@ -689,6 +689,10 @@ function returntomatchmaking(){
 
 function endCharSelect(){
     socket.send(JSON.stringify({ "Event": 'endCharSel' }))
+}
+
+function resign(){
+    socket.send(JSON.stringify({ "Event": 'resign' }))
 }
 
 </script>

@@ -80,10 +80,12 @@ function anime() {
         drawTurn()
         drawUnitsOfTime()
         drawLog()
-        if(view){
+        if(view==0){
             drawHeatMap()
-        } else {
+        } else if(view==1) {
             drawStartersTable2()
+        } else if(view==2) {
+            drawCumulStats()
         }
 
     }
@@ -2530,4 +2532,8 @@ function calcColour(n){
         return "rgb("+(255-((n-71)*8))+",255,0)"
     }
     return "black"
+}
+
+function drawCumulStats(){
+
 }

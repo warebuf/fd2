@@ -2152,7 +2152,7 @@ function calculateCenter(center_x,center_y) {
 function drawHeatMap(){
 
     let x_offset = 30
-    let y_offset = 200
+    let y_offset = 170
 
     let x_shift = 0;
     let y_shift = 0;
@@ -2511,7 +2511,7 @@ function drawHeatMap(){
                 ctx.fillText(state[i][j][k].B.SPD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
 
-                y_shift=y_shift+25;
+                y_shift=y_shift+50;
                 x_shift=0;
 
             }

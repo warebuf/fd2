@@ -43,7 +43,8 @@
 <div id="container">
 
     <div id="sel_but"></div>
-    <div id="test"> </div>
+    <div id="test"></div>
+    <div id="settings"></div>
 
     <canvas id="myCanvas"></canvas>
 
@@ -109,8 +110,7 @@
                 }
                 break;
 
-            case "c":
-            case "C":
+            case "KeyC":
                 if(view==0){view=1}
                 else if(view==1){view=0}
                 break;
@@ -457,6 +457,17 @@
                     returntomatchmaking()
                 }
                 break;
+            case "Escape":
+                if(settings_menu==0){
+                    settings_menu=1
+                    document.getElementById("settings").insertAdjacentHTML('beforeend',"<button id='a1' onclick=endCharSelect()>finished</button>");
+                }
+                else{
+                    settings_menu=0
+                    let s = document.getElementById("settings").getElementsByTagName("div")
+                    s[0].remove()
+                }
+                break;
         }
 
     }
@@ -519,8 +530,9 @@
 
     var total_units_of_time = 0;
 
-
     var view = 0;
+    var settings_menu = 0;
+
 
     function test() {
 

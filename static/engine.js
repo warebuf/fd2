@@ -461,7 +461,8 @@ function drawState() {
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
-                        if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
+                        if(true){
+                        //if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
                             let p1 = 16*Math.PI/10
@@ -518,7 +519,6 @@ function drawState() {
             }
         }
     }
-
 }
 
 function drawPhase() {

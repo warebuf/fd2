@@ -335,12 +335,10 @@ function drawPos()  {
             let atk_j = atk_json_obj.Attacker[1]
             let atk_k = atk_json_obj.Attacker[2]
 
-            ctx.fillText(state[atk_i][atk_j][atk_k].Move, 1000, 110 + (100*i));
-
-
             let atk_log = atk_json_obj.Damage
             for(let j = 0 ; j < atk_log.length; j++) {
-                ctx.fillText(atk_log, 1000, 120 + (100*i) + (10*j) );
+                let text = text.split(";")
+                ctx.fillText(text[0] + " " + text[1] + " " + text[2] + " " + text[3] + " " + text[4] + " " + text[5] + text[6], 1000, 110 + (100*i) + (10*j) );
             }
 
 

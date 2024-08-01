@@ -341,7 +341,7 @@ function drawPos()  {
             for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { //
                 let text = atk_json_obj.Damage[j][0].split(";")
 
-                ctx.fillText(atk_i.concat(atk_j).concat(atk_k).concat(text[0]) + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
+                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+text[0] + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
 
             }

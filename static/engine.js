@@ -353,7 +353,7 @@ function drawPos()  {
                 let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
                 let p_atk = state[atk_i][atk_j][atk_k].Move
 
-                ctx.fillText(p_atk, 990,110 + (100*i) + (10*j))
+                ctx.fillText(p_atk, 1000,90 + (100*i) + (10*j))
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString() + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 

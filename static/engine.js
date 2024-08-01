@@ -362,10 +362,10 @@ function drawPos()  {
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
                 ctx.fillStyle = 'red';
-                if(p=="H"){ctx.fillRect(925,120 + (100*i) + (20*j) - 10,10,10);}
-                else if(p=="L"){ctx.fillRect(975,120 + (100*i) + (20*j)- 10,10,10);}
-                else if(p=="R"){ctx.fillRect(1025,120 + (100*i) + (20*j)- 10,10,10);}
-                else if(p=="B"){ctx.fillRect(1075,120 + (100*i) + (20*j)- 10,10,10);}
+                if(p=="H"){ctx.fillRect(925,120 + (100*i) + (20*j) - 5,10,10);}
+                else if(p=="L"){ctx.fillRect(975,120 + (100*i) + (20*j) - 5,10,10);}
+                else if(p=="R"){ctx.fillRect(1025,120 + (100*i) + (20*j) - 5,10,10);}
+                else if(p=="B"){ctx.fillRect(1075,120 + (100*i) + (20*j) - 5,10,10);}
 
                 ctx.fillStyle = 'white';
                 ctx.fillText("H:"+hperc+"%", 925, 120 + (100*i) + (20*j) );

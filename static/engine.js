@@ -359,7 +359,7 @@ function drawPos()  {
                 else if(p_atk==2){p_atk="R"}
                 else if(p_atk==3){p_atk="B"}
 
-                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
+                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, w, 110 + (100*i) + (10*j) );
 
                 if(p=="H"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}

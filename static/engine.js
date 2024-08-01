@@ -452,8 +452,8 @@ function drawPos()  {
                 if(event_log.length >= 25) {
                     event_log.shift()
                 }
-                state[atk_i][atk_i][atk_i].Move = -1
-                state[atk_i][atk_i][atk_i].Direction = 0
+                state[atk_i][atk_j][atk_k].Move = -1
+                state[atk_i][atk_j][atk_k].Direction = 0
                 time_event_ready = true
             }
         }

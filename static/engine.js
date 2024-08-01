@@ -352,10 +352,14 @@ function drawPos()  {
                 let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
                 let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
                 let p_atk = state[atk_i][atk_j][atk_k].Move
+                if(p_atk==0){p_atk="H"}
+                else if(p_atk==1){p_atk="L"}
+                else if(p_atk==2){p_atk="R"}
+                else if(p_atk==3){p_atk="B"}
 
                 ctx.fillText(p_atk, 1000,90 + (100*i) + (10*j))
 
-                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString() + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
+                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
                 if(dice<hw){ctx.fillRect(925,120 + (100*i) + (20*j),250,1);}
                 else if(dice<(hw+lw)){ctx.fillRect(975,120 + (100*i) + (20*j),250,1);}

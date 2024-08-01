@@ -367,6 +367,7 @@ function drawPos()  {
                 else if(p=="R"){ctx.fillRect(1025,120 + (100*i) + (20*j),10,10);}
                 else if(p=="B"){ctx.fillRect(1075,120 + (100*i) + (20*j),10,10);}
 
+                ctx.fillStyle = 'white';
                 ctx.fillText("H:"+hperc+"%", 925, 120 + (100*i) + (20*j) );
                 ctx.fillText("L:"+lperc+"%", 975, 120 + (100*i) + (20*j) );
                 ctx.fillText("R:"+rperc+"%", 1025, 120 + (100*i) + (20*j) );

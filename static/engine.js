@@ -349,7 +349,7 @@ function drawPos()  {
                 let dice = parseInt(text[6])
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
-                ctx.fillText(hw/(hw+lw+rw+bw), 1000, 120 + (100*i) + (20*j) );
+                ctx.fillText(Math.round(100*hw/(hw+lw+rw+bw))/100, 1000, 120 + (100*i) + (20*j) );
 
 
             }

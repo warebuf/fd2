@@ -374,16 +374,16 @@ function drawPos()  {
                 ctx.fillText("B:"+bperc+"%", 1075, 120 + (100*i) + (20*j) );
                 ctx.fillStyle = "white";
 
-                if(state[atk_i][atk_j][atk_k].Move=="H"){
+                if(state[atk_i][atk_j][atk_k].Move==0){
                     ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
-                else if(state[atk_i][atk_j][atk_k].Move=="L"){
+                else if(state[atk_i][atk_j][atk_k].Move==1){
                     ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
-                else if(state[atk_i][atk_j][atk_k].Move=="R"){
+                else if(state[atk_i][atk_j][atk_k].Move==2){
                     ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
-                else if(state[atk_i][atk_j][atk_k].Move=="B"){
+                else if(state[atk_i][atk_j][atk_k].Move==3){
                     ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
 

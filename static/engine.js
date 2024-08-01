@@ -334,10 +334,16 @@ function drawPos()  {
             let atk_i = atk_json_obj.Attacker[0]
             let atk_j = atk_json_obj.Attacker[1]
             let atk_k = atk_json_obj.Attacker[2]
+            let def_i = atk_json_obj.Defender[0]
+            let def_j = atk_json_obj.Defender[1]
+            let def_k = atk_json_obj.Defender[2]
 
             for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { //
                 let text = atk_json_obj.Damage[j][0].split(";")
-                ctx.fillText(text[0] + " " + text[1] + " " + text[2] + " " + text[3] + " " + text[4] + " " + text[5] + " " + text[6], 1000, 110 + (100*i) + (10*j) );
+
+                ctx.fillText(atk_i+atk_j+atk_k+text[0] + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
+
+
             }
 
 

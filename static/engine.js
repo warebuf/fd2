@@ -330,7 +330,7 @@ function drawPos()  {
         ctx.fillStyle = 'white';
         ctx.font = '10px monospace';
         for(let i = 0; i < atk_data[animating_state].length; i++) { // iterate through all attacks
-            ctx.fillText(atk_data[animating_state][i], 1000, 100 + (100*i));
+            ctx.fillText(atk_data[animating_state][i], w, 100 + (100*i));
 
             let atk_json_obj = JSON.parse(atk_data[animating_state][i]);
             let atk_i = atk_json_obj.Attacker[0]
@@ -362,87 +362,87 @@ function drawPos()  {
 
                 if(p=="H"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
-                ctx.fillText("H:"+hperc+"%", 925, 120 + (100*i) + (20*j) );
+                ctx.fillText("H:"+hperc+"%", w-75, 120 + (100*i) + (20*j) );
                 if(p=="L"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
-                ctx.fillText("L:"+lperc+"%", 975, 120 + (100*i) + (20*j) );
+                ctx.fillText("L:"+lperc+"%", w-25, 120 + (100*i) + (20*j) );
                 if(p=="R"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
-                ctx.fillText("R:"+rperc+"%", 1025, 120 + (100*i) + (20*j) );
+                ctx.fillText("R:"+rperc+"%", w+25, 120 + (100*i) + (20*j) );
                 if(p=="B"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
-                ctx.fillText("B:"+bperc+"%", 1075, 120 + (100*i) + (20*j) );
+                ctx.fillText("B:"+bperc+"%", w+75, 120 + (100*i) + (20*j) );
                 ctx.fillStyle = "white";
 
                 let carry_atk = 0;
 
                 if(state[atk_i][atk_j][atk_k].Move==0){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + " ATK", 1000-25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
                     carry_atk = state[atk_i][atk_j][atk_k].H.ATK;
                 }
                 else if(state[atk_i][atk_j][atk_k].Move==1){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + " ATK", 1000-25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
                     carry_atk = state[atk_i][atk_j][atk_k].L.ATK;
                 }
                 else if(state[atk_i][atk_j][atk_k].Move==2){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + " ATK", 1000-25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
                     carry_atk = state[atk_i][atk_j][atk_k].R.ATK;
                 }
                 else if(state[atk_i][atk_j][atk_k].Move==3){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + " ATK", 1000-25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
                     carry_atk = state[atk_i][atk_j][atk_k].B.ATK;
                 }
 
-                ctx.fillText("-", 1000, 130 + (100*i) + (30*j) );
+                ctx.fillText("-", w, 130 + (100*i) + (30*j) );
 
                 if(p_atk="H"){
-                    ctx.fillText(state[def_i][def_j][def_k].H.DEF + " DEF", 1000+25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].H.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                     carry_atk = carry_atk - state[def_i][def_j][def_k].H.DEF
                 }
                 else if(p_atk="L"){
-                    ctx.fillText(state[def_i][def_j][def_k].L.DEF + " DEF", 1000+25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].L.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                     carry_atk = carry_atk - state[def_i][def_j][def_k].L.DEF
                 }
                 else if(p_atk="R"){
-                    ctx.fillText(state[def_i][def_j][def_k].R.DEF + " DEF", 1000+25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].R.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                     carry_atk = carry_atk - state[def_i][def_j][def_k].R.DEF
                 }
                 else if(p_atk="B"){
-                    ctx.fillText(state[def_i][def_j][def_k].B.DEF + " DEF", 1000+25, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].B.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                     carry_atk = carry_atk - state[def_i][def_j][def_k].B.DEF
                 }
 
-                ctx.fillText("=", 1000+50, 130 + (100*i) + (30*j) );
-                ctx.fillText(carry_atk + " DMG", 1000+75, 130 + (100*i) + (30*j) );
+                ctx.fillText("=", w+50, 130 + (100*i) + (30*j) );
+                ctx.fillText(carry_atk + " DMG", w+75, 130 + (100*i) + (30*j) );
 
                 if(carry_atk < 0) {
                     ctx.fillStyle = "red";
-                    ctx.fillText(0, 1000+100, 130 + (100*i) + (30*j) );
+                    ctx.fillText(0, w+100, 130 + (100*i) + (30*j) );
                     ctx.fillStyle = "white";
                     carry_atk = 0
                 }
 
                 let carry_hp = 0
                 if(p_atk="H"){
-                    ctx.fillText(state[def_i][def_j][def_k].H.HP + " HP", 1000-25, 140 + (100*i) + (40*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].H.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].H.HP
                 }
                 else if(p_atk="L"){
-                    ctx.fillText(state[def_i][def_j][def_k].L.HP + " HP", 1000-25, 140 + (100*i) + (40*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].L.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].L.HP
                 }
                 else if(p_atk="R"){
-                    ctx.fillText(state[def_i][def_j][def_k].R.HP + " HP", 1000-25, 140 + (100*i) + (40*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].R.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].R.HP
                 }
                 else if(p_atk="B"){
-                    ctx.fillText(state[def_i][def_j][def_k].B.HP + " HP", 1000-25, 140 + (100*i) + (40*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].B.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].B.HP
                 }
-                ctx.fillText("-", 1000, 140 + (100*i) + (40*j) );
-                ctx.fillText(carry_atk + " DMG", 1000+25, 140 + (100*i) + (40*j) );
-                ctx.fillText("=", 1000+50, 140 + (100*i) + (40*j) );
-                ctx.fillText(carry_hp-carry_atk + " HP", 1000+75, 140 + (100*i) + (40*j) );
+                ctx.fillText("-", w, 140 + (100*i) + (40*j) );
+                ctx.fillText(carry_atk + " DMG", w+25, 140 + (100*i) + (40*j) );
+                ctx.fillText("=", w+50, 140 + (100*i) + (40*j) );
+                ctx.fillText(carry_hp-carry_atk + " HP", w+75, 140 + (100*i) + (40*j) );
 
 
             }

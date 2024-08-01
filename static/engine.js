@@ -258,8 +258,7 @@ function drawPos()  {
     }
     else if(draw_attacks>0) {
 
-        if(draw_attacks>0){draw_attacks = 59}
-
+        /*
         let a1 = 0
         let a2 = 0
         for(let i = 0; i < state.length; i++) {
@@ -323,9 +322,12 @@ function drawPos()  {
                     }
                 }
             }
-        }
 
+        }
+        */
         // have to draw BOOM animations and -100 animations
+
+        ctx.fillText(atk_data[animating_state][0], 100, 100 );
 
 
 

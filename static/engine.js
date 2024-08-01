@@ -328,6 +328,7 @@ function drawPos()  {
         // have to draw BOOM animations and -100 animations
 
         ctx.fillStyle = 'white';
+        ctx.textAlign = "center";
         ctx.font = '10px monospace';
         for(let i = 0; i < atk_data[animating_state].length; i++) { // iterate through all attacks
             ctx.fillText(atk_data[animating_state][i], w, 100 + (100*i));

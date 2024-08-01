@@ -412,7 +412,8 @@ function drawPos()  {
                     carry_atk = carry_atk - state[def_i][def_j][def_k].B.DEF
                 }
 
-
+                ctx.fillText("=", 1000+50, 130 + (100*i) + (30*j) );
+                ctx.fillText(carry_atk, 1000+75, 130 + (100*i) + (30*j) );
 
             }
         }

@@ -341,12 +341,12 @@ function drawPos()  {
             for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { //
                 let text = atk_json_obj.Damage[j][0].split(";")
                 let p = text[0]
-                let dmg = text[1]
-                let hw = text[2]
-                let lw = text[3]
-                let rw = text[4]
-                let bw = text[5]
-                let dice = text[6]
+                let dmg = parseInt(text[1])
+                let hw = parseInt(text[2])
+                let lw = parseInt(text[3])
+                let rw = parseInt(text[4])
+                let bw = parseInt(text[5])
+                let dice = parseInt(text[6])
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
                 ctx.fillText(hw+lw+rw+bw, 1000, 120 + (100*i) + (20*j) );

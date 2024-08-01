@@ -351,8 +351,11 @@ function drawPos()  {
                 let lperc = 100*Math.round(10000*lw/(hw+lw+rw+bw))/10000
                 let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
                 let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
+                let p_atk = state[atk_i][atk_j][atk_k].Move
 
-                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+state[atk_i][atk_j][atk_k].Move + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
+                ctx.fillText(p_atk, 990,110 + (100*i) + (10*j))
+
+                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString() + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
                 if(dice<hw){ctx.fillRect(925,120 + (100*i) + (20*j),250,1);}
                 else if(dice<(hw+lw)){ctx.fillRect(975,120 + (100*i) + (20*j),250,1);}

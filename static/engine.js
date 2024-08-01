@@ -347,10 +347,10 @@ function drawPos()  {
                 let rw = parseInt(text[4])
                 let bw = parseInt(text[5])
                 let dice = parseInt(text[6])
-                let hperc = 100*Math.round(100*hw/(hw+lw+rw+bw))/100
-                let lperc = 100*Math.round(100*lw/(hw+lw+rw+bw))/100
-                let rperc = 100*Math.round(100*rw/(hw+lw+rw+bw))/100
-                let bperc = 100*Math.round(100*bw/(hw+lw+rw+bw))/100
+                let hperc = 100*Math.round(10000*hw/(hw+lw+rw+bw))/10000
+                let lperc = 100*Math.round(10000*lw/(hw+lw+rw+bw))/10000
+                let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
+                let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
                 ctx.fillText(hperc+'%', 1000, 120 + (100*i) + (20*j) );

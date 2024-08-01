@@ -361,16 +361,16 @@ function drawPos()  {
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
-                if(p=="H"){ctx.fillStyle = "red";}
+                if(p=="H"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
                 ctx.fillText("H:"+hperc+"%", 925, 120 + (100*i) + (20*j) );
-                if(p=="L"){ctx.fillStyle = "red";}
+                if(p=="L"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
                 ctx.fillText("L:"+lperc+"%", 975, 120 + (100*i) + (20*j) );
-                if(p=="R"){ctx.fillStyle = "red";}
+                if(p=="R"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
                 ctx.fillText("R:"+rperc+"%", 1025, 120 + (100*i) + (20*j) );
-                if(p=="B"){ctx.fillStyle = "red";}
+                if(p=="B"){ctx.fillStyle = "green";}
                 else {ctx.fillStyle = "white";}
                 ctx.fillText("B:"+bperc+"%", 1075, 120 + (100*i) + (20*j) );
                 ctx.fillStyle = "white";

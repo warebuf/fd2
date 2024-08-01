@@ -327,7 +327,7 @@ function drawPos()  {
         */
         // have to draw BOOM animations and -100 animations
 
-        ctx.fillText(atk_data[animating_state][0], 100, 100 );
+        ctx.fillText(atk_data[animating_state][0], 1000, 100 );
 
 
 

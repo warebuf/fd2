@@ -353,10 +353,10 @@ function drawPos()  {
                 let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
-                ctx.fillText("H:"+hperc+"%", 1000, 120 + (100*i) + (20*j) );
-                ctx.fillText("L:"+hperc+"%", 1050, 120 + (100*i) + (20*j) );
-                ctx.fillText("R:"+hperc+"%", 1100, 120 + (100*i) + (20*j) );
-                ctx.fillText("B:"+hperc+"%", 1150, 120 + (100*i) + (20*j) );
+                ctx.fillText("H:"+hperc+"%", 900, 120 + (100*i) + (20*j) );
+                ctx.fillText("L:"+hperc+"%", 950, 120 + (100*i) + (20*j) );
+                ctx.fillText("R:"+hperc+"%", 1050, 120 + (100*i) + (20*j) );
+                ctx.fillText("B:"+hperc+"%", 1100, 120 + (100*i) + (20*j) );
 
 
             }

@@ -445,7 +445,16 @@ function drawPos()  {
                 ctx.fillText("=", w+50, 140 + (100*i) + (40*j) );
                 ctx.fillText(carry_hp-carry_atk + " HP", w+75, 140 + (100*i) + (40*j) );
 
+            }
 
+            if ( draw_attacks==59 ) {
+                event_log.push(atk_data[animating_state][i])
+                if(event_log.length >= 25) {
+                    event_log.shift()
+                }
+                state[atk_i][atk_i][atk_i].Move = -1
+                state[atk_i][atk_i][atk_i].Direction = 0
+                time_event_ready = true
             }
         }
 

@@ -415,6 +415,13 @@ function drawPos()  {
                 ctx.fillText("=", 1000+50, 130 + (100*i) + (30*j) );
                 ctx.fillText(carry_atk, 1000+75, 130 + (100*i) + (30*j) );
 
+                if(carry_atk < 0) {
+                    ctx.fillStyle = "red";
+                    ctx.fillText(0, 1000+100, 130 + (100*i) + (30*j) );
+                    ctx.fillStyle = "white";
+                }
+
+
             }
         }
 

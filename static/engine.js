@@ -329,6 +329,13 @@ function drawPos()  {
 
         for(let i = 0; i < atk_data[animating_state].length; i++) {
             ctx.fillText(atk_data[animating_state][i], 1000, 100 + (100*i));
+
+            let atk_json_obj = JSON.parse(atk_data[animating_state][a1]);
+            let atk_i = atk_json_obj.Attacker[0]
+            let atk_j = atk_json_obj.Attacker[1]
+            let atk_k = atk_json_obj.Attacker[2]
+
+            ctx.fillText(state[atk_i][atk_j][atk_k], 1000, 110 + (100*i));
         }
 
 

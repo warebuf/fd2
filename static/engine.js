@@ -424,19 +424,19 @@ function drawPos()  {
                 }
 
                 let carry_hp = 0
-                if(p_atk="H"){
+                if(p_atk=="H"){
                     ctx.fillText(state[def_i][def_j][def_k].H.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].H.HP
                 }
-                else if(p_atk="L"){
+                else if(p_atk=="L"){
                     ctx.fillText(state[def_i][def_j][def_k].L.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].L.HP
                 }
-                else if(p_atk="R"){
+                else if(p_atk=="R"){
                     ctx.fillText(state[def_i][def_j][def_k].R.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].R.HP
                 }
-                else if(p_atk="B"){
+                else if(p_atk=="B"){
                     ctx.fillText(state[def_i][def_j][def_k].B.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                     carry_hp = state[def_i][def_j][def_k].B.HP
                 }

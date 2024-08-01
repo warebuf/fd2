@@ -327,6 +327,8 @@ function drawPos()  {
         */
         // have to draw BOOM animations and -100 animations
 
+        ctx.fillStyle = 'white';
+        ctx.font = '10px monospace';
         for(let i = 0; i < atk_data[animating_state].length; i++) { // iterate through all attacks
             ctx.fillText(atk_data[animating_state][i], 1000, 100 + (100*i));
 
@@ -338,7 +340,7 @@ function drawPos()  {
             let def_j = atk_json_obj.Defender[0][1]
             let def_k = atk_json_obj.Defender[0][2]
 
-            for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { //
+            for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                 let text = atk_json_obj.Damage[j][0].split(";")
                 let p = text[0]
                 let dmg = parseInt(text[1])
@@ -357,6 +359,7 @@ function drawPos()  {
                 else if(p_atk==2){p_atk="R"}
                 else if(p_atk==3){p_atk="B"}
 
+                ctx.fillStyle = 'white';
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
                 if(p=="H"){ctx.fillRect(925,120 + (100*i) + (20*j),10,10);}
@@ -372,8 +375,6 @@ function drawPos()  {
 
 
             }
-
-
         }
 
 

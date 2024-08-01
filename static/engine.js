@@ -357,14 +357,12 @@ function drawPos()  {
                 else if(p_atk==2){p_atk="R"}
                 else if(p_atk==3){p_atk="B"}
 
-                ctx.fillText(p_atk, 1000,90 + (100*i) + (10*j))
-
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
-                if(dice<hw){ctx.fillRect(925,120 + (100*i) + (20*j),250,1);}
-                else if(dice<(hw+lw)){ctx.fillRect(975,120 + (100*i) + (20*j),250,1);}
-                else if(dice<(hw+lw+rw)){ctx.fillRect(1025,120 + (100*i) + (20*j),250,1);}
-                else if(dice<(hw+lw+rw+bw)){ctx.fillRect(1075,120 + (100*i) + (20*j),250,1);}
+                if(p=="H"){ctx.fillRect(925,120 + (100*i) + (20*j),10,10);}
+                else if(p=="L"){ctx.fillRect(975,120 + (100*i) + (20*j),10,10);}
+                else if(p=="R"){ctx.fillRect(1025,120 + (100*i) + (20*j),10,10);}
+                else if(p=="B"){ctx.fillRect(1075,120 + (100*i) + (20*j),10,10);}
 
                 ctx.fillText("H:"+hperc+"%", 925, 120 + (100*i) + (20*j) );
                 ctx.fillText("L:"+hperc+"%", 975, 120 + (100*i) + (20*j) );

@@ -348,7 +348,6 @@ function drawPos()  {
                 let lw = parseInt(text[3])
                 let rw = parseInt(text[4])
                 let bw = parseInt(text[5])
-                let dice = parseInt(text[6])
                 let hperc = 100*Math.round(10000*hw/(hw+lw+rw+bw))/10000
                 let lperc = 100*Math.round(10000*lw/(hw+lw+rw+bw))/10000
                 let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
@@ -374,6 +373,32 @@ function drawPos()  {
                 else {ctx.fillStyle = "white";}
                 ctx.fillText("B:"+bperc+"%", 1075, 120 + (100*i) + (20*j) );
                 ctx.fillStyle = "white";
+
+                if(state[atk_i][atk_j][atk_k].Move=="H"){
+                    ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                }
+                else if(state[atk_i][atk_j][atk_k].Move=="L"){
+                    ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                }
+                else if(state[atk_i][atk_j][atk_k].Move=="R"){
+                    ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                }
+                else if(state[atk_i][atk_j][atk_k].Move=="B"){
+                    ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                }
+
+                if(p_atk="H"){
+                    ctx.fillText(state[def_i][def_j][def_k].H.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                }
+                else if(p_atk="L"){
+                    ctx.fillText(state[def_i][def_j][def_k].L.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                }
+                else if(p_atk="R"){
+                    ctx.fillText(state[def_i][def_j][def_k].R.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                }
+                else if(p_atk="B"){
+                    ctx.fillText(state[def_i][def_j][def_k].B.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                }
 
 
 

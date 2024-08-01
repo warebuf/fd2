@@ -337,7 +337,7 @@ function drawPos()  {
 
             let atk_log = atk_json_obj.Damage
             for(let j = 0 ; j < atk_log.length; j++) {
-                let text = text.split(";")
+                let text = atk_log.split(";")
                 ctx.fillText(text[0] + " " + text[1] + " " + text[2] + " " + text[3] + " " + text[4] + " " + text[5] + text[6], 1000, 110 + (100*i) + (10*j) );
             }
 

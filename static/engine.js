@@ -361,18 +361,20 @@ function drawPos()  {
 
                 ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, 1000, 110 + (100*i) + (10*j) );
 
-                ctx.fillStyle = 'white';
+                if(p=="H"){ctx.fillStyle = "red";}
+                else {ctx.fillStyle = "white";}
                 ctx.fillText("H:"+hperc+"%", 925, 120 + (100*i) + (20*j) );
+                if(p=="L"){ctx.fillStyle = "red";}
+                else {ctx.fillStyle = "white";}
                 ctx.fillText("L:"+lperc+"%", 975, 120 + (100*i) + (20*j) );
+                if(p=="R"){ctx.fillStyle = "red";}
+                else {ctx.fillStyle = "white";}
                 ctx.fillText("R:"+rperc+"%", 1025, 120 + (100*i) + (20*j) );
+                if(p=="B"){ctx.fillStyle = "red";}
+                else {ctx.fillStyle = "white";}
                 ctx.fillText("B:"+bperc+"%", 1075, 120 + (100*i) + (20*j) );
+                ctx.fillStyle = "white";
 
-
-                ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-                if(p=="H"){ctx.fillRect(925,120 + (100*i) + (20*j) - 5,10,10);}
-                else if(p=="L"){ctx.fillRect(975,120 + (100*i) + (20*j) - 5,10,10);}
-                else if(p=="R"){ctx.fillRect(1025,120 + (100*i) + (20*j) - 5,10,10);}
-                else if(p=="B"){ctx.fillRect(1075,120 + (100*i) + (20*j) - 5,10,10);}
 
 
             }

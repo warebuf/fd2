@@ -375,29 +375,29 @@ function drawPos()  {
                 ctx.fillStyle = "white";
 
                 if(state[atk_i][atk_j][atk_k].Move=="H"){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
                 else if(state[atk_i][atk_j][atk_k].Move=="L"){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
                 else if(state[atk_i][atk_j][atk_k].Move=="R"){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
                 else if(state[atk_i][atk_j][atk_k].Move=="B"){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK, 1000-50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + "ATK", 1000-25, 130 + (100*i) + (30*j) );
                 }
 
                 if(p_atk="H"){
-                    ctx.fillText(state[def_i][def_j][def_k].H.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].H.DEF + "DEF", 1000+25, 130 + (100*i) + (30*j) );
                 }
                 else if(p_atk="L"){
-                    ctx.fillText(state[def_i][def_j][def_k].L.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].L.DEF + "DEF", 1000+25, 130 + (100*i) + (30*j) );
                 }
                 else if(p_atk="R"){
-                    ctx.fillText(state[def_i][def_j][def_k].R.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].R.DEF + "DEF", 1000+25, 130 + (100*i) + (30*j) );
                 }
                 else if(p_atk="B"){
-                    ctx.fillText(state[def_i][def_j][def_k].B.DEF, 1000+50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(state[def_i][def_j][def_k].B.DEF + "DEF", 1000+25, 130 + (100*i) + (30*j) );
                 }
 
 

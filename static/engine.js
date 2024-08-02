@@ -452,7 +452,7 @@ function drawPos()  {
 
                     if(carry_hp-carry_atk < 0) {
                         ctx.fillStyle = "red";
-                        ctx.fillText("K.O.", w+100, 140 + (100*i) + (40*j) );
+                        ctx.fillText("K.O.", w+125, 140 + (100*i) + (40*j) );
                         ctx.fillStyle = "white";
                     }
 

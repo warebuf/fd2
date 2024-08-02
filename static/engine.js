@@ -423,7 +423,7 @@ function drawPos()  {
 
                     if(carry_atk < 0) {
                         ctx.fillStyle = "red";
-                        ctx.fillText(0, w+100, 130 + (100*i) + (30*j) );
+                        ctx.fillText(0, w+125, 130 + (100*i) + (30*j) );
                         ctx.fillStyle = "white";
                         carry_atk = 0
                     }
@@ -450,9 +450,14 @@ function drawPos()  {
                     ctx.fillText("=", w+50, 140 + (100*i) + (40*j) );
                     ctx.fillText(carry_hp-carry_atk + " HP", w+75, 140 + (100*i) + (40*j) );
 
-                    if(carry_hp-carry_atk < 0) {
+                    if((carry_hp-carry_atk < 0) && (p=="H")) {
                         ctx.fillStyle = "red";
-                        ctx.fillText("K.O.", w+125, 140 + (100*i) + (40*j) );
+                        ctx.fillText("T.K.O.", w+125, 140 + (100*i) + (40*j) );
+                        ctx.fillStyle = "white";
+                    }
+                    else if(carry_hp-carry_atk < 0) {
+                        ctx.fillStyle = "red";
+                        ctx.fillText("BOOM!", w+125, 140 + (100*i) + (40*j) );
                         ctx.fillStyle = "white";
                     }
 

@@ -423,7 +423,7 @@ function drawPos()  {
 
                     if(carry_atk < 0) {
                         ctx.fillStyle = "red";
-                        ctx.fillText(0, w+125, 130 + (100*i) + (30*j) );
+                        ctx.fillText("DEFENDED", w+125, 130 + (100*i) + (30*j) );
                         ctx.fillStyle = "white";
                         carry_atk = 0
                     }

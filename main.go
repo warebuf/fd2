@@ -123,6 +123,7 @@ type attack struct {
 	Attacker []int      //i,j,k
 	Defender [][]int    //list of i,j,k
 	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
+	Type     string     //miss,
 }
 
 type socket struct {

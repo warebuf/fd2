@@ -340,113 +340,117 @@ function drawPos()  {
             let def_i = atk_json_obj.Defender[0][0]
             let def_j = atk_json_obj.Defender[0][1]
             let def_k = atk_json_obj.Defender[0][2]
+            let type = atk_json_obj.Type
 
-            for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
-                let text = atk_json_obj.Damage[j][0].split(";")
-                let p = text[0]
-                let dmg = parseInt(text[1])
-                let hw = parseInt(text[2])
-                let lw = parseInt(text[3])
-                let rw = parseInt(text[4])
-                let bw = parseInt(text[5])
-                let hperc = 100*Math.round(10000*hw/(hw+lw+rw+bw))/10000
-                let lperc = 100*Math.round(10000*lw/(hw+lw+rw+bw))/10000
-                let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
-                let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
-                let p_atk = state[atk_i][atk_j][atk_k].Move
-                if(p_atk==0){p_atk="H"}
-                else if(p_atk==1){p_atk="L"}
-                else if(p_atk==2){p_atk="R"}
-                else if(p_atk==3){p_atk="B"}
+            if (type == "hit") {
+                for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
+                    let text = atk_json_obj.Damage[j][0].split(";")
+                    let p = text[0]
+                    let dmg = parseInt(text[1])
+                    let hw = parseInt(text[2])
+                    let lw = parseInt(text[3])
+                    let rw = parseInt(text[4])
+                    let bw = parseInt(text[5])
+                    let hperc = 100*Math.round(10000*hw/(hw+lw+rw+bw))/10000
+                    let lperc = 100*Math.round(10000*lw/(hw+lw+rw+bw))/10000
+                    let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
+                    let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
+                    let p_atk = state[atk_i][atk_j][atk_k].Move
+                    if(p_atk==0){p_atk="H"}
+                    else if(p_atk==1){p_atk="L"}
+                    else if(p_atk==2){p_atk="R"}
+                    else if(p_atk==3){p_atk="B"}
 
-                ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, w, 110 + (100*i) + (10*j) );
+                    ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, w, 110 + (100*i) + (10*j) );
 
-                if(p=="H"){ctx.fillStyle = "green";}
-                else {ctx.fillStyle = "white";}
-                ctx.fillText("H:"+hperc+"%", w-75, 120 + (100*i) + (20*j) );
-                if(p=="L"){ctx.fillStyle = "green";}
-                else {ctx.fillStyle = "white";}
-                ctx.fillText("L:"+lperc+"%", w-25, 120 + (100*i) + (20*j) );
-                if(p=="R"){ctx.fillStyle = "green";}
-                else {ctx.fillStyle = "white";}
-                ctx.fillText("R:"+rperc+"%", w+25, 120 + (100*i) + (20*j) );
-                if(p=="B"){ctx.fillStyle = "green";}
-                else {ctx.fillStyle = "white";}
-                ctx.fillText("B:"+bperc+"%", w+75, 120 + (100*i) + (20*j) );
-                ctx.fillStyle = "white";
-
-                let carry_atk = 0;
-
-                if(state[atk_i][atk_j][atk_k].Move==0){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                    carry_atk = state[atk_i][atk_j][atk_k].H.ATK;
-                }
-                else if(state[atk_i][atk_j][atk_k].Move==1){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                    carry_atk = state[atk_i][atk_j][atk_k].L.ATK;
-                }
-                else if(state[atk_i][atk_j][atk_k].Move==2){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                    carry_atk = state[atk_i][atk_j][atk_k].R.ATK;
-                }
-                else if(state[atk_i][atk_j][atk_k].Move==3){
-                    ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                    carry_atk = state[atk_i][atk_j][atk_k].B.ATK;
-                }
-
-                ctx.fillText("-", w, 130 + (100*i) + (30*j) );
-
-                if(p_atk=="H"){
-                    ctx.fillText(state[def_i][def_j][def_k].H.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
-                    carry_atk = carry_atk - state[def_i][def_j][def_k].H.DEF
-                }
-                else if(p_atk=="L"){
-                    ctx.fillText(state[def_i][def_j][def_k].L.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
-                    carry_atk = carry_atk - state[def_i][def_j][def_k].L.DEF
-                }
-                else if(p_atk=="R"){
-                    ctx.fillText(state[def_i][def_j][def_k].R.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
-                    carry_atk = carry_atk - state[def_i][def_j][def_k].R.DEF
-                }
-                else if(p_atk=="B"){
-                    ctx.fillText(state[def_i][def_j][def_k].B.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
-                    carry_atk = carry_atk - state[def_i][def_j][def_k].B.DEF
-                }
-
-                ctx.fillText("=", w+50, 130 + (100*i) + (30*j) );
-                ctx.fillText(carry_atk + " DMG", w+75, 130 + (100*i) + (30*j) );
-
-                if(carry_atk < 0) {
-                    ctx.fillStyle = "red";
-                    ctx.fillText(0, w+100, 130 + (100*i) + (30*j) );
+                    if(p=="H"){ctx.fillStyle = "green";}
+                    else {ctx.fillStyle = "white";}
+                    ctx.fillText("H:"+hperc+"%", w-75, 120 + (100*i) + (20*j) );
+                    if(p=="L"){ctx.fillStyle = "green";}
+                    else {ctx.fillStyle = "white";}
+                    ctx.fillText("L:"+lperc+"%", w-25, 120 + (100*i) + (20*j) );
+                    if(p=="R"){ctx.fillStyle = "green";}
+                    else {ctx.fillStyle = "white";}
+                    ctx.fillText("R:"+rperc+"%", w+25, 120 + (100*i) + (20*j) );
+                    if(p=="B"){ctx.fillStyle = "green";}
+                    else {ctx.fillStyle = "white";}
+                    ctx.fillText("B:"+bperc+"%", w+75, 120 + (100*i) + (20*j) );
                     ctx.fillStyle = "white";
-                    carry_atk = 0
-                }
 
-                let carry_hp = 0
-                if(p_atk=="H"){
-                    ctx.fillText(state[def_i][def_j][def_k].H.HP + " HP", w-25, 140 + (100*i) + (40*j) );
-                    carry_hp = state[def_i][def_j][def_k].H.HP
+                    let carry_atk = 0;
+
+                    if(state[atk_i][atk_j][atk_k].Move==0){
+                        ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
+                        carry_atk = state[atk_i][atk_j][atk_k].H.ATK;
+                    }
+                    else if(state[atk_i][atk_j][atk_k].Move==1){
+                        ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
+                        carry_atk = state[atk_i][atk_j][atk_k].L.ATK;
+                    }
+                    else if(state[atk_i][atk_j][atk_k].Move==2){
+                        ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
+                        carry_atk = state[atk_i][atk_j][atk_k].R.ATK;
+                    }
+                    else if(state[atk_i][atk_j][atk_k].Move==3){
+                        ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
+                        carry_atk = state[atk_i][atk_j][atk_k].B.ATK;
+                    }
+
+                    ctx.fillText("-", w, 130 + (100*i) + (30*j) );
+
+                    if(p_atk=="H"){
+                        ctx.fillText(state[def_i][def_j][def_k].H.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
+                        carry_atk = carry_atk - state[def_i][def_j][def_k].H.DEF
+                    }
+                    else if(p_atk=="L"){
+                        ctx.fillText(state[def_i][def_j][def_k].L.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
+                        carry_atk = carry_atk - state[def_i][def_j][def_k].L.DEF
+                    }
+                    else if(p_atk=="R"){
+                        ctx.fillText(state[def_i][def_j][def_k].R.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
+                        carry_atk = carry_atk - state[def_i][def_j][def_k].R.DEF
+                    }
+                    else if(p_atk=="B"){
+                        ctx.fillText(state[def_i][def_j][def_k].B.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
+                        carry_atk = carry_atk - state[def_i][def_j][def_k].B.DEF
+                    }
+
+                    ctx.fillText("=", w+50, 130 + (100*i) + (30*j) );
+                    ctx.fillText(carry_atk + " DMG", w+75, 130 + (100*i) + (30*j) );
+
+                    if(carry_atk < 0) {
+                        ctx.fillStyle = "red";
+                        ctx.fillText(0, w+100, 130 + (100*i) + (30*j) );
+                        ctx.fillStyle = "white";
+                        carry_atk = 0
+                    }
+
+                    let carry_hp = 0
+                    if(p_atk=="H"){
+                        ctx.fillText(state[def_i][def_j][def_k].H.HP + " HP", w-25, 140 + (100*i) + (40*j) );
+                        carry_hp = state[def_i][def_j][def_k].H.HP
+                    }
+                    else if(p_atk=="L"){
+                        ctx.fillText(state[def_i][def_j][def_k].L.HP + " HP", w-25, 140 + (100*i) + (40*j) );
+                        carry_hp = state[def_i][def_j][def_k].L.HP
+                    }
+                    else if(p_atk=="R"){
+                        ctx.fillText(state[def_i][def_j][def_k].R.HP + " HP", w-25, 140 + (100*i) + (40*j) );
+                        carry_hp = state[def_i][def_j][def_k].R.HP
+                    }
+                    else if(p_atk=="B"){
+                        ctx.fillText(state[def_i][def_j][def_k].B.HP + " HP", w-25, 140 + (100*i) + (40*j) );
+                        carry_hp = state[def_i][def_j][def_k].B.HP
+                    }
+                    ctx.fillText("-", w, 140 + (100*i) + (40*j) );
+                    ctx.fillText(carry_atk + " DMG", w+25, 140 + (100*i) + (40*j) );
+                    ctx.fillText("=", w+50, 140 + (100*i) + (40*j) );
+                    ctx.fillText(carry_hp-carry_atk + " HP", w+75, 140 + (100*i) + (40*j) );
                 }
-                else if(p_atk=="L"){
-                    ctx.fillText(state[def_i][def_j][def_k].L.HP + " HP", w-25, 140 + (100*i) + (40*j) );
-                    carry_hp = state[def_i][def_j][def_k].L.HP
-                }
-                else if(p_atk=="R"){
-                    ctx.fillText(state[def_i][def_j][def_k].R.HP + " HP", w-25, 140 + (100*i) + (40*j) );
-                    carry_hp = state[def_i][def_j][def_k].R.HP
-                }
-                else if(p_atk=="B"){
-                    ctx.fillText(state[def_i][def_j][def_k].B.HP + " HP", w-25, 140 + (100*i) + (40*j) );
-                    carry_hp = state[def_i][def_j][def_k].B.HP
-                }
-                ctx.fillText("-", w, 140 + (100*i) + (40*j) );
-                ctx.fillText(carry_atk + " DMG", w+25, 140 + (100*i) + (40*j) );
-                ctx.fillText("=", w+50, 140 + (100*i) + (40*j) );
-                ctx.fillText(carry_hp-carry_atk + " HP", w+75, 140 + (100*i) + (40*j) );
+            } else {
 
             }
-
+            
             if ( draw_attacks==59 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
@@ -456,11 +460,8 @@ function drawPos()  {
                 state[atk_i][atk_j][atk_k].Direction = 0
                 time_event_ready = true
             }
+
         }
-
-
-
-
 
         draw_attacks++
         if(draw_attacks==60) {draw_attacks = 0}

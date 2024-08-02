@@ -1162,42 +1162,45 @@ func (m *match) run() {
 			fmt.Println("listofattackers", list_of_attackers)
 			m.sharepos(nil)
 
-			// simulate all attacks
+			// figure out who is at the end and can attack
 			atk_list := make([]*attack, 0)
 			for i := 0; i < len(list_of_attackers); i++ {
 				a := &attack{
 					Attacker: make([]int, 3),
 					Defender: make([][]int, 0),
 					Damage:   make([][]string, 0),
+					Type:     "hit",
 				}
 				a.Attacker[0] = list_of_attackers[i][0]
 				a.Attacker[1] = list_of_attackers[i][1]
 				a.Attacker[2] = list_of_attackers[i][2]
 
-				can_attack := false
-				if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 0) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].H.HP > 0) {
-					can_attack = true
-				} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 1) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].L.HP > 0) {
-					can_attack = true
-				} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 2) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].R.HP > 0) {
-					can_attack = true
-				} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 3) && (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].B.HP > 0) {
-					can_attack = true
-				}
-
-				fmt.Println("can_attack", can_attack)
-
-				if can_attack {
-					a.Defender = closest_enemies(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2])
-					a.Damage = close_attack(m.team_client_hero, a.Attacker[0], a.Attacker[1], a.Attacker[2], a.Defender)
-
-					if len(a.Defender) > 0 {
-						atk_list = append(atk_list, a)
+				if m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].H.HP > 0 {
+					if m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 0 {
+					} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 1) &&
+						(m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].L.HP > 0) {
+					} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 2) &&
+						(m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].R.HP > 0) {
+					} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 3) &&
+						(m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].B.HP > 0) {
+					} else {
+						a.Type = "broken"
 					}
+				} else {
+					a.Type = "dead"
+				}
+				atk_list = append(atk_list, a)
+			}
+
+			// simulate all attacks
+			for i := 0; i < len(list_of_attackers); i++ {
+				if atk_list[i].Type == "hit" {
+					atk_list[i].Defender = closest_enemies(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2])
+					atk_list[i].Damage = close_attack(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], atk_list[i].Defender)
 				}
 
-				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Direction = 0
-				m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move = -1
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Direction = 0
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
 			}
 
 			num, _ := strconv.Atoi(m.turn[5:])

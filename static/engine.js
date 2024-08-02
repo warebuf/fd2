@@ -401,19 +401,19 @@ function drawPos()  {
 
                     ctx.fillText("-", w, 130 + (100*i) + (30*j) );
 
-                    if(p_atk=="H"){
+                    if(p=="H"){
                         ctx.fillText(state[def_i][def_j][def_k].H.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                         carry_atk = carry_atk - state[def_i][def_j][def_k].H.DEF
                     }
-                    else if(p_atk=="L"){
+                    else if(p=="L"){
                         ctx.fillText(state[def_i][def_j][def_k].L.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                         carry_atk = carry_atk - state[def_i][def_j][def_k].L.DEF
                     }
-                    else if(p_atk=="R"){
+                    else if(p=="R"){
                         ctx.fillText(state[def_i][def_j][def_k].R.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                         carry_atk = carry_atk - state[def_i][def_j][def_k].R.DEF
                     }
-                    else if(p_atk=="B"){
+                    else if(p=="B"){
                         ctx.fillText(state[def_i][def_j][def_k].B.DEF + " DEF", w+25, 130 + (100*i) + (30*j) );
                         carry_atk = carry_atk - state[def_i][def_j][def_k].B.DEF
                     }
@@ -429,19 +429,19 @@ function drawPos()  {
                     }
 
                     let carry_hp = 0
-                    if(p_atk=="H"){
+                    if(p=="H"){
                         ctx.fillText(state[def_i][def_j][def_k].H.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                         carry_hp = state[def_i][def_j][def_k].H.HP
                     }
-                    else if(p_atk=="L"){
+                    else if(p=="L"){
                         ctx.fillText(state[def_i][def_j][def_k].L.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                         carry_hp = state[def_i][def_j][def_k].L.HP
                     }
-                    else if(p_atk=="R"){
+                    else if(p=="R"){
                         ctx.fillText(state[def_i][def_j][def_k].R.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                         carry_hp = state[def_i][def_j][def_k].R.HP
                     }
-                    else if(p_atk=="B"){
+                    else if(p=="B"){
                         ctx.fillText(state[def_i][def_j][def_k].B.HP + " HP", w-25, 140 + (100*i) + (40*j) );
                         carry_hp = state[def_i][def_j][def_k].B.HP
                     }

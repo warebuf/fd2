@@ -337,12 +337,15 @@ function drawPos()  {
             let atk_i = atk_json_obj.Attacker[0]
             let atk_j = atk_json_obj.Attacker[1]
             let atk_k = atk_json_obj.Attacker[2]
-            let def_i = atk_json_obj.Defender[0][0]
-            let def_j = atk_json_obj.Defender[0][1]
-            let def_k = atk_json_obj.Defender[0][2]
+
             let type = atk_json_obj.Type
 
             if (type == "hit") {
+
+                let def_i = atk_json_obj.Defender[0][0]
+                let def_j = atk_json_obj.Defender[0][1]
+                let def_k = atk_json_obj.Defender[0][2]
+
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")
                     let p = text[0]
@@ -450,7 +453,7 @@ function drawPos()  {
             } else {
 
             }
-            
+
             if ( draw_attacks==59 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {

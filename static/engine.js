@@ -449,6 +449,14 @@ function drawPos()  {
                     ctx.fillText(carry_atk + " DMG", w+25, 140 + (100*i) + (40*j) );
                     ctx.fillText("=", w+50, 140 + (100*i) + (40*j) );
                     ctx.fillText(carry_hp-carry_atk + " HP", w+75, 140 + (100*i) + (40*j) );
+
+                    if(carry_hp-carry_atk < 0) {
+                        ctx.fillStyle = "red";
+                        ctx.fillText("K.O.", w+100, 140 + (100*i) + (40*j) );
+                        ctx.fillStyle = "white";
+                    }
+
+
                 }
             } else {
 

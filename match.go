@@ -1197,6 +1197,10 @@ func (m *match) run() {
 				if atk_list[i].Type == "hit" {
 					atk_list[i].Defender = closest_enemies(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2])
 					atk_list[i].Damage = close_attack(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], atk_list[i].Defender)
+
+					if len(atk_list[i].Defender) <= 0 {
+						atk_list[i].Type = "noenemies"
+					}
 				}
 
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Direction = 0

@@ -2324,11 +2324,11 @@ function drawHeatMap(){
                 ctx.fillStyle = 'white';
                 ctx.fillText("DEF",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("DOG",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("DOG",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
                 ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
@@ -2339,26 +2339,26 @@ function drawHeatMap(){
                 ctx.fillStyle = 'white';
                 ctx.fillText("ATK",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("ACC",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("CRT",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("CD",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("CLU",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("ACC",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("CRT",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("CD",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("CLU",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
                 ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
@@ -2384,12 +2384,12 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 ctx.fillStyle = calcColour(state[i][j][k].H.Weight)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
@@ -2402,30 +2402,30 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.ACC)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.CRT)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.CD)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.CLU)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].H.ACC)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].H.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].H.CRT)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].H.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].H.CD)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].H.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].H.CLU)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
 
                 y_shift=y_shift+20;
                 x_shift=0;
@@ -2447,12 +2447,12 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].L.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.DOG)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.DOG)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 ctx.fillStyle = calcColour(state[i][j][k].L.Weight)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
@@ -2465,30 +2465,30 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].L.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.ACC)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.CRT)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.CD)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.CLU)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.ACC)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.CRT)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.CD)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.CLU)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
 
                 y_shift=y_shift+20;
                 x_shift=0;
@@ -2510,12 +2510,12 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].R.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.DOG)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.DOG)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 ctx.fillStyle = calcColour(state[i][j][k].R.Weight)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
@@ -2528,30 +2528,30 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].R.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.ACC)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.CRT)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.CD)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.CLU)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.ACC)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.CRT)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.CD)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.CLU)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
 
                 y_shift=y_shift+20;
                 x_shift=0;
@@ -2573,12 +2573,12 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].B.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.DOG)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.DOG)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 ctx.fillStyle = calcColour(state[i][j][k].B.Weight)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
@@ -2591,30 +2591,30 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].B.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.ACC)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.CRT)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.CD)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.CLU)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.ACC)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.ACC,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.CRT)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.CRT,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.CD)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.CD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.CLU)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 ctx.fillStyle = calcColour(state[i][j][k].B.SPD)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';

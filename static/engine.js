@@ -467,7 +467,7 @@ function drawPos()  {
 
             }
 
-            if ( draw_attacks==2999 ) {
+            if ( draw_attacks==1499 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
                     event_log.shift()
@@ -480,7 +480,7 @@ function drawPos()  {
         }
 
         draw_attacks++
-        if(draw_attacks==3000) {draw_attacks = 0}
+        if(draw_attacks==1500) {draw_attacks = 0}
     }
 
     if(time_event_ready==true) {

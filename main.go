@@ -291,7 +291,6 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 		"Bringing back the memories.",
 		"A sign of the times.",
 		"Love, Laugh, Live.",
-		"Considering World Domination.",
 		"A Reason to Live.",
 		"Circumstance does not make the man; it reveals him to himself.",
 		"And man, therefore, as the lord and master of thought, is the maker of himself and the author of environment.",
@@ -300,10 +299,11 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 		"There is no difference between a hero and a coward in what they feel. It's what they do that makes them different.",
 		"As iron sharpens iron, one person sharpens another.",
 		"For the mouth speaks what the heart is full of.",
-		"Don't be afraid to give up the good for the great.",
-		"If you wish to succeed you should strike out on new paths, rather than travel the worn paths of accepted success.",
-		"I do not think that there is any other quality so essential to success of any kind as the quality of perseverance. It overcomes almost everything, even nature.",
-		"The older people want to know how it does what it does, but the younger people want to know what it can do.",
+		"\"Don't be afraid to give up the good for the great.\" - J.D. Rockefeller",
+		"\"If you wish to succeed you should strike out on new paths, rather than travel the worn paths of accepted success.\" - J.D. Rockefeller",
+		"\"I do not think that there is any other quality so essential to success of any kind as the quality of perseverance. It overcomes almost everything, even nature.\" - J.D. Rockefeller",
+		"\"The older people want to know how it does what it does, but the younger people want to know what it can do.\" - Steve Jobs",
+		"\"The meek will inherit the earth. However, after they inherit the earth, will the remain meek?\" - Warren Buffett",
 	}
 
 	t.Execute(res, mottos[rand.Intn(len(mottos))])

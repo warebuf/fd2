@@ -68,7 +68,7 @@ function anime() {
     } else if (match_data.length > 0) {
 
         drawGrid()
-        //drawBoard()
+        drawBoard()
         //drawSinglePoint(0,0,c.width/2,c.height/2,'red');
         //let cent = calculateCenter(c.width/2,c.height/2);
         //drawSinglePoint(cent[0],cent[1],c.width/2,c.height/2,'yellow');

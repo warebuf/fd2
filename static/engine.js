@@ -72,7 +72,7 @@ function anime() {
         drawSinglePoint(0,0,c.width/2,c.height/2,'red');
         let cent = calculateCenter(c.width/2,c.height/2);
         drawSinglePoint(cent[0],cent[1],c.width/2,c.height/2,'yellow');
-        drawCircle(c.width/2,c.height/2,250);
+        //drawCircle(c.width/2,c.height/2,250);
         drawPoint(c.width/2,c.height/2,250,10,)
         drawPos()
         drawState()
@@ -86,6 +86,8 @@ function anime() {
             drawStartersTable2()
         } else if(view==2) {
             drawCumulStats()
+        } else if(view==3){
+
         }
 
     }

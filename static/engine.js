@@ -2249,7 +2249,7 @@ function drawBoard() {
     ctx.fillRect(w,h,1,500);
     ctx.fillRect(w+500,h ,1,500);
 
-    //ctx.fillRect(Math.round(c.width/2),h, 1, 500);
+    ctx.fillRect(Math.round(c.width/2),h, 1, 500);
 }
 
 function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){

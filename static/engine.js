@@ -359,8 +359,8 @@ function drawPos()  {
 
 
 
-                drawTarget(x0, y0 )
-                drawTarget(x1, y1 )
+                drawTarget(x0 - 5, y0 - 5)
+                drawTarget(x1 - 5, y1 - 5 )
                 laser( x0, y0, x1, y1 )
 
 

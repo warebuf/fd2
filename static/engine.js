@@ -2672,6 +2672,7 @@ function drawTarget(x,y){
 
 function laser(x1,y1,x2,y2) {
     ctx.beginPath();
+    ctx.strokeStyle = "yellow";
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();

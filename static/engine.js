@@ -360,7 +360,7 @@ function drawPos()  {
 
 
                 drawTarget(x0 - 10, y0 - 10 )
-                drawTarget(x1 - 10, y1 - 20 )
+                drawTarget(x1 - 10, y1 - 15 )
                 laser( x0, y0, x1, y1 )
 
 

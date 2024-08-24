@@ -345,8 +345,9 @@ function drawPos()  {
                 let x0 = Math.round(c.width/2)-250 - 45
                 let y0 = Math.round(c.height/2)-250
 
-                drawTarget(x0-7+(590*atk_i), y0 - 10 + (atk_k*125)+(atk_j*700))
-                drawTarget(x0-7+(590*def_i), y0 - 10 + (def_k*125)+(def_j*700))
+                drawTarget(x0-7+(590*atk_i), y0 - 10 + (atk_k*125)+(atk_j*700) )
+                drawTarget(x0-7+(590*def_i), y0 - 10 + (def_k*125)+(def_j*700) )
+                laser( x0-7+(590*atk_i), y0 - 10 + (atk_k*125)+(atk_j*700), x0-7+(590*def_i), y0 - 10 + (def_k*125)+(def_j*700) )
 
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
@@ -2667,4 +2668,11 @@ function drawTarget(x,y){
     ctx.strokeStyle = "red";
     ctx.strokeRect(x,y, 20,20);
 
+}
+
+function laser(x1,y1,x2,y2) {
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
 }

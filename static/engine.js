@@ -342,8 +342,11 @@ function drawPos()  {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                drawTarget(100+ atk_k*100,100+ atk_i*100)
-                drawTarget(100+ def_k*100,100+ def_i*100)
+                let x0 = Math.round(c.width/2)-250 - 45
+                let y0 = Math.round(c.height/2)-250
+
+                drawTarget(x0+5+(space*atk_i), y0-4 + (atk_k*125)+(atk_j*700))
+                drawTarget(x0+5+(space*def_i), y0-4 + (def_k*125)+(def_j*700))
 
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
@@ -552,9 +555,6 @@ function drawPos()  {
 }
 
 function drawState() {
-
-    let test1 = c.width/2
-    let test2 = c.height/2
 
     x0 = Math.round(c.width/2)-250 - 45
     y0 = Math.round(c.height/2)-250
@@ -2665,6 +2665,6 @@ function drawCumulStats(){
 function drawTarget(x,y){
 
     ctx.strokeStyle = "red";
-    ctx.strokeRect(x,y, 10,10);
+    ctx.strokeRect(x,y, 20,20);
 
 }

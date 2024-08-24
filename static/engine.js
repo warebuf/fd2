@@ -361,7 +361,7 @@ function drawPos()  {
 
                 drawTarget(x0 - 10, y0 - 12 )
                 drawTarget(x1 - 10, y1 - 12 )
-                laser( x0, y0, x1, y1 )
+                laser( x0, y0 - 2, x1, y1 - 2 )
 
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack

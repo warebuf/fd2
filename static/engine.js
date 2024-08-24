@@ -69,11 +69,6 @@ function anime() {
 
         drawGrid()
         drawBoard()
-        //drawSinglePoint(0,0,c.width/2,c.height/2,'red');
-        //let cent = calculateCenter(c.width/2,c.height/2);
-        //drawSinglePoint(cent[0],cent[1],c.width/2,c.height/2,'yellow');
-        //drawCircle(c.width/2,c.height/2,250);
-        //drawPoint(c.width/2,c.height/2,250,10,)
         drawPos()
         drawState()
         //drawStats()
@@ -232,7 +227,7 @@ function drawPos()  {
                         for(let k = 0; k < state[i][j].length; k++) {
                             if(state[i][j][k].H.HP <= 0) {
                             } else if(state[i][j][k].Direction == 0) {
-                                state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.02)
+                                state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.025)
                                 if(
                                     (match_data[animating_state][i][j][k].Direction == 0) &&
                                     (state[i][j][k].Position < match_data[animating_state][i][j][k].Position)
@@ -241,7 +236,7 @@ function drawPos()  {
                                 }
                                 else if(state[i][j][k].Position < 0){state[i][j][k].Position = 0}
                             } else if(state[i][j][k].Direction == 1) {
-                                state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.02)
+                                state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.025)
                                 if(
                                     (match_data[animating_state][i][j][k].Direction == 1) &&
                                     (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)
@@ -327,7 +322,6 @@ function drawPos()  {
 
         }
         */
-        // have to draw BOOM animations and -100 animations
 
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
@@ -347,6 +341,10 @@ function drawPos()  {
                 let def_i = atk_json_obj.Defender[0][0]
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
+
+                drawTarget(atk_k*100,100)
+                drawTarget(def_k*100,100)
+
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")
@@ -481,6 +479,8 @@ function drawPos()  {
 
         }
 
+
+
         draw_attacks++
         if(draw_attacks==150) {draw_attacks = 0}
     }
@@ -497,6 +497,8 @@ function drawPos()  {
         }
     }
 
+
+    //  DRAWING THE UNIT HERE
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';
@@ -2658,4 +2660,11 @@ function calcColour(n){
 
 function drawCumulStats(){
 
+}
+
+function drawTarget(x,y){
+    ctx.beginPath();
+    ctx.fillStyle = "red";
+    ctx.rect(20, 20, x, y);
+    ctx.stroke();
 }

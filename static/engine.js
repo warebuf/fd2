@@ -2665,6 +2665,6 @@ function drawCumulStats(){
 function drawTarget(x,y){
 
     ctx.strokeStyle = "red";
-    ctx.strokeRect(10,10, x,y);
+    ctx.strokeRect(x,y, 10,10);
 
 }

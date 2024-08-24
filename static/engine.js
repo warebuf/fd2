@@ -342,12 +342,29 @@ function drawPos()  {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                let x0 = Math.round(c.width/2)-250 - 45
-                let y0 = Math.round(c.height/2)-250
+                let x0,x1,y0,y1
 
-                drawTarget(x0-7+(590*atk_i), y0 - 10 + (atk_k*125)+(atk_j*700) )
-                drawTarget(x0-7+(590*def_i), y0 - 10 + (def_k*125)+(def_j*700) )
-                laser( x0-7+(590*atk_i), y0 - 10 + (atk_k*125)+(atk_j*700), x0-7+(590*def_i), y0 - 10 + (def_k*125)+(def_j*700) )
+                if(atk_i%2==0){
+                    x0 = w-250+(500*i)+(250*(state[i][j][k].Position/100))
+                    y0 = h+(k*125)+(j*700)+3
+                } else {
+                    x0 = w-250+(250*i)+250-(250*(state[i][j][k].Position/100))
+                    y0 = h+(k*125)+(j*700)+3
+                }
+
+                if(def_i%2==0){
+                    x1 = w-250+(500*i)+(250*(state[i][j][k].Position/100))
+                    y1 = h+(k*125)+(j*700)+3
+                } else {
+                    x1 = w-250+(250*i)+250-(250*(state[i][j][k].Position/100))
+                    y1 = h+(k*125)+(j*700)+3
+                }
+
+
+
+                drawTarget(x0, y0 )
+                drawTarget(x1, y1 )
+                laser( x0, y0, x1, y1 )
 
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack

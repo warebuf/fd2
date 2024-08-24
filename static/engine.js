@@ -345,18 +345,18 @@ function drawPos()  {
                 let x0,x1,y0,y1
 
                 if(atk_i%2==0){
-                    x0 = w-250+(500*i)+(250*(state[i][j][k].Position/100))
+                    x0 = w-250+(500*i)+(250*(state[atk_i][atk_j][atk_k].Position/100))
                     y0 = h+(k*125)+(j*700)+3
                 } else {
-                    x0 = w-250+(250*i)+250-(250*(state[i][j][k].Position/100))
+                    x0 = w-250+(250*i)+250-(250*(state[atk_i][atk_j][atk_k].Position/100))
                     y0 = h+(k*125)+(j*700)+3
                 }
 
                 if(def_i%2==0){
-                    x1 = w-250+(500*i)+(250*(state[i][j][k].Position/100))
+                    x1 = w-250+(500*i)+(250*(state[def_i][def_j][def_k].Position/100))
                     y1 = h+(k*125)+(j*700)+3
                 } else {
-                    x1 = w-250+(250*i)+250-(250*(state[i][j][k].Position/100))
+                    x1 = w-250+(250*i)+250-(250*(state[def_i][def_j][def_k].Position/100))
                     y1 = h+(k*125)+(j*700)+3
                 }
 

@@ -342,22 +342,19 @@ function drawPos()  {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                let x0,x1,y0,y1
+                let x0 = w-250+(500*atk_i)+(250*(state[atk_i][atk_j][atk_k].Position/100))
+                let y0 = h+(atk_k*125)+(atk_j*700)+3
+                let x1 = w-250+(500*def_i)+(250*(state[def_i][def_j][def_k].Position/100))
+                let y1 = h+(def_k*125)+(def_j*700)+3
 
-                if(atk_i%2==0){
-                    x0 = w-250+(500*i)+(250*(state[atk_i][atk_j][atk_k].Position/100))
-                    y0 = h+(k*125)+(j*700)+3
-                } else {
-                    x0 = w-250+(250*i)+250-(250*(state[atk_i][atk_j][atk_k].Position/100))
-                    y0 = h+(k*125)+(j*700)+3
+                if(atk_i%2==1){
+                    x0 = w-250+(250*atk_i)+250-(250*(state[atk_i][atk_j][atk_k].Position/100))
+                    y0 = h+(atk_k*125)+(atk_j*700)+3
                 }
 
-                if(def_i%2==0){
-                    x1 = w-250+(500*i)+(250*(state[def_i][def_j][def_k].Position/100))
-                    y1 = h+(k*125)+(j*700)+3
-                } else {
-                    x1 = w-250+(250*i)+250-(250*(state[def_i][def_j][def_k].Position/100))
-                    y1 = h+(k*125)+(j*700)+3
+                if(def_i%2==1){
+                    x1 = w-250+(250*def_i)+250-(250*(state[def_i][def_j][def_k].Position/100))
+                    y1 = h+(def_k*125)+(def_j*700)+3
                 }
 
 

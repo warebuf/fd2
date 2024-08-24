@@ -345,8 +345,8 @@ function drawPos()  {
                 let x0 = Math.round(c.width/2)-250 - 45
                 let y0 = Math.round(c.height/2)-250
 
-                drawTarget(x0-7+(590*atk_i), y0 + (atk_k*125)+(atk_j*700))
-                drawTarget(x0-7+(590*def_i), y0 + (def_k*125)+(def_j*700))
+                drawTarget(x0-7+(590*atk_i), y0 - 10 + (atk_k*125)+(atk_j*700))
+                drawTarget(x0-7+(590*def_i), y0 - 10 + (def_k*125)+(def_j*700))
 
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack

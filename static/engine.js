@@ -342,8 +342,8 @@ function drawPos()  {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                drawTarget(atk_k*100,100)
-                drawTarget(def_k*100,100)
+                drawTarget(100+ atk_k*100,100+ atk_i*100)
+                drawTarget(100+ def_k*100,100+ def_i*100)
 
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack

@@ -398,7 +398,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',700+state[i][j][k].Position.X,300+state[i][j][k].Position.Y,state[i][j][k].Angle)
+                    drawRotated('>',1000+state[i][j][k].Position.X,300+state[i][j][k].Position.Y,state[i][j][k].Angle)
                 }
             }
         }

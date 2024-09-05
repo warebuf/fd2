@@ -159,6 +159,7 @@ func m_read(m *match_socket) {
 						fmt.Println("received act3")
 						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
+							fmt.Println("received act4")
 							if msg.Message == "HEAD" {
 								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 0
 							} else if msg.Message == "LARM" {
@@ -169,6 +170,7 @@ func m_read(m *match_socket) {
 								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
 							}
 
+							fmt.Println("received act5")
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
 							for i := 0; i < len(m.m.team_client_hero); i++ {
@@ -185,10 +187,13 @@ func m_read(m *match_socket) {
 								}
 							}
 							if sim_check == true {
+								fmt.Println("received act6")
 								m.m.simulate <- true
 							} else {
+								fmt.Println("received act7")
 								m.m.sharepos(nil, 0)
 							}
+							fmt.Println("received act8")
 						}
 					}
 

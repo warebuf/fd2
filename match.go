@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"math"
 	"strings"
 
 	"math/rand"
@@ -12,6 +13,19 @@ import (
 	"sync"
 	"time"
 )
+
+type coordinate struct {
+	x    float64
+	y    float64
+	team int
+}
+
+func sameCoordinates(a coordinate, b coordinate) bool {
+	if (a.x == b.x) && (a.y == b.y) {
+		return true
+	}
+	return false
+}
 
 type match struct {
 	mutex sync.RWMutex
@@ -26,6 +40,9 @@ type match struct {
 	team_client_hero [][][]*hero
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
+
+	spawns map[coordinate]bool
+	poa    map[coordinate]bool
 
 	bench map[string][]*part // team, user index to part
 
@@ -87,15 +104,15 @@ type message struct {
 	Phase string
 
 	// game state stuff
-	TCH  [][][]string
-	Turn string
+	TCH         [][][]string
+	Turn        string
+	Atk         []string
+	UnitsOfTime string
 
 	// should add the user's TCH
 	Team_index   int
 	Client_index int
 	Hero_index   int
-
-	Atk []string
 }
 
 func m_write(m *match_socket) {
@@ -133,10 +150,11 @@ func m_read(m *match_socket) {
 				continue
 			} else if msg.Event == "act" {
 				fmt.Println("received act")
-				// check if the match has started and the action is to a user's own bot
+				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
-					// check if the bot is alive
-					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 && m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position == 0 {
+					// check if the hero is alive and at starting position
+					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 &&
+						m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position == m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Destination {
 						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
 							if msg.Message == "HEAD" {
@@ -148,28 +166,26 @@ func m_read(m *match_socket) {
 							} else if msg.Message == "BOTTOM" {
 								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
 							}
-							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Direction = 1
 
-							// check if all bots have commands, if so, calculate next position
+							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
 							for i := 0; i < len(m.m.team_client_hero); i++ {
 								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
 									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
 										if (m.m.team_client_hero[i][j][k].Bot == false) &&
 											(m.m.team_client_hero[i][j][k].Move < 0) &&
-											(m.m.team_client_hero[i][j][k].Position == 0) &&
+											sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Start) &&
 											(m.m.team_client_hero[i][j][k].H.HP > 0) {
 											sim_check = false
-											fmt.Println("sim_check", i, j, k)
+											break
 										}
 									}
 								}
 							}
-							fmt.Println("sim_check", sim_check)
 							if sim_check == true {
 								m.m.simulate <- true
 							} else {
-								m.m.sharepos(nil)
+								m.m.sharepos(nil, 0)
 							}
 						}
 					}
@@ -189,10 +205,10 @@ func m_read(m *match_socket) {
 				m.incoming_message <- msg2
 
 				if m.m.phase == "TURN" {
-					m.m.sharepos(nil)
+					m.m.sharepos(nil, 0)
 				} else if m.m.phase == "CHARACTER SELECTION" {
 					m.m.sharebench()
-					m.m.sharepos(nil)
+					m.m.sharepos(nil, 0)
 				}
 				m.incoming_message <- &message{Event: "assignInt", Message: m.m.uuid_to_team_int[m.u.uid].ab, MatchID: m.m.mid}
 
@@ -390,7 +406,7 @@ func m_read(m *match_socket) {
 
 					// send updated bench, send updated starters
 					m.m.sharebench()
-					m.m.sharepos(nil)
+					m.m.sharepos(nil, 0)
 
 				}
 
@@ -450,6 +466,9 @@ func createMatch(pl *permission_list) *match {
 			team_client_hero: make([][][]*hero, 0, 0),
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
+			spawns: make(map[coordinate]bool),
+			poa:    make(map[coordinate]bool),
+
 			broadcast:      make(chan *message),
 			prio_broadcast: make(chan *message),
 
@@ -485,6 +504,16 @@ func createMatch(pl *permission_list) *match {
 		for _, j := range pl.spectator_uid_to_user {
 			if j.bot_status == true {
 				ans.bot_join <- j
+			}
+		}
+
+		// create spawns and poas
+		for i := 0; i < int(ans.sides); i++ {
+			for j := 0; j < 5; j++ {
+				ans.spawns[coordinate{x: float64(i * 200), y: float64(j * 50), team: i}] = true
+			}
+			for j := 0; j < 3; j++ {
+				ans.poa[coordinate{x: 100, y: 50.0 + (float64(j) * 50.0), team: i}] = true
 			}
 		}
 
@@ -597,14 +626,22 @@ func createMatch(pl *permission_list) *match {
 					Weight:      rand.Intn(99) + 1,
 				}
 				temp := &hero{
-					Bot:       j.bot_status,
-					Position:  0,
-					Direction: 0,
-					Move:      -1,
-					H:         h,
-					L:         larm,
-					R:         rarm,
-					B:         btm,
+					Bot: j.bot_status,
+
+					Homebase:    coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1},
+					Start:       coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1},
+					Position:    coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1},
+					Destination: coordinate{x: 100.0, y: 100.0, team: team_int},
+
+					DistanceLeft: getDistanceTwoPoints(coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1}, coordinate{x: float64(100), y: 133.332, team: team_int}),
+					Angle:        getTheta(coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1}, coordinate{x: float64(100), y: 133.332, team: team_int}),
+
+					Move: -1,
+
+					H: h,
+					L: larm,
+					R: rarm,
+					B: btm,
 				}
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
@@ -706,6 +743,7 @@ func createMatch(pl *permission_list) *match {
 			} else if ans.game_mode == "1vx" {
 				team_int = 1
 			}
+
 			if len(ans.team_client_hero) > team_int {
 				client_int = len(ans.team_client_hero[team_int])
 			}
@@ -997,7 +1035,7 @@ func (m *match) run() {
 			continue
 
 			m.sharebench()
-			m.sharepos(nil)
+			m.sharepos(nil, 0)
 			m.shareint()
 
 		case <-m.start_ticker:
@@ -1039,7 +1077,7 @@ func (m *match) run() {
 				}
 			}
 
-			m.sharepos(nil)
+			m.sharepos(nil, 0)
 
 			continue
 
@@ -1079,16 +1117,17 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if (m.team_client_hero[i][j][k].Position == 0) && (m.team_client_hero[i][j][k].Direction == 0) && (m.team_client_hero[i][j][k].Move < 0) && (m.team_client_hero[i][j][k].Bot == true) {
+						if sameCoordinates(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Start) &&
+							(m.team_client_hero[i][j][k].Move < 0) &&
+							(m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)
-							m.team_client_hero[i][j][k].Direction = 1
 							gave_bots_acts = true
 						}
 					}
 				}
 			}
 			if gave_bots_acts == true {
-				m.sharepos(nil)
+				m.sharepos(nil, 0)
 			}
 
 			// calculate min unit of time to action
@@ -1097,25 +1136,14 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if m.team_client_hero[i][j][k].H.HP > 0 {
-							if m.team_client_hero[i][j][k].Direction == 0 {
-								units_of_time := 999999.99
-								if m.team_client_hero[i][j][k].B.SPD != 0 {
-									units_of_time = toFixed(m.team_client_hero[i][j][k].Position/float64(m.team_client_hero[i][j][k].B.SPD), 3)
-								}
-								//fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
-								if units_of_time < min_units {
-									min_units = units_of_time
-								}
-							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								units_of_time := 999999.99
-								if m.team_client_hero[i][j][k].B.SPD != 0 {
-									units_of_time = toFixed((100-m.team_client_hero[i][j][k].Position)/float64(m.team_client_hero[i][j][k].B.SPD), 3)
-								}
-								//fmt.Println(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].B.SPD, units_of_time)
-								if units_of_time < min_units {
-									min_units = units_of_time
-								}
+							units_of_time := 999999.99
+							if m.team_client_hero[i][j][k].B.SPD != 0 {
+								units_of_time = toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].B.SPD), 3)
 							}
+							if units_of_time < min_units {
+								min_units = units_of_time
+							}
+
 						}
 					}
 				}
@@ -1123,6 +1151,8 @@ func (m *match) run() {
 			fmt.Println("min", min_units)
 
 			has_cmds := false
+			has_atks := false
+
 			only_bot_cmds := true
 
 			list_of_attackers := [][]int{}
@@ -1132,35 +1162,42 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if m.team_client_hero[i][j][k].H.HP > 0 {
-							if m.team_client_hero[i][j][k].Direction == 0 {
 
-								new_pos := toFixed(m.team_client_hero[i][j][k].Position-(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
-								if new_pos <= 0.1 {
-									new_pos = 0
+							distanceTravelled := min_units * float64(m.team_client_hero[i][j][k].B.SPD)
+							newDistanceLeft := m.team_client_hero[i][j][k].DistanceLeft - distanceTravelled
+
+							if newDistanceLeft <= 0.1 {
+								m.team_client_hero[i][j][k].DistanceLeft = 0
+								m.team_client_hero[i][j][k].Position = m.team_client_hero[i][j][k].Destination
+
+								_, found := m.spawns[m.team_client_hero[i][j][k].Position]
+								if found {
 									has_cmds = true
-									if m.team_client_hero[i][j][k].Bot == false {
-										only_bot_cmds = false
-									}
+								} else {
+									has_atks = true
 								}
-								m.team_client_hero[i][j][k].Position = new_pos
 
-							} else if m.team_client_hero[i][j][k].Direction == 1 {
-								new_pos := toFixed(m.team_client_hero[i][j][k].Position+(min_units*float64(m.team_client_hero[i][j][k].B.SPD)), 3)
-								if new_pos >= 99.9 {
-									new_pos = 100
-									list_of_attackers = append(list_of_attackers, []int{i, j, k})
+								if m.team_client_hero[i][j][k].Bot == false {
+									only_bot_cmds = false
 								}
-								m.team_client_hero[i][j][k].Position = new_pos
+							} else {
+								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
+								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)
+								m.team_client_hero[i][j][k].Position.x = travelX + m.team_client_hero[i][j][k].Position.x
+								m.team_client_hero[i][j][k].Position.y = travelY + m.team_client_hero[i][j][k].Position.y
 							}
 
-							fmt.Println(i, j, k, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Direction)
 						}
 					}
 				}
 			}
 			fmt.Println("finished unit movement")
 			fmt.Println("listofattackers", list_of_attackers)
-			m.sharepos(nil)
+			if has_atks {
+				m.sharepos(nil, min_units)
+			} else {
+				m.sharepos(nil, 0)
+			}
 
 			// figure out who is at the end and can attack
 			atk_list := make([]*attack, 0)
@@ -1203,7 +1240,10 @@ func (m *match) run() {
 					}
 				}
 
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Direction = 0
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start = m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Position
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination = m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Homebase
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].DistanceLeft = getDistanceTwoPoints(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start, m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination)
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Angle = getTheta(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start, m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination)
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
 			}
 
@@ -1215,7 +1255,7 @@ func (m *match) run() {
 			}
 
 			if len(atk_list) > 0 {
-				m.sharepos(atk_list)
+				m.sharepos(atk_list, min_units)
 			}
 
 			if game_over_check(m.team_client_hero) {
@@ -1255,12 +1295,10 @@ func (m *match) run() {
 			init_time := time.Now().Add(timer1_length)
 			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 			m.ticker = time.NewTicker(timer2_length)
-			msg2 := &message{Event: "unitsOfTime", When: time.Now(), Message: strconv.FormatFloat(min_units, 'E', 3, 64)}
 
 			// send ticker to everyone
 			m.mutex.Lock()
 			m.message_logs = append(m.message_logs, msg)
-			m.message_logs = append(m.message_logs, msg2)
 			m.mutex.Unlock()
 
 			fmt.Println("sending:", msg)
@@ -1270,7 +1308,6 @@ func (m *match) run() {
 					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
 					select {
 					case j.incoming_message <- msg:
-						j.incoming_message <- msg2
 					}
 				}
 			}
@@ -1280,7 +1317,6 @@ func (m *match) run() {
 					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
 					select {
 					case j.incoming_message <- msg:
-						j.incoming_message <- msg2
 					}
 				}
 			}
@@ -1304,7 +1340,7 @@ func printAllMatchUserWS() {
 		}
 	}
 }
-func (m *match) sharepos(a []*attack) {
+func (m *match) sharepos(a []*attack, utime float64) {
 	fmt.Println("sharepos", a)
 
 	atk_temp := make([]string, 0)
@@ -1315,6 +1351,11 @@ func (m *match) sharepos(a []*attack) {
 			marshalled, _ := json.Marshal(a[i])
 			atk_temp = append(atk_temp, string(marshalled))
 		}
+	}
+
+	utime_conv := ""
+	if utime != 0 {
+		utime_conv = strconv.FormatFloat(utime, 'E', 3, 64)
 	}
 
 	// convert game state to JSON
@@ -1336,7 +1377,7 @@ func (m *match) sharepos(a []*attack) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}
@@ -1360,11 +1401,12 @@ func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int
 			for j := 0; j < len(state[i]); j++ {
 				for k := 0; k < len(state[i][j]); k++ {
 					if state[i][j][k].H.HP > 0 {
-						if 100-state[i][j][k].Position == closest {
-							closest = 100 - state[i][j][k].Position
+						dist := getDistanceTwoPoints(state[atk_t][atk_u][atk_b].Position, state[i][j][k].Position)
+						if dist == closest {
+							closest = dist
 							ans = append(ans, []int{i, j, k})
-						} else if 100-state[i][j][k].Position < closest {
-							closest = 100 - state[i][j][k].Position
+						} else if dist < closest {
+							closest = dist
 							ans = append([][]int{}, []int{i, j, k})
 						}
 					}
@@ -1521,4 +1563,21 @@ func (m *match) shareint() {
 			}
 		}
 	}
+}
+func getDistanceTwoPoints(c1 coordinate, c2 coordinate) float64 {
+	y_dist := c2.y - c1.y
+	x_dist := c2.x - c1.x
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
+}
+func getXYComponent(theta float64, r float64) (float64, float64) {
+	return toFixed(r*math.Cos(theta), 3), toFixed(r*math.Sin(theta), 3)
+}
+func getTheta(c1 coordinate, c2 coordinate) float64 {
+	y := c2.y - c1.y
+	x := c2.x - c1.x
+	theta := math.Atan2(x, y)
+	if theta < 0 {
+		theta = theta + (2 * math.Pi)
+	}
+	return toFixed(theta, 3)
 }

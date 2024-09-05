@@ -69,6 +69,8 @@ function anime() {
 
         drawGrid()
         drawBoard()
+        calcPos()
+        calcAndDrawAttack()
         drawPos()
         drawState()
         //drawStats()
@@ -90,27 +92,22 @@ function anime() {
 }
 anime()
 
-function drawPos()  {
+function calcPos()  {
 
     let w = Math.round(c.width/2)
     let h = Math.round(c.height/2)-250
-
-    let y_offset = 200
-    time_event_ready = false
+    //let y_offset = 200
 
     // if there are states updates, update the position
-    if(all_up_to_date == false && draw_attacks <= 0) {
+    if(all_up_to_date == false && attacking_frames_count <= 0) {
 
         // check if the states are up to date
         if(pos_up_to_date == false) {
-            check = true
+            let check = true
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
-                        if(
-                            state[i][j][k].Position != match_data[animating_state][i][j][k].Position ||
-                            state[i][j][k].Direction != match_data[animating_state][i][j][k].Direction
-                        ) {
+                        if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
                             check = false
                             break
                         }
@@ -119,18 +116,15 @@ function drawPos()  {
                 }
                 if(check==false){break}
             }
-            if (check == true) {pos_up_to_date=true}
+            if (check==true) {pos_up_to_date=true}
         }
 
         if(act_up_to_date == false) {
-            check = true
+            let check = true
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
-                        if(
-                            state[i][j][k].Move != match_data[animating_state][i][j][k].Move &&
-                            state[i][j][k].Direction != match_data[animating_state][i][j][k].Direction
-                        ) {
+                        if(state[i][j][k].Move != match_data[animating_state][i][j][k].Move) {
                             check = false
                             break
                         }
@@ -148,30 +142,14 @@ function drawPos()  {
         // if we are not at this state, let's move the units so we can approach the next state
         if((pos_up_to_date == true) && (act_up_to_date == true)) {
 
-            attack_event_ready = false
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length; k++) {
-                        if(
-                            (match_data[animating_state][i][j][k].Position == 0) &&
-                            (match_data[animating_state][i][j][k].Direction == 0) &&
-                            (match_data[animating_state][i][j][k].Move == -1) &&
-                            (match_data[animating_state][i][j][k].SPD != 0)
-                        ) {
-                            time_event_ready = true
-                        } else if (
-                            (match_data[animating_state][i][j][k].Position == 100) &&
-                            (match_data[animating_state][i][j][k].Direction == 1) &&
-                            (match_data[animating_state][i][j][k].Move != -1)
-                        ) {
-                            time_event_ready = false
-                            attack_event_ready = true
-                            break
-                        }
-                    }
-                    if((attack_event_ready)){break}
+            // if we are all up to date and there is no attack animation, push out the timestamp log
+            if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) {
+                total_units_of_time += parseFloat(time_queue[animating_state])
+                total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+                event_log.push(time_queue[animating_state].toString() + " units of time has passed")
+                if(event_log.length >= 25) {
+                    event_log.shift()
                 }
-                if((attack_event_ready)){break}
             }
 
             state = JSON.parse(JSON.stringify(match_data[animating_state]))
@@ -190,29 +168,17 @@ function drawPos()  {
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
-
-                            if( // if we already set a move on this unit, but the user requests a change on it, and the unit is at the starting point
-                                (state[i][j][k].Position == 0) &&
-                                (state[i][j][k].Direction == 1) &&
-                                (state[i][j][k].Position == match_data[animating_state][i][j][k].Position) 
-                            ) {
+                            if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
                                 state[i][j][k].Move = match_data[animating_state][i][j][k].Move
                             }
-                            else if( // if the unit is waiting for a move, and a new move comes in
-                                (state[i][j][k].Position == 0) &&
-                                (state[i][j][k].Direction == 0) &&
-                                (state[i][j][k].Move == -1) &&
-                                (state[i][j][k].Move != match_data[animating_state][i][j][k].Move)
+                            else if(
+                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination) ) &&
+                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) == false ) &&
+                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) &&
+                                ( state[i][j][k].Move != -1 )
                             ) {
-                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
-                                state[i][j][k].Direction = 1
-                            } else if( // if the unit is ready to attack, attack and set direction to homebase
-                                (state[i][j][k].Position == 100) &&
-                                (state[i][j][k].Direction == 1) &&
-                                (state[i][j][k].Move != -1)
-                            ){
-                                if(draw_attacks==0){
-                                    draw_attacks=1
+                                if(attacking_frames_count==0){
+                                    attacking_frames_count=1
                                 }
                             }
                         }
@@ -226,26 +192,17 @@ function drawPos()  {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
                             if(state[i][j][k].H.HP <= 0) {
-                            } else if(state[i][j][k].Direction == 0) {
-                                state[i][j][k].Position = state[i][j][k].Position - (state[i][j][k].B.SPD * 0.025)
-                                if(
-                                    (match_data[animating_state][i][j][k].Direction == 0) &&
-                                    (state[i][j][k].Position < match_data[animating_state][i][j][k].Position)
-                                ) {
+                            } else {
+                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
+                                state[i][j][k].Position.x = state[i][j][k].Position.x + increment[0]
+                                state[i][j][k].Position.y = state[i][j][k].Position.y + increment[1]
+                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - state[i][j][k].B.SPD * 0.025
+
+                                if(state[i][j][k].DistanceLeft <= 0) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                    state[i][j][k].DistanceLeft = 0
                                 }
-                                else if(state[i][j][k].Position < 0){state[i][j][k].Position = 0}
-                            } else if(state[i][j][k].Direction == 1) {
-                                state[i][j][k].Position = state[i][j][k].Position + (state[i][j][k].B.SPD * 0.025)
-                                if(
-                                    (match_data[animating_state][i][j][k].Direction == 1) &&
-                                    (state[i][j][k].Position > match_data[animating_state][i][j][k].Position)
-                                ) {
-                                    state[i][j][k].Position = match_data[animating_state][i][j][k].Position
-                                }
-                                else if(state[i][j][k].Position > 100){
-                                    state[i][j][k].Position = 100
-                                }
+
                             }
                         }
                     }
@@ -253,75 +210,11 @@ function drawPos()  {
             }
         }
     }
-    else if(draw_attacks>0) {
 
-        /*
-        let a1 = 0
-        let a2 = 0
-        for(let i = 0; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0; k < state[i][j].length; k++) {
-                    if( (state[i][j][k].H.HP > 0) && (state[i][j][k].Position==100) ) {
+}
 
-                        if(a1 < atk_data[animating_state].length) {
-                            let b = JSON.parse(atk_data[animating_state][a1])
-                            let a_0 = b.Attacker[0]
-                            let a_1 = b.Attacker[1]
-                            let a_2 = b.Attacker[2]
-                            let x1 = w+(250*a_0)+(250*(state[a_0][a_1][a_2].Position/100))
-                            let y1 = h+(a_2 * 125)+(a_1*700)
-                            if((a_0%2)==1){
-                                x1 = w+(250*a_0)+250-(250*(state[a_0][a_1][a_2].Position/100))
-                            }
-
-                            let perc = draw_attacks / 30
-                            if(draw_attacks>30){
-                                perc = 1
-                            }
-
-                            // calculate a vector to draw
-                            let b_0 = b.Defender[0][0]
-                            let b_1 = b.Defender[0][1]
-                            let b_2 = b.Defender[0][2]
-                            let x2 = w+(250*b_0)+(250*(state[b_0][b_1][b_2].Position/100))
-                            let y2 = h+(b_2 * 125)+(b_1*700)
-                            if((b_0%2)==1){
-                                x2 = w+(250*b_0)+250-(250*(state[b_0][b_1][b_2].Position/100))
-                            }
-                            let x2_x1 = (x2 - x1)*perc
-                            let y2_y1 = (y2 - y1)*perc
-                            //dashedLine(x1,y1,x1+x2_x1,y1+y2_y1,[1,10])
-
-                            if(draw_attacks>=30) {
-                                ctx.fillStyle = 'white'
-                                ctx.textAlign = "center";
-                                ctx.font = '9px monospace';
-                                //ctx.fillText("BOOM!",x2, y2-7);
-                            }
-
-                            a1++
-                        }
-
-                        if ((draw_attacks==59) && (a2 < atk_data[animating_state].length)) {
-                            event_log.push(atk_data[animating_state][a2])
-                            if(event_log.length >= 25) {
-                                event_log.shift()
-                            }
-                            a2++
-                        }
-
-                        if ((draw_attacks==59) && (state[i][j][k].Direction==1)) {
-                            state[i][j][k].Move = -1
-                            state[i][j][k].Direction = 0
-                            time_event_ready = true
-                        }
-
-                    }
-                }
-            }
-
-        }
-        */
+function calcAndDrawAttack() {
+    if(attacking_frames_count>0) {
 
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
@@ -342,27 +235,9 @@ function drawPos()  {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                let x0 = w-250+(500*atk_i)+(250*(state[atk_i][atk_j][atk_k].Position/100))
-                let y0 = h+(atk_k*125)+(atk_j*700)+3
-                let x1 = w-250+(500*def_i)+(250*(state[def_i][def_j][def_k].Position/100))
-                let y1 = h+(def_k*125)+(def_j*700)+3
-
-                if(atk_i%2==1){
-                    x0 = w-250+(250*atk_i)+250-(250*(state[atk_i][atk_j][atk_k].Position/100))
-                    y0 = h+(atk_k*125)+(atk_j*700)+3
-                }
-
-                if(def_i%2==1){
-                    x1 = w-250+(250*def_i)+250-(250*(state[def_i][def_j][def_k].Position/100))
-                    y1 = h+(def_k*125)+(def_j*700)+3
-                }
-
-
-
-                drawTarget(x0 - 10, y0 - 12 )
-                drawTarget(x1 - 10, y1 - 12 )
-                laser( x0, y0 - 2, x1, y1 - 2 )
-
+                //drawTarget(x0 - 10, y0 - 12 )
+                //drawTarget(x1 - 10, y1 - 12 )
+                //laser( x0, y0 - 2, x1, y1 - 2 )
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")
@@ -481,92 +356,53 @@ function drawPos()  {
 
 
                 }
-            } else {
-
             }
 
-            if ( draw_attacks==149 ) {
+            if ( attacking_frames_count==99 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
                     event_log.shift()
                 }
+                state[atk_i][atk_j][atk_k].Start = state[atk_i][atk_j][atk_k].Position
+                state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
+                state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
+                state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
                 state[atk_i][atk_j][atk_k].Move = -1
-                state[atk_i][atk_j][atk_k].Direction = 0
-                time_event_ready = true
+
+                // add the time to the event log
+                if(time_queue[animating_state]!="") {
+                    total_units_of_time += parseFloat(time_queue[animating_state])
+                    total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+                    event_log.push(time_queue[animating_state].toString() + " units of time has passed")
+                    if(event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                }
             }
 
         }
 
-
-
-        draw_attacks++
-        if(draw_attacks==150) {draw_attacks = 0}
+        attacking_frames_count++
+        if(attacking_frames_count==100) {attacking_frames_count = 0}
     }
+}
 
-    if(time_event_ready==true) {
-        if(time_queue.length > 0) {
-            t = time_queue.shift()
-            total_units_of_time += parseFloat(t)
-            total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-            event_log.push(t.toString() + " units of time has passed")
-            if(event_log.length >= 25) {
-                event_log.shift()
-            }
-        }
-    }
+function drawPos(){
+    let w = Math.round(c.width/2)
+    let h = Math.round(c.height/2)-250
 
-
-    //  DRAWING THE UNIT HERE
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';
-    symbol = '?'
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-
-                if(state[i][j][k].H.HP <= 0) {
-                    symbol = 'd'
-                } else if(state[i][j][k].Direction == 0) {
-                    symbol = '<'
-                } else if(state[i][j][k].Direction == 1) {
-                    symbol = '>'
+                if(state[i][j][k].H.HP > 0) {
+                    drawRotated('>',state[i][j][k].Position.x,state[i][j][k].Position.y,state[i][j][k].Angle)
                 }
-
-                if(i%2==0) {
-                    if(symbol=='d'){symbol=''}
-                    ctx.textAlign = "center";
-                    //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
-                    ctx.fillText(symbol, w-250+(500*i)+(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+3 );
-
-                    ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
-                    ctx.font = '8px monospace';
-                    //ctx.fillText(k, w+(250*i)+(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+25 );
-                    //ctx.fillText(state[i][j][k].Position.toFixed(1), w+(250*i)+(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+15 );
-                    ctx.font = '11px monospace';
-
-                } else {
-                    if(symbol=='>'){symbol='<'}
-                    else if(symbol=='<'){symbol='>'}
-                    else if(symbol=='d'){symbol=''}
-                    ctx.textAlign = "center";
-                    //ctx.fillRect(700+(270*i),y_offset+(k*120)+(j*700),250,1);
-                    ctx.fillText(symbol, w-250+(250*i)+250-(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+3 );
-
-                    ctx.fillStyle = 'white';
-                    ctx.textAlign = "left";
-                    ctx.font = '8px monospace';
-                    //ctx.fillText(k, w+(250*i)+250-(250*(state[i][j][k].Position/100)), h+(k*125)+(j*700)+25 );
-                    //ctx.fillText( state[i][j][k].Position.toFixed(1), w+(250*i)+250-(250*(state[i][j][k].Position/100))-5, h+(k*125)+(j*700)+15 );
-                    ctx.font = '11px monospace';
-                }
-
             }
         }
     }
-
-
 }
 
 function drawState() {
@@ -626,58 +462,15 @@ function drawState() {
                 if(turn.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&
-                        state[i][j][k].Position == 0
+                        state[i][j][k].Position == state[i][j][k].Homebase
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
 
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
-
-                            /*
-                            let p1 = 16*Math.PI/10
-                            if(i==1){
-                                p1 = (16*Math.PI/10) + (2*k*Math.PI/10)
-                            }
-                            else {
-                                p1 = (14*Math.PI/10) - (2*k*Math.PI/10)
-                            }
-                            let x1 = Math.cos(p1);
-                            let y1 = Math.sin(p1);
-
-                            for(let a = 0; a < state.length; a++) {
-                                for(let b = 0; b < state[a].length; b++) {
-                                    for(let c = 0; c < state[a][b].length; c++) {
-                                        if(a==i && b==j && c==k) {
-
-                                        }
-                                        else {
-                                            let p2 = 16*Math.PI/10
-                                            if(a==1){
-                                                p2 = (16*Math.PI/10) + (2*c*Math.PI/10)
-                                            }
-                                            else {
-                                                p2 = (14*Math.PI/10) - (2*c*Math.PI/10)
-                                            }
-                                            let x2 = Math.cos(p2);
-                                            let y2 = Math.sin(p2);
-
-                                            ctx.beginPath();
-                                            ctx.moveTo( (x1*250)+test1, (y1*250)+test2 );
-                                            ctx.lineTo((x2*250)+test1, (y2*250)+test2);
-                                            ctx.strokeStyle = "grey";
-                                            ctx.lineWidth = 1;
-                                            ctx.stroke();
-                                        }
-                                    }
-                                }
-                            }
-                            */
-
-
-
                         }
-                        else if((state[indexer_t][indexer_u][indexer_b].Position != 0) && (my_team==i) && (my_int==j)) { // finds
+                        else if((state[indexer_t][indexer_u][indexer_b].Position != state[indexer_t][indexer_u][indexer_b].Homebase) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
@@ -808,8 +601,7 @@ function drawStats() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 ctx.textAlign = "center";
-                ctx.fillText(state[i][j][k].Direction, a0+(0*25), ((i+j)*115) + y1+2 + (k*20));
-                ctx.fillText((Math.round(state[i][j][k].Position * 100) / 100).toFixed(1), a0+(1*25), ((i+j)*115) + y1+2 + (k*20))
+                //ctx.fillText((Math.round(state[i][j][k].Position * 100) / 100).toFixed(1), a0+(1*25), ((i+j)*115) + y1+2 + (k*20))
                 temp = '-'
                 if(state[i][j][k].Move==0){temp='H'}
                 else if(state[i][j][k].Move==1){temp='L'}
@@ -2021,56 +1813,6 @@ function drawStartersTable2() {
     }
 }
 
-function drawCircle(center_x,center_y,radius){
-
-    ctx.beginPath();
-    ctx.strokeStyle = 'pink';
-    ctx.arc(center_x, center_y, radius, 0, 2 * Math.PI);
-    ctx.stroke();
-
-
-}
-
-function drawPoint(center_x,center_y,radius,num){
-
-    if(num==0){return}
-
-    for(let i = 0; i < state.length; i++) {
-        for(let j = 0; j < state[i].length; j++) {
-            for(let k = 0; k < state[i][j].length;k++){
-
-                if(state[i][j][k].H.HP>0) {
-
-                    let p = 16*Math.PI/10
-                    if(i==1){
-                        p = (16*Math.PI/10) + (2*k*Math.PI/10)
-                    }
-                    else {
-                        p = (14*Math.PI/10) - (2*k*Math.PI/10)
-                    }
-
-                    let x = center_x + radius * Math.cos(p) * (100-state[i][j][k].Position)/100;
-                    let y = center_y + radius * Math.sin(p) * (100-state[i][j][k].Position)/100;
-
-                    ctx.beginPath();
-                    if(i==my_team && j==my_int){ctx.fillStyle = 'blue';}
-                    else{ctx.fillStyle = 'green';}
-
-                    ctx.arc(x, y, 2, 0, 2 * Math.PI);
-                    ctx.fill();
-
-                    ctx.fillStyle = 'white';
-                    ctx.textAlign = "center";
-                    ctx.font = '8px monospace';
-                    ctx.fillText(k, x, y-10 );
-                    ctx.fillText(state[i][j][k].Position.toFixed(1), x, y+20 );
-                    //ctx.font = '11px monospace';
-                }
-            }
-        }
-    }
-}
-
 function wrap(ctx, text, fontSize, fontColor) {
     var max_width  = 250;
     var fontSize   =  12;
@@ -2281,39 +2023,6 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
     ctx.fill();
 }
 
-function calculateCenter(center_x,center_y) {
-    let sum_x = 0;
-    let sum_y = 0;
-
-    count = 0
-    for(let i = 0; i < state.length;i++){
-        for(let j = 0; j < state[i].length;j++) {
-            for(let k = 0; k < state[i][j].length;k++) {
-
-                if(state[i][j][k].H.HP > 0) {
-
-                    let p = 16*Math.PI/10
-                    if(i==1){
-                        p = (16*Math.PI/10) + (2*k*Math.PI/10)
-                    }
-                    else {
-                        p = (14*Math.PI/10) - (2*k*Math.PI/10)
-                    }
-
-                    let x = Math.cos(p) * (100-state[i][j][k].Position)/100;
-                    let y = Math.sin(p) * (100-state[i][j][k].Position)/100;
-
-                    sum_x = sum_x + x
-                    sum_y = sum_y + y
-                    count = count + 1
-                }
-
-            }
-        }
-    }
-
-    return [ 250*sum_x/count, 250*sum_y/count ]
-}
 
 function drawHeatMap(){
 
@@ -2690,4 +2399,24 @@ function laser(x1,y1,x2,y2) {
     ctx.moveTo(x1, y1);
     ctx.lineTo(x2, y2);
     ctx.stroke();
+}
+
+function coordinateEqual(c1,c2) {
+    if (c1.x == c2.x) and (c1.y == c2.y) {
+        return true
+    }
+    return false
+}
+
+function getXY(theta, r) {
+    return [r*math.Cos(theta), r*math.Sin(theta)]
+}
+
+function drawRotated(s,x,y,radians) {
+    ctx.save();
+    ctx.textAlign = "center";
+    ctx.translate(x,y);
+    ctx.rotate(radians);
+    ctx.fillText(s, 0, 0 );
+    ctx.restore();
 }

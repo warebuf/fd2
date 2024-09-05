@@ -21,7 +21,7 @@ type coordinate struct {
 }
 
 func sameCoordinates(a coordinate, b coordinate) bool {
-	if (a.x == b.x) && (a.y == b.y) {
+	if (a.X == b.X) && (a.Y == b.Y) {
 		return true
 	}
 	return false

@@ -194,8 +194,8 @@ function calcPos()  {
                             if(state[i][j][k].H.HP <= 0) {
                             } else {
                                 let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
-                                state[i][j][k].Position.x = state[i][j][k].Position.x + increment[0]
-                                state[i][j][k].Position.y = state[i][j][k].Position.y + increment[1]
+                                state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
+                                state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
                                 state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - state[i][j][k].B.SPD * 0.025
 
                                 if(state[i][j][k].DistanceLeft <= 0) {
@@ -398,7 +398,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',state[i][j][k].Position.x,state[i][j][k].Position.y,state[i][j][k].Angle)
+                    drawRotated('>',state[i][j][k].Position.X,state[i][j][k].Position.Y,state[i][j][k].Angle)
                 }
             }
         }
@@ -462,7 +462,7 @@ function drawState() {
                 if(turn.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&
-                        state[i][j][k].Position == state[i][j][k].Homebase
+                        coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";

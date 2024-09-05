@@ -15,9 +15,9 @@ import (
 )
 
 type coordinate struct {
-	x    float64
-	y    float64
-	team int
+	X    float64
+	Y    float64
+	Team int
 }
 
 func sameCoordinates(a coordinate, b coordinate) bool {
@@ -154,7 +154,7 @@ func m_read(m *match_socket) {
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the hero is alive and at starting position
 					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 &&
-						m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position == m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Destination {
+						sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Homebase) {
 						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
 							if msg.Message == "HEAD" {
@@ -628,13 +628,13 @@ func createMatch(pl *permission_list) *match {
 				temp := &hero{
 					Bot: j.bot_status,
 
-					Homebase:    coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1},
-					Start:       coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1},
-					Position:    coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1},
-					Destination: coordinate{x: 100.0, y: 100.0, team: team_int},
+					Homebase:    coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1},
+					Start:       coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1},
+					Position:    coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1},
+					Destination: coordinate{X: 100.0, Y: 100.0, Team: team_int},
 
-					DistanceLeft: getDistanceTwoPoints(coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1}, coordinate{x: float64(100), y: 133.332, team: team_int}),
-					Angle:        getTheta(coordinate{x: float64(team_int * 200), y: 200 - (float64(y) * 50), team: -1}, coordinate{x: float64(100), y: 133.332, team: team_int}),
+					DistanceLeft: getDistanceTwoPoints(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1}, coordinate{X: float64(100), Y: 133.332, Team: team_int}),
+					Angle:        getTheta(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1}, coordinate{X: float64(100), Y: 133.332, Team: team_int}),
 
 					Move: -1,
 
@@ -1185,8 +1185,8 @@ func (m *match) run() {
 							} else {
 								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
 								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)
-								m.team_client_hero[i][j][k].Position.x = travelX + m.team_client_hero[i][j][k].Position.x
-								m.team_client_hero[i][j][k].Position.y = travelY + m.team_client_hero[i][j][k].Position.y
+								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
+								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
 
 						}

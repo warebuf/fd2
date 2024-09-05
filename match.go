@@ -1577,7 +1577,7 @@ func getXYComponent(theta float64, r float64) (float64, float64) {
 func getTheta(c1 coordinate, c2 coordinate) float64 {
 	y := c2.Y - c1.Y
 	x := c2.X - c1.X
-	theta := math.Atan2(x, y)
+	theta := math.Atan2(y, x)
 	if theta < 0 {
 		theta = theta + (2 * math.Pi)
 	}

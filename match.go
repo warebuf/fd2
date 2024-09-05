@@ -634,7 +634,7 @@ func createMatch(pl *permission_list) *match {
 					Destination: coordinate{X: 100.0, Y: 100.0, Team: team_int},
 
 					DistanceLeft: getDistanceTwoPoints(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1}, coordinate{X: float64(100), Y: 133.332, Team: team_int}),
-					Angle:        getTheta(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1}, coordinate{X: float64(100), Y: 133.332, Team: team_int}),
+					Angle:        getTheta(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Team: -1}, coordinate{X: float64(100), Y: 100.0, Team: team_int}),
 
 					Move: -1,
 

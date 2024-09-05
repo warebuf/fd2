@@ -59,7 +59,6 @@
     sourceURL="test.js"
 
     document.onkeydown = function (e) {
-
         switch (e.key) {
             case "Enter":
                 if(phase=="CHARACTER SELECTION"){
@@ -194,16 +193,12 @@
                             y_index_1=4
                         }
                     }
-
-
-
-
                 }
                 else if(match_data.length>0){
 
                     // begin iterating through all the heros, check if the hero is at Position 0,
                     // if he is, then break, otherwise keep iterating until you do a full rotation
-                    found = false;
+                    let found = false;
                     for(i=0;i<state.length;i++) {
                         for(j=0;j<state[i].length;j++) {
                             for(k=0;k<state[i][j].length;k++) {
@@ -215,22 +210,22 @@
                                         indexer_u=state[0].length-1;
                                         indexer_t--;
                                         if(indexer_t<0) {
-                                            indexer_t=state.length-1
+                                            indexer_t=state.length-1;
                                         }
                                     }
                                 }
 
                                 if(coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)){
-                                    found=true
-                                    break
+                                    found=true;
+                                    break;
                                 }
                             }
                             if(found==true){
-                                break
+                                break;
                             }
                         }
                         if(found==true){
-                            break
+                            break;
                         }
                     }
                 }
@@ -243,7 +238,7 @@
                 }
                 else if(match_data.length>0){
 
-                    found = false;
+                    let found = false;
                     for(i=0;i<state.length;i++) {
                         for(j=0;j<state[0].length;j++) {
                             for(k=0;k<state[0][0].length;k++) {
@@ -261,16 +256,16 @@
                                 }
 
                                 if(coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)){
-                                    found=true
-                                    break
+                                    found=true;
+                                    break;
                                 }
                             }
                             if(found==true){
-                                break
+                                break;
                             }
                         }
                         if(found==true){
-                            break
+                            break;
                         }
                     }
                 }
@@ -489,7 +484,6 @@
                 }
                 break;
         }
-
     }
 
     // important data

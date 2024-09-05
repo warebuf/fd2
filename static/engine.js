@@ -398,7 +398,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',1000+state[i][j][k].Position.X,300+state[i][j][k].Position.Y,state[i][j][k].Angle)
+                    drawRotated('>',800+state[i][j][k].Position.X,300+state[i][j][k].Position.Y,state[i][j][k].Angle)
                 }
             }
         }
@@ -470,11 +470,11 @@ function drawState() {
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
                         }
-                        else if((state[indexer_t][indexer_u][indexer_b].Position != state[indexer_t][indexer_u][indexer_b].Homebase) && (my_team==i) && (my_int==j)) { // finds
+                        else if((coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
-                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
+                            ctx.fillText("-->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
                         }
                         else {
                             ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
@@ -2022,7 +2022,6 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
     ctx.arc(center_x+shift_x, center_y+shift_y, 3, 0, 2 * Math.PI);
     ctx.fill();
 }
-
 
 function drawHeatMap(){
 

@@ -643,6 +643,8 @@ func createMatch(pl *permission_list) *match {
 					R: rarm,
 					B: btm,
 				}
+
+				fmt.Println(temp)
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 

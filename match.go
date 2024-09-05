@@ -510,10 +510,10 @@ func createMatch(pl *permission_list) *match {
 		// create spawns and poas
 		for i := 0; i < int(ans.sides); i++ {
 			for j := 0; j < 5; j++ {
-				ans.spawns[coordinate{x: float64(i * 200), y: float64(j * 50), team: i}] = true
+				ans.spawns[coordinate{X: float64(i * 200), Y: float64(j * 50), Team: i}] = true
 			}
 			for j := 0; j < 3; j++ {
-				ans.poa[coordinate{x: 100, y: 50.0 + (float64(j) * 50.0), team: i}] = true
+				ans.poa[coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0), Team: i}] = true
 			}
 		}
 
@@ -1567,8 +1567,8 @@ func (m *match) shareint() {
 	}
 }
 func getDistanceTwoPoints(c1 coordinate, c2 coordinate) float64 {
-	y_dist := c2.y - c1.y
-	x_dist := c2.x - c1.x
+	y_dist := c2.Y - c1.Y
+	x_dist := c2.X - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
 }
 func getXYComponent(theta float64, r float64) (float64, float64) {

@@ -1193,6 +1193,7 @@ func (m *match) run() {
 							} else {
 								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
 								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)
+								fmt.Println(travelX, travelY)
 								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}

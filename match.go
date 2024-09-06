@@ -1200,7 +1200,7 @@ func (m *match) run() {
 					}
 				}
 			}
-			fmt.Println("finished unit movement")
+			fmt.Println("finished unit movement", has_cmds, has_atks, only_bot_cmds)
 			fmt.Println("listofattackers", list_of_attackers)
 			if has_atks {
 				m.sharepos(nil, min_units)

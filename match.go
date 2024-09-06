@@ -1184,6 +1184,7 @@ func (m *match) run() {
 									has_cmds = true
 								} else {
 									has_atks = true
+									list_of_attackers = append(list_of_attackers, []int{i, j, k})
 								}
 
 								if m.team_client_hero[i][j][k].Bot == false {

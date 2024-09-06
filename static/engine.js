@@ -193,10 +193,10 @@ function calcPos()  {
                         for(let k = 0; k < state[i][j].length; k++) {
                             if(state[i][j][k].H.HP <= 0) {
                             } else {
-                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.00025)
+                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.000025)
                                 state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - state[i][j][k].B.SPD * 0.00025
+                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.000025)
 
                                 if(state[i][j][k].DistanceLeft <= 0) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position

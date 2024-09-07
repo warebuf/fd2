@@ -98,7 +98,7 @@ function calcPos()  {
     let h = Math.round(c.height/2)-250
     //let y_offset = 200
 
-    console.log("printing states1", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count, state[1][0][0].Position.X)
+    console.log("printing states1", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count)
 
     // if there are states updates, update the position
     if(all_up_to_date == false && attacking_frames_count <= 0) {
@@ -206,7 +206,7 @@ function calcPos()  {
 
                                 if(state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
-                                    state[i][j][k].DistanceLeft = 0
+                                    state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                 }
 
                             }

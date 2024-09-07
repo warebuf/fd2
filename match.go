@@ -1122,7 +1122,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if sameCoordinates(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Start) &&
+						if sameCoordinates(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Homebase) &&
 							(m.team_client_hero[i][j][k].Move < 0) &&
 							(m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)

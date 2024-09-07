@@ -204,7 +204,7 @@ function calcPos()  {
 
                                 console.log(i,j,k,state[i][j][k].Start, state[i][j][k].Position, state[i][j][k].Destination, state[i][j][k].DistanceLeft, state[i][j][k].Angle, increment)
 
-                                if(state[i][j][k].DistanceLeft <= 0) {
+                                if(state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                     state[i][j][k].DistanceLeft = 0
                                 }

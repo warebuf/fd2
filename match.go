@@ -170,6 +170,12 @@ func m_read(m *match_socket) {
 								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
 							}
 
+							// here we set the destination of the unit
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start = m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Destination = coordinate{X: 100.0, Y: 100.0, Team: -1}
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].DistanceLeft = getDistanceTwoPoints(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, coordinate{X: 100.0, Y: 100.0, Team: -1})
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Angle = getTheta(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, coordinate{X: 100.0, Y: 100.0, Team: -1})
+
 							fmt.Println("received act5")
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
@@ -1140,7 +1146,7 @@ func (m *match) run() {
 			}
 
 			// calculate min unit of time to action
-			min_units := 999999.99 //9,223,372,036,854,775,807 (9 quintillion)
+			min_units := 999999.99
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {

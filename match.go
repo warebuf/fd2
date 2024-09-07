@@ -171,7 +171,7 @@ func m_read(m *match_socket) {
 							}
 
 							// here we set the destination of the unit
-							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start = m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position
+							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start = m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Homebase
 							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Destination = coordinate{X: 100.0, Y: 100.0, Team: -1}
 							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].DistanceLeft = getDistanceTwoPoints(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, coordinate{X: 100.0, Y: 100.0, Team: -1})
 							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Angle = getTheta(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, coordinate{X: 100.0, Y: 100.0, Team: -1})
@@ -1264,6 +1264,11 @@ func (m *match) run() {
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].DistanceLeft = getDistanceTwoPoints(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start, m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination)
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Angle = getTheta(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start, m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination)
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
+
+				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
+					m.ended = true
+				}
+
 			}
 
 			num, _ := strconv.Atoi(m.turn[5:])

@@ -188,6 +188,8 @@ function calcPos()  {
 
             // move all units
             if(pos_up_to_date == false) {
+
+                console.log("moving everyone")
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {

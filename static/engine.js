@@ -224,11 +224,14 @@ function calcPos()  {
 function calcAndDrawAttack() {
     if(attacking_frames_count>0) {
 
+        let w = Math.round(c.width/2)
+        let h = Math.round(c.height/2)-250
+
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
         ctx.font = '10px monospace';
         for(let i = 0; i < atk_data[animating_state].length; i++) { // iterate through all attacks
-            //ctx.fillText(atk_data[animating_state][i], w, 100 + (100*i));
+            ctx.fillText(atk_data[animating_state][i], w, 100 + (100*i));
 
             let atk_json_obj = JSON.parse(atk_data[animating_state][i]);
             let atk_i = atk_json_obj.Attacker[0]

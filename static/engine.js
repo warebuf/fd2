@@ -109,9 +109,6 @@ function calcPos()  {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
-
-                        console.log(state[i][j][k].Position, match_data[animating_state][i][j][k].Position, coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position))
-
                         if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
                             check = false
                             break
@@ -205,7 +202,7 @@ function calcPos()  {
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
                                 state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.01)
 
-                                console.log(i,j,k,state[i][j][k].Position.X,state[i][j][k].Position.Y, increment)
+                                console.log(i,j,k,state[i][j][k].Start, state[i][j][k].Position, state[i][j][k].Destination, state[i][j][k].DistanceLeft, state[i][j][k].Angle, increment)
 
                                 if(state[i][j][k].DistanceLeft <= 0) {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
@@ -2026,7 +2023,6 @@ function drawBoard() {
 }
 
 function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
-    //console.log(center_x,center_y)
     ctx.beginPath();
     ctx.fillStyle = color;
 

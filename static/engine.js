@@ -98,7 +98,7 @@ function calcPos()  {
     let h = Math.round(c.height/2)-250
     //let y_offset = 200
 
-    console.log("printing states", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count)
+    console.log("printing states1", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count)
 
     // if there are states updates, update the position
     if(all_up_to_date == false && attacking_frames_count <= 0) {
@@ -176,7 +176,7 @@ function calcPos()  {
                             else if(
                                 ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination) ) &&
                                 ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) == false ) &&
-                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) &&
+                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) && // this is a state where the attack has occurred
                                 ( state[i][j][k].Move != -1 )
                             ) {
                                 if(attacking_frames_count==0){
@@ -216,7 +216,7 @@ function calcPos()  {
             }
         }
     }
-
+    console.log("printing states2", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count)
 }
 
 function calcAndDrawAttack() {

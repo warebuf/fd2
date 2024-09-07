@@ -200,10 +200,10 @@ function calcPos()  {
                         for(let k = 0; k < state[i][j].length; k++) {
                             if(state[i][j][k].H.HP <= 0) {
                             } else {
-                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.0001)
+                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.001)
                                 state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.0001)
+                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.001)
 
                                 console.log(i,j,k,state[i][j][k].Position.X,state[i][j][k].Position.Y, increment)
 

@@ -98,6 +98,8 @@ function calcPos()  {
     let h = Math.round(c.height/2)-250
     //let y_offset = 200
 
+    console.log("printing states", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count)
+
     // if there are states updates, update the position
     if(all_up_to_date == false && attacking_frames_count <= 0) {
 

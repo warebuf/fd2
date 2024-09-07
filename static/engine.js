@@ -2416,7 +2416,7 @@ function coordinateEqual(c1,c2) {
 }
 
 function getXY(theta, r) {
-    return [r*math.Cos(theta), r*math.Sin(theta)]
+    return [r*Math.Cos(theta), r*Math.Sin(theta)]
 }
 
 function drawRotated(s,x,y,radians) {

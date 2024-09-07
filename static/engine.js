@@ -216,7 +216,6 @@ function calcPos()  {
             }
         }
     }
-    console.log("printing states2", pos_up_to_date, act_up_to_date, all_up_to_date, attacking_frames_count)
 }
 
 function calcAndDrawAttack() {

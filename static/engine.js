@@ -2409,7 +2409,7 @@ function laser(x1,y1,x2,y2) {
 }
 
 function coordinateEqual(c1,c2) {
-    if ((c1.x == c2.x) && (c1.y == c2.y)) {
+    if ((c1.X == c2.X) && (c1.Y == c2.Y)) {
         return true
     }
     return false

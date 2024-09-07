@@ -20,13 +20,6 @@ type coordinate struct {
 	Team int
 }
 
-func sameCoordinates(a coordinate, b coordinate) bool {
-	if (a.X == b.X) && (a.Y == b.Y) {
-		return true
-	}
-	return false
-}
-
 type match struct {
 	mutex sync.RWMutex
 
@@ -171,10 +164,7 @@ func m_read(m *match_socket) {
 							}
 
 							// here we set the destination of the unit
-							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start = m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Homebase
-							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Destination = coordinate{X: 100.0, Y: 100.0, Team: -1}
-							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].DistanceLeft = getDistanceTwoPoints(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, coordinate{X: 100.0, Y: 100.0, Team: -1})
-							m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Angle = getTheta(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, coordinate{X: 100.0, Y: 100.0, Team: -1})
+							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index)
 
 							fmt.Println("received act5")
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
@@ -1136,6 +1126,7 @@ func (m *match) run() {
 							(m.team_client_hero[i][j][k].Move < 0) &&
 							(m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)
+							setPath(m.team_client_hero, i, j, k)
 							gave_bots_acts = true
 						}
 					}
@@ -1259,10 +1250,7 @@ func (m *match) run() {
 					}
 				}
 
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start = m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Position
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination = m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Homebase
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].DistanceLeft = getDistanceTwoPoints(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start, m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination)
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Angle = getTheta(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start, m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination)
+				setPath(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2])
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
@@ -1604,4 +1592,23 @@ func getTheta(c1 coordinate, c2 coordinate) float64 {
 		theta = theta + (2 * math.Pi)
 	}
 	return toFixed(theta, 3)
+}
+func sameCoordinates(a coordinate, b coordinate) bool {
+	if (a.X == b.X) && (a.Y == b.Y) {
+		return true
+	}
+	return false
+}
+
+func setPath(state [][][]*hero, i int, j int, k int) {
+	if sameCoordinates(state[i][j][k].Position, state[i][j][k].Homebase) {
+		state[i][j][k].Start = state[i][j][k].Homebase
+		state[i][j][k].Destination = coordinate{X: 100.0, Y: 100.0, Team: -1}
+	} else {
+		state[i][j][k].Start = state[i][j][k].Position
+		state[i][j][k].Destination = state[i][j][k].Homebase
+	}
+
+	state[i][j][k].DistanceLeft = getDistanceTwoPoints(state[i][j][k].Start, state[i][j][k].Destination)
+	state[i][j][k].Angle = getTheta(state[i][j][k].Start, state[i][j][k].Destination)
 }

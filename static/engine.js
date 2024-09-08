@@ -190,8 +190,6 @@ function calcPos()  {
 
             // move all units
             if(pos_up_to_date == false) {
-
-                console.log("moving everyone")
                 for(let i = 0; i < state.length; i++) {
                     for(let j = 0; j < state[i].length; j++) {
                         for(let k = 0; k < state[i][j].length; k++) {
@@ -2421,8 +2419,9 @@ function getXY(theta, r) {
 function drawRotated(s,x,y,radians) {
     ctx.save();
     ctx.textAlign = "center";
+    ctx.font = '11px monospace';
     ctx.translate(x,y);
     ctx.rotate(radians);
-    ctx.fillText(s, 0, 0 );
+    ctx.fillText(s, 0, 3 ); // subtle y-axis adjustment since it is being from from top-left corner
     ctx.restore();
 }

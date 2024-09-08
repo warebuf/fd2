@@ -397,6 +397,11 @@ function drawPos(){
     let w = Math.round(c.width/2)
     let h = Math.round(c.height/2)-250
 
+    ctx.fillStyle = "red";
+    ctx.fillRect(w,h,1,1)
+    ctx.fillRect(w+100,h+100,1,1)
+    ctx.fillStyle = "white";
+
     ctx.textAlign = "left";
     ctx.fillStyle = 'white';
     ctx.font = '11px monospace';

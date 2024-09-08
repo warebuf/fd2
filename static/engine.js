@@ -369,7 +369,7 @@ function calcAndDrawAttack() {
                 }
             }
 
-            if ( attacking_frames_count==99 ) {
+            if ( attacking_frames_count==59 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
                     event_log.shift()
@@ -393,7 +393,7 @@ function calcAndDrawAttack() {
         }
 
         attacking_frames_count++
-        if(attacking_frames_count==100) {attacking_frames_count = 0}
+        if(attacking_frames_count==60) {attacking_frames_count = 0}
     }
 }
 

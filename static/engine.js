@@ -394,7 +394,7 @@ function calcAndDrawAttack() {
 }
 
 function drawPos(){
-    let w = Math.round(c.width/2)
+    let w = Math.round(c.width/2)-250
     let h = Math.round(c.height/2)-250
 
     ctx.fillStyle = "red";

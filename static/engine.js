@@ -241,9 +241,9 @@ function calcAndDrawAttack() {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                //drawTarget(x0 - 10, y0 - 12 )
-                //drawTarget(x1 - 10, y1 - 12 )
-                //laser( x0, y0 - 2, x1, y1 - 2 )
+                drawTarget((w-250) + state[atk_i][atk_j][atk_k].Position.X - 10,h + state[atk_i][atk_j][atk_k].Position.Y - 12 )
+                drawTarget((w-250) + state[def_i][def_j][def_k].Position.X - 10,h + state[def_i][def_j][def_k].Position.Y - 12 )
+                laser( x0, y0 - 2, x1, y1 - 2 )
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")
@@ -385,7 +385,6 @@ function calcAndDrawAttack() {
                     }
                 }
             }
-
         }
 
         attacking_frames_count++

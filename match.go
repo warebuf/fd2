@@ -1333,6 +1333,8 @@ func (m *match) run() {
 				}
 			}
 
+			fmt.Println("has_cmds,only_bot_cmds", has_cmds, only_bot_cmds)
+
 			if (has_cmds == false) || (only_bot_cmds == true) {
 				fmt.Println("concurrent SIMULATE called")
 				go func() { m.simulate <- true }()

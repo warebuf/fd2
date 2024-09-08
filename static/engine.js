@@ -243,7 +243,12 @@ function calcAndDrawAttack() {
 
                 drawTarget((w-250) + (state[atk_i][atk_j][atk_k].Position.X*2.5),h + (state[atk_i][atk_j][atk_k].Position.Y*2.5) )
                 drawTarget((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (state[def_i][def_j][def_k].Position.Y*2.5) )
-                //laser( x0, y0 - 2, x1, y1 - 2 )
+                laser(
+                    (w-250) + (state[atk_i][atk_j][atk_k].Position.X*2.5),
+                    h + (state[atk_i][atk_j][atk_k].Position.Y*2.5)
+                    (w-250) + (state[def_i][def_j][def_k].Position.X*2.5),
+                    h + (state[def_i][def_j][def_k].Position.Y*2.5)
+                )
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")

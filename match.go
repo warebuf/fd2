@@ -1184,6 +1184,8 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
+
+							fmt.Println(i, j, k, m.team_client_hero[i][j][k].Position.X, m.team_client_hero[i][j][k].Position.Y)
 						}
 					}
 				}

@@ -142,17 +142,13 @@ func m_read(m *match_socket) {
 			if m.m.ended == true {
 				continue
 			} else if msg.Event == "act" {
-				fmt.Println("received act")
 				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
-					fmt.Println("received act2")
 					// check if the hero is alive and at starting position
 					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 &&
 						sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Homebase) {
-						fmt.Println("received act3")
 						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
-							fmt.Println("received act4")
 							if msg.Message == "HEAD" {
 								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 0
 							} else if msg.Message == "LARM" {
@@ -166,7 +162,6 @@ func m_read(m *match_socket) {
 							// here we set the destination of the unit
 							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index)
 
-							fmt.Println("received act5")
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
 							for i := 0; i < len(m.m.team_client_hero); i++ {
@@ -183,13 +178,10 @@ func m_read(m *match_socket) {
 								}
 							}
 							if sim_check == true {
-								fmt.Println("received act6")
 								m.m.simulate <- true
 							} else {
-								fmt.Println("received act7")
 								m.m.sharepos(nil, 0)
 							}
-							fmt.Println("received act8")
 						}
 					}
 
@@ -647,7 +639,6 @@ func createMatch(pl *permission_list) *match {
 					B: btm,
 				}
 
-				fmt.Println(temp)
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
@@ -964,7 +955,6 @@ func (m *match) run() {
 				}
 			}
 			fmt.Println("bot has left the game")
-
 			fmt.Println("removed a bot")
 			continue
 
@@ -1190,13 +1180,9 @@ func (m *match) run() {
 							} else {
 								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
 								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)
-								fmt.Println(travelX, travelY, m.team_client_hero[i][j][k].Angle)
 								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
-
-							fmt.Println(i, j, k, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].B.SPD, m.team_client_hero[i][j][k].DistanceLeft)
-
 						}
 					}
 				}

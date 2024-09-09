@@ -196,7 +196,7 @@ function calcPos()  {
                             if(state[i][j][k].H.HP <= 0) {
                             } else {
 
-                                if(coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false) {
+                                if(coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == true) {
                                     let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
                                     state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                                     state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
@@ -206,7 +206,7 @@ function calcPos()  {
                                         state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                         state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                     }
-                                    
+
                                     console.log(i,j,k,state[i][j][k].Start, state[i][j][k].Position, state[i][j][k].Destination, state[i][j][k].DistanceLeft, state[i][j][k].Angle, increment)
                                 }
                             }

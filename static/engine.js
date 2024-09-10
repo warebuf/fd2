@@ -136,17 +136,23 @@ function calcPos3() {
 
         let correctPosition = true;
         if(correctMove && correctDestination) {
-            if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
-                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
-                state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
-                state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.025)
+            for(let i = 0; i < state.length; i++) {
+                for(let j = 0; j < state[i].length; j++) {
+                    for(let k = 0; k < state[i][j].length;k++) {
+                        if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
+                            let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
+                            state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
+                            state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
+                            state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.025)
 
-                if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
-                    state[i][j][k].Position = match_data[animating_state][i][j][k].Position
-                    state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                } else {
-                    correctPosition = false;
+                            if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
+                                state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                            } else {
+                                correctPosition = false;
+                            }
+                        }
+                    }
                 }
             }
         }

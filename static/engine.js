@@ -124,10 +124,10 @@ function calcPos3() {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length;k++) {
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                            state[atk_i][atk_j][atk_k].Start = state[atk_i][atk_j][atk_k].Position
-                            state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
-                            state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
-                            state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
+                            state[i][j][k].Start = state[i][j][k].Position
+                            state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
+                            state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                            state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
                         }
                     }
                 }

@@ -105,6 +105,7 @@ function calcPos2() {
                 for(let k = 0; k < state[i][j].length;k++) {
 
                     console.log(i,j,k, state[i][j][k].DistanceLeft, match_data[animating_state][i][j][k].DistanceLeft)
+                    console.log(i,j,k, state[i][j][k].Start, state[i][j][k].Position, state[i][j][k].Destination)
 
                     if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
 

@@ -291,6 +291,8 @@ function calcPos()  {
 function calcAndDrawAttack() {
     if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
 
+        console.log("attacking")
+
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)-250
 

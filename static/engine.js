@@ -166,32 +166,6 @@ function calcPos()  {
             }
         } else {
 
-            if(act_up_to_date == false) {
-                for(let i = 0; i < state.length; i++) {
-                    for(let j = 0; j < state[i].length; j++) {
-                        for(let k = 0; k < state[i][j].length; k++) {
-                            if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
-                                state[atk_i][atk_j][atk_k].Start = state[atk_i][atk_j][atk_k].Position
-                                state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
-                                state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
-                                state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
-                            }
-                            else if(
-                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination) ) &&
-                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) == false ) &&
-                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) && // this is a state where the attack has occurred
-                                ( state[i][j][k].Move != -1 )
-                            ) {
-                                if(attacking_frames_count==0){
-                                    attacking_frames_count=1
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
             // move all units
             if(pos_up_to_date == false) {
                 for(let i = 0; i < state.length; i++) {
@@ -217,6 +191,29 @@ function calcPos()  {
                     }
                 }
             }
+
+            if(act_up_to_date == false) {
+                for(let i = 0; i < state.length; i++) {
+                    for(let j = 0; j < state[i].length; j++) {
+                        for(let k = 0; k < state[i][j].length; k++) {
+                            if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
+                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                            }
+                            else if(
+                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination) ) &&
+                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) == false ) &&
+                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) && // this is a state where the attack has occurred
+                                ( state[i][j][k].Move != -1 )
+                            ) {
+                                if(attacking_frames_count==0){
+                                    attacking_frames_count=1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
         }
     }
 }

@@ -140,7 +140,7 @@ function calcPos2() {
 
         console.log("cPos, cAct", correctAct, correctPos, attacking_frames_count)
 
-        if(correctAct && correctPos) {
+        if( correctAct && correctPos && (attacking_frames_count == 0) ) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))

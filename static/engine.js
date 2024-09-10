@@ -69,7 +69,8 @@ function anime() {
 
         drawGrid()
         drawBoard()
-        calcPos()
+        //calcPos()
+        calcPos2()
         calcAndDrawAttack()
         drawPos()
         drawState()
@@ -91,6 +92,71 @@ function anime() {
 
 }
 anime()
+
+function calcPos2() {
+
+    if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
+
+        let correctPos = true;
+        let correctAct = true;
+
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length;k++) {
+
+                    if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k]) == false) {
+
+                        if(coordinateEqual(state[i][j][k].Destination, state[i][j][k].Position) == false) {
+                            let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
+                            state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
+                            state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
+                            state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.025)
+
+                            if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
+                                state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                            } else {
+                                correctPos = false;
+                            }
+                        }
+                    } else {
+                        if(state[i][j][k].Move != match_data[animating_state][i][j][k].Move) {
+                            if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
+                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                            } else if (coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)){
+                                if(attacking_frames_count==0){
+                                    attacking_frames_count=1
+                                }
+                            } else {
+                                correctAct = false;
+                            }
+                        }
+                    }
+
+
+                }
+            }
+        }
+
+        if(correctAct && correctPos) {
+            if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
+                total_units_of_time += parseFloat(time_queue[animating_state])
+                total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+                event_log.push(time_queue[animating_state].toString() + " units of time has passed")
+                if(event_log.length >= 25) {
+                    event_log.shift()
+                }
+            }
+            state = JSON.parse(JSON.stringify(match_data[animating_state]))
+            turn = turn_queue[animating_state]
+            animating_state++
+        }
+
+    }
+
+
+}
+
 
 function calcPos()  {
 
@@ -166,6 +232,28 @@ function calcPos()  {
             }
         } else {
 
+            if(act_up_to_date == false) {
+                for(let i = 0; i < state.length; i++) {
+                    for(let j = 0; j < state[i].length; j++) {
+                        for(let k = 0; k < state[i][j].length; k++) {
+                            if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
+                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                            }
+                            else if(
+                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination) ) &&
+                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) == false ) &&
+                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) && // this is a state where the attack has occurred
+                                ( state[i][j][k].Move != -1 )
+                            ) {
+                                if(attacking_frames_count==0){
+                                    attacking_frames_count=1
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // move all units
             if(pos_up_to_date == false) {
                 for(let i = 0; i < state.length; i++) {
@@ -192,27 +280,7 @@ function calcPos()  {
                 }
             }
 
-            if(act_up_to_date == false) {
-                for(let i = 0; i < state.length; i++) {
-                    for(let j = 0; j < state[i].length; j++) {
-                        for(let k = 0; k < state[i][j].length; k++) {
-                            if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                                state[i][j][k].Move = match_data[animating_state][i][j][k].Move
-                            }
-                            else if(
-                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination) ) &&
-                                ( coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) == false ) &&
-                                ( coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false ) && // this is a state where the attack has occurred
-                                ( state[i][j][k].Move != -1 )
-                            ) {
-                                if(attacking_frames_count==0){
-                                    attacking_frames_count=1
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+
 
         }
     }

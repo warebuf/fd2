@@ -126,7 +126,7 @@ function calcPos3() {
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
                             state[i][j][k].Start = state[i][j][k].Position
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
-                            state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                            state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Start, state[i][j][k].Destination)
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
                         }
                     }

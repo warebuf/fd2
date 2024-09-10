@@ -2592,3 +2592,9 @@ function drawRotated(s,x,y,radians) {
     ctx.fillText(s, 0, 3 ); // subtle y-axis adjustment since it is being from from top-left corner
     ctx.restore();
 }
+
+function getDistance(c1,c2) {
+    let y_dist = c2.Y - c1.Y
+    let x_dist = c2.X - c1.X
+    return Math.sqrt((y_dist*y_dist)+(x_dist*x_dist))
+}

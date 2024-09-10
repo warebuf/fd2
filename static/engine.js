@@ -106,7 +106,9 @@ function calcPos2() {
 
                     if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k]) == false) {
 
-                        if(coordinateEqual(state[i][j][k].Destination, state[i][j][k].Position) == false) {
+                        console.log(i,j,k, "not in position?", state[i][j][k].Position, match_data[animating_state][i][j][k])
+
+                        if(coordinateEqual(state[i][j][k].Destination, state[i][j][k].Position) == false) { // if you are not up to date position wise
                             let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
                             state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                             state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]

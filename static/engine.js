@@ -138,7 +138,7 @@ function calcPos2() {
             }
         }
 
-        console.log("cPos, cAct", correctAct, correctPos)
+        console.log("cPos, cAct", correctAct, correctPos, attacking_frames_count)
 
         if(correctAct && correctPos) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp

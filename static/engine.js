@@ -106,8 +106,6 @@ function calcPos2() {
 
                     if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
 
-                        console.log(i,j,k, "not in position?", state[i][j][k].Position, match_data[animating_state][i][j][k].Position)
-
                         if(coordinateEqual(state[i][j][k].Destination, state[i][j][k].Position) == false) { // if you are not up to date position wise
                             let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
                             state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
@@ -291,7 +289,7 @@ function calcPos()  {
 }
 
 function calcAndDrawAttack() {
-    if(attacking_frames_count>0) {
+    if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
 
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)-250

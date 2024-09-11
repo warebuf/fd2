@@ -158,7 +158,7 @@ function calcPos3() {
         }
 
 
-        console.log(correctMove, correctDestination, correctPosition)
+        console.log("correctMove, correctDestination, correctPosition", correctMove, correctDestination, correctPosition)
 
         if(correctMove && correctDestination && correctPosition) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp

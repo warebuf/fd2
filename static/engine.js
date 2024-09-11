@@ -107,7 +107,7 @@ function calcPos3() {
                             console.log("updated move", state[i][j][k].Move, match_data[animating_state][i][j][k].Move)
                             state[i][j][k].Move == match_data[animating_state][i][j][k].Move
 
-                        } else {
+                        } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
                             correctMove = false
                             if(attacking_frames_count==0){
                                 attacking_frames_count=1

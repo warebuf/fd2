@@ -641,8 +641,8 @@ function drawStats() {
 
 function drawLog() {
 
-    let x = 0
-    let y = 800
+    let x = 1200
+    let y = 250
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.font = '11px monospace';

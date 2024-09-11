@@ -645,7 +645,7 @@ function drawLog() {
 
     if(view==1) {
         x = Math.round(c.width/2)
-        y = Math.round(c.height/2)+600
+        y = Math.round(c.height/2)
     }
 
     for(i =0; i<event_log.length;i++) {

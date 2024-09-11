@@ -1185,7 +1185,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
 
-							fmt.Println(i, j, k, m.team_client_hero[i][j][k].Position.X, m.team_client_hero[i][j][k].Position.Y)
+							fmt.Println(i, j, k, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination)
 						}
 					}
 				}
@@ -1588,7 +1588,6 @@ func sameCoordinates(a coordinate, b coordinate) bool {
 	}
 	return false
 }
-
 func setPath(state [][][]*hero, i int, j int, k int) {
 	if sameCoordinates(state[i][j][k].Position, state[i][j][k].Homebase) {
 		state[i][j][k].Start = state[i][j][k].Homebase

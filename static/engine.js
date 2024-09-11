@@ -105,7 +105,7 @@ function calcPos3() {
 
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
                             state[i][j][k].Move == match_data[animating_state][i][j][k].Move
-                            console.log("changed move", Date.Now())
+                            console.log("changed move", Date.now())
 
                         } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
                             correctMove = false

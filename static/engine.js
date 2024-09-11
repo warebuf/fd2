@@ -157,6 +157,9 @@ function calcPos3() {
             }
         }
 
+
+        console.log(correctMove, correctDestination, correctPosition)
+
         if(correctMove && correctDestination && correctPosition) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])

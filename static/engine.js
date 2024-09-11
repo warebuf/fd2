@@ -180,7 +180,7 @@ function calcAndDrawAttack() {
     if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
 
         let w = Math.round(c.width/2)
-        let h = Math.round(c.height/2)-250
+        let h = Math.round(c.height/2)+250
 
         ctx.fillStyle = 'white';
         ctx.textAlign = "center";
@@ -201,13 +201,13 @@ function calcAndDrawAttack() {
                 let def_j = atk_json_obj.Defender[0][1]
                 let def_k = atk_json_obj.Defender[0][2]
 
-                drawTarget((w-250) + (state[atk_i][atk_j][atk_k].Position.X*2.5),h + (state[atk_i][atk_j][atk_k].Position.Y*2.5) )
-                drawTarget((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (state[def_i][def_j][def_k].Position.Y*2.5) )
+                drawTarget((w-250) + (state[atk_i][atk_j][atk_k].Position.X*2.5),h + (-state[atk_i][atk_j][atk_k].Position.Y*2.5) )
+                drawTarget((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (-state[def_i][def_j][def_k].Position.Y*2.5) )
                 laser(
                     (w-250) + (state[atk_i][atk_j][atk_k].Position.X*2.5),
-                    h + (state[atk_i][atk_j][atk_k].Position.Y*2.5),
+                    h + (-state[atk_i][atk_j][atk_k].Position.Y*2.5),
                     (w-250) + (state[def_i][def_j][def_k].Position.X*2.5),
-                    h + (state[def_i][def_j][def_k].Position.Y*2.5)
+                    h + (-state[def_i][def_j][def_k].Position.Y*2.5)
                 )
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack

@@ -359,7 +359,7 @@ function calcAndDrawAttack() {
 
 function drawPos(){
     let w = Math.round(c.width/2)-250
-    let h = Math.round(c.height/2)-250
+    let h = Math.round(c.height/2)+250
 
     ctx.fillStyle = "red";
     ctx.fillRect(w+(100*2.5),h+(100*2.5),1,1)
@@ -372,7 +372,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(state[i][j][k].Position.Y*2.5),state[i][j][k].Angle)
+                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle)
                 }
             }
         }

@@ -104,7 +104,6 @@ function calcPos3() {
                     if(state[i][j][k].Move != match_data[animating_state][i][j][k].Move) {
 
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                            console.log("updated move", state[i][j][k].Move, match_data[animating_state][i][j][k].Move)
                             state[i][j][k].Move == match_data[animating_state][i][j][k].Move
 
                         } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
@@ -178,8 +177,6 @@ function calcPos3() {
 
 function calcAndDrawAttack() {
     if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
-
-        console.log("attacking")
 
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)-250

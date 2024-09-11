@@ -2390,7 +2390,7 @@ function drawRotated(s,x,y,radians) {
     ctx.textAlign = "center";
     ctx.font = '11px monospace';
     ctx.translate(x,y);
-    ctx.rotate( radians );
+    ctx.rotate( (2*Math.PI) - radians );
     ctx.fillText(s, 0, 3 ); // subtle y-axis adjustment since it is being from from top-left corner
     ctx.restore();
 }

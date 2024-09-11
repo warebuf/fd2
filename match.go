@@ -168,7 +168,7 @@ func m_read(m *match_socket) {
 									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
 										if (m.m.team_client_hero[i][j][k].Bot == false) &&
 											(m.m.team_client_hero[i][j][k].Move < 0) &&
-											sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Start) &&
+											sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Homebase) &&
 											(m.m.team_client_hero[i][j][k].H.HP > 0) {
 											sim_check = false
 											break

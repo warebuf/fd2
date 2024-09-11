@@ -1170,14 +1170,16 @@ func (m *match) run() {
 								_, found := m.spawns[i][m.team_client_hero[i][j][k].Position]
 								if found {
 									has_cmds = true
+
+									if m.team_client_hero[i][j][k].Bot == false {
+										only_bot_cmds = false
+									}
+
 								} else {
 									has_atks = true
 									list_of_attackers = append(list_of_attackers, []int{i, j, k})
 								}
 
-								if m.team_client_hero[i][j][k].Bot == false {
-									only_bot_cmds = false
-								}
 							} else {
 								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
 								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)

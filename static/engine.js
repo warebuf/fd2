@@ -69,8 +69,7 @@ function anime() {
 
         drawGrid()
         drawBoard()
-        //calcPos()
-        calcPos3()
+        calcPos()
         calcAndDrawAttack()
         drawPos()
         drawState()
@@ -93,7 +92,7 @@ function anime() {
 }
 anime()
 
-function calcPos3() {
+function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
         let correctMove = true;
@@ -643,6 +642,12 @@ function drawLog() {
 
     let x = 1400
     let y = 250
+
+    if(view==1) {
+        x = Math.round(c.width/2)
+        y = Math.round(c.height/2)+600
+    }
+
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
         ctx.font = '11px monospace';

@@ -103,8 +103,8 @@ function calcPos() {
                     if(state[i][j][k].Move != match_data[animating_state][i][j][k].Move) {
 
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                            state[i][j][k].Move == match_data[animating_state][i][j][k].Move
-                            //console.log("changed move", Date.now())
+                            state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                            console.log("changed move", Date.now())
 
                         } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
                             correctMove = false
@@ -431,7 +431,7 @@ function drawState() {
                     else if(state[i][j][k].Move==3){temp='B'}
                 }
                 ctx.fillText(temp, x0+(space*i)+20, y0+1 + (k*125)+(j*700));
-                //console.log("drew move", Date.now())
+                console.log("drew move", Date.now())
 
                 if(turn.substring(0,4) == "TURN") {
                     if (

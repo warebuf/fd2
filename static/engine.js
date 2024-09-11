@@ -644,8 +644,8 @@ function drawLog() {
     let y = 250
 
     if(view==1) {
-        x = Math.round(c.width/2)
-        y = Math.round(c.height/2) + 200
+        x = Math.round(c.width/2) - 100
+        y = Math.round(c.height/2) + 250
     }
 
     for(i =0; i<event_log.length;i++) {

@@ -325,7 +325,7 @@ function calcAndDrawAttack() {
                     // draw health bars
                     let max_hp = 50;
                     let subtractDamage = attacking_frames_count * 2;
-                    if(dmg > subtractDamage){subtractDamage = dmg;}
+                    if(dmg < subtractDamage){subtractDamage = dmg;}
                     let hSub = 0;
                     let lSub = 0;
                     let rSub = 0;

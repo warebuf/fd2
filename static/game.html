@@ -504,11 +504,6 @@
 
     var game_over = false;
 
-    // global variables to help simulation
-    var all_up_to_date = true
-    var pos_up_to_date = true
-    var act_up_to_date = true
-
     var attacking_frames_count = 0
 
     // the board state
@@ -646,10 +641,6 @@
                                 }
                             }
                         }
-                        // if this is the first game_state received, init all global variables
-                        all_up_to_date = false
-                        pos_up_to_date = false
-                        act_up_to_date = false
 
                         if(animating_state == -1) {
                             let temp_string = msg.Message.split(";")

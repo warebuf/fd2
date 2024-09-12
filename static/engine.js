@@ -348,6 +348,7 @@ function calcAndDrawAttack() {
                         if(bSub<0){bSub=0}
                     }
 
+                    ctx.textAlign = "left";
                     ctx.fillStyle = 'grey';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,max_hp,1)
                     ctx.fillStyle = 'green';

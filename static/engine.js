@@ -184,7 +184,6 @@ function calcAndDrawAttack() {
         ctx.textAlign = "center";
         ctx.font = '10px monospace';
         for(let i = 0; i < atk_data[animating_state].length; i++) { // iterate through all attacks
-            ctx.fillText(atk_data[animating_state][i], w, 100 + (100*i));
 
             let atk_json_obj = JSON.parse(atk_data[animating_state][i]);
             let atk_i = atk_json_obj.Attacker[0]
@@ -207,6 +206,14 @@ function calcAndDrawAttack() {
                     (w-250) + (state[def_i][def_j][def_k].Position.X*2.5),
                     h + (-state[def_i][def_j][def_k].Position.Y*2.5)
                 )
+
+                ctx.fillStyle = 'green';
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-10,state[def_i][def_j][def_k].H.HP,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-10,h + (-state[def_i][def_j][def_k].Position.Y*2.5),state[def_i][def_j][def_k].L.HP,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+10,h + (-state[def_i][def_j][def_k].Position.Y*2.5),state[def_i][def_j][def_k].R.HP,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+10,state[def_i][def_j][def_k].H.HP,3)
+                ctx.fillStyle = 'white';
+
 
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")

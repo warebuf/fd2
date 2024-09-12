@@ -353,7 +353,9 @@ function calcAndDrawAttack() {
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,(state[def_i][def_j][def_k].B.HP-bSub)/2,1)
                     ctx.fillStyle = 'white';
 
+                    ctx.font   = "5px monospace";
                     ctx.fillText(dmg, (w-250) + (state[def_i][def_j][def_k].Position.X*2.5), h + (-state[def_i][def_j][def_k].Position.Y*2.5) );
+                    ctx.font   = "11px monospace";
                 }
             }
 

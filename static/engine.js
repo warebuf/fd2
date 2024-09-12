@@ -208,21 +208,21 @@ function calcAndDrawAttack() {
                 )
 
                 ctx.fillStyle = 'white';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,100,2)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,100,1)
                 ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,state[def_i][def_j][def_k].H.HP,2)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,state[def_i][def_j][def_k].H.HP,1)
                 ctx.fillStyle = 'white';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-120,h + (-state[def_i][def_j][def_k].Position.Y*2.5),100,2)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-120,h + (-state[def_i][def_j][def_k].Position.Y*2.5),100,1)
                 ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-120,h + (-state[def_i][def_j][def_k].Position.Y*2.5),state[def_i][def_j][def_k].L.HP,2)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-120,h + (-state[def_i][def_j][def_k].Position.Y*2.5),state[def_i][def_j][def_k].L.HP,1)
                 ctx.fillStyle = 'white';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5),100,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5),100,1)
                 ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5),state[def_i][def_j][def_k].R.HP,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5),state[def_i][def_j][def_k].R.HP,1)
                 ctx.fillStyle = 'white';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)+20,100,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)+20,100,1)
                 ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)+20,state[def_i][def_j][def_k].H.HP,3)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-50,h + (-state[def_i][def_j][def_k].Position.Y*2.5)+20,state[def_i][def_j][def_k].H.HP,1)
                 ctx.fillStyle = 'white';
 
 

@@ -350,7 +350,7 @@ function calcAndDrawAttack() {
 
                     ctx.textAlign = "left";
                     ctx.fillStyle = 'grey';
-                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,max_hp,1)
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-25,max_hp,1)
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,(hSub)/2,1)
                     ctx.fillStyle = 'grey';
@@ -358,11 +358,11 @@ function calcAndDrawAttack() {
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,(lSub)/2,1)
                     ctx.fillStyle = 'grey';
-                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,max_hp,1)
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-10,max_hp,1)
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,(rSub)/2,1)
                     ctx.fillStyle = 'grey';
-                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,max_hp,1)
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+10,max_hp,1)
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,(bSub)/2,1)
                     ctx.fillStyle = 'white';

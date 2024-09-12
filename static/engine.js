@@ -353,7 +353,7 @@ function calcAndDrawAttack() {
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,(hSub)/2,1)
                     ctx.fillStyle = 'grey';
-                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,max_hp,1)
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-10,max_hp,1)
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,(lSub)/2,1)
                     ctx.fillStyle = 'grey';

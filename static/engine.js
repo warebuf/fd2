@@ -207,27 +207,6 @@ function calcAndDrawAttack() {
                     h + (-state[def_i][def_j][def_k].Position.Y*2.5)
                 )
 
-                // draw health bars
-                let max_hp = 50;
-                ctx.fillStyle = 'grey';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,max_hp,1)
-                ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,state[def_i][def_j][def_k].H.HP/2,1)
-                ctx.fillStyle = 'grey';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,max_hp,1)
-                ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,state[def_i][def_j][def_k].L.HP/2,1)
-                ctx.fillStyle = 'grey';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,max_hp,1)
-                ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,state[def_i][def_j][def_k].R.HP/2,1)
-                ctx.fillStyle = 'grey';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,max_hp,1)
-                ctx.fillStyle = 'green';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,state[def_i][def_j][def_k].H.HP/2,1)
-                ctx.fillStyle = 'white';
-
-
                 for(let j = 0 ; j < atk_json_obj.Damage.length; j++) { // iterate through all damage steps of a single attack
                     let text = atk_json_obj.Damage[j][0].split(";")
                     let p = text[0]
@@ -342,6 +321,37 @@ function calcAndDrawAttack() {
                         ctx.fillText("BOOM!", w+125, 140 + (100*i) + (40*j) );
                         ctx.fillStyle = "white";
                     }
+
+                    // draw health bars
+                    let max_hp = 50;
+                    let subtractDamage = attacking_frames_count * 2;
+                    if(dmg > subtractDamage){subtractDamage = dmg;}
+                    let hSub = 0;
+                    let lSub = 0;
+                    let rSub = 0;
+                    let bSub = 0;
+                    if(p=="H"){hSub=subtractDamage}
+                    else if(p=="L"){lSub=subtractDamage}
+                    else if(p=="R"){rSub=subtractDamage}
+                    else if(p=="B"){bSub=subtractDamage}
+
+                    ctx.fillStyle = 'grey';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,max_hp,1)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,(state[def_i][def_j][def_k].H.HP-hSub)/2,1)
+                    ctx.fillStyle = 'grey';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,max_hp,1)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-20-max_hp,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,(state[def_i][def_j][def_k].L.HP-lSub)/2,1)
+                    ctx.fillStyle = 'grey';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,max_hp,1)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)+20,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-5,(state[def_i][def_j][def_k].R.HP-rSub)/2,1)
+                    ctx.fillStyle = 'grey';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,max_hp,1)
+                    ctx.fillStyle = 'green';
+                    ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,(state[def_i][def_j][def_k].B.HP-bSub)/2,1)
+                    ctx.fillStyle = 'white';
 
 
                 }

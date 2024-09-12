@@ -331,22 +331,14 @@ function calcAndDrawAttack() {
                     let lSub = state[def_i][def_j][def_k].L.HP;
                     let rSub = state[def_i][def_j][def_k].R.HP;
                     let bSub = state[def_i][def_j][def_k].B.HP;
-                    if(p=="H"){
-                        hSub=state[def_i][def_j][def_k].H.HP-subtractDamage
-                        if(hSub<0){hSub=0}
-                    }
-                    else if(p=="L"){
-                        lSub=state[def_i][def_j][def_k].L.HP-subtractDamage
-                        if(lSub<0){lSub=0}
-                    }
-                    else if(p=="R"){
-                        rSub=state[def_i][def_j][def_k].R.HP-subtractDamage
-                        if(rSub<0){rSub=0}
-                    }
-                    else if(p=="B"){
-                        bSub=state[def_i][def_j][def_k].B.HP-subtractDamage
-                        if(bSub<0){bSub=0}
-                    }
+                    if(p=="H"){hSub=state[def_i][def_j][def_k].H.HP-subtractDamage}
+                    else if(p=="L"){lSub=state[def_i][def_j][def_k].L.HP-subtractDamage}
+                    else if(p=="R"){rSub=state[def_i][def_j][def_k].R.HP-subtractDamage}
+                    else if(p=="B"){bSub=state[def_i][def_j][def_k].B.HP-subtractDamage}
+                    if(hSub<0){hSub=0}
+                    if(lSub<0){lSub=0}
+                    if(rSub<0){rSub=0}
+                    if(bSub<0){bSub=0}
 
                     ctx.textAlign = "left";
                     ctx.fillStyle = 'grey';

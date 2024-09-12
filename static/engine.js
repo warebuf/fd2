@@ -324,7 +324,8 @@ function calcAndDrawAttack() {
 
                     // draw health bars
                     let max_hp = 50;
-                    let subtractDamage = attacking_frames_count * 2;
+                    let subtractDamage = (attacking_frames_count * 2)-5;
+                    if(subtractDamage < 0) {subtractDamage = 0}
                     if(carry_atk < subtractDamage){subtractDamage = carry_atk;}
                     let hSub = 0;
                     let lSub = 0;
@@ -357,7 +358,7 @@ function calcAndDrawAttack() {
                     ctx.fillText(dmg, (w-250) + (state[def_i][def_j][def_k].Position.X*2.5), h + (-state[def_i][def_j][def_k].Position.Y*2.5) );
                     ctx.font   = "11px monospace";
 
-                    console.log("carry_atk", carry_atk, state[def_i][def_j][def_k].H.HP-hSub, state[def_i][def_j][def_k].L.HP-lSub, state[def_i][def_j][def_k].R.HP-rSub, state[def_i][def_j][def_k].B.HP-bSub)
+                    console.log("carry_atk", carry_atk, subtractDamage, state[def_i][def_j][def_k].H.HP-hSub, state[def_i][def_j][def_k].L.HP-lSub, state[def_i][def_j][def_k].R.HP-rSub, state[def_i][def_j][def_k].B.HP-bSub)
                 }
             }
 

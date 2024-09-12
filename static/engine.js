@@ -327,10 +327,10 @@ function calcAndDrawAttack() {
                     let subtractDamage = (attacking_frames_count * 2)-5;
                     if(subtractDamage < 0) {subtractDamage = 0}
                     if(carry_atk < subtractDamage){subtractDamage = carry_atk;}
-                    let hSub = 0;
-                    let lSub = 0;
-                    let rSub = 0;
-                    let bSub = 0;
+                    let hSub = state[def_i][def_j][def_k].H.HP;
+                    let lSub = state[def_i][def_j][def_k].L.HP;
+                    let rSub = state[def_i][def_j][def_k].R.HP;
+                    let bSub = state[def_i][def_j][def_k].B.HP;
                     if(p=="H"){
                         hSub=state[def_i][def_j][def_k].H.HP-subtractDamage
                         if(hSub<0){hSub=0}

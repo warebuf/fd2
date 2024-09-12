@@ -208,7 +208,7 @@ function calcAndDrawAttack() {
                 )
 
                 ctx.fillStyle = 'pink';
-                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (-state[def_i][def_j][def_k].Position.Y*2.5),1,1)
+                ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5),h + (-state[def_i][def_j][def_k].Position.Y*2.5),10,10)
                 ctx.fillStyle = 'grey';
                 ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-25,h + (-state[def_i][def_j][def_k].Position.Y*2.5)-20,50,1)
                 ctx.fillStyle = 'green';

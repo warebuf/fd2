@@ -366,7 +366,7 @@ function calcAndDrawAttack() {
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,(bSub)/2,1)
                     ctx.fillStyle = 'white';
 
-                    ctx.font   = "5px monospace";
+                    ctx.font   = "8px monospace";
                     ctx.fillText(carry_atk, (w-250) + (state[def_i][def_j][def_k].Position.X*2.5), h + (-state[def_i][def_j][def_k].Position.Y*2.5)-30 );
                     ctx.font   = "11px monospace";
                 }

@@ -367,10 +367,8 @@ function calcAndDrawAttack() {
                     ctx.fillStyle = 'white';
 
                     ctx.font   = "5px monospace";
-                    ctx.fillText(dmg, (w-250) + (state[def_i][def_j][def_k].Position.X*2.5), h + (-state[def_i][def_j][def_k].Position.Y*2.5) );
+                    ctx.fillText(carry_atk, (w-250) + (state[def_i][def_j][def_k].Position.X*2.5), h + (-state[def_i][def_j][def_k].Position.Y*2.5) );
                     ctx.font   = "11px monospace";
-
-                    console.log("carry_atk", carry_atk, subtractDamage, state[def_i][def_j][def_k].H.HP-hSub, state[def_i][def_j][def_k].L.HP-lSub, state[def_i][def_j][def_k].R.HP-rSub, state[def_i][def_j][def_k].B.HP-bSub)
                 }
             }
 

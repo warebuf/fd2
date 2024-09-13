@@ -1,4 +1,4 @@
-package main
+package fd
 
 import (
 	"encoding/json"

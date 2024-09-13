@@ -1,4 +1,4 @@
-package main
+package fd
 
 import (
 	"log"
@@ -170,6 +170,7 @@ type plbase struct {
 	global map[uuid.UUID]*permission_list
 	mutex  sync.RWMutex
 }
+
 type pbase struct {
 	global map[uuid.UUID]*permission_socket
 	mutex  sync.RWMutex

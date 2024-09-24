@@ -508,6 +508,8 @@
 
     // the board state
     var state = []
+    var spawns = [];
+    var poas = [];
 
     var h_index = 0
     var l_index = 0
@@ -531,6 +533,8 @@
     // datasets
     var match_data = new Array();
     var atk_data = new Array();
+    var spawn_data = newArray();
+    var poa_data = newArray();
 
     var time_queue = []
     var turn_queue = []
@@ -625,6 +629,11 @@
                             }
                         }
                         state = md
+
+                        console.log("spawn_data", msg.Spawns)
+                        console.log("POA_data", msg.POAs)
+
+
                     } else {
                         turn_queue.push(msg.Turn)
                         time_queue.push(msg.UnitsOfTime)
@@ -642,6 +651,7 @@
                             }
                         }
 
+                        // this triggers if they refreshed the page
                         if(animating_state == -1) {
                             let temp_string = msg.Message.split(";")
                             my_team = parseInt(temp_string[0])
@@ -653,6 +663,11 @@
                         }
 
                         match_data.push(md)
+
+                        console.log("spawn_data", msg.Spawns)
+                        console.log("POA_data", msg.POAs)
+
+
 
                         console.log("atk_data",msg.Atk)
                         if(msg.Atk == null) {

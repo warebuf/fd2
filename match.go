@@ -1402,7 +1402,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		for j, _ := range i {
 			marshalled, _ := json.Marshal(j)
 			tempArray = append(tempArray, string(marshalled))
-			fmt.Println(string(marshalled))
 		}
 		temp_spawns = append(temp_spawns, tempArray)
 	}
@@ -1412,7 +1411,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		for j, _ := range i {
 			marshalled, _ := json.Marshal(j)
 			tempArray = append(tempArray, string(marshalled))
-			fmt.Println(string(marshalled))
 		}
 		tempPOA = append(tempPOA, tempArray)
 	}

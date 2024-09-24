@@ -1402,6 +1402,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		fmt.Println(err)
 		temp_spawns = append(temp_spawns, marshalled)
 	}
+	fmt.Println(temp_spawns)
 
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {

@@ -92,7 +92,7 @@ function anime() {
     }
 
     frame_count += 1
-    if(frame_count==15) {
+    if(frame_count==10) {
         frame_count = 0;
         if(even==0) {even = 1}
         else {even=0}
@@ -450,6 +450,11 @@ function drawPOASelect() {
                 let POA = JSON.parse(key)
                 ctx.fillRect(w+(POA.X*2.5)-1,h-(POA.Y*2.5),3,1);
                 ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5)-1,1,3);
+
+                ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)+5,1,1);
+                ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)-5,1,1);
+                ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)+5,1,1);
+                ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)-5,1,1);
             }
         }
     }

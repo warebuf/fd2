@@ -92,7 +92,7 @@ function anime() {
     }
 
     frame_count += 1
-    if(frame_count==10) {
+    if(frame_count==15) {
         frame_count = 0;
         if(even==0) {even = 1}
         else {even=0}

@@ -104,7 +104,6 @@ function calcPos() {
 
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
                             state[i][j][k].Move = match_data[animating_state][i][j][k].Move
-
                         } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
                             correctMove = false
                             if(attacking_frames_count==0){

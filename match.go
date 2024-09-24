@@ -33,8 +33,8 @@ type match struct {
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
 
-	spawns []map[coordinate]bool
-	poa    map[coordinate]bool
+	spawns []map[coordinate]bool // each team has a map of spawns
+	poa    []map[coordinate]bool // each team has a map of POAs
 
 	bench map[string][]*part // team, user index to part
 
@@ -100,6 +100,10 @@ type message struct {
 	Turn        string
 	Atk         []string
 	UnitsOfTime string
+	Spawns      []map[coordinate]bool
+	POAs        []map[coordinate]bool
+
+	Route coordinate
 
 	// should add the user's TCH
 	Team_index   int
@@ -158,32 +162,40 @@ func m_read(m *match_socket) {
 								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
 							}
 
-							// here we set the destination of the unit
-							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index)
+							_, found := m.m.poa[msg.Team_index][msg.Route]
+							if found {
+								// here we set the destination of the unit
+								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, true, msg.Route)
+							} else {
+								//
+								fmt.Printf("this route does not exist")
+							}
 
-							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
-							sim_check := true
-							for i := 0; i < len(m.m.team_client_hero); i++ {
-								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
-									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
-										if (m.m.team_client_hero[i][j][k].Bot == false) &&
-											(m.m.team_client_hero[i][j][k].Move < 0) &&
-											sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Homebase) &&
-											(m.m.team_client_hero[i][j][k].H.HP > 0) {
-											sim_check = false
-											break
+							if found {
+								// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
+								sim_check := true
+								for i := 0; i < len(m.m.team_client_hero); i++ {
+									for j := 0; j < len(m.m.team_client_hero[i]); j++ {
+										for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
+											if (m.m.team_client_hero[i][j][k].Bot == false) &&
+												(m.m.team_client_hero[i][j][k].Move < 0) &&
+												sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Homebase) &&
+												(m.m.team_client_hero[i][j][k].H.HP > 0) {
+												sim_check = false
+												break
+											}
 										}
 									}
 								}
+								if sim_check == true {
+									m.m.simulate <- true
+								} else {
+									m.m.sharepos(nil, 0)
+								}
 							}
-							if sim_check == true {
-								m.m.simulate <- true
-							} else {
-								m.m.sharepos(nil, 0)
-							}
+
 						}
 					}
-
 				}
 
 			} else if msg.Event == "clockSyncResponse" {
@@ -461,7 +473,7 @@ func createMatch(pl *permission_list) *match {
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
 			spawns: make([]map[coordinate]bool, 0, 0),
-			poa:    make(map[coordinate]bool),
+			poa:    make([]map[coordinate]bool, 0, 0),
 
 			broadcast:      make(chan *message),
 			prio_broadcast: make(chan *message),
@@ -508,9 +520,12 @@ func createMatch(pl *permission_list) *match {
 				spawn_map[coordinate{X: float64(i * 200), Y: float64(j * 50)}] = true
 			}
 			ans.spawns = append(ans.spawns, spawn_map)
+
+			poa_map := make(map[coordinate]bool)
 			for j := 0; j < 3; j++ {
-				ans.poa[coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0)}] = true
+				poa_map[coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0)}] = true
 			}
+			ans.poa = append(ans.poa, poa_map)
 		}
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
@@ -1117,7 +1132,14 @@ func (m *match) run() {
 							(m.team_client_hero[i][j][k].Move < 0) &&
 							(m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)
-							setPath(m.team_client_hero, i, j, k)
+
+							temp := coordinate{}
+							for k := range m.poa[i] {
+								temp = k
+								break
+							}
+
+							setPath(m.team_client_hero, i, j, k, true, temp)
 							gave_bots_acts = true
 						}
 					}
@@ -1241,7 +1263,7 @@ func (m *match) run() {
 					}
 				}
 
-				setPath(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2])
+				setPath(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], false, coordinate{})
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
@@ -1369,8 +1391,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 			temp[i][j] = make([]string, len(m.team_client_hero[i][j]))
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 				marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
-				//fmt.Println(string(marshalled))
-				//m.TCH_JSON[i][j][k] = string(marshalled)
 				temp[i][j][k] = string(marshalled)
 			}
 		}
@@ -1380,7 +1400,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Spawns: m.spawns, POAs: m.poa, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}
@@ -1590,10 +1610,11 @@ func sameCoordinates(a coordinate, b coordinate) bool {
 	}
 	return false
 }
-func setPath(state [][][]*hero, i int, j int, k int) {
-	if sameCoordinates(state[i][j][k].Position, state[i][j][k].Homebase) {
+func setPath(state [][][]*hero, i int, j int, k int, notHome bool, dest coordinate) {
+
+	if notHome == true {
 		state[i][j][k].Start = state[i][j][k].Homebase
-		state[i][j][k].Destination = coordinate{X: 100.0, Y: 100.0}
+		state[i][j][k].Destination = dest
 	} else {
 		state[i][j][k].Start = state[i][j][k].Position
 		state[i][j][k].Destination = state[i][j][k].Homebase

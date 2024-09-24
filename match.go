@@ -1397,8 +1397,10 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	}
 
 	temp_spawns := make([][]byte, len(m.spawns))
-	for i, j := range m.spawns {
-		fmt.Println(i, j)
+	for _, i := range m.spawns {
+		for j, k := range i {
+			fmt.Println(j, k)
+		}
 	}
 	fmt.Println(temp_spawns)
 

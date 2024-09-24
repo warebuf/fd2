@@ -101,7 +101,7 @@ type message struct {
 	Atk         []string
 	UnitsOfTime string
 	Spawns      []string
-	POAs        []byte
+	POAs        []string
 
 	Route Coordinate
 

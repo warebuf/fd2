@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-type coordinate struct {
+type Coordinate struct {
 	X float64
 	Y float64
 }
@@ -33,8 +33,8 @@ type match struct {
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
 
-	spawns []map[coordinate]bool // each team has a map of spawns
-	poa    []map[coordinate]bool // each team has a map of POAs
+	spawns []map[Coordinate]bool // each team has a map of spawns
+	poa    []map[Coordinate]bool // each team has a map of POAs
 
 	bench map[string][]*part // team, user index to part
 
@@ -103,7 +103,7 @@ type message struct {
 	Spawns      [][]byte
 	POAs        []byte
 
-	Route coordinate
+	Route Coordinate
 
 	// should add the user's TCH
 	Team_index   int
@@ -472,8 +472,8 @@ func createMatch(pl *permission_list) *match {
 			team_client_hero: make([][][]*hero, 0, 0),
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
-			spawns: make([]map[coordinate]bool, 0, 0),
-			poa:    make([]map[coordinate]bool, 0, 0),
+			spawns: make([]map[Coordinate]bool, 0, 0),
+			poa:    make([]map[Coordinate]bool, 0, 0),
 
 			broadcast:      make(chan *message),
 			prio_broadcast: make(chan *message),
@@ -515,15 +515,15 @@ func createMatch(pl *permission_list) *match {
 
 		// create spawns and poas
 		for i := 0; i < int(ans.sides); i++ {
-			spawn_map := make(map[coordinate]bool)
+			spawn_map := make(map[Coordinate]bool)
 			for j := 0; j < 5; j++ {
-				spawn_map[coordinate{X: float64(i * 200), Y: float64(j * 50)}] = true
+				spawn_map[Coordinate{X: float64(i * 200), Y: float64(j * 50)}] = true
 			}
 			ans.spawns = append(ans.spawns, spawn_map)
 
-			poa_map := make(map[coordinate]bool)
+			poa_map := make(map[Coordinate]bool)
 			for j := 0; j < 3; j++ {
-				poa_map[coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0)}] = true
+				poa_map[Coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0)}] = true
 			}
 			ans.poa = append(ans.poa, poa_map)
 		}
@@ -639,13 +639,13 @@ func createMatch(pl *permission_list) *match {
 				temp := &hero{
 					Bot: j.bot_status,
 
-					Homebase:    coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
-					Start:       coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
-					Position:    coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
-					Destination: coordinate{X: 100.0, Y: 100.0},
+					Homebase:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
+					Start:       Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
+					Position:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
+					Destination: Coordinate{X: 100.0, Y: 100.0},
 
-					DistanceLeft: getDistanceTwoPoints(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, coordinate{X: 100.0, Y: 100.0}),
-					Angle:        getTheta(coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, coordinate{X: 100.0, Y: 100.0}),
+					DistanceLeft: getDistanceTwoPoints(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
+					Angle:        getTheta(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
 
 					Move: -1,
 
@@ -1133,7 +1133,7 @@ func (m *match) run() {
 							(m.team_client_hero[i][j][k].Bot == true) {
 							m.team_client_hero[i][j][k].Move = rand.Intn(4)
 
-							temp := coordinate{}
+							temp := Coordinate{}
 							for k := range m.poa[i] {
 								temp = k
 								break
@@ -1263,7 +1263,7 @@ func (m *match) run() {
 					}
 				}
 
-				setPath(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], false, coordinate{})
+				setPath(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], false, Coordinate{})
 				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
@@ -1596,7 +1596,7 @@ func (m *match) shareint() {
 		}
 	}
 }
-func getDistanceTwoPoints(c1 coordinate, c2 coordinate) float64 {
+func getDistanceTwoPoints(c1 Coordinate, c2 Coordinate) float64 {
 	y_dist := c2.Y - c1.Y
 	x_dist := c2.X - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
@@ -1604,7 +1604,7 @@ func getDistanceTwoPoints(c1 coordinate, c2 coordinate) float64 {
 func getXYComponent(theta float64, r float64) (float64, float64) {
 	return toFixed(r*math.Cos(theta), 3), toFixed(r*math.Sin(theta), 3)
 }
-func getTheta(c1 coordinate, c2 coordinate) float64 {
+func getTheta(c1 Coordinate, c2 Coordinate) float64 {
 	y := c2.Y - c1.Y
 	x := c2.X - c1.X
 	theta := math.Atan2(y, x)
@@ -1613,13 +1613,13 @@ func getTheta(c1 coordinate, c2 coordinate) float64 {
 	}
 	return toFixed(theta, 3)
 }
-func sameCoordinates(a coordinate, b coordinate) bool {
+func sameCoordinates(a Coordinate, b Coordinate) bool {
 	if (a.X == b.X) && (a.Y == b.Y) {
 		return true
 	}
 	return false
 }
-func setPath(state [][][]*hero, i int, j int, k int, notHome bool, dest coordinate) {
+func setPath(state [][][]*hero, i int, j int, k int, notHome bool, dest Coordinate) {
 
 	if notHome == true {
 		state[i][j][k].Start = state[i][j][k].Homebase

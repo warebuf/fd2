@@ -108,10 +108,10 @@ type part struct {
 type hero struct {
 	Bot bool
 
-	Homebase    coordinate
-	Start       coordinate
-	Position    coordinate
-	Destination coordinate
+	Homebase    Coordinate
+	Start       Coordinate
+	Position    Coordinate
+	Destination Coordinate
 
 	DistanceLeft float64
 	Angle        float64

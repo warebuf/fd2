@@ -90,6 +90,9 @@ function anime() {
 
     }
 
+    if(even==0) {even = 1}
+    else {even=0}
+
 }
 anime()
 
@@ -428,6 +431,22 @@ function drawPOAs() {
         }
     }
     ctx.fillStyle = "white";
+}
+
+function drawPOASelect() {
+    if(even) {
+        let w = Math.round(c.width/2)-250
+        let h = Math.round(c.height/2)+250
+
+        ctx.fillStyle = "white";
+        for(let i = 0; i < poas.length; i++) {
+            for(let key in poas[i].hashes) {
+                let POA = JSON.parse(key)
+                ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5),3,1);
+                ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5),1,3);
+            }
+        }
+    }
 }
 
 function drawState() {

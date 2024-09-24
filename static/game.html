@@ -643,20 +643,27 @@
                                 }
                             }
                         }
-                        state = md
-
-                        console.log("CS spawn_data", msg.Spawns)
-                        let spawn_data = new Object();
+                        let sdata = [];
                         for(let i = 0; i < msg.Spawns.length; i++) {
+                            let spawn_map = new HashTable();
                             for(let j = 0;j<msg.Spawns[i].length;j++) {
-                                let obj = JSON.parse(msg.Spawns[i][j])
-                                console.log(obj)
+                                spawn_map.putJSON(msg.Spawns[i][j], null)
                             }
+                            sdata.push(spawn_map)
                         }
 
+                        let pdata = [];
+                        for(let i = 0; i < msg.POAs.length; i++) {
+                            let poa_map = new HashTable();
+                            for(let j = 0;j<msg.POAs[i].length;j++) {
+                                poa_map.putJSON(msg.POAs[i][j], null)
+                            }
+                            pdata.push(poa_map)
+                        }
 
-                        console.log("CS POA_data", msg.POAs)
-
+                        state = md
+                        spawns = sdata
+                        poas = pdata
 
                     } else {
                         turn_queue.push(msg.Turn)
@@ -675,6 +682,25 @@
                             }
                         }
 
+                        let sdata = [];
+                        for(let i = 0; i < msg.Spawns.length; i++) {
+                            let spawn_map = new HashTable();
+                            for(let j = 0;j<msg.Spawns[i].length;j++) {
+                                spawn_map.putJSON(msg.Spawns[i][j], null)
+                            }
+                            sdata.push(spawn_map)
+                        }
+
+                        let pdata = [];
+                        for(let i = 0; i < msg.POAs.length; i++) {
+                            let poa_map = new HashTable();
+                            for(let j = 0;j<msg.POAs[i].length;j++) {
+                                poa_map.putJSON(msg.POAs[i][j], null)
+                            }
+                            pdata.push(poa_map)
+                        }
+
+
                         // this triggers if they refreshed the page
                         if(animating_state == -1) {
                             let temp_string = msg.Message.split(";")
@@ -684,24 +710,13 @@
                             indexer_u = my_int
                             state = md;
                             animating_state = 0
+                            spawns = sdata
+                            poas = pdata
                         }
 
                         match_data.push(md)
-
-                        console.log("spawn_data", msg.Spawns)
-                        let spawn_data = [];
-                        for(let i = 0; i < msg.Spawns.length; i++) {
-                            let spawn_map = new HashTable();
-                            for(let j = 0;j<msg.Spawns[i].length;j++) {
-                                spawn_map.putJSON(msg.Spawns[i][j])
-                            }
-                            console.log("sm", spawn_map)
-                            spawn_data.push(spawn_map)
-                        }
-                        console.log("sd", spawn_data)
-
-                        console.log("POA_data", msg.POAs)
-
+                        spawn_data.push(sdata)
+                        poa_data.push(pdata)
 
 
                         console.log("atk_data",msg.Atk)

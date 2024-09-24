@@ -100,8 +100,8 @@ type message struct {
 	Turn        string
 	Atk         []string
 	UnitsOfTime string
-	Spawns      []string
-	POAs        []string
+	Spawns      [][]string
+	POAs        [][]string
 
 	Route Coordinate
 
@@ -1396,23 +1396,25 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		}
 	}
 
-	temp_spawns := make([]string, 0)
+	temp_spawns := make([][]string, 0)
 	for _, i := range m.spawns {
-		test, err := json.Marshal(i)
-		fmt.Println("test", string(test), err)
+		tempArray := make([]string, 0)
 		for j, _ := range i {
 			marshalled, _ := json.Marshal(j)
-			temp_spawns = append(temp_spawns, string(marshalled))
+			tempArray = append(tempArray, string(marshalled))
 			fmt.Println(string(marshalled))
 		}
+		temp_spawns = append(temp_spawns, tempArray)
 	}
-	temp_poas := make([]string, 0)
+	tempPOA := make([][]string, 0)
 	for _, i := range m.poa {
+		tempArray := make([]string, 0)
 		for j, _ := range i {
 			marshalled, _ := json.Marshal(j)
-			temp_poas = append(temp_poas, string(marshalled))
+			tempArray = append(tempArray, string(marshalled))
 			fmt.Println(string(marshalled))
 		}
+		tempPOA = append(tempPOA, tempArray)
 	}
 
 	// send updated positions to everyone

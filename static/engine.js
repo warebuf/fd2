@@ -69,6 +69,7 @@ function anime() {
 
         drawGrid()
         drawBoard()
+        drawSpawns()
         calcPos()
         calcAndDrawAttack()
         drawPos()
@@ -399,8 +400,6 @@ function drawPos(){
     let w = Math.round(c.width/2)-250
     let h = Math.round(c.height/2)+250
 
-    ctx.fillStyle = "red";
-    ctx.fillRect(w+(100*2.5),h-(100*2.5),1,1)
     ctx.fillStyle = "white";
 
     ctx.textAlign = "left";
@@ -415,6 +414,22 @@ function drawPos(){
             }
         }
     }
+}
+
+function drawSpawns() {
+    let w = Math.round(c.width/2)-250
+    let h = Math.round(c.height/2)+250
+
+    ctx.fillStyle = "red";
+    for(let i = 0; i < spawns.length; i++) {
+        for(let j = 0; j < spawns[i].hashes.length; j++) {
+            let spawnPoint = JSON.parse(spawns[i].hashes[j])
+            console.log("spawnpoint", spawnPoint)
+            ctx.fillRect(w+(spawnPoint.X*2.5),h+(-spawnPoint.Y*2.5),1,1);
+        }
+    }
+
+    ctx.fillStyle = "white";
 }
 
 function drawState() {

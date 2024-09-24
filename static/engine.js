@@ -449,7 +449,7 @@ function drawPOASelect() {
             for(let key in poas[i].hashes) {
                 let POA = JSON.parse(key)
                 ctx.fillRect(w+(POA.X*2.5)-1,h-(POA.Y*2.5),3,1);
-                ctx.fillRect(w+(POA.X*2.5)-1,h-(POA.Y*2.5)-3,1,3);
+                ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5)-1,1,3);
             }
         }
     }

@@ -424,7 +424,7 @@ function drawSpawns() {
     for(let i = 0; i < spawns.length; i++) {
         for(let key in spawns[i].hashes) {
             let spawnPoint = JSON.parse(key)
-            console.log("spawnpoint", spawnPoint)
+            console.log("spawnpoint", spawnPoint, w+(spawnPoint.X*2.5), h-(spawnPoint.Y*2.5))
             ctx.fillRect(w+(spawnPoint.X*2.5),h-(spawnPoint.Y*2.5),1,1);
         }
     }

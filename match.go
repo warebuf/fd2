@@ -100,7 +100,7 @@ type message struct {
 	Turn        string
 	Atk         []string
 	UnitsOfTime string
-	Spawns      []byte
+	Spawns      [][]byte
 	POAs        []byte
 
 	Route coordinate
@@ -1396,16 +1396,18 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		}
 	}
 
-	temp_spawns, err := json.Marshal(m.spawns)
-	fmt.Println(err)
-	temp_poa, err := json.Marshal(m.poa)
-	fmt.Println(err)
+	temp_spawns := make([][]byte, len(m.spawns))
+	for i := range m.spawns {
+		marshalled, err := json.Marshal(i)
+		fmt.Println(err)
+		temp_spawns = append(temp_spawns, marshalled)
+	}
 
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Spawns: temp_spawns, POAs: temp_poa, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Spawns: temp_spawns, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

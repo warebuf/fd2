@@ -70,6 +70,7 @@ function anime() {
         drawGrid()
         drawBoard()
         drawPOAs()
+        drawPOASelect()
         calcPos()
         calcAndDrawAttack()
         drawPos()

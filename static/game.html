@@ -546,7 +546,22 @@
     var view = 0;
     var settings_menu = 0;
 
+    function HashTable() {
+        this.hashes = {};
+    }
 
+    HashTable.prototype = {
+        constructor: HashTable,
+        put: function( key, value ) {
+            this.hashes[ JSON.stringify( key ) ] = value;
+        },
+        get: function( key ) {
+            return this.hashes[ JSON.stringify( key ) ];
+        },
+        putJSON: function(s,v) {
+            this.hashes[s]=v;
+        }
+    };
 
 
     function test() {
@@ -676,9 +691,9 @@
                         console.log("spawn_data", msg.Spawns)
                         let spawn_data = [];
                         for(let i = 0; i < msg.Spawns.length; i++) {
-                            let spawn_map = new Object();
+                            let spawn_map = new HashTable();
                             for(let j = 0;j<msg.Spawns[i].length;j++) {
-                                spawn_map[msg.Spawns[i][j]] = null
+                                spawn_map.putJSON(msg.Spawns[i][j])
                             }
                             console.log("sm", spawn_map)
                             spawn_data.push(spawn_map)

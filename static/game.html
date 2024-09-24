@@ -630,8 +630,17 @@
                         }
                         state = md
 
-                        console.log("spawn_data", msg.Spawns)
-                        console.log("POA_data", msg.POAs)
+                        console.log("CS spawn_data", msg.Spawns)
+                        let spawn_data = new Object();
+                        for(let i = 0; i < msg.Spawns.length; i++) {
+                            for(let j = 0;j<msg.Spawns[i].length;j++) {
+                                let obj = JSON.parse(msg.Spawns[i][j])
+                                console.log(obj)
+                            }
+                        }
+
+
+                        console.log("CS POA_data", msg.POAs)
 
 
                     } else {
@@ -665,6 +674,13 @@
                         match_data.push(md)
 
                         console.log("spawn_data", msg.Spawns)
+                        for(let i = 0; i < msg.Spawns.length; i++) {
+                            for(let j = 0;j<msg.Spawns[i].length;j++) {
+                                let obj = JSON.parse(msg.Spawns[i][j])
+                                console.log(obj)
+                            }
+                        }
+                        
                         console.log("POA_data", msg.POAs)
 
 

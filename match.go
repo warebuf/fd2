@@ -1403,13 +1403,19 @@ func (m *match) sharepos(a []*attack, utime float64) {
 			temp_spawns = append(temp_spawns, string(marshalled))
 		}
 	}
-	fmt.Println(temp_spawns)
+	temp_poas := make([]string, len(m.poa))
+	for _, i := range m.poa {
+		for j, _ := range i {
+			marshalled, _ := json.Marshal(j)
+			temp_poas = append(temp_poas, string(marshalled))
+		}
+	}
 
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Spawns: temp_spawns, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Spawns: temp_spawns, POAs: temp_poas, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

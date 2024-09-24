@@ -416,16 +416,15 @@ function drawPos(){
     }
 }
 
-function drawSpawns() {
+function drawPOAs() {
     let w = Math.round(c.width/2)-250
     let h = Math.round(c.height/2)+250
 
     ctx.fillStyle = "red";
-    for(let i = 0; i < spawns.length; i++) {
-        for(let key in spawns[i].hashes) {
-            let spawnPoint = JSON.parse(key)
-            console.log("spawnpoint", spawnPoint, w+(spawnPoint.X*2.5), h-(spawnPoint.Y*2.5))
-            ctx.fillRect(w+(spawnPoint.X*2.5),h-(spawnPoint.Y*2.5),100,100);
+    for(let i = 0; i < poas.length; i++) {
+        for(let key in poas[i].hashes) {
+            let POA = JSON.parse(key)
+            ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5),100,100);
         }
     }
     ctx.fillStyle = "white";

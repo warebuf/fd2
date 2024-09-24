@@ -91,8 +91,13 @@ function anime() {
 
     }
 
-    if(even==0) {even = 1}
-    else {even=0}
+    frame_count += 1
+    if(frame_count==10) {
+        frame_count = 0;
+        if(even==0) {even = 1}
+        else {even=0}
+    }
+
 
 }
 anime()

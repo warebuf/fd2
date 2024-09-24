@@ -678,8 +678,7 @@
                         for(let i = 0; i < msg.Spawns.length; i++) {
                             let spawn_map = new Object();
                             for(let j = 0;j<msg.Spawns[i].length;j++) {
-                                let obj = JSON.parse(msg.Spawns[i][j])
-                                spawn_map[obj] = null
+                                spawn_map[msg.Spawns[i][j]] = null
                             }
                             console.log("sm", spawn_map)
                             spawn_data.push(spawn_map)

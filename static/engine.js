@@ -424,7 +424,7 @@ function drawPOAs() {
     for(let i = 0; i < poas.length; i++) {
         for(let key in poas[i].hashes) {
             let POA = JSON.parse(key)
-            ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5),100,100);
+            ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5),1,1);
         }
     }
     ctx.fillStyle = "white";

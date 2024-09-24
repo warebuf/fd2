@@ -167,8 +167,8 @@ function calcPos() {
                 }
             }
             state = JSON.parse(JSON.stringify(match_data[animating_state]))
-            spawns = JSON.parse(JSON.stringify(spawn_data[animating_state]))
-            poas = JSON.parse(JSON.stringify(poa_data[animating_state]))
+            spawns = spawn_data[animating_state]
+            poas = poa_data[animating_state]
 
             turn = turn_queue[animating_state]
             animating_state++

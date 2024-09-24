@@ -51,7 +51,7 @@ function anime() {
 
     if(phase=="CHARACTER SELECTION") {
 
-        drawGrid()
+        //drawGrid()
         drawPhase()
         drawLog()
         //drawBench()
@@ -67,7 +67,7 @@ function anime() {
 
     } else if (match_data.length > 0) {
 
-        drawGrid()
+        //drawGrid()
         drawBoard()
         drawPOAs()
         drawPOASelect()

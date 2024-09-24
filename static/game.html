@@ -674,13 +674,18 @@
                         match_data.push(md)
 
                         console.log("spawn_data", msg.Spawns)
+                        let spawn_data = [];
                         for(let i = 0; i < msg.Spawns.length; i++) {
+                            let spawn_map = new Object();
                             for(let j = 0;j<msg.Spawns[i].length;j++) {
                                 let obj = JSON.parse(msg.Spawns[i][j])
-                                console.log(obj)
+                                spawn_map[obj] = null
                             }
+                            console.log("sm", spawn_map)
+                            spawn_data.push(spawn_map)
                         }
-                        
+                        console.log("sd", spawn_data)
+
                         console.log("POA_data", msg.POAs)
 
 

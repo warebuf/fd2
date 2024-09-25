@@ -532,10 +532,10 @@ function drawState() {
 
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
                             ctx.fillStyle = 'pink'
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-5,h-(state[i][j][k].Position.Y*2.5)+5,1,1);
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-5,h-(state[i][j][k].Position.Y*2.5)-5,1,1);
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+5,h-(state[i][j][k].Position.Y*2.5)+5,1,1);
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+5,h-(state[i][j][k].Position.Y*2.5)-5,1,1);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-5,h-(state[i][j][k].Position.Y*2.5)+5,10,1);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-5,h-(state[i][j][k].Position.Y*2.5)-5,1,10);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+5,h-(state[i][j][k].Position.Y*2.5)+5,10,1);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+5,h-(state[i][j][k].Position.Y*2.5)-5,1,10);
                             ctx.fillStyle = 'white'
                         }
                         else if((coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
@@ -543,7 +543,7 @@ function drawState() {
                             indexer_u = j;
                             indexer_b = k;
                         }
-                        
+
                     }
                 }
             }

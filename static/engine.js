@@ -440,27 +440,33 @@ function drawPOAs() {
 }
 
 function drawPOASelect() {
-    if(even) {
-        let w = Math.round(c.width/2)-250
-        let h = Math.round(c.height/2)+250
+    if(state_machine == 1) {
+        if(even) {
+            let w = Math.round(c.width/2)-250
+            let h = Math.round(c.height/2)+250
 
-        ctx.fillStyle = "white";
-        for(let i = 0; i < poas.length; i++) {
-            for(let key in poas[i].hashes) {
-                let POA = JSON.parse(key)
-                //ctx.fillRect(w+(POA.X*2.5)-1,h-(POA.Y*2.5),3,1);
-                //ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5)-1,1,3);
+            ctx.fillStyle = "white";
+            for(let i = 0; i < poas.length; i++) {
+                for(let key in poas[i].hashes) {
+                    let POA = JSON.parse(key)
+                    //ctx.fillRect(w+(POA.X*2.5)-1,h-(POA.Y*2.5),3,1);
+                    //ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5)-1,1,3);
 
-                ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)+5,1,1);
-                ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)-5,1,1);
-                ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)+5,1,1);
-                ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)-5,1,1);
+                    ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)+5,1,1);
+                    ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)-5,1,1);
+                    ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)+5,1,1);
+                    ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)-5,1,1);
+                }
             }
         }
     }
+
 }
 
 function drawState() {
+
+    let w = Math.round(c.width/2)-250
+    let h = Math.round(c.height/2)+250
 
     x0 = Math.round(c.width/2)-250 - 45
     y0 = Math.round(c.height/2)-250
@@ -514,6 +520,7 @@ function drawState() {
                 }
                 ctx.fillText(temp, x0+(space*i)+20, y0+1 + (k*125)+(j*700));
 
+                // draw symbol if ready for action
                 if(turn.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&
@@ -521,19 +528,22 @@ function drawState() {
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
+                        ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
                         if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
-                            ctx.fillText("->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
+                            ctx.fillStyle = 'pink'
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-5,h-(state[i][j][k].Position.Y*2.5)+5,1,1);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-5,h-(state[i][j][k].Position.Y*2.5)-5,1,1);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+5,h-(state[i][j][k].Position.Y*2.5)+5,1,1);
+                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+5,h-(state[i][j][k].Position.Y*2.5)-5,1,1);
+                            ctx.fillStyle = 'white'
                         }
                         else if((coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;
-                            ctx.fillText("-->", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
                         }
-                        else {
-                            ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
-                        }
+                        
                     }
                 }
             }

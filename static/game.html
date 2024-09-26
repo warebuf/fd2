@@ -743,6 +743,26 @@ function determineCardinal(x1,y1, x2, y2){
         return 'E' // E for error
 }
 
+function setUpHoverable() {
+
+    if(state_machine == 0) {
+        for(let i = 0 ; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0 ; k < state[i][j].length; k++) {
+                    console.log(state[i][j][k].Position)
+                }
+            }
+        }
+    }
+
+    if(poa.length > 0) {
+        for(let i = 0; i < poas[0].length; i++) {
+            console.log(poas[0][i])
+        }
+    }
+
+}
+
 </script>
 </body>
 </html>

@@ -484,6 +484,11 @@
     var even = 0;
     var action_buffer = ""
 
+    // TODO: MAKE A LIST OF ALL POSSIBLE POINTS
+    // TODO: MAKE A LIST OF IMMEDIATE L,R,U,D
+    // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
+    // TODO: POSSIBLY SAVE THE SIZE OF SHAPE TO DRAW?
+
 
     var total_units_of_time = 0;
 
@@ -689,6 +694,53 @@ function endCharSelect(){
 
 function resign(){
     socket.send(JSON.stringify({ "Event": 'resign' }))
+}
+
+function determineCardinal(x1,y1, x2, y2){
+
+        if( (x1==x2) && (y1==y2) ) {
+            return 'S'
+        }
+
+        let x = x2 - x1;
+        let y = y2 - y1;
+        let absolute_max = Math.max(Math.abs(x), Math.abs(y))
+
+        if( (x>=0) && (y>=0) ) {
+            if ((x<=absolute_max) && (y<=absolute_max)) {
+                return 'UR'
+            } else if( (x<=absolute_max) ) {
+                return 'U'
+            } else {
+                return 'R'
+            }
+        } else if( (x<=0) && (y>=0) ) {
+            if ((Math.abs(x)<=absolute_max) && (y<=absolute_max)) {
+                return 'UL'
+            } else if( (Math.abs(x)<=absolute_max) ) {
+                return 'U'
+            } else {
+                return 'L'
+            }
+        } else if( (x<=0) && (y<=0) ) {
+            if ((Math.abs(x)<=absolute_max) && (Math.abs(y)<=absolute_max)) {
+                return 'DL'
+            } else if( (Math.abs(x)<=absolute_max) ) {
+                return 'D'
+            } else {
+                return 'L'
+            }
+        } else {
+            if ((x<=absolute_max) && (Math.abs(y)<=absolute_max)) {
+                return 'DR'
+            } else if( (x<=absolute_max) ) {
+                return 'D'
+            } else {
+                return 'R'
+            }
+        }
+
+        return 'E' // E for error
 }
 
 </script>

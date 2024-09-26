@@ -755,10 +755,11 @@ function setUpHoverable() {
         }
     }
 
-    console.log("POAS", Object.keys(poas[0].hashes))
+
     if(poas.length > 0) {
-        for(let i = 0; i < poas[0].length; i++) {
-            console.log(poas[0][i])
+        let unbundled = Object.keys(poas[0].hashes);
+        for(let i = 0; i < unbundled.length; i++) {
+            console.log(JSON.parse(unbundled[i]))
         }
     }
 

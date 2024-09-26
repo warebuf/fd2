@@ -108,7 +108,8 @@
                     }
                 }
                 else {
-
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+                    state_machine = 0
                 }
                 break;
 
@@ -382,42 +383,8 @@
                     indexer_u == my_int &&
                     coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'BOTTOM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
-
-                    found = false;
-                    for(i=0;i<match_data[0].length;i++) {
-                        for(j=0;j<match_data[0][0].length;j++) {
-                            for(k=0;k<match_data[0][0][0].length;k++) {
-                                indexer_b++
-                                if(indexer_b>=5){
-                                    indexer_b=0;
-                                    indexer_u++;
-                                    if(indexer_u>=match_data[0][0].length) {
-                                        indexer_u=0;
-                                        indexer_t++;
-                                        if(indexer_t>=match_data[0].length) {
-                                            indexer_t=0
-                                        }
-                                    }
-                                }
-
-                                if(
-                                    (my_team==indexer_t) &&
-                                    (my_int==indexer_u) &&
-                                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase))
-                                {
-                                    found=true
-                                    break
-                                }
-                            }
-                            if(found==true){
-                                break
-                            }
-                        }
-                        if(found==true){
-                            break
-                        }
-                    }
+                    action_buffer = "LARM";
+                    state_machine = 0;
                 }
                 break;
             case 'D':
@@ -431,43 +398,11 @@
                     indexer_u == my_int &&
                     coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+                    //socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
 
-                    found = false;
-                    for(i=0;i<match_data[0].length;i++) {
-                        for(j=0;j<match_data[0][0].length;j++) {
-                            for(k=0;k<match_data[0][0][0].length;k++) {
-                                indexer_b++
-                                if(indexer_b>=5){
-                                    indexer_b=0;
-                                    indexer_u++;
-                                    if(indexer_u>=match_data[0][0].length) {
-                                        indexer_u=0;
-                                        indexer_t++;
-                                        if(indexer_t>=match_data[0].length) {
-                                            indexer_t=0
-                                        }
-                                    }
-                                }
+                    action_buffer = "RARM";
+                    state_machine = 1;
 
-                                if(
-                                    (my_team==indexer_t) &&
-                                    (my_int==indexer_u) &&
-                                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase))
-                                {
-                                    found=true
-                                    break
-                                }
-                            }
-
-                            if(found==true){
-                                break
-                            }
-                        }
-                        if(found==true){
-                            break
-                        }
-                    }
                 }
                 break
             case ' ':
@@ -547,6 +482,7 @@
     var frame_count = 0;
     var state_machine = 0;
     var even = 0;
+    var action_buffer = ""
 
 
     var total_units_of_time = 0;
@@ -725,7 +661,6 @@
                         match_data.push(md)
                         spawn_data.push(sdata)
                         poa_data.push(pdata)
-
 
                         console.log("atk_data",msg.Atk)
                         if(msg.Atk == null) {

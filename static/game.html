@@ -793,7 +793,7 @@ function setUpHoverable() {
         if((cardinal=='U') || (cardinal=='UL') || (cardinal=='UR')){
             if(
                 (closestCardinalCoordinates[0]==null) ||
-                (dist < closestCardinalCoordinates[0]) ||
+                (dist < closestCardinalDistances[0]) ||
                 ((dist == closestCardinalDistances[0]) && (hoverables[i].X<closestCardinalCoordinates[0].X)) //take leftmost
             ) {
                 closestCardinalCoordinates[0] = hoverables[i]
@@ -804,7 +804,7 @@ function setUpHoverable() {
         if((cardinal=='L') || (cardinal=='UL') || (cardinal=='DL')){
             if(
                 (closestCardinalCoordinates[1]==null) ||
-                (dist < closestCardinalCoordinates[1]) ||
+                (dist < closestCardinalDistances[1]) ||
                 ((dist == closestCardinalDistances[1]) && (hoverables[i].Y>closestCardinalCoordinates[1].Y)) //take upmost
             ) {
                 closestCardinalCoordinates[1] = hoverables[i]
@@ -814,7 +814,7 @@ function setUpHoverable() {
         if((cardinal=='R') ||(cardinal=='UR') ||(cardinal=='DR')) {
             if(
                 (closestCardinalCoordinates[2]==null) ||
-                (dist < closestCardinalCoordinates[2]) ||
+                (dist < closestCardinalDistances[2]) ||
                 ((dist == closestCardinalDistances[2]) && (hoverables[i].Y>closestCardinalCoordinates[2].Y)) //take upmost
             ) {
                 closestCardinalCoordinates[2] = hoverables[i]
@@ -824,7 +824,7 @@ function setUpHoverable() {
         if((cardinal=='D') ||(cardinal=='DL') ||(cardinal=='DR')) {
             if(
                 (closestCardinalCoordinates[3]==null) ||
-                (dist < closestCardinalCoordinates[3]) ||
+                (dist < closestCardinalDistances[3]) ||
                 ((dist == closestCardinalDistances[3]) && (hoverables[i].X<closestCardinalCoordinates[2].X)) //take leftmost
             ) {
                 closestCardinalCoordinates[3] = hoverables[i]

@@ -787,6 +787,9 @@ function setUpHoverable() {
     for(let i = 0; i < hoverables.length; i++) {
         let cardinal = determineCardinal(hoverableCurrent.X, hoverables[i].X, hoverableCurrent.Y, hoverables[i].Y);
         let dist = getDistance(hoverableCurrent, hoverables[i])
+
+        if(dist==0){continue;}
+
         if((cardinal=='U') || (cardinal=='UL') || (cardinal=='UR')){
             if(
                 (closestCardinalCoordinates[0]==null) ||

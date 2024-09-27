@@ -765,8 +765,7 @@ function setUpHoverable() {
 
     console.log(hoverables)
 
-    if(hoverableCurrent == null) {
-        // set up starting hoverable position, will be the first unit on your team, which will be the most North unit
+    if(hoverableCurrent == null) { // if there is no starting coordinate, set it up, which is your Northmost unit (maybe change this to the closest unit to leftmost corner)
         let mostNorthCoordinate = null
         for(let i = 0; i < state[my_team][my_int].length; i++) {
             if(mostNorthCoordinate == null) {
@@ -830,6 +829,10 @@ function setUpHoverable() {
     }
 
     hoverableImmediate = closestCardinalCoordinates;
+
+    console.log(hoverableImmediate)
+
+
 
 }
 

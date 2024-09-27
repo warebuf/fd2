@@ -695,7 +695,7 @@ function resign(){
     socket.send(JSON.stringify({ "Event": 'resign' }))
 }
 
-function determineCardinal(x1,y1, x2, y2){
+function determineCardinal(x1,x2, y1, y2){
 
         if( (x1==x2) && (y1==y2) ) {
             return 'S'

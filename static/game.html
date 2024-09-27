@@ -705,32 +705,32 @@ function determineCardinal(x1,x2, y1, y2){
         let y = y2 - y1;
         let absolute_max = Math.max(Math.abs(x), Math.abs(y))
 
-        if( (x>=0) && (y>=0) ) {
-            if ((x<=absolute_max) && (y<=absolute_max)) {
+        if( (x>=0) && (y>=0) ) { // QUADRANT1
+            if ((x==absolute_max) && (y==absolute_max)) {
                 return 'UR'
             } else if( (x<=absolute_max) ) {
                 return 'U'
             } else {
                 return 'R'
             }
-        } else if( (x<=0) && (y>=0) ) {
-            if ((Math.abs(x)<=absolute_max) && (y<=absolute_max)) {
+        } else if( (x<=0) && (y>=0) ) { // QUADRANT2
+            if ((Math.abs(x)==absolute_max) && (y==absolute_max)) {
                 return 'UL'
             } else if( (Math.abs(x)<=absolute_max) ) {
                 return 'U'
             } else {
                 return 'L'
             }
-        } else if( (x<=0) && (y<=0) ) {
-            if ((Math.abs(x)<=absolute_max) && (Math.abs(y)<=absolute_max)) {
+        } else if( (x<=0) && (y<=0) ) { // QUADRANT3
+            if ((Math.abs(x)==absolute_max) && (Math.abs(y)==absolute_max)) {
                 return 'DL'
             } else if( (Math.abs(x)<=absolute_max) ) {
                 return 'D'
             } else {
                 return 'L'
             }
-        } else {
-            if ((x<=absolute_max) && (Math.abs(y)<=absolute_max)) {
+        } else { // QUADRANT4
+            if ((x==absolute_max) && (Math.abs(y)==absolute_max)) {
                 return 'DR'
             } else if( (x<=absolute_max) ) {
                 return 'D'
@@ -762,8 +762,6 @@ function setUpHoverable() {
             hoverables.push(JSON.parse(unbundled[i]))
         }
     }
-
-    console.log(hoverables)
 
     if(hoverableCurrent == null) { // if there is no starting coordinate, set it up, which is your Northmost unit (maybe change this to the closest unit to leftmost corner)
         let mostNorthCoordinate = null

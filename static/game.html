@@ -754,7 +754,7 @@ function calculateNextHoverable(direction) {
                 if(
                     (closestCardinalCoordinate==null) ||
                     (dist < closestCardinalDistance) ||
-                    ((dist == closestCardinalDistance) && (hoverables[i].X<closestCardinalCoordinate[0].X)) //take leftmost
+                    ((dist == closestCardinalDistance) && (hoverables[i].X<closestCardinalCoordinate.X)) //take leftmost
                 ) {
                     closestCardinalCoordinate = hoverables[i]
                     closestCardinalDistance = dist

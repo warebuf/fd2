@@ -426,7 +426,7 @@
     var even = 0;
     var action_buffer = ""
 
-    var hoverableCurrent = null;
+    var hoverable = null;
     // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
     // TODO: POSSIBLY SAVE THE SIZE OF SHAPE TO DRAW?
 
@@ -682,105 +682,6 @@ function determineCardinal(x1, x2, y1, y2){
         return 'E' // E for error
 }
 
-function setUpHoverable() {
-
-    let hoverables = []
-
-    if(state_machine == 0) {
-        for(let i = 0 ; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0 ; k < state[i][j].length; k++) {
-                    hoverables.push(state[i][j][k].Position)
-                }
-            }
-        }
-    }
-
-    if(poas.length > 0) {
-        let unbundled = Object.keys(poas[my_team].hashes);
-        for(let i = 0; i < unbundled.length; i++) {
-            hoverables.push(JSON.parse(unbundled[i]))
-        }
-    }
-
-    if(hoverableCurrent == null) { // if there is no starting coordinate, set it up, which is your Northmost unit (maybe change this to the closest unit to leftmost corner)
-        let mostNorthCoordinate = null
-        for(let i = 0; i < state[my_team][my_int].length; i++) {
-            if(mostNorthCoordinate == null) {
-                mostNorthCoordinate = state[my_team][my_int][i].Position
-            } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
-                mostNorthCoordinate = state[my_team][my_int][i].Position
-            }
-        }
-        hoverableCurrent = mostNorthCoordinate;
-        // possibly remove this coordinate from the list of hoverables
-
-        console.log(hoverableCurrent)
-    }
-
-    // next figure out the U,L,R,D
-    let closestCardinalCoordinates = [null, null, null, null];
-    let closestCardinalDistances = [null, null, null, null];
-
-    for(let i = 0; i < hoverables.length; i++) {
-        let cardinal = determineCardinal(hoverableCurrent.X, hoverables[i].X, hoverableCurrent.Y, hoverables[i].Y);
-        let dist = getDistance(hoverableCurrent, hoverables[i])
-
-        console.log(hoverables[i],cardinal, dist)
-
-        if(dist==0){continue;}
-
-        if((cardinal=='U') || (cardinal=='UL') || (cardinal=='UR')){
-            if(
-                (closestCardinalCoordinates[0]==null) ||
-                (dist < closestCardinalDistances[0]) ||
-                ((dist == closestCardinalDistances[0]) && (hoverables[i].X<closestCardinalCoordinates[0].X)) //take leftmost
-            ) {
-                closestCardinalCoordinates[0] = hoverables[i]
-                closestCardinalDistances[0] = dist
-            }
-
-        }
-        if((cardinal=='L') || (cardinal=='UL') || (cardinal=='DL')){
-            if(
-                (closestCardinalCoordinates[1]==null) ||
-                (dist < closestCardinalDistances[1]) ||
-                ((dist == closestCardinalDistances[1]) && (hoverables[i].Y>closestCardinalCoordinates[1].Y)) //take upmost
-            ) {
-                closestCardinalCoordinates[1] = hoverables[i]
-                closestCardinalDistances[1] = dist
-            }
-        }
-        if((cardinal=='R') ||(cardinal=='UR') ||(cardinal=='DR')) {
-            if(
-                (closestCardinalCoordinates[2]==null) ||
-                (dist < closestCardinalDistances[2]) ||
-                ((dist == closestCardinalDistances[2]) && (hoverables[i].Y>closestCardinalCoordinates[2].Y)) //take upmost
-            ) {
-                closestCardinalCoordinates[2] = hoverables[i]
-                closestCardinalDistances[2] = dist
-            }
-        }
-        if((cardinal=='D') ||(cardinal=='DL') ||(cardinal=='DR')) {
-            if(
-                (closestCardinalCoordinates[3]==null) ||
-                (dist < closestCardinalDistances[3]) ||
-                ((dist == closestCardinalDistances[3]) && (hoverables[i].X<closestCardinalCoordinates[2].X)) //take leftmost
-            ) {
-                closestCardinalCoordinates[3] = hoverables[i]
-                closestCardinalDistances[3] = dist
-            }
-        }
-    }
-
-    hoverableImmediate = closestCardinalCoordinates;
-
-    console.log(hoverableImmediate)
-
-
-
-}
-
 function setupHoverable() {
     let hoverables = []
 
@@ -801,7 +702,7 @@ function setupHoverable() {
         }
     }
 
-    if(hoverableCurrent == null) { // if there is no starting coordinate, set it up, which is your Northmost unit (maybe change this to the closest unit to leftmost corner)
+    if(hoverable == null) { // if there is no starting coordinate, set it up, which is your Northmost unit (maybe change this to the closest unit to leftmost corner)
         let mostNorthCoordinate = null
         for(let i = 0; i < state[my_team][my_int].length; i++) {
             if(mostNorthCoordinate == null) {
@@ -810,10 +711,9 @@ function setupHoverable() {
                 mostNorthCoordinate = state[my_team][my_int][i].Position
             }
         }
-        hoverableCurrent = mostNorthCoordinate;
-        // possibly remove this coordinate from the list of hoverables
+        hoverable = mostNorthCoordinate;
 
-        console.log(hoverableCurrent)
+        console.log(hoverable)
     }
 }
 
@@ -842,8 +742,8 @@ function calculateNextHoverable(direction) {
     let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
 
     for(let i = 0; i < hoverables.length; i++) {
-        let cardinal = determineCardinal(hoverableCurrent.X, hoverables[i].X, hoverableCurrent.Y, hoverables[i].Y);
-        let dist = getDistance(hoverableCurrent, hoverables[i])
+        let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
+        let dist = getDistance(hoverable, hoverables[i])
 
         console.log(hoverables[i],cardinal, dist)
 
@@ -899,8 +799,8 @@ function calculateNextHoverable(direction) {
 
     }
 
-    hoverableCurrent = closestCardinalCoordinate;
-    console.log(hoverableCurrent)
+    hoverable = closestCardinalCoordinate;
+    console.log(hoverable)
 
 }
 

@@ -75,6 +75,7 @@ function anime() {
         calcAndDrawAttack()
         drawPos()
         drawState()
+        drawHoverable()
         //drawStats()
         drawTurn()
         drawUnitsOfTime()
@@ -548,6 +549,17 @@ function drawState() {
                 }
             }
         }
+    }
+}
+
+function drawHoverable() {
+    if(hoverable!=null){
+        ctx.fillStyle = 'pink'
+        ctx.fillRect(w+(hoverable.X*2.5)-10,h-(hoverable.Y*2.5)+10,20,1);
+        ctx.fillRect(w+(hoverable.X*2.5)-10,h-(hoverable.Y*2.5)-10,20,1);
+        ctx.fillRect(w+(hoverable.X*2.5)-10,h-(hoverable.Y*2.5)-10,1,20);
+        ctx.fillRect(w+(hoverable.X*2.5)+10,h-(hoverable.Y*2.5)-10,1,20);
+        ctx.fillStyle = 'white'
     }
 }
 

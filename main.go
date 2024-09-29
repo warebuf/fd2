@@ -840,7 +840,6 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 			wg.Add(1)
 			pl.bot <- wg
 		}
-
 		wg.Wait()
 
 		pl.started = true

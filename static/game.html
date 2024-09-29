@@ -129,6 +129,9 @@
                         x_index_1 = 3
                     }
                 }
+                else if(match_data.length>0){
+                    calculateNextHoverable(1);
+                }
 
                 break;
             case "ArrowRight":
@@ -138,6 +141,9 @@
                     if(x_index_1 > 3) {
                         x_index_1 = 0
                     }
+                }
+                else if(match_data.length>0){
+                    calculateNextHoverable(2);
                 }
 
                 break;
@@ -199,79 +205,15 @@
                     }
                 }
                 else if(match_data.length>0){
-
-                    // begin iterating through all the heros, check if the hero is at Position 0,
-                    // if he is, then break, otherwise keep iterating until you do a full rotation
-                    let found = false;
-                    for(i=0;i<state.length;i++) {
-                        for(j=0;j<state[i].length;j++) {
-                            for(k=0;k<state[i][j].length;k++) {
-                                indexer_b--
-                                if(indexer_b<0){
-                                    indexer_b=4;
-                                    indexer_u--;
-                                    if(indexer_u<0) {
-                                        indexer_u=state[0].length-1;
-                                        indexer_t--;
-                                        if(indexer_t<0) {
-                                            indexer_t=state.length-1;
-                                        }
-                                    }
-                                }
-
-                                if(coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)){
-                                    found=true;
-                                    break;
-                                }
-                            }
-                            if(found==true){
-                                break;
-                            }
-                        }
-                        if(found==true){
-                            break;
-                        }
-                    }
+                    calculateNextHoverable(0);
                 }
                 break;
             case "ArrowDown":
                 if(phase=="CHARACTER SELECTION") {
 
-
-
                 }
                 else if(match_data.length>0){
-
-                    let found = false;
-                    for(i=0;i<state.length;i++) {
-                        for(j=0;j<state[0].length;j++) {
-                            for(k=0;k<state[0][0].length;k++) {
-                                indexer_b++
-                                if(indexer_b>=5){
-                                    indexer_b=0;
-                                    indexer_u++;
-                                    if(indexer_u>=state[0].length) {
-                                        indexer_u=0;
-                                        indexer_t++;
-                                        if(indexer_t>=state.length) {
-                                            indexer_t=0
-                                        }
-                                    }
-                                }
-
-                                if(coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)){
-                                    found=true;
-                                    break;
-                                }
-                            }
-                            if(found==true){
-                                break;
-                            }
-                        }
-                        if(found==true){
-                            break;
-                        }
-                    }
+                    calculateNextHoverable(3);
                 }
                 break;
             case 'W':
@@ -511,8 +453,7 @@
         }
     };
 
-
-    function test() {
+    function reception() {
 
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")
@@ -556,7 +497,6 @@
                 }
                 else if(msg.Event == 'bench'){
                     bench = JSON.parse(msg.Message)
-
                 }
                 else if(msg.Event == 'update_phase') {
                     if (phase=="null") {
@@ -660,6 +600,7 @@
                             animating_state = 0
                             spawns = sdata
                             poas = pdata
+                            setupHoverable()
                         }
 
                         match_data.push(md)
@@ -681,7 +622,7 @@
             }
         }
     }
-    test()
+    reception()
 
 function returntomatchmaking(){
     window.location.href = 'http://{{.host}}/waitroom'
@@ -757,7 +698,7 @@ function setUpHoverable() {
     }
 
     if(poas.length > 0) {
-        let unbundled = Object.keys(poas[0].hashes);
+        let unbundled = Object.keys(poas[my_team].hashes);
         for(let i = 0; i < unbundled.length; i++) {
             hoverables.push(JSON.parse(unbundled[i]))
         }
@@ -838,6 +779,129 @@ function setUpHoverable() {
     console.log(hoverableImmediate)
 
 
+
+}
+
+function setupHoverable() {
+    let hoverables = []
+
+    if(state_machine == 0) {
+        for(let i = 0 ; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0 ; k < state[i][j].length; k++) {
+                    hoverables.push(state[i][j][k].Position)
+                }
+            }
+        }
+    }
+
+    if(poas.length > 0) {
+        let unbundled = Object.keys(poas[my_team].hashes);
+        for(let i = 0; i < unbundled.length; i++) {
+            hoverables.push(JSON.parse(unbundled[i]))
+        }
+    }
+
+    if(hoverableCurrent == null) { // if there is no starting coordinate, set it up, which is your Northmost unit (maybe change this to the closest unit to leftmost corner)
+        let mostNorthCoordinate = null
+        for(let i = 0; i < state[my_team][my_int].length; i++) {
+            if(mostNorthCoordinate == null) {
+                mostNorthCoordinate = state[my_team][my_int][i].Position
+            } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
+                mostNorthCoordinate = state[my_team][my_int][i].Position
+            }
+        }
+        hoverableCurrent = mostNorthCoordinate;
+        // possibly remove this coordinate from the list of hoverables
+
+        console.log(hoverableCurrent)
+    }
+}
+
+function calculateNextHoverable(direction) {
+    let hoverables = []
+
+    if(state_machine == 0) {
+        for(let i = 0 ; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0 ; k < state[i][j].length; k++) {
+                    hoverables.push(state[i][j][k].Position)
+                }
+            }
+        }
+    }
+
+    if(poas.length > 0) {
+        let unbundled = Object.keys(poas[my_team].hashes);
+        for(let i = 0; i < unbundled.length; i++) {
+            hoverables.push(JSON.parse(unbundled[i]))
+        }
+    }
+
+    // next figure out the U,L,R,D
+    let closestCardinalCoordinate = null;
+    let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
+
+    for(let i = 0; i < hoverables.length; i++) {
+        let cardinal = determineCardinal(hoverableCurrent.X, hoverables[i].X, hoverableCurrent.Y, hoverables[i].Y);
+        let dist = getDistance(hoverableCurrent, hoverables[i])
+
+        console.log(hoverables[i],cardinal, dist)
+
+        if(dist==0){continue;}
+
+        if(direction == 0) {
+            if((cardinal=='U') || (cardinal=='UL') || (cardinal=='UR')){
+                if(
+                    (closestCardinalCoordinate==null) ||
+                    (dist < closestCardinalDistance) ||
+                    ((dist == closestCardinalDistance) && (hoverables[i].X<closestCardinalCoordinate[0].X)) //take leftmost
+                ) {
+                    closestCardinalCoordinate = hoverables[i]
+                    closestCardinalDistance = dist
+                }
+
+            }
+        } else if(direction==1) {
+            if((cardinal=='L') || (cardinal=='UL') || (cardinal=='DL')){
+                if(
+                    (closestCardinalCoordinate==null) ||
+                    (dist < closestCardinalDistances) ||
+                    ((dist == closestCardinalDistances) && (hoverables[i].Y>closestCardinalCoordinate.Y)) //take upmost
+                ) {
+                    closestCardinalCoordinate = hoverables[i]
+                    closestCardinalDistance = dist
+                }
+            }
+        } else if(direction==2) {
+            if((cardinal=='R') ||(cardinal=='UR') ||(cardinal=='DR')) {
+                if(
+                    (closestCardinalCoordinate==null) ||
+                    (dist < closestCardinalDistance) ||
+                    ((dist == closestCardinalDistance) && (hoverables[i].Y>closestCardinalCoordinate.Y)) //take upmost
+                ) {
+                    closestCardinalCoordinate = hoverables[i]
+                    closestCardinalDistance = dist
+                }
+            }
+        } else if(direction==3) {
+            if((cardinal=='D') ||(cardinal=='DL') ||(cardinal=='DR')) {
+                if(
+                    (closestCardinalCoordinate==null) ||
+                    (dist < closestCardinalDistance) ||
+                    ((dist == closestCardinalDistance) && (hoverables[i].X<closestCardinalCoordinate.X)) //take leftmost
+                ) {
+                    closestCardinalCoordinate = hoverables[i]
+                    closestCardinalDistance = dist
+                }
+            }
+        }
+
+
+    }
+
+    hoverableImmediate = closestCardinalCoordinate;
+    console.log(hoverableImmediate)
 
 }
 

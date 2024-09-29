@@ -713,7 +713,6 @@ function setupHoverable() {
         }
         hoverable = mostNorthCoordinate;
 
-        console.log(hoverable)
     }
 }
 
@@ -744,8 +743,6 @@ function calculateNextHoverable(direction) {
     for(let i = 0; i < hoverables.length; i++) {
         let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
         let dist = getDistance(hoverable, hoverables[i])
-
-        console.log(hoverables[i],cardinal, dist)
 
         if(dist==0){continue;}
 
@@ -802,7 +799,6 @@ function calculateNextHoverable(direction) {
     if(closestCardinalCoordinate != null) {
         hoverable = closestCardinalCoordinate;
     }
-    console.log(hoverable)
 
 }
 

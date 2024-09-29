@@ -531,14 +531,6 @@ function drawState() {
                         ctx.textAlign = "center";
                         ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
-                        if((i == indexer_t) && (j == indexer_u) && (k == indexer_b)) {
-                            ctx.fillStyle = 'pink'
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-10,h-(state[i][j][k].Position.Y*2.5)+10,20,1);
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-10,h-(state[i][j][k].Position.Y*2.5)-10,20,1);
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)-10,h-(state[i][j][k].Position.Y*2.5)-10,1,20);
-                            ctx.fillRect(w+(state[i][j][k].Position.X*2.5)+10,h-(state[i][j][k].Position.Y*2.5)-10,1,20);
-                            ctx.fillStyle = 'white'
-                        }
                         else if((coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
                             indexer_u = j;

@@ -554,6 +554,8 @@ function drawState() {
 
 function drawHoverable() {
     if(hoverable!=null){
+        let w = Math.round(c.width/2)-250
+        let h = Math.round(c.height/2)+250
         ctx.fillStyle = 'pink'
         ctx.fillRect(w+(hoverable.X*2.5)-10,h-(hoverable.Y*2.5)+10,20,1);
         ctx.fillRect(w+(hoverable.X*2.5)-10,h-(hoverable.Y*2.5)-10,20,1);

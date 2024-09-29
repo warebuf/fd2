@@ -740,6 +740,9 @@ function calculateNextHoverable(direction) {
     let closestCardinalCoordinate = null;
     let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
 
+    let closestPhantomCoordinate = null; // this handles wrapping
+    let closestPhantomDistance = Number.MAX_SAFE_INTEGER;
+
     for(let i = 0; i < hoverables.length; i++) {
         let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
         let dist = getDistance(hoverable, hoverables[i])
@@ -758,7 +761,8 @@ function calculateNextHoverable(direction) {
                 }
 
             }
-        } else if(direction==1) {
+        }
+        else if(direction==1) {
             if((cardinal=='L') || (cardinal=='UL') || (cardinal=='DL')){
                 if(
                     (closestCardinalCoordinate==null) ||
@@ -769,7 +773,8 @@ function calculateNextHoverable(direction) {
                     closestCardinalDistance = dist
                 }
             }
-        } else if(direction==2) {
+        }
+        else if(direction==2) {
             if((cardinal=='R') ||(cardinal=='UR') ||(cardinal=='DR')) {
                 if(
                     (closestCardinalCoordinate==null) ||
@@ -780,7 +785,8 @@ function calculateNextHoverable(direction) {
                     closestCardinalDistance = dist
                 }
             }
-        } else if(direction==3) {
+        }
+        else if(direction==3) {
             if((cardinal=='D') ||(cardinal=='DL') ||(cardinal=='DR')) {
                 if(
                     (closestCardinalCoordinate==null) ||
@@ -793,14 +799,43 @@ function calculateNextHoverable(direction) {
             }
         }
 
+        if((closestCardinalCoordinate == null) && (dist != 0)) {
+
+            let phantom_x = 0;
+            let phantom_y = 0;
+            if(direction==0) {
+                phantom_y = -200;
+            } else if(direction==1) {
+                phantom_x = 200;
+            } else if(direction==2) {
+                phantom_x = -200;
+            } else if(direction==3) {
+                phantom_y = 200;
+            }
+
+            let phantom = structuredClone(hoverable);
+            phantom.X = phantom.X + phantom_x;
+            phantom.Y = phantom.Y + phantom_y;
+
+            let phantomDist = getDistance(phantom, hoverables[i]);
+            console.log(phantomDist, phantom, hoverables[i])
+            if(closestPhantomDistance>phantomDist) {
+                closestPhantomCoordinate = hoverables[i];
+            }
+        }
+
 
     }
 
     if(closestCardinalCoordinate != null) {
         hoverable = closestCardinalCoordinate;
+    } else if(closestPhantomCoordinate != null){
+        hoverable = closestPhantomCoordinate;
     }
 
 }
+
+
 
 </script>
 </body>

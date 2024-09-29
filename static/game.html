@@ -427,7 +427,6 @@
     var action_buffer = ""
 
     var hoverableCurrent = null;
-    var hoverableImmediate = [null, null, null, null] // immediate U,L,R,D
     // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
     // TODO: POSSIBLY SAVE THE SIZE OF SHAPE TO DRAW?
 
@@ -900,8 +899,8 @@ function calculateNextHoverable(direction) {
 
     }
 
-    hoverableImmediate = closestCardinalCoordinate;
-    console.log(hoverableImmediate)
+    hoverableCurrent = closestCardinalCoordinate;
+    console.log(hoverableCurrent)
 
 }
 

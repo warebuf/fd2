@@ -108,7 +108,7 @@
                     }
                 }
                 else {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": hoverable_k }))
                     state_machine = 0
                 }
                 break;
@@ -223,33 +223,33 @@
                     game_over == false &&
                     match_data.length > 0 &&
                     turn.substring(0,4) == "TURN" &&
-                    indexer_t == my_team &&
-                    indexer_u == my_int &&
-                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)
+                    hoverable_i == my_team &&
+                    hoverable_j == my_int &&
+                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'HEAD', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'HEAD', "Team_index": my_team, "Client_index": my_int, "Hero_index": hoverable_k }))
 
                     found = false;
                     for(i=0;i<match_data[0].length;i++) {
                         for(j=0;j<match_data[0][0].length;j++) {
                             for(k=0;k<match_data[0][0][0].length;k++) {
-                                indexer_b++
-                                if(indexer_b>=5){
-                                    indexer_b=0;
-                                    indexer_u++;
-                                    if(indexer_u>=match_data[0][0].length) {
-                                        indexer_u=0;
-                                        indexer_t++;
-                                        if(indexer_t>=match_data[0].length) {
-                                            indexer_t=0
+                                hoverable_k++
+                                if(hoverable_k>=5){
+                                    hoverable_k=0;
+                                    hoverable_j++;
+                                    if(hoverable_j>=match_data[0][0].length) {
+                                        hoverable_j=0;
+                                        hoverable_i++;
+                                        if(hoverable_i>=match_data[0].length) {
+                                            hoverable_i=0
                                         }
                                     }
                                 }
 
                                 if(
-                                    (my_team==indexer_t) &&
-                                    (my_int==indexer_u) &&
-                                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase))
+                                    (my_team==hoverable_i) &&
+                                    (my_int==hoverable_j) &&
+                                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase))
                                 {
                                     found=true
                                     break
@@ -272,33 +272,33 @@
                     game_over == false &&
                     match_data.length > 0 &&
                     turn.substring(0,4) == "TURN" &&
-                    indexer_t == my_team &&
-                    indexer_u == my_int &&
-                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)
+                    hoverable_i == my_team &&
+                    hoverable_j == my_int &&
+                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
                 ) {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'LARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+                    socket.send(JSON.stringify({ "Event": 'act', "Message": 'LARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": hoverable_k }))
 
                     found = false;
                     for(i=0;i<match_data[0].length;i++) {
                         for(j=0;j<match_data[0][0].length;j++) {
                             for(k=0;k<match_data[0][0][0].length;k++) {
-                                indexer_b++
-                                if(indexer_b>=5){
-                                    indexer_b=0;
-                                    indexer_u++;
-                                    if(indexer_u>=match_data[0][0].length) {
-                                        indexer_u=0;
-                                        indexer_t++;
-                                        if(indexer_t>=match_data[0].length) {
-                                            indexer_t=0
+                                hoverable_k++
+                                if(hoverable_k>=5){
+                                    hoverable_k=0;
+                                    hoverable_j++;
+                                    if(hoverable_j>=match_data[0][0].length) {
+                                        hoverable_j=0;
+                                        hoverable_i++;
+                                        if(hoverable_i>=match_data[0].length) {
+                                            hoverable_i=0
                                         }
                                     }
                                 }
 
                                 if(
-                                    (my_team==indexer_t) &&
-                                    (my_int==indexer_u) &&
-                                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase))
+                                    (my_team==hoverable_i) &&
+                                    (my_int==hoverable_j) &&
+                                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase))
                                 {
                                     found=true
                                     break
@@ -321,9 +321,9 @@
                     game_over == false &&
                     match_data.length > 0 &&
                     turn.substring(0,4) == "TURN" &&
-                    indexer_t == my_team &&
-                    indexer_u == my_int &&
-                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)
+                    hoverable_i == my_team &&
+                    hoverable_j == my_int &&
+                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
                 ) {
                     action_buffer = "LARM";
                     state_machine = 0;
@@ -336,11 +336,11 @@
                     game_over == false &&
                     match_data.length > 0 &&
                     turn.substring(0,4) == "TURN" &&
-                    indexer_t == my_team &&
-                    indexer_u == my_int &&
-                    coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)
+                    hoverable_i == my_team &&
+                    hoverable_j == my_int &&
+                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
                 ) {
-                    //socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": indexer_b }))
+                    //socket.send(JSON.stringify({ "Event": 'act', "Message": 'RARM', "Team_index": my_team, "Client_index": my_int, "Hero_index": hoverable_k }))
 
                     action_buffer = "RARM";
                     state_machine = 1;
@@ -372,9 +372,9 @@
     var my_int = -1; // the user's player index
 
     // pointer index
-    var indexer_t = 0;
-    var indexer_u = 0;
-    var indexer_b = 0;
+    var hoverable_i = 0;
+    var hoverable_j = 0;
+    var hoverable_k = 0;
 
     // state stuff
     var animating_state = -1 // where are we at in the dataset
@@ -593,8 +593,8 @@
                             let temp_string = msg.Message.split(";")
                             my_team = parseInt(temp_string[0])
                             my_int = parseInt(temp_string[1])
-                            indexer_t = my_team
-                            indexer_u = my_int
+                            hoverable_i = my_team
+                            hoverable_j = my_int
                             state = md;
                             animating_state = 0
                             spawns = sdata
@@ -823,8 +823,6 @@ function calculateNextHoverable(direction) {
                 closestPhantomDistance = phantomDist;
             }
         }
-
-
     }
 
     if(closestCardinalCoordinate != null) {

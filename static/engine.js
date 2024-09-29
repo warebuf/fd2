@@ -531,7 +531,7 @@ function drawState() {
                         ctx.textAlign = "center";
                         ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
 
-                        else if((coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
+                        if((coordinateEqual(state[indexer_t][indexer_u][indexer_b].Position, state[indexer_t][indexer_u][indexer_b].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
                             indexer_t = i;
                             indexer_u = j;
                             indexer_b = k;

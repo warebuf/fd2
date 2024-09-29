@@ -799,7 +799,9 @@ function calculateNextHoverable(direction) {
 
     }
 
-    hoverable = closestCardinalCoordinate;
+    if(closestCardinalCoordinate != null) {
+        hoverable = closestCardinalCoordinate;
+    }
     console.log(hoverable)
 
 }

@@ -821,6 +821,7 @@ function calculateNextHoverable(direction) {
             console.log(phantomDist, phantom, hoverables[i])
             if(closestPhantomDistance>phantomDist) {
                 closestPhantomCoordinate = hoverables[i];
+                closestPhantomDistance = phantomDist;
             }
         }
 

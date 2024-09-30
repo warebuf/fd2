@@ -595,7 +595,7 @@ function drawPotentialPaths() {
                     let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
                     let radians = getAngle(selected_hoverable, potential_poas[i]);
-                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 3);
+                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 0);
 
 
 

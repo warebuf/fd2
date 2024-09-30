@@ -585,6 +585,7 @@ function drawPotentialPaths() {
                     ctx.stroke();
                 }
 
+
             }
         }
     }

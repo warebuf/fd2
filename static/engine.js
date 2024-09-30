@@ -589,7 +589,13 @@ function drawPotentialPaths() {
                     // write distance
                     let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
-                    let radians = getAngle(selected_hoverable, potential_poas[i]);
+                    let radians = 0;
+                    if(selected_hoverable.X<=potential_poas[i].X) {
+                        radians = getAngle(selected_hoverable, potential_poas[i])
+                    } else {
+                        radians = getAngle(potential_poas[i], selected_hoverable)
+                    }
+
                     drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 10, colour);
 
                     // write TTL, may not do this, not sure

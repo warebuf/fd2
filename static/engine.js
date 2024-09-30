@@ -420,7 +420,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, 11)
+                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, "11")
                 }
             }
         }
@@ -595,7 +595,7 @@ function drawPotentialPaths() {
                     let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
                     let radians = getAngle(selected_hoverable, potential_poas[i]);
-                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, 8, 3);
+                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, 8, "3");
 
 
 

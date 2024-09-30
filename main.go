@@ -118,6 +118,8 @@ type hero struct {
 
 	Move int
 
+	OnRoute bool
+
 	H part
 	L part
 	R part

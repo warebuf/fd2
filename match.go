@@ -155,51 +155,39 @@ func m_read(m *match_socket) {
 					// check if the hero is alive and at starting position
 					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 &&
 						sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Homebase) {
-						if msg.Message == "HEAD" || msg.Message == "LARM" || msg.Message == "RARM" || msg.Message == "BOTTOM" {
 
-							if msg.Message == "HEAD" {
-								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 0
-							} else if msg.Message == "LARM" {
-								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 1
-							} else if msg.Message == "RARM" {
-								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 2
-							} else if msg.Message == "BOTTOM" {
-								m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Move = 3
-							}
+						_, found := m.m.poa[msg.Team_index][msg.Route]
+						if found {
+							// here we set the destination of the unit
+							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, true, msg.Route)
+						} else {
+							//
+							fmt.Printf("this route does not exist")
+						}
 
-							_, found := m.m.poa[msg.Team_index][msg.Route]
-							if found {
-								// here we set the destination of the unit
-								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, true, msg.Route)
-							} else {
-								//
-								fmt.Printf("this route does not exist")
-							}
-
-							if found {
-								// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
-								sim_check := true
-								for i := 0; i < len(m.m.team_client_hero); i++ {
-									for j := 0; j < len(m.m.team_client_hero[i]); j++ {
-										for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
-											if (m.m.team_client_hero[i][j][k].Bot == false) &&
-												(m.m.team_client_hero[i][j][k].Move < 0) &&
-												sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Homebase) &&
-												(m.m.team_client_hero[i][j][k].H.HP > 0) {
-												sim_check = false
-												break
-											}
+						if found {
+							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
+							sim_check := true
+							for i := 0; i < len(m.m.team_client_hero); i++ {
+								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
+									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
+										if (m.m.team_client_hero[i][j][k].Bot == false) &&
+											(m.m.team_client_hero[i][j][k].OnRoute == false) &&
+											sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Homebase) &&
+											(m.m.team_client_hero[i][j][k].H.HP > 0) {
+											sim_check = false
+											break
 										}
 									}
 								}
-								if sim_check == true {
-									m.m.simulate <- true
-								} else {
-									m.m.sharepos(nil, 0)
-								}
 							}
-
+							if sim_check == true {
+								m.m.simulate <- true
+							} else {
+								m.m.sharepos(nil, 0)
+							}
 						}
+
 					}
 				}
 
@@ -652,7 +640,7 @@ func createMatch(pl *permission_list) *match {
 					DistanceLeft: getDistanceTwoPoints(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
 					Angle:        getTheta(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
 
-					Move: -1,
+					OnRoute: false,
 
 					H: h,
 					L: larm,
@@ -1134,9 +1122,8 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if sameCoordinates(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Homebase) &&
-							(m.team_client_hero[i][j][k].Move < 0) &&
+							(m.team_client_hero[i][j][k].OnRoute == false) &&
 							(m.team_client_hero[i][j][k].Bot == true) {
-							m.team_client_hero[i][j][k].Move = rand.Intn(4)
 
 							temp := Coordinate{}
 							for k := range m.poa[i] {
@@ -1218,7 +1205,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
 
-							fmt.Println(i, j, k, m.team_client_hero[i][j][k].B.SPD, m.team_client_hero[i][j][k].Move, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].DistanceLeft)
+							fmt.Println(i, j, k, m.team_client_hero[i][j][k].B.SPD, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].DistanceLeft)
 						}
 					}
 				}
@@ -1244,20 +1231,6 @@ func (m *match) run() {
 				a.Attacker[1] = list_of_attackers[i][1]
 				a.Attacker[2] = list_of_attackers[i][2]
 
-				if m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].H.HP > 0 {
-					if m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 0 {
-					} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 1) &&
-						(m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].L.HP > 0) {
-					} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 2) &&
-						(m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].R.HP > 0) {
-					} else if (m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].Move == 3) &&
-						(m.team_client_hero[a.Attacker[0]][a.Attacker[1]][a.Attacker[2]].B.HP > 0) {
-					} else {
-						a.Type = "broken"
-					}
-				} else {
-					a.Type = "dead"
-				}
 				atk_list = append(atk_list, a)
 			}
 
@@ -1272,8 +1245,7 @@ func (m *match) run() {
 					}
 				}
 
-				setPath(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], false, Coordinate{})
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Move = -1
+				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].OnRoute = false
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
 					m.ended = true
@@ -1483,15 +1455,16 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 
 	// attack first closest enemy
 	atk_power := 0
-	if (state[atk_t][atk_u][atk_b].Move == 0) && (state[atk_t][atk_u][atk_b].H.HP > 0) {
-		atk_power = state[atk_t][atk_u][atk_b].H.ATK
-	} else if (state[atk_t][atk_u][atk_b].Move == 1) && (state[atk_t][atk_u][atk_b].L.HP > 0) {
-		atk_power = state[atk_t][atk_u][atk_b].L.ATK
-	} else if (state[atk_t][atk_u][atk_b].Move == 2) && (state[atk_t][atk_u][atk_b].R.HP > 0) {
-		atk_power = state[atk_t][atk_u][atk_b].R.ATK
-	} else if (state[atk_t][atk_u][atk_b].Move == 3) && (state[atk_t][atk_u][atk_b].B.HP > 0) {
-		atk_power = state[atk_t][atk_u][atk_b].B.ATK
+	if state[atk_t][atk_u][atk_b].H.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].H.ATK
+	} else if state[atk_t][atk_u][atk_b].L.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].L.ATK
+	} else if state[atk_t][atk_u][atk_b].R.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].R.ATK
+	} else if state[atk_t][atk_u][atk_b].B.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].B.ATK
 	}
+	atk_power = atk_power / 4
 
 	hweight := int(0)
 	lweight := int(0)
@@ -1649,4 +1622,5 @@ func setPath(state [][][]*hero, i int, j int, k int, notHome bool, dest Coordina
 
 	state[i][j][k].DistanceLeft = getDistanceTwoPoints(state[i][j][k].Start, state[i][j][k].Destination)
 	state[i][j][k].Angle = getTheta(state[i][j][k].Start, state[i][j][k].Destination)
+	state[i][j][k].OnRoute = true
 }

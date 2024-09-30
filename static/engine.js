@@ -598,7 +598,7 @@ function drawPotentialPaths() {
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
                     ctx.fillStyle = 'white'
                     ctx.textAlign = "center";
-                    ctx.fillText(dist,w+((mid[0]*10/10)*2.5), h-((mid[1]*10/10)*2.5));
+                    ctx.fillText(dist,w+(mid[0].toFixed(1)*2.5), h-(mid[1].toFixed(1)*2.5));
 
                     // write TTL
 

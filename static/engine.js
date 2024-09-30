@@ -2540,10 +2540,10 @@ function getXY(theta, r) {
     return [r*Math.cos(theta), r*Math.sin(theta)]
 }
 
-function drawRotated(s,x,y,radians, size) {
+function drawRotated(s,x,y,radians) {
     ctx.save();
     ctx.textAlign = "center";
-    ctx.font = size +'px monospace';
+    ctx.font = '11px monospace';
     ctx.translate(x,y);
     ctx.rotate( (2*Math.PI) - radians );
     ctx.fillText(s, 0, 3, 0 ); // subtle y-axis adjustment since it is being drawn from top-left corner

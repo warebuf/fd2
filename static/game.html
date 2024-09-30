@@ -112,6 +112,7 @@
                     if(state_machine==0) {
                         // if the current hoverable is a unit, continue
                         if((hoverable.Type == "unit") && (hoverable_i == my_team) && (hoverable_j == my_int)) {
+                            console.log("did this go off")
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();

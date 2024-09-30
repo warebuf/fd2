@@ -595,7 +595,7 @@ function drawPotentialPaths() {
                     let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
                     let radians = getAngle(selected_hoverable, potential_poas[i]);
-                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, 8);
+                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, 8, 3);
 
 
 
@@ -2540,13 +2540,13 @@ function getXY(theta, r) {
     return [r*Math.cos(theta), r*Math.sin(theta)]
 }
 
-function drawRotated(s,x,y,radians, size) {
+function drawRotated(s,x,y,radians, size, y_shift) {
     ctx.save();
     ctx.textAlign = "center";
     ctx.font = size +'px monospace';
     ctx.translate(x,y);
     ctx.rotate( (2*Math.PI) - radians );
-    ctx.fillText(s, 0, 3 ); // subtle y-axis adjustment since it is being drawn from top-left corner
+    ctx.fillText(s, 0, y_shift, 0 ); // subtle y-axis adjustment since it is being drawn from top-left corner
     ctx.restore();
 }
 

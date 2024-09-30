@@ -111,8 +111,7 @@
 
                     if(state_machine==0) {
                         // if the current hoverable is a unit, continue
-                        if((hoverable.Type == "unit") && (hoverable_i == my_team) && (hoverable_j == my_int)) {
-                            console.log("did this go off")
+                        if((hoverable.Type == "unit") && (hoverable.I == my_team) && (hoverable.J == my_int)) {
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();
@@ -318,9 +317,6 @@
     var action_buffer = ""
 
     var hoverable = null;
-    var hoverable_i = 0;
-    var hoverable_j = 0;
-    var hoverable_k = 0;
     var selected_hoverable = null;
     // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
 
@@ -487,8 +483,6 @@
                             let temp_string = msg.Message.split(";")
                             my_team = parseInt(temp_string[0])
                             my_int = parseInt(temp_string[1])
-                            hoverable_i = my_team
-                            hoverable_j = my_int
                             state = md;
                             animating_state = 0
                             spawns = sdata

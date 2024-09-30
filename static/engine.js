@@ -531,13 +531,6 @@ function drawState() {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
                         ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
-
-                        if((coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)==false) && (my_team==i) && (my_int==j)) { // finds
-                            hoverable_i = i;
-                            hoverable_j = j;
-                            hoverable_k = k;
-                        }
-
                     }
                 }
             }

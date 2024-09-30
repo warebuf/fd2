@@ -598,7 +598,6 @@ function drawPotentialPaths() {
 
 function drawPaths() {
 
-    if(state_machine==0) {
         let w = Math.round(c.width/2)-250
         let h = Math.round(c.height/2)+250
         for(let i = 0; i < state.length; i++) {
@@ -616,7 +615,6 @@ function drawPaths() {
                 }
             }
         }
-    }
 
 
 }

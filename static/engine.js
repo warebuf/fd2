@@ -584,6 +584,7 @@ function drawPotentialPaths() {
                         ctx.strokeStyle = "white";
                         console.log("got here")
                     } else {
+                        console.log(potential_poas[i], hoverable)
                         ctx.strokeStyle = "grey";
                     }
                     ctx.moveTo(w+(selected_hoverable.X*2.5), h-(selected_hoverable.Y*2.5));

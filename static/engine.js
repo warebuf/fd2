@@ -557,6 +557,40 @@ function drawHoverable() {
     }
 }
 
+function drawPotentialPaths() {
+
+    if(state_machine==0) {
+
+    } else if(state_machine==1) {
+
+        let potential_poas = []
+        if(poas.length > 0) {
+            let unbundled = Object.keys(poas[my_team].hashes);
+            for(let i = 0; i < unbundled.length; i++) {
+                potential_poas.push(JSON.parse(unbundled[i]))
+            }
+        }
+
+        if(selected_hoverable!=null) {
+            for(let i = 0; i < potential_poas.length(); i++) {
+                if((potential_poas[i].Type == "poa")) {
+                    ctx.beginPath();
+                    if(potential_poas[i]==hoverable) {
+                        ctx.strokeStyle = "white";
+                    } else {
+                        ctx.strokeStyle = "grey";
+                    }
+                    ctx.moveTo(selected_hoverable.X, selected_hoverable.Y);
+                    ctx.lineTo(potential_poas[i].X, potential_poas[i].Y);
+                    ctx.stroke();
+                }
+
+            }
+        }
+    }
+
+}
+
 function drawPhase() {
     ctx.textAlign = "center";
     ctx.fillStyle = 'black';

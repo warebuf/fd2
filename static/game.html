@@ -108,8 +108,24 @@
                     }
                 }
                 else {
-                    socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": hoverable_k }))
-                    state_machine = 0
+
+                    if(state_machine==0) {
+                        // if the current hoverable is a unit, continue
+                        if((hoverable.Type == "unit") && (hoverable_i == my_team) && (hoverable_j == my_int)) {
+                            selected_hoverable = hoverable;
+                            state_machine = 1;
+                            setupHoverable();
+                        }
+
+
+                    } else if(state_machine==1) {
+                        // if the current hoverable is a POA, continue
+                        socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": hoverable_k }))
+                        selected_hoverable = null;
+                        state_machine = 0;
+                        setupHoverable();
+                    }
+
                 }
                 break;
 
@@ -218,71 +234,6 @@
                 }
                 break;
 
-            case 'W':
-            case 'w':
-                console.log('w')
-                if(
-                    game_over == false &&
-                    match_data.length > 0 &&
-                    turn.substring(0,4) == "TURN" &&
-                    hoverable_i == my_team &&
-                    hoverable_j == my_int &&
-                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
-                ) {
-                    action_buffer = "H";
-                    state_machine = 1;
-                    setupHoverable()
-                }
-                break;
-            case 'A':
-            case 'a':
-                console.log('a')
-                if(
-                    game_over == false &&
-                    match_data.length > 0 &&
-                    turn.substring(0,4) == "TURN" &&
-                    hoverable_i == my_team &&
-                    hoverable_j == my_int &&
-                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
-                ) {
-                    action_buffer = "LARM";
-                    state_machine = 1;
-                    setupHoverable()
-                }
-                break;
-            case 'S':
-            case 's':
-                console.log('s')
-                if(
-                    game_over == false &&
-                    match_data.length > 0 &&
-                    turn.substring(0,4) == "TURN" &&
-                    hoverable_i == my_team &&
-                    hoverable_j == my_int &&
-                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
-                ) {
-                    action_buffer = "B";
-                    state_machine = 1;
-                    setupHoverable()
-                }
-                break;
-            case 'D':
-            case 'd':
-                console.log('d')
-                if(
-                    game_over == false &&
-                    match_data.length > 0 &&
-                    turn.substring(0,4) == "TURN" &&
-                    hoverable_i == my_team &&
-                    hoverable_j == my_int &&
-                    coordinateEqual(state[hoverable_i][hoverable_j][hoverable_k].Position, state[hoverable_i][hoverable_j][hoverable_k].Homebase)
-                ) {
-                    action_buffer = "RARM";
-                    state_machine = 1;
-                    setupHoverable()
-                }
-                break
-
             case ' ':
                 if(game_over==true) {
                     returntomatchmaking()
@@ -297,6 +248,14 @@
                     settings_menu=0
                     let s = document.getElementById("settings").getElementsByTagName("button")
                     s[0].remove()
+                }
+                break;
+
+            case "Backspace":
+                if(state_machine==1) {
+                    state_machine = 0;
+                    selected_hoverable = null;
+                    setupHoverable();
                 }
                 break;
         }
@@ -361,9 +320,8 @@
     var hoverable_i = 0;
     var hoverable_j = 0;
     var hoverable_k = 0;
+    var selected_hoverable = null;
     // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
-
-    // TODO: POSSIBLY SAVE THE SIZE OF SHAPE TO DRAW?
 
     var total_units_of_time = 0;
 

@@ -577,7 +577,7 @@ function drawPotentialPaths() {
             }
         }
 
-        if(selected_hoverable!=null) {
+        if((selected_hoverable!=null) && (selected_hoverable.Type == "unit") && (selected_hoverable.I == my_team) && (selected_hoverable.J == my_int)) {
             for(let i = 0; i < potential_poas.length; i++) {
                 if((potential_poas[i].Type == "poa")) {
                     let colour = ""
@@ -599,9 +599,7 @@ function drawPotentialPaths() {
                     let radians = getAngle(selected_hoverable, potential_poas[i]);
                     drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 10, colour);
 
-
-
-                    // write TTL
+                    // write TTL, may not do this, not sure
 
                 }
 

@@ -563,7 +563,8 @@ function drawPotentialPaths() {
 
     if(state_machine==0) {
 
-    } else if(state_machine==1) {
+    }
+    else if(state_machine==1) {
 
         let w = Math.round(c.width/2)-250
         let h = Math.round(c.height/2)+250
@@ -583,13 +584,24 @@ function drawPotentialPaths() {
                     if(coordinateEqual(potential_poas[i],hoverable)) {
                         ctx.strokeStyle = "white";
                         console.log("got here")
-                    } else {
+                    }
+                    else {
                         console.log(potential_poas[i], hoverable)
                         ctx.strokeStyle = "grey";
                     }
                     ctx.moveTo(w+(selected_hoverable.X*2.5), h-(selected_hoverable.Y*2.5));
                     ctx.lineTo(w+(potential_poas[i].X*2.5), h-(potential_poas[i].Y*2.5));
                     ctx.stroke();
+
+                    // write distance
+                    let dist = getDistance(selected_hoverable, potential_poas[i]);
+                    let mid = getCenter(selected_hoverable, potential_poas[i]);
+                    ctx.fillStyle = 'white'
+                    ctx.textAlign = "center";
+                    ctx.fillText(dist,mid[0], mid[1]);
+                    
+                    // write TTL
+
                 }
 
 
@@ -2543,4 +2555,10 @@ function getDistance(c1,c2) {
     let y_dist = c2.Y - c1.Y
     let x_dist = c2.X - c1.X
     return Math.sqrt((y_dist*y_dist)+(x_dist*x_dist))
+}
+
+function getCenter(c1,c2) {
+    let x = (c1.X + c2.X)/2;
+    let y = (c1.Y + c2.Y)/2;
+    return [x,y]
 }

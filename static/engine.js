@@ -2544,7 +2544,7 @@ function getXY(theta, r) {
 
 function drawRotated(s,x,y,radians, size, y_shift, colour) {
     ctx.save();
-    ctx.strokeStyle = colour;
+    ctx.strokeStyle = "grey";
     ctx.textAlign = "center";
     ctx.font = size+'px monospace';
     ctx.translate(x,y);

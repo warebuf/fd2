@@ -592,11 +592,11 @@ function drawPotentialPaths() {
                     ctx.stroke();
 
                     // write distance
-                    let dist = getDistance(selected_hoverable, potential_poas[i]);
+                    let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
                     ctx.fillStyle = 'white'
                     ctx.textAlign = "center";
-                    ctx.fillText(dist,w+(mid[0].toFixed(1)*2.5), h-(mid[1].toFixed(1)*2.5));
+                    ctx.fillText(dist,w+(mid[0]*2.5), h-(mid[1]*2.5));
 
                     // write TTL
 

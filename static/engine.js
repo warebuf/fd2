@@ -580,7 +580,7 @@ function drawPotentialPaths() {
             for(let i = 0; i < potential_poas.length; i++) {
                 if((potential_poas[i].Type == "poa")) {
                     ctx.beginPath();
-                    if(potential_poas[i]==hoverable) {
+                    if(coordinateEqual(potential_poas[i],hoverable)) {
                         ctx.strokeStyle = "white";
                         console.log("got here")
                     } else {

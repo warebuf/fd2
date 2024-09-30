@@ -607,7 +607,7 @@ function drawPaths() {
                     if(state[i][j][k].H.HP>0 && state[i][j][k].OnRoute) {
                         ctx.beginPath();
                         ctx.strokeStyle = "grey";
-                        ctx.moveTo(w+(state[i][j][k].Position.X*2.5), h-(state[i][j][k].Position.Y*2.5));
+                        ctx.moveTo(w+(state[i][j][k].Start.X*2.5), h-(state[i][j][k].Start.Y*2.5));
                         ctx.lineTo(w+(state[i][j][k].Destination.X*2.5), h-(state[i][j][k].Destination.Y*2.5));
                         ctx.stroke();
                     }

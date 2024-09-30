@@ -582,6 +582,7 @@ function drawPotentialPaths() {
                     ctx.beginPath();
                     if(potential_poas[i]==hoverable) {
                         ctx.strokeStyle = "white";
+                        console.log("got here")
                     } else {
                         ctx.strokeStyle = "grey";
                     }

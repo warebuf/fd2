@@ -652,13 +652,13 @@ function setupHoverable() {
     } else if(state_machine == 1) {
         for(let i = 0; i < hoverables.length; i++) {
             if(mostNorthCoordinate == null) {
-                mostNorthCoordinate = hoverables
-            } else if(mostNorthCoordinate.Y < hoverables.Y) {
-                mostNorthCoordinate = hoverables
+                mostNorthCoordinate = hoverables[i]
+            } else if(mostNorthCoordinate.Y < hoverables[i].Y) {
+                mostNorthCoordinate = hoverables[i]
             }
         }
     }
-    
+
     hoverable = mostNorthCoordinate;
 
     console.log(hoverable)

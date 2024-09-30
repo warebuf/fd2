@@ -76,6 +76,7 @@ function anime() {
         drawPos()
         drawState()
         drawHoverable()
+        drawPotentialPaths()
         //drawStats()
         drawTurn()
         drawUnitsOfTime()

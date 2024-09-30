@@ -604,7 +604,7 @@ function drawPaths() {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
 
-                    if(state[i][j][k].OnRoute) {
+                    if(state[i][j][k].H.HP>0 && state[i][j][k].OnRoute) {
                         ctx.beginPath();
                         ctx.strokeStyle = "grey";
                         ctx.moveTo(w+(state[i][j][k].Position.X*2.5), h-(state[i][j][k].Position.Y*2.5));

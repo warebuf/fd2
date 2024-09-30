@@ -512,7 +512,8 @@ function drawState() {
                 if(turn.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&
-                        coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)
+                        coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) &&
+                        state[i][j][k].OnRoute == false
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";

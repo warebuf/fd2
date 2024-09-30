@@ -595,6 +595,26 @@ function drawPotentialPaths() {
 
 }
 
+function drawPaths() {
+
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+
+                if(state[i][j][k].OnRoute) {
+                    ctx.beginPath();
+                    ctx.strokeStyle = "grey";
+                    ctx.moveTo(w+(state[i][j][k].Position.X*2.5), h-(state[i][j][k].Position.Y*2.5));
+                    ctx.lineTo(w+(state[i][j][k].Destination.X*2.5), h-(state[i][j][k].Destination.Y*2.5));
+                    ctx.stroke();
+                }
+
+            }
+        }
+    }
+
+}
+
 function drawPhase() {
     ctx.textAlign = "center";
     ctx.fillStyle = 'black';

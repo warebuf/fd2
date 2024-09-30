@@ -640,13 +640,25 @@ function setupHoverable() {
     console.log(hoverables)
 
     let mostNorthCoordinate = null
-    for(let i = 0; i < state[my_team][my_int].length; i++) {
-        if(mostNorthCoordinate == null) {
-            mostNorthCoordinate = state[my_team][my_int][i].Position
-        } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
-            mostNorthCoordinate = state[my_team][my_int][i].Position
+
+    if(state_machine == 0) {
+        for(let i = 0; i < state[my_team][my_int].length; i++) {
+            if(mostNorthCoordinate == null) {
+                mostNorthCoordinate = state[my_team][my_int][i].Position
+            } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
+                mostNorthCoordinate = state[my_team][my_int][i].Position
+            }
+        }
+    } else if(state_machine == 1) {
+        for(let i = 0; i < hoverables.length; i++) {
+            if(mostNorthCoordinate == null) {
+                mostNorthCoordinate = hoverables
+            } else if(mostNorthCoordinate.Y < hoverables.Y) {
+                mostNorthCoordinate = hoverables
+            }
         }
     }
+    
     hoverable = mostNorthCoordinate;
 
     console.log(hoverable)

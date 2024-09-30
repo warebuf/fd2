@@ -120,6 +120,7 @@
                 else if(view==2){view=3}
                 else if(view==3){view=0}
                 break;
+
             case "ArrowLeft":
 
                 if(phase=="CHARACTER SELECTION"){
@@ -216,6 +217,7 @@
                     calculateNextHoverable(3);
                 }
                 break;
+
             case 'W':
             case 'w':
                 console.log('w')
@@ -347,6 +349,7 @@
 
                 }
                 break
+
             case ' ':
                 if(game_over==true) {
                     returntomatchmaking()
@@ -370,11 +373,6 @@
     var socket = null; // socket object for this tab
     var my_team = -1; // the user's team index
     var my_int = -1; // the user's player index
-
-    // pointer index
-    var hoverable_i = 0;
-    var hoverable_j = 0;
-    var hoverable_k = 0;
 
     // state stuff
     var animating_state = -1 // where are we at in the dataset
@@ -427,7 +425,11 @@
     var action_buffer = ""
 
     var hoverable = null;
+    var hoverable_i = 0;
+    var hoverable_j = 0;
+    var hoverable_k = 0;
     // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
+
     // TODO: POSSIBLY SAVE THE SIZE OF SHAPE TO DRAW?
 
     var total_units_of_time = 0;

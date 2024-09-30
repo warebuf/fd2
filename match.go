@@ -17,6 +17,11 @@ import (
 type Coordinate struct {
 	X float64
 	Y float64
+
+	Type string
+	I    int
+	J    int
+	K    int
 }
 
 type match struct {
@@ -517,13 +522,13 @@ func createMatch(pl *permission_list) *match {
 		for i := 0; i < int(ans.sides); i++ {
 			spawn_map := make(map[Coordinate]bool)
 			for j := 0; j < 5; j++ {
-				spawn_map[Coordinate{X: float64(i * 200), Y: float64(j * 50)}] = true
+				spawn_map[Coordinate{X: float64(i * 200), Y: float64(j * 50), Type: "spawn"}] = true
 			}
 			ans.spawns = append(ans.spawns, spawn_map)
 
 			poa_map := make(map[Coordinate]bool)
 			for j := 0; j < 3; j++ {
-				poa_map[Coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0)}] = true
+				poa_map[Coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0), Type: "poa"}] = true
 			}
 			ans.poa = append(ans.poa, poa_map)
 		}
@@ -641,7 +646,7 @@ func createMatch(pl *permission_list) *match {
 
 					Homebase:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
 					Start:       Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
-					Position:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
+					Position:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
 					Destination: Coordinate{X: 100.0, Y: 100.0},
 
 					DistanceLeft: getDistanceTwoPoints(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
@@ -1188,6 +1193,10 @@ func (m *match) run() {
 							if newDistanceLeft <= 0.1 {
 								m.team_client_hero[i][j][k].DistanceLeft = 0
 								m.team_client_hero[i][j][k].Position = m.team_client_hero[i][j][k].Destination
+								m.team_client_hero[i][j][k].Position.Type = "unit"
+								m.team_client_hero[i][j][k].Position.I = i
+								m.team_client_hero[i][j][k].Position.J = j
+								m.team_client_hero[i][j][k].Position.K = k
 
 								_, found := m.spawns[i][m.team_client_hero[i][j][k].Position]
 								if found {

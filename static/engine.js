@@ -420,7 +420,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle)
+                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, 11)
                 }
             }
         }
@@ -581,7 +581,6 @@ function drawPotentialPaths() {
             for(let i = 0; i < potential_poas.length; i++) {
                 if((potential_poas[i].Type == "poa")) {
                     ctx.beginPath();
-                    ctx.font = '8px monospace';
                     if(coordinateEqual(potential_poas[i],hoverable)) {
                         ctx.strokeStyle = "white";
                     }
@@ -595,9 +594,10 @@ function drawPotentialPaths() {
                     // write distance
                     let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
-                    ctx.fillStyle = 'white'
-                    ctx.textAlign = "center";
-                    ctx.fillText(dist,w+(mid[0]*2.5), h-(mid[1]*2.5));
+                    let radians = getAngle(selected_hoverable, potential_poas[i]);
+                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, 8);
+
+
 
                     // write TTL
 
@@ -2540,13 +2540,13 @@ function getXY(theta, r) {
     return [r*Math.cos(theta), r*Math.sin(theta)]
 }
 
-function drawRotated(s,x,y,radians) {
+function drawRotated(s,x,y,radians, size) {
     ctx.save();
     ctx.textAlign = "center";
-    ctx.font = '11px monospace';
+    ctx.font = size +'px monospace';
     ctx.translate(x,y);
     ctx.rotate( (2*Math.PI) - radians );
-    ctx.fillText(s, 0, 3 ); // subtle y-axis adjustment since it is being from from top-left corner
+    ctx.fillText(s, 0, 3 ); // subtle y-axis adjustment since it is being drawn from top-left corner
     ctx.restore();
 }
 
@@ -2560,4 +2560,14 @@ function getCenter(c1,c2) {
     let x = (c1.X + c2.X)/2;
     let y = (c1.Y + c2.Y)/2;
     return [x,y]
+}
+
+function getAngle(c1,c2) {
+    let y = c2.Y - c1.Y
+    let x = c2.X - c1.X
+    let theta = Math.atan2(y, x)
+    if (theta < 0) {
+        theta = theta + (2 * Math.PI)
+    }
+    return theta
 }

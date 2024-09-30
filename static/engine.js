@@ -581,6 +581,7 @@ function drawPotentialPaths() {
                     } else {
                         ctx.strokeStyle = "grey";
                     }
+                    console.log(selected_hoverable)
                     ctx.moveTo(selected_hoverable.X, selected_hoverable.Y);
                     ctx.lineTo(potential_poas[i].X, potential_poas[i].Y);
                     ctx.stroke();

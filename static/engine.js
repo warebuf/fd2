@@ -510,18 +510,6 @@ function drawState() {
                 }
                 ctx.fillRect(x0+(space*i), y0+1 + (k*125)+(j*700), 5, 7);
 
-                // draw move
-                ctx.fillStyle = 'white';
-                ctx.textAlign = "left";
-                let temp = '-'
-                if(state[i][j][k].H.HP>0) {
-                    if(state[i][j][k].Move==0){temp='H'}
-                    else if(state[i][j][k].Move==1){temp='L'}
-                    else if(state[i][j][k].Move==2){temp='R'}
-                    else if(state[i][j][k].Move==3){temp='B'}
-                }
-                ctx.fillText(temp, x0+(space*i)+20, y0+1 + (k*125)+(j*700));
-
                 // draw symbol if ready for action
                 if(turn.substring(0,4) == "TURN") {
                     if (
@@ -552,7 +540,6 @@ function drawHoverable() {
 }
 
 function drawPotentialPaths() {
-
 
     if(state_machine==0) {
 

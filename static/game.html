@@ -60,6 +60,7 @@
 
     document.onkeydown = function (e) {
         switch (e.key) {
+
             case "Enter":
                 if(phase=="CHARACTER SELECTION"){
 
@@ -116,11 +117,9 @@
                             state_machine = 1;
                             setupHoverable();
                         }
-
-
                     } else if(state_machine==1) {
                         // if the current hoverable is a POA, continue
-                        socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": selected_hoverable.K }))
+                        socket.send(JSON.stringify({ "Event": 'act', "Message": action_buffer, "Team_index": my_team, "Client_index": my_int, "Hero_index": selected_hoverable.K, Route: hoverable }))
                         selected_hoverable = null;
                         state_machine = 0;
                         setupHoverable();

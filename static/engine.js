@@ -581,6 +581,7 @@ function drawPotentialPaths() {
             for(let i = 0; i < potential_poas.length; i++) {
                 if((potential_poas[i].Type == "poa")) {
                     ctx.beginPath();
+                    ctx.font = '8px monospace';
                     if(coordinateEqual(potential_poas[i],hoverable)) {
                         ctx.strokeStyle = "white";
                     }

@@ -637,6 +637,8 @@ function setupHoverable() {
         }
     }
 
+    console.log(hoverables)
+
     let mostNorthCoordinate = null
     for(let i = 0; i < state[my_team][my_int].length; i++) {
         if(mostNorthCoordinate == null) {
@@ -646,6 +648,8 @@ function setupHoverable() {
         }
     }
     hoverable = mostNorthCoordinate;
+
+    console.log(hoverable)
 
 }
 

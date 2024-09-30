@@ -420,7 +420,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].H.HP > 0) {
-                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, "11", 3)
+                    drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, "11", 3, "white")
                 }
             }
         }
@@ -580,13 +580,15 @@ function drawPotentialPaths() {
         if(selected_hoverable!=null) {
             for(let i = 0; i < potential_poas.length; i++) {
                 if((potential_poas[i].Type == "poa")) {
+                    let colour = ""
                     ctx.beginPath();
                     if(coordinateEqual(potential_poas[i],hoverable)) {
-                        ctx.strokeStyle = "white";
+                        colour = "white";
                     }
                     else {
-                        ctx.strokeStyle = "grey";
+                        colour = "grey";
                     }
+                    ctx.strokeStyle = colour;
                     ctx.moveTo(w+(selected_hoverable.X*2.5), h-(selected_hoverable.Y*2.5));
                     ctx.lineTo(w+(potential_poas[i].X*2.5), h-(potential_poas[i].Y*2.5));
                     ctx.stroke();
@@ -595,7 +597,7 @@ function drawPotentialPaths() {
                     let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
                     let mid = getCenter(selected_hoverable, potential_poas[i]);
                     let radians = getAngle(selected_hoverable, potential_poas[i]);
-                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 10);
+                    drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 10, colour);
 
 
 
@@ -2540,8 +2542,9 @@ function getXY(theta, r) {
     return [r*Math.cos(theta), r*Math.sin(theta)]
 }
 
-function drawRotated(s,x,y,radians, size, y_shift) {
+function drawRotated(s,x,y,radians, size, y_shift, colour) {
     ctx.save();
+    ctx.strokeStyle = colour;
     ctx.textAlign = "center";
     ctx.font = size+'px monospace';
     ctx.translate(x,y);

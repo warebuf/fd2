@@ -560,9 +560,13 @@ function drawHoverable() {
 
 function drawPotentialPaths() {
 
+
     if(state_machine==0) {
 
     } else if(state_machine==1) {
+
+        let w = Math.round(c.width/2)-250
+        let h = Math.round(c.height/2)+250
 
         let potential_poas = []
         if(poas.length > 0) {
@@ -582,8 +586,8 @@ function drawPotentialPaths() {
                         ctx.strokeStyle = "grey";
                     }
                     console.log(selected_hoverable)
-                    ctx.moveTo(selected_hoverable.X, selected_hoverable.Y);
-                    ctx.lineTo(potential_poas[i].X, potential_poas[i].Y);
+                    ctx.moveTo(w+(selected_hoverable.X*2.5), h-(selected_hoverable.Y*2.5));
+                    ctx.lineTo(w+(potential_poas[i].X*2.5), h-(potential_poas[i].Y*2.5));
                     ctx.stroke();
                 }
 

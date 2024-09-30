@@ -1455,16 +1455,24 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 
 	// attack first closest enemy
 	atk_power := 0
+	part_count := 0
 	if state[atk_t][atk_u][atk_b].H.HP > 0 {
 		atk_power += state[atk_t][atk_u][atk_b].H.ATK
-	} else if state[atk_t][atk_u][atk_b].L.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].L.ATK
-	} else if state[atk_t][atk_u][atk_b].R.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].R.ATK
-	} else if state[atk_t][atk_u][atk_b].B.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].B.ATK
+		part_count += 1
 	}
-	atk_power = atk_power / 4
+	if state[atk_t][atk_u][atk_b].L.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].L.ATK
+		part_count += 1
+	}
+	if state[atk_t][atk_u][atk_b].R.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].R.ATK
+		part_count += 1
+	}
+	if state[atk_t][atk_u][atk_b].B.HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].B.ATK
+		part_count += 1
+	}
+	atk_power = atk_power / part_count
 
 	hweight := int(0)
 	lweight := int(0)

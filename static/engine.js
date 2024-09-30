@@ -107,17 +107,17 @@ anime()
 function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
-        let correctMove = true;
+        let correctRoute = true;
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length;k++) {
 
-                    if(state[i][j][k].Move != match_data[animating_state][i][j][k].Move) {
+                    if(state[i][j][k].correctRoute != match_data[animating_state][i][j][k].correctRoute) {
 
                         if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                            state[i][j][k].Move = match_data[animating_state][i][j][k].Move
+                            state[i][j][k].correctRoute = match_data[animating_state][i][j][k].correctRoute
                         } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
-                            correctMove = false
+                            correctRoute = false
                             if(attacking_frames_count==0){
                                 attacking_frames_count=1
                             }
@@ -130,7 +130,7 @@ function calcPos() {
         }
 
         let correctDestination = true;
-        if(correctMove) {
+        if(correctRoute) {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length;k++) {
@@ -146,7 +146,7 @@ function calcPos() {
         }
 
         let correctPosition = true;
-        if(correctMove && correctDestination) {
+        if(correctRoute && correctDestination) {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length;k++) {
@@ -169,7 +169,7 @@ function calcPos() {
         }
 
 
-        if(correctMove && correctDestination && correctPosition) {
+        if(correctRoute && correctDestination && correctPosition) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
@@ -233,13 +233,8 @@ function calcAndDrawAttack() {
                     let lperc = 100*Math.round(10000*lw/(hw+lw+rw+bw))/10000
                     let rperc = 100*Math.round(10000*rw/(hw+lw+rw+bw))/10000
                     let bperc = 100*Math.round(10000*bw/(hw+lw+rw+bw))/10000
-                    let p_atk = state[atk_i][atk_j][atk_k].Move
-                    if(p_atk==0){p_atk="H"}
-                    else if(p_atk==1){p_atk="L"}
-                    else if(p_atk==2){p_atk="R"}
-                    else if(p_atk==3){p_atk="B"}
 
-                    ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString()+p_atk + "->" + def_i+def_j+def_k, w, 110 + (100*i) + (10*j) );
+                    ctx.fillText(atk_i.toString()+atk_j.toString()+atk_k.toString() + "->" + def_i+def_j+def_k, w, 110 + (100*i) + (10*j) );
 
                     if(p=="H"){ctx.fillStyle = "green";}
                     else {ctx.fillStyle = "white";}
@@ -256,24 +251,27 @@ function calcAndDrawAttack() {
                     ctx.fillStyle = "white";
 
                     let carry_atk = 0;
+                    let count_parts = 0;
+                    if(state[atk_i][atk_j][atk_k].H.HP>0) {
+                        carry_atk += state[atk_i][atk_j][atk_k].H.ATK
+                        count_parts += 1
+                    }
+                    if(state[atk_i][atk_j][atk_k].L.HP>0) {
+                        carry_atk += state[atk_i][atk_j][atk_k].L.ATK
+                        count_parts += 1
+                    }
+                    if(state[atk_i][atk_j][atk_k].R.HP>0) {
+                        carry_atk += state[atk_i][atk_j][atk_k].R.ATK
+                        count_parts += 1
+                    }
+                    if(state[atk_i][atk_j][atk_k].B.HP>0) {
+                        carry_atk += state[atk_i][atk_j][atk_k].B.ATK
+                        count_parts += 1
+                    }
 
-                    if(state[atk_i][atk_j][atk_k].Move==0){
-                        ctx.fillText(state[atk_i][atk_j][atk_k].H.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                        carry_atk = state[atk_i][atk_j][atk_k].H.ATK;
-                    }
-                    else if(state[atk_i][atk_j][atk_k].Move==1){
-                        ctx.fillText(state[atk_i][atk_j][atk_k].L.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                        carry_atk = state[atk_i][atk_j][atk_k].L.ATK;
-                    }
-                    else if(state[atk_i][atk_j][atk_k].Move==2){
-                        ctx.fillText(state[atk_i][atk_j][atk_k].R.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                        carry_atk = state[atk_i][atk_j][atk_k].R.ATK;
-                    }
-                    else if(state[atk_i][atk_j][atk_k].Move==3){
-                        ctx.fillText(state[atk_i][atk_j][atk_k].B.ATK + " ATK", w-25, 130 + (100*i) + (30*j) );
-                        carry_atk = state[atk_i][atk_j][atk_k].B.ATK;
-                    }
+                    carry_atk = carry_atk / count_parts
 
+                    ctx.fillText(carry_atk + " ATK", w-25, 130 + (100*i) + (30*j) );
                     ctx.fillText("-", w, 130 + (100*i) + (30*j) );
 
                     if(p=="H"){

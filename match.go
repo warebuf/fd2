@@ -522,13 +522,13 @@ func createMatch(pl *permission_list) *match {
 		for i := 0; i < int(ans.sides); i++ {
 			spawn_map := make(map[Coordinate]bool)
 			for j := 0; j < 5; j++ {
-				spawn_map[Coordinate{X: float64(i * 200), Y: float64(j * 50), Type: "spawn"}] = true
+				spawn_map[Coordinate{X: float64(i * 200), Y: float64(j * 50), Type: "spawn", I: -1, J: -1, K: -1}] = true
 			}
 			ans.spawns = append(ans.spawns, spawn_map)
 
 			poa_map := make(map[Coordinate]bool)
 			for j := 0; j < 3; j++ {
-				poa_map[Coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0), Type: "poa"}] = true
+				poa_map[Coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0), Type: "poa", I: -1, J: -1, K: -1}] = true
 			}
 			ans.poa = append(ans.poa, poa_map)
 		}
@@ -644,10 +644,10 @@ func createMatch(pl *permission_list) *match {
 				temp := &hero{
 					Bot: j.bot_status,
 
-					Homebase:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
-					Start:       Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)},
+					Homebase:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
+					Start:       Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
 					Position:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
-					Destination: Coordinate{X: 100.0, Y: 100.0},
+					Destination: Coordinate{X: 100.0, Y: 100.0, Type: "unit", I: team_int, J: client_int, K: y},
 
 					DistanceLeft: getDistanceTwoPoints(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
 					Angle:        getTheta(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),

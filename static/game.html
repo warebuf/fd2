@@ -112,7 +112,7 @@
 
                     if(state_machine==0) {
                         // if the current hoverable is a unit, continue
-                        if((hoverable.Type == "unit") && (hoverable.I == my_team) && (hoverable.J == my_int)) {
+                        if((hoverable.Type == "unit") && (hoverable.I == my_team) && (hoverable.J == my_int) && (state[hoverable.I][hoverable.J][hoverable.K].OnRoute==false)) {
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();

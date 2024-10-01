@@ -81,58 +81,6 @@ type room struct {
 	open chan bool
 }
 
-type part struct {
-	SECTION int // 0 is H, 1 is L, 2 is R, 3 is B
-	SERIAL  int
-	NAME    string
-
-	HP  int
-	DEF int
-	DOG int
-
-	ATK int
-	ACC int
-	CRT int
-
-	CD     int
-	CLU    int
-	Weight int
-
-	Use_current int
-	Use_outof   int
-
-	SPD int
-}
-
-// NOTE: FOR SOME REASON ONLY CONVERTS TO JSON IF CAPITALIZED
-type hero struct {
-	Bot bool
-
-	Homebase    Coordinate
-	Start       Coordinate
-	Position    Coordinate
-	Destination Coordinate
-
-	DistanceLeft float64
-	Angle        float64
-
-	Move int
-
-	OnRoute bool
-
-	H part
-	L part
-	R part
-	B part
-}
-
-type attack struct {
-	Attacker []int      //i,j,k
-	Defender [][]int    //list of i,j,k
-	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
-	Type     string     //miss,
-}
-
 type socket struct {
 	mutex sync.RWMutex
 

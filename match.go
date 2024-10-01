@@ -14,6 +14,63 @@ import (
 	"time"
 )
 
+type Camp struct {
+	HP    int
+	XY    Coordinate
+	Units []*hero
+}
+
+type hero struct {
+	Bot bool
+
+	Start       Coordinate
+	Position    Coordinate
+	Destination Coordinate
+
+	DistanceLeft float64
+	Angle        float64
+
+	OnRoute bool
+
+	H part
+	L part
+	R part
+	B part
+
+	Battle *Camp
+	TTD    float64
+}
+
+type part struct {
+	SECTION int // 0 is H, 1 is L, 2 is R, 3 is B
+	SERIAL  int
+	NAME    string
+
+	HP  int
+	DEF int
+	DOG int
+
+	ATK int
+	ACC int
+	CRT int
+
+	CD     int
+	CLU    int
+	Weight int
+
+	Use_current int
+	Use_outof   int
+
+	SPD int
+}
+
+type attack struct {
+	Attacker []int      //i,j,k
+	Defender [][]int    //list of i,j,k
+	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
+	Type     string     //miss,
+}
+
 type Coordinate struct {
 	X float64
 	Y float64
@@ -35,11 +92,10 @@ type match struct {
 
 	// each client is represented as an int
 	team_client_hero [][][]*hero
+	camps            []*Camp
+
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
-
-	spawns []map[Coordinate]bool // each team has a map of spawns
-	poa    []map[Coordinate]bool // each team has a map of POAs
 
 	bench map[string][]*part // team, user index to part
 
@@ -105,8 +161,7 @@ type message struct {
 	Turn        string
 	Atk         []string
 	UnitsOfTime string
-	Spawns      [][]string
-	POAs        [][]string
+	POAs        []string
 
 	Route Coordinate
 
@@ -154,18 +209,17 @@ func m_read(m *match_socket) {
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the hero is alive and at starting position
 					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 &&
-						sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Homebase) {
+						m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].OnRoute {
 
-						_, found := m.m.poa[msg.Team_index][msg.Route]
-						if found {
-							// here we set the destination of the unit
+						set_route := (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0)
+
+						if set_route { // possibly check if camp is still up here
 							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, true, msg.Route)
 						} else {
-							//
 							fmt.Printf("this route does not exist")
 						}
 
-						if found {
+						if set_route {
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
 							for i := 0; i < len(m.m.team_client_hero); i++ {
@@ -173,7 +227,6 @@ func m_read(m *match_socket) {
 									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
 										if (m.m.team_client_hero[i][j][k].Bot == false) &&
 											(m.m.team_client_hero[i][j][k].OnRoute == false) &&
-											sameCoordinates(m.m.team_client_hero[i][j][k].Position, m.m.team_client_hero[i][j][k].Homebase) &&
 											(m.m.team_client_hero[i][j][k].H.HP > 0) {
 											sim_check = false
 											break
@@ -465,8 +518,7 @@ func createMatch(pl *permission_list) *match {
 			team_client_hero: make([][][]*hero, 0, 0),
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
-			spawns: make([]map[Coordinate]bool, 0, 0),
-			poa:    make([]map[Coordinate]bool, 0, 0),
+			camps: make([]*Camp, 0, 0),
 
 			broadcast:      make(chan *message),
 			prio_broadcast: make(chan *message),
@@ -506,19 +558,13 @@ func createMatch(pl *permission_list) *match {
 			}
 		}
 
-		// create spawns and poas
-		for i := 0; i < int(ans.sides); i++ {
-			spawn_map := make(map[Coordinate]bool)
-			for j := 0; j < 5; j++ {
-				spawn_map[Coordinate{X: float64(i * 200), Y: float64(j * 50), Type: "spawn", I: -1, J: -1, K: -1}] = true
-			}
-			ans.spawns = append(ans.spawns, spawn_map)
-
-			poa_map := make(map[Coordinate]bool)
-			for j := 0; j < 3; j++ {
-				poa_map[Coordinate{X: 100, Y: 50.0 + (float64(j) * 50.0), Type: "poa", I: -1, J: -1, K: -1}] = true
-			}
-			ans.poa = append(ans.poa, poa_map)
+		// creating camps
+		random_count := rand.Intn(10)
+		for i := 0; i < random_count; i++ {
+			random_x := float64(rand.Intn(10))
+			random_y := float64(rand.Intn(10))
+			c := Coordinate{X: 100.0 + (random_x * 10.0), Y: 100.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
+			ans.camps = append(ans.camps, &Camp{HP: rand.Intn(10)*100 + 100, XY: c, Units: make([]*hero, 0)})
 		}
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
@@ -629,16 +675,16 @@ func createMatch(pl *permission_list) *match {
 					Use_outof:   0,
 					Weight:      rand.Intn(99) + 1,
 				}
+				temp_coordinate := Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot: j.bot_status,
 
-					Homebase:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
-					Start:       Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
-					Position:    Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y},
-					Destination: Coordinate{X: 100.0, Y: 100.0, Type: "unit", I: team_int, J: client_int, K: y},
+					Start:       temp_coordinate,
+					Position:    temp_coordinate,
+					Destination: temp_coordinate,
 
-					DistanceLeft: getDistanceTwoPoints(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
-					Angle:        getTheta(Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50)}, Coordinate{X: 100.0, Y: 100.0}),
+					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
+					Angle:        getTheta(temp_coordinate, temp_coordinate),
 
 					OnRoute: false,
 
@@ -646,17 +692,17 @@ func createMatch(pl *permission_list) *match {
 					L: larm,
 					R: rarm,
 					B: btm,
-				}
 
+					Battle: nil,
+					TTD:    1.0,
+				}
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
 			ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
 
 			for y := 0; y < 5; y++ {
-
 				pick := rand.Intn(4)
-
 				if pick == 0 {
 					temp := rand.Intn(len(namesh))
 					p := &part{
@@ -1121,17 +1167,17 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if sameCoordinates(m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Homebase) &&
+						if (m.team_client_hero[i][j][k].Bot == true) &&
 							(m.team_client_hero[i][j][k].OnRoute == false) &&
-							(m.team_client_hero[i][j][k].Bot == true) {
+							(m.team_client_hero[i][j][k].TTD == 0) {
 
-							temp := Coordinate{}
-							for k := range m.poa[i] {
-								temp = k
-								break
+							random_number := rand.Intn(len(m.camps))
+							//random_number := rand.Intn(len(m.camps) + 1)
+							if random_number == len(m.camps) {
+								// should wait for the camp to spawn
+							} else {
+								setPath(m.team_client_hero, i, j, k, true, m.camps[random_number].XY)
 							}
-
-							setPath(m.team_client_hero, i, j, k, true, temp)
 							gave_bots_acts = true
 						}
 					}
@@ -1146,27 +1192,55 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if m.team_client_hero[i][j][k].H.HP > 0 {
-							units_of_time := 999999.99
-							if m.team_client_hero[i][j][k].B.SPD != 0 {
-								units_of_time = toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].B.SPD), 3)
-							}
+						if (m.team_client_hero[i][j][k].H.HP > 0) && (m.team_client_hero[i][j][k].OnRoute) && (m.team_client_hero[i][j][k].B.SPD != 0) {
+							units_of_time := toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].B.SPD), 3)
 							if units_of_time < min_units {
 								min_units = units_of_time
 							}
-
 						}
 					}
 				}
 			}
+
+			// calculate time until damage
+			for i := 0; i < len(m.camps); i++ {
+				if (m.camps[i].HP > 0) && (len(m.camps[i].Units) > 0) {
+					total_dmg := 0.0
+					for j := 0; j < len(m.camps[i].Units); j++ {
+						if m.camps[i].Units[j].H.HP > 0 {
+							avg_sum := 0.0
+							avg_count := 0.0
+							if m.camps[i].Units[j].H.HP > 0 {
+								avg_sum += float64(m.camps[i].Units[j].H.ATK)
+								avg_count += 1
+							}
+							if m.camps[i].Units[j].L.HP > 0 {
+								avg_sum += float64(m.camps[i].Units[j].L.ATK)
+								avg_count += 1
+							}
+							if m.camps[i].Units[j].R.HP > 0 {
+								avg_sum += float64(m.camps[i].Units[j].R.ATK)
+								avg_count += 1
+							}
+							if m.camps[i].Units[j].B.HP > 0 {
+								avg_sum += float64(m.camps[i].Units[j].B.ATK)
+								avg_count += 1
+							}
+							total_dmg += (avg_sum / avg_count)
+						}
+					}
+
+					ttd := float64(m.camps[i].HP) / total_dmg
+
+					fmt.Println("ttd", ttd, m.camps[i], total_dmg)
+
+					if ttd < min_units {
+						min_units = ttd
+					}
+				}
+			}
+
 			fmt.Println("min", min_units)
-
-			has_cmds := false
-			has_atks := false
-
-			only_bot_cmds := true
-
-			list_of_attackers := [][]int{}
 
 			// move all unit positions
 			for i := 0; i < len(m.team_client_hero); i++ {
@@ -1184,20 +1258,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.I = i
 								m.team_client_hero[i][j][k].Position.J = j
 								m.team_client_hero[i][j][k].Position.K = k
-
-								_, found := m.spawns[i][m.team_client_hero[i][j][k].Position]
-								if found {
-									has_cmds = true
-
-									if m.team_client_hero[i][j][k].Bot == false {
-										only_bot_cmds = false
-									}
-
-								} else {
-									has_atks = true
-									list_of_attackers = append(list_of_attackers, []int{i, j, k})
-								}
-
+								m.team_client_hero[i][j][k].OnRoute = false
 							} else {
 								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
 								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)
@@ -1210,48 +1271,83 @@ func (m *match) run() {
 					}
 				}
 			}
-			fmt.Println("finished unit movement", has_cmds, has_atks, only_bot_cmds)
-			fmt.Println("listofattackers", list_of_attackers)
+
 			if has_atks {
 				m.sharepos(nil, min_units)
 			} else {
 				m.sharepos(nil, 0)
 			}
 
-			// figure out who is at the end and can attack
+			// calculate TTD for each camp
 			atk_list := make([]*attack, 0)
-			for i := 0; i < len(list_of_attackers); i++ {
-				a := &attack{
-					Attacker: make([]int, 3),
-					Defender: make([][]int, 0),
-					Damage:   make([][]string, 0),
-					Type:     "hit",
-				}
-				a.Attacker[0] = list_of_attackers[i][0]
-				a.Attacker[1] = list_of_attackers[i][1]
-				a.Attacker[2] = list_of_attackers[i][2]
+			for i := 0; i < len(m.camps); i++ {
+				if m.camps[i].HP > 0 && m.camps[i].Units != nil {
+					for j := 0; j < len(m.camps[i].Units); j++ {
 
-				atk_list = append(atk_list, a)
+						m.camps[i].Units[j].TTD -= min_units
+						if m.camps[i].Units[j].TTD <= 0.1 {
+							m.camps[i].Units[j].TTD = 0
+
+							a := &attack{
+								Attacker: make([]int, 3),
+								Defender: make([][]int, 0),
+								Damage:   make([][]string, 0),
+								Type:     "hit",
+							}
+							a.Attacker[0] = list_of_attackers[i][0]
+							a.Attacker[1] = list_of_attackers[i][1]
+							a.Attacker[2] = list_of_attackers[i][2]
+							atk_list = append(atk_list, a)
+						}
+					}
+				}
 			}
 
 			// simulate all attacks
 			for i := 0; i < len(list_of_attackers); i++ {
-				if atk_list[i].Type == "hit" {
-					atk_list[i].Defender = closest_enemies(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2])
-					atk_list[i].Damage = close_attack(m.team_client_hero, atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2], atk_list[i].Defender)
+				if atk_list[i].Type == "hit" &&
+					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP > 0) {
 
-					if len(atk_list[i].Defender) <= 0 {
-						atk_list[i].Type = "noenemies"
+					atk_power := 0.0
+					part_count := 0.0
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].H.HP > 0 {
+						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].H.ATK)
+						part_count += 1
+					}
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].L.HP > 0 {
+						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].L.ATK)
+						part_count += 1
+					}
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].R.HP > 0 {
+						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].R.ATK)
+						part_count += 1
+					}
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].B.HP > 0 {
+						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].B.ATK)
+						part_count += 1
+					}
+					atk_power = atk_power / part_count
+
+					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP -= int(atk_power)
+					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].TTD = 1
+
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP < 0 {
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP = 0
+						for j := 0; j < len(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units); j++ {
+							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units[j].TTD = 1
+							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units[j].OnRoute = false
+						}
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units = nil
 					}
 				}
-
-				m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].OnRoute = false
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
 					m.ended = true
 				}
 
 			}
+
+			// add all newly arrived units to their camps
 
 			num, _ := strconv.Atoi(m.turn[5:])
 			if len(atk_list) > 0 {
@@ -1377,15 +1473,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		}
 	}
 
-	temp_spawns := make([][]string, 0)
-	for _, i := range m.spawns {
-		tempArray := make([]string, 0)
-		for j, _ := range i {
-			marshalled, _ := json.Marshal(j)
-			tempArray = append(tempArray, string(marshalled))
-		}
-		temp_spawns = append(temp_spawns, tempArray)
-	}
 	tempPOA := make([][]string, 0)
 	for _, i := range m.poa {
 		tempArray := make([]string, 0)
@@ -1400,7 +1487,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Spawns: temp_spawns, POAs: tempPOA, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, POAs: tempPOA, When: time.Now(), MatchID: m.mid}:
 			}
 		}
 	}

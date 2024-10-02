@@ -382,7 +382,7 @@ function calcAndDrawAttack() {
                 state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
                 state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
                 state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
-                state[atk_i][atk_j][atk_k].OnRoute = false
+                state[atk_i][atk_j][atk_k].State = 0
 
                 // add the time to the event log
                 if(time_queue[animating_state]!="") {
@@ -502,8 +502,7 @@ function drawState() {
                 if(turn.substring(0,4) == "TURN") {
                     if (
                         state[i][j][k].H.HP > 0 &&
-                        coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase) &&
-                        state[i][j][k].OnRoute == false
+                        state[i][j][k].State == 0
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";
@@ -585,7 +584,7 @@ function drawPaths() {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
 
-                    if(state[i][j][k].H.HP>0 && state[i][j][k].OnRoute) {
+                    if(state[i][j][k].H.HP>0 && state[i][j][k].State == 0) {
                         ctx.beginPath();
                         ctx.strokeStyle = "grey";
                         ctx.moveTo(w+(state[i][j][k].Start.X*2.5), h-(state[i][j][k].Start.Y*2.5));

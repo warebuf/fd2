@@ -109,9 +109,9 @@ function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
         let all_states_correct = true
-        for(let i = 0; i < len(state); i++) {
-            for(let j = 0; j < len(state[i]); j++) {
-                for(let k = 0; k < len(state[i][j]); k++) {
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length; k++) {
 
                     if (
                         (state[i][j][k].State != match_data[animating_state][i][j][k].State) ||

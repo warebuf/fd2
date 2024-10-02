@@ -492,7 +492,6 @@ function determineCardinal(x1, x2, y1, y2){
         if(y<0) {
             absolute_max_y = -absolute_max
         }
-    console.log("absmax", absolute_max, absolute_max_x, absolute_max_y)
 
     if((x==0) && (y>0)) {return 'U'}
     else if((x==0) && (y<0)) {return 'D'}
@@ -604,12 +603,9 @@ function calculateNextHoverable(direction) {
     let closestPhantomDistance = Number.MAX_SAFE_INTEGER;
 
 
-    console.log("BEGIN")
     for(let i = 0; i < hoverables.length; i++) {
         let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
         let dist = getDistance(hoverable, hoverables[i])
-
-        console.log(hoverables[i], cardinal, dist)
 
         if(dist==0){continue;}
 

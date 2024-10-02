@@ -564,7 +564,7 @@ func createMatch(pl *permission_list) *match {
 		for i := 0; i < random_count; i++ {
 			random_x := float64(rand.Intn(10))
 			random_y := float64(rand.Intn(10))
-			c := Coordinate{X: 100.0 + (random_x * 10.0), Y: 100.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
+			c := Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
 			ans.camps = append(ans.camps, &Camp{HP: rand.Intn(10)*100 + 100, XY: c, Units: make([]*hero, 0)})
 		}
 
@@ -802,7 +802,6 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		fmt.Println("created MID:", ans.mid)
-		fmt.Println("%# v", pretty.Formatter(ans.camps))
 		pretty.Print(ans.camps)
 
 		mid_to_match.mutex.Lock()

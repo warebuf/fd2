@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
+	"github.com/kr/pretty"
 	"math"
 	"strings"
 
@@ -801,6 +802,7 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		fmt.Println("created MID:", ans.mid)
+		fmt.Println("%# v", pretty.Formatter(ans.camps))
 
 		mid_to_match.mutex.Lock()
 		mid_to_match.match[ans.mid] = ans

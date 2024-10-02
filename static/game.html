@@ -599,8 +599,11 @@ function calculateNextHoverable(direction) {
     let closestCardinalCoordinate = null;
     let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
 
-    let closestPhantomCoordinate = null; // this handles wrapping
+    let closestPhantomCoordinate = null; // this handles if there is none in the cardinal direction
     let closestPhantomDistance = Number.MAX_SAFE_INTEGER;
+
+    let closestWrapCoordinate = null; // this handles wrapping
+    let closestWrapDistance = Number.MAX_SAFE_INTEGER;
 
 
     for(let i = 0; i < hoverables.length; i++) {
@@ -660,35 +663,71 @@ function calculateNextHoverable(direction) {
         }
 
         if((closestCardinalCoordinate == null) && (dist != 0)) {
-
-            let phantom_x = 0;
-            let phantom_y = 0;
             if(direction==0) {
-                phantom_y = -200;
+                if(hoverable.Y > hoverables[i].Y) {
+                    if(closestPhantomDistance>hoverables[i].Y-hoverable.Y ) {
+                        closestPhantomCoordinate = hoverables[i];
+                        closestPhantomDistance = phantomDist;
+                    }
+                }
             } else if(direction==1) {
-                phantom_x = 200;
+                if(hoverable.X < hoverables[i].X) {
+                    if(closestPhantomDistance>hoverables[i].X-hoverable.X ) {
+                        closestPhantomCoordinate = hoverables[i];
+                        closestPhantomDistance = phantomDist;
+                    }
+                }
             } else if(direction==2) {
-                phantom_x = -200;
+                if(hoverable.X > hoverables[i].X) {
+                    if(closestPhantomDistance>hoverable.X-hoverables[i].X ) {
+                        closestPhantomCoordinate = hoverables[i];
+                        closestPhantomDistance = phantomDist;
+                    }
+                }
             } else if(direction==3) {
-                phantom_y = 200;
-            }
-
-            let phantom = structuredClone(hoverable);
-            phantom.X = phantom.X + phantom_x;
-            phantom.Y = phantom.Y + phantom_y;
-
-            let phantomDist = getDistance(phantom, hoverables[i]);
-            if(closestPhantomDistance>phantomDist) {
-                closestPhantomCoordinate = hoverables[i];
-                closestPhantomDistance = phantomDist;
+                if(hoverable.Y < hoverables[i].Y) {
+                    if(closestPhantomDistance>hoverable.Y-hoverables[i].Y ) {
+                        closestPhantomCoordinate = hoverables[i];
+                        closestPhantomDistance = phantomDist;
+                    }
+                }
             }
         }
+
+        if((closestPhantomCoordinate == null) && (dist != 0)) {
+            let wrap_x = 0;
+            let wrap_y = 0;
+            if(direction==0) {
+                wrap_y = -200;
+            } else if(direction==1) {
+                wrap_x = 200;
+            } else if(direction==2) {
+                wrap_x = -200;
+            } else if(direction==3) {
+                wrap_y = 200;
+            }
+
+            let wrap = structuredClone(hoverable); // deep copy of coordinate
+            wrap.X = wrap.X + wrap_x;
+            wrap.Y = wrap.Y + wrap_y;
+
+            let wrapDist = getDistance(wrap, hoverables[i]);
+            if(closestWrapDistance>wrapDist) {
+                closestWrapCoordinate = hoverables[i];
+                closestWrapDistance = wrapDist;
+            }
+        }
+
+
+
     }
 
     if(closestCardinalCoordinate != null) {
         hoverable = closestCardinalCoordinate;
     } else if(closestPhantomCoordinate != null){
         hoverable = closestPhantomCoordinate;
+    } else if(closestWrapCoordinate != null) {
+        hoverable = closestWrapCoordinate;
     }
 
 }

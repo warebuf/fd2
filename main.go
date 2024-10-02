@@ -242,6 +242,7 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 	log.Println("/")
 	t := template.Must(template.ParseFiles(filepath.Join("static", "index.html")))
 	mottos := []string{
+		"It's more than a game.",
 		"Better than sex.",
 		"Circumstance does not make the man; it reveals him to himself.",
 		"And man, therefore, as the lord and master of thought, is the maker of himself and the author of environment.",

@@ -277,7 +277,7 @@
 
     // the board state
     var state = []
-    var poas = [];
+    var camp = [];
 
     var h_index = 0
     var l_index = 0
@@ -301,7 +301,7 @@
     // datasets
     var match_data = new Array();
     var atk_data = new Array();
-    var poa_data = new Array();
+    var camp_data = new Array();
 
     var time_queue = []
     var turn_queue = []
@@ -321,23 +321,6 @@
 
     var view = 0;
     var settings_menu = 0;
-
-    function HashTable() {
-        this.hashes = {};
-    }
-
-    HashTable.prototype = {
-        constructor: HashTable,
-        put: function( key, value ) {
-            this.hashes[ JSON.stringify( key ) ] = value;
-        },
-        get: function( key ) {
-            return this.hashes[ JSON.stringify( key ) ];
-        },
-        putJSON: function(s,v) {
-            this.hashes[s]=v;
-        }
-    };
 
     function reception() {
 
@@ -418,17 +401,13 @@
                             }
                         }
 
-                        let pdata = [];
-                        for(let i = 0; i < msg.POAs.length; i++) {
-                            let poa_map = new HashTable();
-                            for(let j = 0;j<msg.POAs[i].length;j++) {
-                                poa_map.putJSON(msg.POAs[i][j], null)
-                            }
-                            pdata.push(poa_map)
+                        let cdata = [];
+                        for(let i = 0; i < msg.Camps.length; i++) {
+                            cdata.push(JSON.parse(msg.Camps[i]))
                         }
 
                         state = md
-                        poas = pdata
+                        camp = cdata
 
                     } else {
                         turn_queue.push(msg.Turn)
@@ -447,13 +426,9 @@
                             }
                         }
 
-                        let pdata = [];
-                        for(let i = 0; i < msg.POAs.length; i++) {
-                            let poa_map = new HashTable();
-                            for(let j = 0;j<msg.POAs[i].length;j++) {
-                                poa_map.putJSON(msg.POAs[i][j], null)
-                            }
-                            pdata.push(poa_map)
+                        let cdata = [];
+                        for(let i = 0; i < msg.Camps.length; i++) {
+                            cdata.push(JSON.parse(msg.Camps[i]))
                         }
 
 
@@ -464,12 +439,12 @@
                             my_int = parseInt(temp_string[1])
                             state = md;
                             animating_state = 0
-                            poas = pdata
+                            camp = cdata
                             setupHoverable()
                         }
 
                         match_data.push(md)
-                        poa_data.push(pdata)
+                        camp_data.push(cdata)
 
                         console.log("atk_data",msg.Atk)
                         if(msg.Atk == null) {
@@ -560,10 +535,9 @@ function setupHoverable() {
         }
     }
 
-    if(poas.length > 0) {
-        let unbundled = Object.keys(poas[my_team].hashes);
-        for(let i = 0; i < unbundled.length; i++) {
-            hoverables.push(JSON.parse(unbundled[i]))
+    if(camp.length > 0) {
+        for(let i = 0; i < camp.length; i++) {
+            hoverables.push(camp[i].XY)
         }
     }
 
@@ -603,10 +577,9 @@ function calculateNextHoverable(direction) {
         }
     }
 
-    if(poas.length > 0) {
-        let unbundled = Object.keys(poas[my_team].hashes);
-        for(let i = 0; i < unbundled.length; i++) {
-            hoverables.push(JSON.parse(unbundled[i]))
+    if(camp.length > 0) {
+        for(let i = 0; i < camp.length; i++) {
+            hoverables.push(camp[i].XY)
         }
     }
 

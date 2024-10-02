@@ -484,35 +484,43 @@ function determineCardinal(x1, x2, y1, y2){
         let x = x2 - x1;
         let y = y2 - y1;
         let absolute_max = Math.max(Math.abs(x), Math.abs(y))
+        let absolute_max_x = absolute_max;
+        let absolute_max_y = absolute_max;
+        if(x<0) {
+            absolute_max_x = -absolute_max
+        }
+        if(y<0) {
+            absolute_max_y = -absolute_max
+        }
 
-        if( (x>=0) && (y>=0) ) { // QUADRANT1
-            if ((x==absolute_max) && (y==absolute_max)) {
+    if( (x>=0) && (y>=0) ) { // QUADRANT1
+            if ((x==absolute_max_x) && (y==absolute_max_y)) {
                 return 'UR'
-            } else if( (x<absolute_max) ) {
+            } else if( (x<absolute_max_x) ) {
                 return 'U'
             } else {
                 return 'R'
             }
         } else if( (x<=0) && (y>=0) ) { // QUADRANT2
-            if ((Math.abs(x)==absolute_max) && (y==absolute_max)) {
+            if ((x==absolute_max_x) && (y==absolute_max_y)) {
                 return 'UL'
-            } else if( (Math.abs(x)<absolute_max) ) {
+            } else if( (x>absolute_max_x) ) {
                 return 'U'
             } else {
                 return 'L'
             }
         } else if( (x<=0) && (y<=0) ) { // QUADRANT3
-            if ((Math.abs(x)==absolute_max) && (Math.abs(y)==absolute_max)) {
+            if ((x==absolute_max_x) && (y==absolute_max_y)) {
                 return 'DL'
-            } else if( (Math.abs(x)<absolute_max) ) {
+            } else if( (x>absolute_max_x) ) {
                 return 'D'
             } else {
                 return 'L'
             }
         } else { // QUADRANT4
-            if ((x==absolute_max) && (Math.abs(y)==absolute_max)) {
+            if ((x==absolute_max_x) && (y==absolute_max_y)) {
                 return 'DR'
-            } else if( (x<absolute_max) ) {
+            } else if( (x<absolute_max_x) ) {
                 return 'D'
             } else {
                 return 'R'

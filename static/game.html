@@ -602,6 +602,7 @@ function calculateNextHoverable(direction) {
         let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
         let dist = getDistance(hoverable, hoverables[i])
 
+        console.log("BEGIN")
         console.log(hoverables[i], cardinal, dist)
 
         if(dist==0){continue;}

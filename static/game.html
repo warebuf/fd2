@@ -112,7 +112,7 @@
 
                     if(state_machine==0) {
                         // if the current hoverable is a unit, continue
-                        if((hoverable.Type == "unit") && (hoverable.I == my_team) && (hoverable.J == my_int) && (state[hoverable.I][hoverable.J][hoverable.K].OnRoute==false)) {
+                        if((hoverable.Type == "unit") && (hoverable.I == my_team) && (hoverable.J == my_int) && (state[hoverable.I][hoverable.J][hoverable.K].Status==0)) {
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();
@@ -310,7 +310,6 @@
 
     var frame_count = 0;
     var state_machine = 0;
-    var even = 0;
     var action_buffer = ""
 
     var hoverable = null;

@@ -277,7 +277,6 @@
 
     // the board state
     var state = []
-    var spawns = [];
     var poas = [];
 
     var h_index = 0
@@ -302,7 +301,6 @@
     // datasets
     var match_data = new Array();
     var atk_data = new Array();
-    var spawn_data = new Array();
     var poa_data = new Array();
 
     var time_queue = []
@@ -419,14 +417,6 @@
                                 }
                             }
                         }
-                        let sdata = [];
-                        for(let i = 0; i < msg.Spawns.length; i++) {
-                            let spawn_map = new HashTable();
-                            for(let j = 0;j<msg.Spawns[i].length;j++) {
-                                spawn_map.putJSON(msg.Spawns[i][j], null)
-                            }
-                            sdata.push(spawn_map)
-                        }
 
                         let pdata = [];
                         for(let i = 0; i < msg.POAs.length; i++) {
@@ -438,7 +428,6 @@
                         }
 
                         state = md
-                        spawns = sdata
                         poas = pdata
 
                     } else {
@@ -458,15 +447,6 @@
                             }
                         }
 
-                        let sdata = [];
-                        for(let i = 0; i < msg.Spawns.length; i++) {
-                            let spawn_map = new HashTable();
-                            for(let j = 0;j<msg.Spawns[i].length;j++) {
-                                spawn_map.putJSON(msg.Spawns[i][j], null)
-                            }
-                            sdata.push(spawn_map)
-                        }
-
                         let pdata = [];
                         for(let i = 0; i < msg.POAs.length; i++) {
                             let poa_map = new HashTable();
@@ -484,13 +464,11 @@
                             my_int = parseInt(temp_string[1])
                             state = md;
                             animating_state = 0
-                            spawns = sdata
                             poas = pdata
                             setupHoverable()
                         }
 
                         match_data.push(md)
-                        spawn_data.push(sdata)
                         poa_data.push(pdata)
 
                         console.log("atk_data",msg.Atk)

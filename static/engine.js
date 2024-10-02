@@ -108,50 +108,21 @@ anime()
 function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
-        let correctRoute = true;
-        for(let i = 0; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0; k < state[i][j].length;k++) {
+        let all_states_correct = true
+        for(let i = 0; i < len(state); i++) {
+            for(let j = 0; j < len(state[i]); j++) {
+                for(let k = 0; k < len(state[i][j]); k++) {
 
-                    if(state[i][j][k].correctRoute != match_data[animating_state][i][j][k].correctRoute) {
+                    if (
+                        (state[i][j][k].State != match_data[animating_state][i][j][k].State) ||
+                        (state[i][j][k].Position != match_data[animating_state][i][j][k].Position) ||
+                        (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD)
+                    ) {
+                        all_states_correct = false;
+                        if(state[i][j][k].Status == 0) { // wait for input
 
-                        if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                            state[i][j][k].correctRoute = match_data[animating_state][i][j][k].correctRoute
-                        } else if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Destination)) {
-                            correctRoute = false
-                            if(attacking_frames_count==0){
-                                attacking_frames_count=1
-                            }
-                        }
+                        } else if(state[i][j][k].Status == 1) {
 
-                    }
-
-                }
-            }
-        }
-
-        let correctDestination = true;
-        if(correctRoute) {
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length;k++) {
-                        if(coordinateEqual(state[i][j][k].Position, state[i][j][k].Homebase)) {
-                            state[i][j][k].Start = state[i][j][k].Position
-                            state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
-                            state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Start, state[i][j][k].Destination)
-                            state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
-                        }
-                    }
-                }
-            }
-        }
-
-        let correctPosition = true;
-        if(correctRoute && correctDestination) {
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length;k++) {
-                        if(coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position) == false) {
                             let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
                             state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                             state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
@@ -160,8 +131,15 @@ function calcPos() {
                             if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
                                 state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                            } else {
-                                correctPosition = false;
+                            }
+
+                        } else if(state[i][j][k].Status == 2) {
+
+                            state[i][j][k].TTD += 0.025
+                            if(state[i][j][k].TTD >= 100) {
+                                if(attacking_frames_count==0){
+                                    attacking_frames_count=1
+                                }
                             }
                         }
                     }
@@ -169,8 +147,7 @@ function calcPos() {
             }
         }
 
-
-        if(correctRoute && correctDestination && correctPosition) {
+        if(all_states_correct) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
@@ -181,11 +158,30 @@ function calcPos() {
             }
             state = JSON.parse(JSON.stringify(match_data[animating_state]))
             camps = camp_data[animating_state]
-
             turn = turn_queue[animating_state]
             animating_state++
         }
     }
+}
+
+function calcTTD() {
+
+}
+
+function drawAttack() {
+
+    if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
+
+        let w = Math.round(c.width/2)
+        let h = Math.round(c.height/2)+250
+
+        let atk_json_obj = JSON.parse(atk_data[animating_state][i]);
+        console.log(atk_json_obj)
+
+        attacking_frames_count++
+        if(attacking_frames_count==60) {attacking_frames_count = 0}
+    }
+
 }
 
 function calcAndDrawAttack() {

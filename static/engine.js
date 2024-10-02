@@ -69,8 +69,8 @@ function anime() {
 
         //drawGrid()
         drawBoard()
-        drawPOAs()
-        drawPOASelect()
+        drawCamps()
+        drawCampSelect()
         calcPos()
         calcAndDrawAttack()
         drawPos()
@@ -180,8 +180,7 @@ function calcPos() {
                 }
             }
             state = JSON.parse(JSON.stringify(match_data[animating_state]))
-            spawns = spawn_data[animating_state]
-            poas = poa_data[animating_state]
+            camps = camp_data[animating_state]
 
             turn = turn_queue[animating_state]
             animating_state++
@@ -426,38 +425,32 @@ function drawPos(){
     }
 }
 
-function drawPOAs() {
+function drawCamps() {
+
+    ctx.fillStyle = "red";
+
     let w = Math.round(c.width/2)-250
     let h = Math.round(c.height/2)+250
 
-    ctx.fillStyle = "red";
-    for(let i = 0; i < poas.length; i++) {
-        for(let key in poas[i].hashes) {
-            let POA = JSON.parse(key)
-            ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5),1,1);
-        }
+    for(let i = 0; i < camps.length; i++) {
+        ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
     }
+
     ctx.fillStyle = "white";
 }
 
-function drawPOASelect() {
+function drawCampSelect() {
     if(state_machine == 1) {
         if(even) {
             let w = Math.round(c.width/2)-250
             let h = Math.round(c.height/2)+250
 
             ctx.fillStyle = "white";
-            for(let i = 0; i < poas.length; i++) {
-                for(let key in poas[i].hashes) {
-                    let POA = JSON.parse(key)
-                    //ctx.fillRect(w+(POA.X*2.5)-1,h-(POA.Y*2.5),3,1);
-                    //ctx.fillRect(w+(POA.X*2.5),h-(POA.Y*2.5)-1,1,3);
-
-                    ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)+5,1,1);
-                    ctx.fillRect(w+(POA.X*2.5)-5,h-(POA.Y*2.5)-5,1,1);
-                    ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)+5,1,1);
-                    ctx.fillRect(w+(POA.X*2.5)+5,h-(POA.Y*2.5)-5,1,1);
-                }
+            for(let i = 0; i < camps.length; i++) {
+                ctx.fillRect(w+(camps[i].XY.X*2.5)-5,h-(camps[i].XY.Y*2.5)+5,1,1);
+                ctx.fillRect(w+(camps[i].XY.X*2.5)-5,h-(camps[i].XY.Y*2.5)-5,1,1);
+                ctx.fillRect(w+(camps[i].XY.X*2.5)+5,h-(camps[i].XY.Y*2.5)+5,1,1);
+                ctx.fillRect(w+(camps[i].XY.X*2.5)+5,h-(camps[i].XY.Y*2.5)-5,1,1);
             }
         }
     }
@@ -549,20 +542,12 @@ function drawPotentialPaths() {
         let w = Math.round(c.width/2)-250
         let h = Math.round(c.height/2)+250
 
-        let potential_poas = []
-        if(poas.length > 0) {
-            let unbundled = Object.keys(poas[my_team].hashes);
-            for(let i = 0; i < unbundled.length; i++) {
-                potential_poas.push(JSON.parse(unbundled[i]))
-            }
-        }
-
         if((selected_hoverable!=null) && (selected_hoverable.Type == "unit") && (selected_hoverable.I == my_team) && (selected_hoverable.J == my_int)) {
-            for(let i = 0; i < potential_poas.length; i++) {
-                if((potential_poas[i].Type == "poa")) {
+            for(let i = 0; i < camps.length; i++) {
+                if(camps[i].H.HP > 0) {
                     let colour = ""
                     ctx.beginPath();
-                    if(coordinateEqual(potential_poas[i],hoverable)) {
+                    if(coordinateEqual(camps[i].XY,hoverable)) {
                         colour = "white";
                     }
                     else {
@@ -570,17 +555,17 @@ function drawPotentialPaths() {
                     }
                     ctx.strokeStyle = colour;
                     ctx.moveTo(w+(selected_hoverable.X*2.5), h-(selected_hoverable.Y*2.5));
-                    ctx.lineTo(w+(potential_poas[i].X*2.5), h-(potential_poas[i].Y*2.5));
+                    ctx.lineTo(w+(camps[i].XY.X*2.5), h-(camps[i].XY.Y*2.5));
                     ctx.stroke();
 
                     // write distance
-                    let dist = getDistance(selected_hoverable, potential_poas[i]).toFixed(1);
-                    let mid = getCenter(selected_hoverable, potential_poas[i]);
+                    let dist = getDistance(selected_hoverable, camps[i].XY).toFixed(1);
+                    let mid = getCenter(selected_hoverable, camps[i].XY);
                     let radians = 0;
-                    if(selected_hoverable.X<=potential_poas[i].X) {
-                        radians = getAngle(selected_hoverable, potential_poas[i])
+                    if(selected_hoverable.X<=camps[i].XY.X) {
+                        radians = getAngle(selected_hoverable, camps[i].XY)
                     } else {
-                        radians = getAngle(potential_poas[i], selected_hoverable)
+                        radians = getAngle(camps[i].XY, selected_hoverable)
                     }
 
                     drawRotated(dist,w+(mid[0]*2.5),h-(mid[1]*2.5),radians, "8", 10, colour);

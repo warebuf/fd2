@@ -277,7 +277,7 @@
 
     // the board state
     var state = []
-    var camp = [];
+    var camps = [];
 
     var h_index = 0
     var l_index = 0
@@ -407,7 +407,7 @@
                         }
 
                         state = md
-                        camp = cdata
+                        camps = cdata
 
                     } else {
                         turn_queue.push(msg.Turn)
@@ -439,7 +439,7 @@
                             my_int = parseInt(temp_string[1])
                             state = md;
                             animating_state = 0
-                            camp = cdata
+                            camps = cdata
                             setupHoverable()
                         }
 
@@ -535,9 +535,9 @@ function setupHoverable() {
         }
     }
 
-    if(camp.length > 0) {
-        for(let i = 0; i < camp.length; i++) {
-            hoverables.push(camp[i].XY)
+    if(camps.length > 0) {
+        for(let i = 0; i < camps.length; i++) {
+            hoverables.push(camps[i].XY)
         }
     }
 
@@ -577,9 +577,9 @@ function calculateNextHoverable(direction) {
         }
     }
 
-    if(camp.length > 0) {
-        for(let i = 0; i < camp.length; i++) {
-            hoverables.push(camp[i].XY)
+    if(camps.length > 0) {
+        for(let i = 0; i < camps.length; i++) {
+            hoverables.push(camps[i].XY)
         }
     }
 

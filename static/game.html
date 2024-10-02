@@ -598,11 +598,12 @@ function calculateNextHoverable(direction) {
     let closestPhantomCoordinate = null; // this handles wrapping
     let closestPhantomDistance = Number.MAX_SAFE_INTEGER;
 
+
+    console.log("BEGIN")
     for(let i = 0; i < hoverables.length; i++) {
         let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
         let dist = getDistance(hoverable, hoverables[i])
 
-        console.log("BEGIN")
         console.log(hoverables[i], cardinal, dist)
 
         if(dist==0){continue;}

@@ -803,6 +803,7 @@ func createMatch(pl *permission_list) *match {
 
 		fmt.Println("created MID:", ans.mid)
 		fmt.Println("%# v", pretty.Formatter(ans.camps))
+		pretty.Print(ans.camps)
 
 		mid_to_match.mutex.Lock()
 		mid_to_match.match[ans.mid] = ans

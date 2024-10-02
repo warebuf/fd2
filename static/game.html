@@ -494,41 +494,45 @@ function determineCardinal(x1, x2, y1, y2){
         }
     console.log("absmax", absolute_max, absolute_max_x, absolute_max_y)
 
-        if( (x>=0) && (y>=0) ) { // QUADRANT1
-            if ((x==absolute_max_x) && (y==absolute_max_y)) {
-                return 'UR'
-            } else if( (x<absolute_max_x) ) {
-                return 'U'
-            } else {
-                return 'R'
-            }
-        } else if( (x<=0) && (y>=0) ) { // QUADRANT2
-            if ((x==absolute_max_x) && (y==absolute_max_y)) {
-                return 'UL'
-            } else if( (x>absolute_max_x) ) {
-                return 'U'
-            } else {
-                return 'L'
-            }
-        } else if( (x<=0) && (y<=0) ) { // QUADRANT3
-            if ((x==absolute_max_x) && (y==absolute_max_y)) {
-                return 'DL'
-            } else if( (x>absolute_max_x) ) {
-                return 'D'
-            } else {
-                return 'L'
-            }
-        } else { // QUADRANT4
-            if ((x==absolute_max_x) && (y==absolute_max_y)) {
-                return 'DR'
-            } else if( (x<absolute_max_x) ) {
-                return 'D'
-            } else {
-                return 'R'
-            }
+    if((x==0) && (y>0)) {return 'U'}
+    else if((x==0) && (y<0)) {return 'D'}
+    else if((x>0) && (y==0)) {return 'R'}
+    else if((x<0) && (y==0)) {return 'L'}
+    if( (x>0) && (y>0) ) { // QUADRANT1
+        if ((x==absolute_max_x) && (y==absolute_max_y)) {
+            return 'UR'
+        } else if( (x<absolute_max_x) ) {
+            return 'U'
+        } else {
+            return 'R'
         }
+    } else if( (x<0) && (y>0) ) { // QUADRANT2
+        if ((x==absolute_max_x) && (y==absolute_max_y)) {
+            return 'UL'
+        } else if( (x>absolute_max_x) ) {
+            return 'U'
+        } else {
+            return 'L'
+        }
+    } else if( (x<0) && (y<0) ) { // QUADRANT3
+        if ((x==absolute_max_x) && (y==absolute_max_y)) {
+            return 'DL'
+        } else if( (x>absolute_max_x) ) {
+            return 'D'
+        } else {
+            return 'L'
+        }
+    } else { // QUADRANT4
+        if ((x==absolute_max_x) && (y==absolute_max_y)) {
+            return 'DR'
+        } else if( (x<absolute_max_x) ) {
+            return 'D'
+        } else {
+            return 'R'
+        }
+    }
 
-        return 'E' // E for error
+    return 'E' // E for error
 }
 
 function setupHoverable() {

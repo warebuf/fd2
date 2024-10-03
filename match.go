@@ -1228,21 +1228,17 @@ func (m *match) run() {
 			// calculate time until damage
 			for i := 0; i < len(m.camps); i++ {
 				if (m.camps[i].HP > 0) && (len(m.camps[i].Units) > 0) {
-					total_dmg := 0.0
 					for j := 0; j < len(m.camps[i].Units); j++ {
 						if m.camps[i].Units[j].HP > 0 {
 							if m.camps[i].Units[j].HP > 0 {
-								total_dmg += float64(m.camps[i].Units[j].ATK)
+								ttd := m.camps[i].Units[j].TTD / float64(m.camps[i].Units[j].ATK)
+								fmt.Println("ttd", ttd, m.camps[i], m.camps[i].Units[j])
+
+								if ttd < min_units {
+									min_units = ttd
+								}
 							}
 						}
-					}
-
-					ttd := float64(m.camps[i].HP) / total_dmg
-
-					fmt.Println("ttd", ttd, m.camps[i], total_dmg)
-
-					if ttd < min_units {
-						min_units = ttd
 					}
 				}
 			}

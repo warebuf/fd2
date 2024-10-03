@@ -1768,10 +1768,10 @@ function drawStartersTable2() {
                     ctx.font = '11px monospace';
                     */
 
-                    ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),3,0 | state[j][k][i].B.SPD/2);
+                    ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].SPD/2) + (i*unit_shift),3,0 | state[j][k][i].SPD/2);
                     ctx.fillText("SPD",x_offset+515+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].B.SPD,x_offset+515+(user_shift*user_count), y_offset - 10 + (i*unit_shift) - (0 | state[j][k][i].B.SPD/2) )
+                    ctx.fillText(state[j][k][i].SPD,x_offset+515+(user_shift*user_count), y_offset - 10 + (i*unit_shift) - (0 | state[j][k][i].SPD/2) )
                     ctx.fillText("B",x_offset+515+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 

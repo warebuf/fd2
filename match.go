@@ -1232,7 +1232,8 @@ func (m *match) run() {
 						if m.camps[i].Units[j].HP > 0 {
 							if m.camps[i].Units[j].HP > 0 {
 								ttd := m.camps[i].Units[j].TTD / float64(m.camps[i].Units[j].ATK)
-								fmt.Println("ttd", ttd, m.camps[i], m.camps[i].Units[j])
+								fmt.Println("ttd", ttd, j, m.camps[i].Units[j].TTD, m.camps[i].Units[j].ATK)
+								pretty.Print(m.camps[i])
 
 								if ttd < min_units {
 									min_units = ttd

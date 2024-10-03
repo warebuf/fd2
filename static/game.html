@@ -667,28 +667,28 @@ function calculateNextHoverable(direction) {
                 if(hoverable.Y > hoverables[i].Y) {
                     if(closestPhantomDistance>hoverables[i].Y-hoverable.Y ) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = phantomDist;
+                        closestPhantomDistance = hoverables[i].Y-hoverable.Y;
                     }
                 }
             } else if(direction==1) {
-                if(hoverable.X < hoverables[i].X) {
-                    if(closestPhantomDistance>hoverables[i].X-hoverable.X ) {
-                        closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = phantomDist;
-                    }
-                }
-            } else if(direction==2) {
                 if(hoverable.X > hoverables[i].X) {
                     if(closestPhantomDistance>hoverable.X-hoverables[i].X ) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = phantomDist;
+                        closestPhantomDistance = hoverable.X-hoverables[i].X;
+                    }
+                }
+            } else if(direction==2) {
+                if(hoverable.X < hoverables[i].X) {
+                    if(closestPhantomDistance>hoverables[i].X-hoverable.X ) {
+                        closestPhantomCoordinate = hoverables[i];
+                        closestPhantomDistance = hoverables[i].X-hoverable.X ;
                     }
                 }
             } else if(direction==3) {
                 if(hoverable.Y < hoverables[i].Y) {
                     if(closestPhantomDistance>hoverable.Y-hoverables[i].Y ) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = phantomDist;
+                        closestPhantomDistance = hoverable.Y-hoverables[i].Y;
                     }
                 }
             }

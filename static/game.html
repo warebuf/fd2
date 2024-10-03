@@ -662,33 +662,39 @@ function calculateNextHoverable(direction) {
             }
         }
 
+
+        // should go for the closest coordinate in the left/right/up/down half
         if((closestCardinalCoordinate == null) && (dist != 0)) {
             if(direction==0) {
                 if(hoverable.Y > hoverables[i].Y) {
-                    if(closestPhantomDistance>hoverables[i].Y-hoverable.Y ) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if(closestPhantomDistance>dist) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = hoverables[i].Y-hoverable.Y;
+                        closestPhantomDistance = dist;
                     }
                 }
             } else if(direction==1) {
                 if(hoverable.X > hoverables[i].X) {
-                    if(closestPhantomDistance>hoverable.X-hoverables[i].X ) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if(closestPhantomDistance>dist) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = hoverable.X-hoverables[i].X;
+                        closestPhantomDistance = dist;
                     }
                 }
             } else if(direction==2) {
                 if(hoverable.X < hoverables[i].X) {
-                    if(closestPhantomDistance>hoverables[i].X-hoverable.X ) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if(closestPhantomDistance>dist) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = hoverables[i].X-hoverable.X ;
+                        closestPhantomDistance = dist;
                     }
                 }
             } else if(direction==3) {
                 if(hoverable.Y < hoverables[i].Y) {
-                    if(closestPhantomDistance>hoverable.Y-hoverables[i].Y ) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if(closestPhantomDistance>dist) {
                         closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = hoverable.Y-hoverables[i].Y;
+                        closestPhantomDistance = dist;
                     }
                 }
             }

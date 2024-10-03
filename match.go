@@ -1254,7 +1254,7 @@ func (m *match) run() {
 				if m.camps[i].HP > 0 {
 					for j := 0; j < len(m.camps[i].Units); j++ {
 						if m.camps[i].Units[j].HP > 0 {
-							m.camps[i].Units[j].TTD -= (min_units * float64(m.camps[i].Units[j].ATK))
+							m.camps[i].Units[j].TTD = m.camps[i].Units[j].TTD - (min_units * float64(m.camps[i].Units[j].ATK))
 							if m.camps[i].Units[j].TTD <= 0.1 {
 								m.camps[i].Units[j].TTD = 0
 

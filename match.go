@@ -1308,7 +1308,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if m.team_client_hero[i][j][k].HP > 0 {
+						if (m.team_client_hero[i][j][k].HP > 0) && (m.team_client_hero[i][j][k].Status == 1) {
 
 							distanceTravelled := min_units * float64(m.team_client_hero[i][j][k].SPD)
 							newDistanceLeft := m.team_client_hero[i][j][k].DistanceLeft - distanceTravelled

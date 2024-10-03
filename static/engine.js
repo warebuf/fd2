@@ -144,37 +144,30 @@ function calcPos() {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
-
-                        if (
-                            (state[i][j][k].Status != match_data[animating_state][i][j][k].Status) ||
-                            (state[i][j][k].Position != match_data[animating_state][i][j][k].Position) ||
-                            (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD)
-                        ) {
-                            if(state[i][j][k].Status == 0) { // wait for input
-                                if(match_data[animating_state][i][j][k].Status==1) {
-                                    state[i][j][k].Status = 1
-                                    state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
-                                    state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
-                                    state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                                }
-                            } else if(state[i][j][k].Status == 1) {
-                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
-                                state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
-                                state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.025)
-
-                                if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
-                                    state[i][j][k].Position = match_data[animating_state][i][j][k].Position
-                                    state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                                }
-                            } else if(state[i][j][k].Status == 2) {
-                                state[i][j][k].TTD += 0.025
-                                if(state[i][j][k].TTD >= 100) {
-                                    if(attacking_frames_count==0){
-                                        attacking_frames_count=1
-                                    }
-                                }
+                        if(state[i][j][k].Status == 0) { // wait for input
+                            if(match_data[animating_state][i][j][k].Status==1) {
+                                state[i][j][k].Status = 1
+                                state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
+                                state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
+                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }
+                        } else if(state[i][j][k].Status == 1) {
+                            let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
+                            state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
+                            state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
+                            state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.025)
+
+                            if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
+                                state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                            }
+                        } else if(state[i][j][k].Status == 2) {
+                            state[i][j][k].TTD += 0.025
+                            if(state[i][j][k].TTD >= 100) {
+                                if(attacking_frames_count==0){
+                                    attacking_frames_count=1
+                                }
+                            } else if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD}
                         }
                     }
                 }

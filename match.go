@@ -1336,9 +1336,12 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
+						}
 
+						if m.team_client_hero[i][j][k].HP > 0 {
 							fmt.Println(i, j, k, m.team_client_hero[i][j][k].SPD, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].DistanceLeft, m.team_client_hero[i][j][k].TTD)
 						}
+
 					}
 				}
 			}

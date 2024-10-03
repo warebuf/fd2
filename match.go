@@ -680,7 +680,6 @@ func createMatch(pl *permission_list) *match {
 					Weight:      rand.Intn(99) + 1,
 				}
 				temp_coordinate := Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
-				temp_destination := Coordinate{X: 100.0, Y: 100.0, Type: "temp", I: -1, J: -1, K: -1}
 				temp := &hero{
 					Bot: j.bot_status,
 
@@ -689,7 +688,7 @@ func createMatch(pl *permission_list) *match {
 					Destination: temp_coordinate,
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
-					Angle:        getTheta(temp_coordinate, temp_destination),
+					Angle:        getTheta(temp_coordinate, temp_coordinate),
 
 					Status: 0,
 

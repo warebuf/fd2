@@ -120,8 +120,12 @@ function calcPos() {
                     ) {
                         all_states_correct = false;
                         if(state[i][j][k].Status == 0) { // wait for input
-
-                            state[i][j][k].Status = match_data[animating_state][i][j][k].Status
+                            
+                            if(match_data[animating_state][i][j][k].Status==1) {
+                                state[i][j][k].Status = 1
+                                state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
+                                state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
+                            }
 
                         } else if(state[i][j][k].Status == 1) {
 

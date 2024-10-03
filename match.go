@@ -209,8 +209,10 @@ func m_read(m *match_socket) {
 				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the hero is alive and at starting position
-					if m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0 &&
-						m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 0 {
+					if (m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0) &&
+						((m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 0) ||
+							(sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start) &&
+								(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 1))) {
 
 						set_route := (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0)
 

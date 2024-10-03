@@ -1321,6 +1321,7 @@ func (m *match) run() {
 								if m.camps[m.team_client_hero[i][j][k].Destination.I].HP > 0 {
 									m.team_client_hero[i][j][k].Status = 2
 									m.team_client_hero[i][j][k].Battle = m.camps[m.team_client_hero[i][j][k].Destination.I]
+									m.team_client_hero[i][j][k].Battle.Units = append(m.team_client_hero[i][j][k].Battle.Units, m.team_client_hero[i][j][k])
 								} else {
 									m.team_client_hero[i][j][k].Status = 0
 									has_user_cmd = true

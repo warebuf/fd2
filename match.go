@@ -1268,8 +1268,8 @@ func (m *match) run() {
 								a.Attacker[1] = m.camps[i].Units[j].Position.J
 								a.Attacker[2] = m.camps[i].Units[j].Position.K
 								atk_list = append(atk_list, a)
-								fmt.Println("simulated TTD", m.camps[i].Units[j].Position.I, m.camps[i].Units[j].Position.J, m.camps[i].Units[j].Position.K)
 							}
+							fmt.Println("simulated TTD", m.camps[i].Units[j].Position.I, m.camps[i].Units[j].Position.J, m.camps[i].Units[j].Position.K)
 						}
 					}
 				}

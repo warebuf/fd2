@@ -220,6 +220,8 @@ func m_read(m *match_socket) {
 							fmt.Printf("this route does not exist")
 						}
 
+						pretty.Print(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index])
+
 						if set_route {
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
@@ -804,7 +806,6 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		fmt.Println("created MID:", ans.mid)
-		pretty.Print(ans.camps)
 
 		mid_to_match.mutex.Lock()
 		mid_to_match.match[ans.mid] = ans
@@ -1711,4 +1712,5 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate) {
 	state[i][j][k].DistanceLeft = getDistanceTwoPoints(state[i][j][k].Start, state[i][j][k].Destination)
 	state[i][j][k].Angle = getTheta(state[i][j][k].Start, state[i][j][k].Destination)
 	state[i][j][k].Status = 1
+
 }

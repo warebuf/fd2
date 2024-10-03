@@ -115,7 +115,7 @@ function calcPos() {
 
                     if (
                         (state[i][j][k].Status != match_data[animating_state][i][j][k].Status) ||
-                        (state[i][j][k].Position != match_data[animating_state][i][j][k].Position) ||
+                        (coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position)==false) ||
                         (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD)
                     ) {
                         all_states_correct = false;
@@ -153,7 +153,7 @@ function calcPos() {
                             }
                         } else if(state[i][j][k].Status == 1) {
                             if(
-                                (state[i][j][k].Destination==match_data[animating_state][i][j][k].Destination) &&
+                                coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
                                 (state[i][j][k].DistanceLeft > match_data[animating_state][i][j][k].DistanceLeft)
                             ) {
                                 let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
@@ -161,7 +161,7 @@ function calcPos() {
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
                                 state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].B.SPD * 0.025)
 
-                                if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
+                                if( (state[i][j][k].DistanceLeft < match_data[animating_state][i][j][k].DistanceLeft) ){
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                     state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                 }

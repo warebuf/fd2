@@ -560,7 +560,7 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		// creating camps
-		random_count := rand.Intn(10)
+		random_count := 5 + rand.Intn(5)
 		for i := 0; i < random_count; i++ {
 			random_x := float64(rand.Intn(10))
 			random_y := float64(rand.Intn(10))

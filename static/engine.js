@@ -121,6 +121,7 @@ function calcPos() {
                         all_states_correct = false;
                         if(state[i][j][k].Status == 0) { // wait for input
 
+                            state[i][j][k].Status = match_data[animating_state][i][j][k].Status
 
                         } else if(state[i][j][k].Status == 1) {
 

@@ -2340,11 +2340,11 @@ function drawHeatMap(){
                 //ctx.fillStyle = 'black';
                 //ctx.fillText(state[i][j][k].B.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.SPD)
+                ctx.fillStyle = calcColour(state[i][j][k].SPD)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.SPD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                ctx.fillText(state[i][j][k].SPD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
 
                 y_shift=y_shift+45;

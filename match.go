@@ -1285,17 +1285,17 @@ func (m *match) run() {
 						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].ATK)
 					}
 
-					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP -= int(atk_power)
-					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].TTD = 100
+					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP -= int(atk_power)
+					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].TTD = 100
 
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP < 0 {
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP = 0
-						for j := 0; j < len(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units); j++ {
-							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units[j].TTD = 100
-							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units[j].Status = 0
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP < 0 {
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[1]].Battle.HP = 0
+						for j := 0; j < len(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units); j++ {
+							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j].TTD = 100
+							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j].Status = 0
 						}
 						has_user_cmd = true
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.Units = nil
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = nil
 					}
 				}
 

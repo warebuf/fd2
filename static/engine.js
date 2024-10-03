@@ -154,7 +154,7 @@ function calcPos() {
                         } else if(state[i][j][k].Status == 1) {
                             if(
                                 (state[i][j][k].Destination==match_data[animating_state][i][j][k].Destination) &&
-                                (state[i][j][k].DistanceLeft >= match_data[animating_state][i][j][k].DistanceLeft)
+                                (state[i][j][k].DistanceLeft > match_data[animating_state][i][j][k].DistanceLeft)
                             ) {
                                 let increment = getXY(state[i][j][k].Angle, state[i][j][k].B.SPD * 0.025)
                                 state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]

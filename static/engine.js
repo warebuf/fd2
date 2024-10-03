@@ -114,12 +114,13 @@ function calcPos() {
                 for(let k = 0; k < state[i][j].length; k++) {
 
                     if (
-                        (state[i][j][k].State != match_data[animating_state][i][j][k].State) ||
+                        (state[i][j][k].Status != match_data[animating_state][i][j][k].Status) ||
                         (state[i][j][k].Position != match_data[animating_state][i][j][k].Position) ||
                         (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD)
                     ) {
                         all_states_correct = false;
                         if(state[i][j][k].Status == 0) { // wait for input
+
 
                         } else if(state[i][j][k].Status == 1) {
 

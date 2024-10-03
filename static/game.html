@@ -614,6 +614,7 @@ function calculateNextHoverable(direction) {
 
         console.log(hoverables[i],cardinal, dist)
 
+        /*
         if(direction == 0) {
             if((cardinal=='U') || (cardinal=='UL') || (cardinal=='UR')){
                 if(
@@ -664,7 +665,44 @@ function calculateNextHoverable(direction) {
             }
         }
 
+         */
 
+        if(direction==0) {
+            if(hoverables[i].Y>hoverable.Y) {
+                let dist = getDistance(hoverable, hoverables[i])
+                if(closestCardinalDistance>dist) {
+                    closestCardinalCoordinate = hoverables[i];
+                    closestCardinalDistance = dist;
+                }
+            }
+        } else if(direction==1) {
+            if(hoverable.X > hoverables[i].X) {
+                let dist = getDistance(hoverable, hoverables[i])
+                if(closestCardinalDistance>dist) {
+                    closestCardinalCoordinate = hoverables[i];
+                    closestCardinalDistance = dist;
+                }
+            }
+        } else if(direction==2) {
+            if(hoverable.X < hoverables[i].X) {
+                let dist = getDistance(hoverable, hoverables[i])
+                if(closestCardinalDistance>dist) {
+                    closestCardinalCoordinate = hoverables[i];
+                    closestCardinalDistance = dist;
+                }
+            }
+        } else if(direction==3) {
+            if(hoverables[i].Y<hoverable.Y) {
+                let dist = getDistance(hoverable, hoverables[i])
+                if(closestCardinalDistance>dist) {
+                    closestCardinalCoordinate = hoverables[i];
+                    closestCardinalDistance = dist;
+                }
+            }
+        }
+
+
+        /*
         // should go for the closest coordinate in the left/right/up/down half
         if((closestCardinalCoordinate == null) && (dist != 0)) {
             if(direction==0) {
@@ -701,6 +739,8 @@ function calculateNextHoverable(direction) {
                 }
             }
         }
+         */
+
 
         if((closestPhantomCoordinate == null) && (dist != 0)) {
             let wrap_x = 0;

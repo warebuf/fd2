@@ -599,73 +599,14 @@ function calculateNextHoverable(direction) {
     let closestCardinalCoordinate = null;
     let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
 
-    let closestPhantomCoordinate = null; // this handles if there is none in the cardinal direction
-    let closestPhantomDistance = Number.MAX_SAFE_INTEGER;
-
     let closestWrapCoordinate = null; // this handles wrapping
     let closestWrapDistance = Number.MAX_SAFE_INTEGER;
 
 
     for(let i = 0; i < hoverables.length; i++) {
-        let cardinal = determineCardinal(hoverable.X, hoverables[i].X, hoverable.Y, hoverables[i].Y);
         let dist = getDistance(hoverable, hoverables[i])
 
         if(dist==0){continue;}
-
-        console.log(hoverables[i],cardinal, dist)
-
-        /*
-        if(direction == 0) {
-            if((cardinal=='U') || (cardinal=='UL') || (cardinal=='UR')){
-                if(
-                    (closestCardinalCoordinate==null) ||
-                    (dist < closestCardinalDistance) ||
-                    ((dist == closestCardinalDistance) && (hoverables[i].X<closestCardinalCoordinate.X)) //take leftmost
-                ) {
-                    closestCardinalCoordinate = hoverables[i]
-                    closestCardinalDistance = dist
-                }
-
-            }
-        }
-        else if(direction==1) {
-            if((cardinal=='L') || (cardinal=='UL') || (cardinal=='DL')){
-                if(
-                    (closestCardinalCoordinate==null) ||
-                    (dist < closestCardinalDistance) ||
-                    ((dist == closestCardinalDistance) && (hoverables[i].Y>closestCardinalCoordinate.Y)) //take upmost
-                ) {
-                    closestCardinalCoordinate = hoverables[i]
-                    closestCardinalDistance = dist
-                }
-            }
-        }
-        else if(direction==2) {
-            if((cardinal=='R') ||(cardinal=='UR') ||(cardinal=='DR')) {
-                if(
-                    (closestCardinalCoordinate==null) ||
-                    (dist < closestCardinalDistance) ||
-                    ((dist == closestCardinalDistance) && (hoverables[i].Y>closestCardinalCoordinate.Y)) //take upmost
-                ) {
-                    closestCardinalCoordinate = hoverables[i]
-                    closestCardinalDistance = dist
-                }
-            }
-        }
-        else if(direction==3) {
-            if((cardinal=='D') ||(cardinal=='DL') ||(cardinal=='DR')) {
-                if(
-                    (closestCardinalCoordinate==null) ||
-                    (dist < closestCardinalDistance) ||
-                    ((dist == closestCardinalDistance) && (hoverables[i].X<closestCardinalCoordinate.X)) //take leftmost
-                ) {
-                    closestCardinalCoordinate = hoverables[i]
-                    closestCardinalDistance = dist
-                }
-            }
-        }
-
-         */
 
         if(direction==0) {
             if(hoverables[i].Y>hoverable.Y) {
@@ -701,48 +642,7 @@ function calculateNextHoverable(direction) {
             }
         }
 
-
-        /*
-        // should go for the closest coordinate in the left/right/up/down half
         if((closestCardinalCoordinate == null) && (dist != 0)) {
-            if(direction==0) {
-                if(hoverables[i].Y>hoverable.Y) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if(closestPhantomDistance>dist) {
-                        closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = dist;
-                    }
-                }
-            } else if(direction==1) {
-                if(hoverable.X > hoverables[i].X) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if(closestPhantomDistance>dist) {
-                        closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = dist;
-                    }
-                }
-            } else if(direction==2) {
-                if(hoverable.X < hoverables[i].X) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if(closestPhantomDistance>dist) {
-                        closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = dist;
-                    }
-                }
-            } else if(direction==3) {
-                if(hoverables[i].Y<hoverable.Y) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if(closestPhantomDistance>dist) {
-                        closestPhantomCoordinate = hoverables[i];
-                        closestPhantomDistance = dist;
-                    }
-                }
-            }
-        }
-         */
-
-
-        if((closestPhantomCoordinate == null) && (dist != 0)) {
             let wrap_x = 0;
             let wrap_y = 0;
             if(direction==0) {

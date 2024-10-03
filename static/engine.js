@@ -539,7 +539,7 @@ function drawPotentialPaths() {
 
         if((selected_hoverable!=null) && (selected_hoverable.Type == "unit") && (selected_hoverable.I == my_team) && (selected_hoverable.J == my_int)) {
             for(let i = 0; i < camps.length; i++) {
-                if(camps[i].H.HP > 0) {
+                if(camps[i].HP > 0) {
                     let colour = ""
                     ctx.beginPath();
                     if(coordinateEqual(camps[i].XY,hoverable)) {

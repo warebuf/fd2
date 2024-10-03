@@ -1232,7 +1232,7 @@ func (m *match) run() {
 						if m.camps[i].Units[j].HP > 0 {
 							if m.camps[i].Units[j].HP > 0 {
 								ttd := m.camps[i].Units[j].TTD / float64(m.camps[i].Units[j].ATK)
-								fmt.Println("ttd", ttd, j, m.camps[i].Units[j].TTD, m.camps[i].Units[j].ATK)
+								fmt.Println("ttd", ttd, i, j, m.camps[i].Units[j].TTD, m.camps[i].Units[j].ATK)
 								fmt.Println(i, m.camps[i].HP)
 
 								if ttd < min_units {
@@ -1278,7 +1278,7 @@ func (m *match) run() {
 			// simulate all attacks
 			for i := 0; i < len(atk_list); i++ {
 				if atk_list[i].Type == "hit" &&
-					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP > 0) {
+					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
 
 					atk_power := 0.0
 					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].HP > 0 {

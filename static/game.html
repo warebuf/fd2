@@ -668,7 +668,7 @@ function calculateNextHoverable(direction) {
         // should go for the closest coordinate in the left/right/up/down half
         if((closestCardinalCoordinate == null) && (dist != 0)) {
             if(direction==0) {
-                if(hoverable.Y > hoverables[i].Y) {
+                if(hoverables[i].Y>hoverable.Y) {
                     let dist = getDistance(hoverable, hoverables[i])
                     if(closestPhantomDistance>dist) {
                         closestPhantomCoordinate = hoverables[i];
@@ -692,7 +692,7 @@ function calculateNextHoverable(direction) {
                     }
                 }
             } else if(direction==3) {
-                if(hoverable.Y < hoverables[i].Y) {
+                if(hoverables[i].Y<hoverable.Y) {
                     let dist = getDistance(hoverable, hoverables[i])
                     if(closestPhantomDistance>dist) {
                         closestPhantomCoordinate = hoverables[i];

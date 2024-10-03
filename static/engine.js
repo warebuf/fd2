@@ -501,8 +501,8 @@ function drawState() {
                 // draw symbol if ready for action
                 if(turn.substring(0,4) == "TURN") {
                     if (
-                        state[i][j][k].H.HP > 0 &&
-                        state[i][j][k].Status == 0
+                        (state[i][j][k].H.HP > 0) &&
+                        (state[i][j][k].Status == 0)
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";

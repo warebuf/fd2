@@ -2152,8 +2152,8 @@ function drawHeatMap(){
                 //ctx.fillText(state[i][j][k].H.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
 
-                y_shift=y_shift+20;
-                x_shift=0;
+                //y_shift=y_shift+20;
+                //x_shift=0;
 
                 //ctx.fillStyle = '#848884';
                 //ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)

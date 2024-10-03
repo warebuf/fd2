@@ -59,8 +59,8 @@ function anime() {
         drawError()
         //drawTable1()
         //drawTable2()
-        drawStartersTable1()
-        drawBenchTable()
+        //drawStartersTable1()
+        //drawBenchTable()
         //drawStartersTable2()
         //drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
@@ -219,6 +219,7 @@ function calcAndDrawAttack() {
 
             let type = atk_json_obj.Type
 
+            /*
             if (type == "hit") {
 
                 let def_i = atk_json_obj.Defender[0][0]
@@ -383,12 +384,13 @@ function calcAndDrawAttack() {
                     ctx.fillStyle = 'green';
                     ctx.fillRect((w-250) + (state[def_i][def_j][def_k].Position.X*2.5)-(max_hp/2),h + (-state[def_i][def_j][def_k].Position.Y*2.5)+15,(bSub)/2,1)
                     ctx.fillStyle = 'white';
-                    
+
                     ctx.font   = "8px monospace";
                     ctx.fillText(carry_atk, (w-250) + (state[def_i][def_j][def_k].Position.X*2.5), h + (-state[def_i][def_j][def_k].Position.Y*2.5)-30 );
                     ctx.font   = "11px monospace";
                 }
             }
+             */
 
             if ( attacking_frames_count==59 ) {
                 event_log.push(atk_data[animating_state][i])
@@ -430,7 +432,7 @@ function drawPos(){
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                if(state[i][j][k].H.HP > 0) {
+                if(state[i][j][k].HP > 0) {
                     drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, "11", 3, "white")
                 }
             }
@@ -484,14 +486,16 @@ function drawState() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                if (state[i][j][k].H.HP > 0) {
+                if (state[i][j][k].HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
                 } else {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0+(space*i), y0-9 + (k*125)+(j*700), 5, 5);
-                if (state[i][j][k].L.HP > 0) {
+
+                /*
+                 if (state[i][j][k].L.HP > 0) {
                     if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
                     else{ctx.fillStyle = 'green';}
 
@@ -514,11 +518,13 @@ function drawState() {
                     ctx.fillStyle = 'red';
                 }
                 ctx.fillRect(x0+(space*i), y0+1 + (k*125)+(j*700), 5, 7);
+                 */
+
 
                 // draw symbol if ready for action
                 if(turn.substring(0,4) == "TURN") {
                     if (
-                        (state[i][j][k].H.HP > 0) &&
+                        (state[i][j][k].HP > 0) &&
                         (state[i][j][k].Status == 0)
                     ) {
                         ctx.fillStyle = 'white'
@@ -601,7 +607,7 @@ function drawPaths() {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
 
-                    if(state[i][j][k].H.HP>0 && state[i][j][k].State == 0) {
+                    if(state[i][j][k].HP>0 && state[i][j][k].State == 0) {
                         ctx.beginPath();
                         ctx.strokeStyle = "grey";
                         ctx.moveTo(w+(state[i][j][k].Start.X*2.5), h-(state[i][j][k].Start.Y*2.5));
@@ -662,6 +668,7 @@ function drawLog() {
     }
 }
 
+/*
 function drawStarters() {
     if((state!=null) && (my_team != -1) && (my_int != -1)) {
 
@@ -907,6 +914,8 @@ function drawStarters() {
         }
     }
 }
+
+ */
 
 function drawSelect() {
 
@@ -1598,71 +1607,72 @@ function drawStartersTable2() {
             for (let k=0;k<(state[j].length);k++) {
                 for (let i=0;i<(state[j][k].length);i++){
 
-                    if(state[j][k][i].H.HP<=0){ctx.fillStyle='grey'}
+                    if(state[j][k][i].HP<=0){ctx.fillStyle='grey'}
                     ctx.textAlign = "center";
-                    ctx.fillRect(x_offset-1-45+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.HP/2) + (i*unit_shift),3,0 | state[j][k][i].H.HP/2);
-                    ctx.fillRect(x_offset-1-30+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.HP/2) + (i*unit_shift),3,0 | state[j][k][i].L.HP/2);
-                    ctx.fillRect(x_offset-1-15+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.HP/2) + (i*unit_shift),3,0 | state[j][k][i].R.HP/2);
-                    ctx.fillRect(x_offset-1-0+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.HP/2) + (i*unit_shift),3,0 | state[j][k][i].B.HP/2);
+                    ctx.fillRect(x_offset-1-45+(user_shift*user_count),y_offset - (0 | state[j][k][i].HP/2) + (i*unit_shift),3,0 | state[j][k][i].HP/2);
+                    //ctx.fillRect(x_offset-1-30+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.HP/2) + (i*unit_shift),3,0 | state[j][k][i].L.HP/2);
+                    //ctx.fillRect(x_offset-1-15+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.HP/2) + (i*unit_shift),3,0 | state[j][k][i].R.HP/2);
+                    //ctx.fillRect(x_offset-1-0+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.HP/2) + (i*unit_shift),3,0 | state[j][k][i].B.HP/2);
                     ctx.fillText("HP",x_offset-22.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.HP,x_offset-45+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.HP/2))
-                    ctx.fillText(state[j][k][i].L.HP,x_offset-30+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.HP/2))
-                    ctx.fillText(state[j][k][i].R.HP,x_offset-15+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.HP/2))
-                    ctx.fillText(state[j][k][i].B.HP,x_offset-0+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.HP/2))
+                    ctx.fillText(state[j][k][i].HP,x_offset-45+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].HP/2))
+                    //ctx.fillText(state[j][k][i].L.HP,x_offset-30+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.HP/2))
+                    //ctx.fillText(state[j][k][i].R.HP,x_offset-15+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.HP/2))
+                    //ctx.fillText(state[j][k][i].B.HP,x_offset-0+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.HP/2))
                     ctx.fillText("H",x_offset-45+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("L",x_offset-30+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("R",x_offset-15+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("B",x_offset-0+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("L",x_offset-30+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("R",x_offset-15+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("B",x_offset-0+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+25+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].H.ATK/2);
-                    ctx.fillRect(x_offset-1+40+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].L.ATK/2);
-                    ctx.fillRect(x_offset-1+55+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].R.ATK/2);
-                    ctx.fillRect(x_offset-1+70+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].B.ATK/2);
-                    ctx.fillText("ATK",x_offset+47.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillRect(x_offset-1+25+(user_shift*user_count),y_offset - (0 | state[j][k][i].ATK/2) + (i*unit_shift),3,0 | state[j][k][i].ATK/2);
+                    //ctx.fillRect(x_offset-1+40+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].L.ATK/2);
+                    //ctx.fillRect(x_offset-1+55+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].R.ATK/2);
+                    //ctx.fillRect(x_offset-1+70+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ATK/2) + (i*unit_shift),3,0 | state[j][k][i].B.ATK/2);
+                    //ctx.fillText("ATK",x_offset+47.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.ATK,x_offset+25+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.ATK/2))
-                    ctx.fillText(state[j][k][i].L.ATK,x_offset+40+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.ATK/2))
-                    ctx.fillText(state[j][k][i].R.ATK,x_offset+55+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.ATK/2))
-                    ctx.fillText(state[j][k][i].B.ATK,x_offset+70+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.ATK/2))
+                    ctx.fillText(state[j][k][i].ATK,x_offset+25+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].ATK/2))
+                    //ctx.fillText(state[j][k][i].L.ATK,x_offset+40+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.ATK/2))
+                    //ctx.fillText(state[j][k][i].R.ATK,x_offset+55+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.ATK/2))
+                    //ctx.fillText(state[j][k][i].B.ATK,x_offset+70+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.ATK/2))
                     ctx.fillText("H",x_offset+25+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("L",x_offset+40+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("R",x_offset+55+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("B",x_offset+70+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("L",x_offset+40+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("R",x_offset+55+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("B",x_offset+70+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+95+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].H.DEF/2);
-                    ctx.fillRect(x_offset-1+110+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].L.DEF/2);
-                    ctx.fillRect(x_offset-1+125+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].R.DEF/2);
-                    ctx.fillRect(x_offset-1+140+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].B.DEF/2);
-                    ctx.fillText("DEF",x_offset+117.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    ctx.fillRect(x_offset-1+95+(user_shift*user_count),y_offset - (0 | state[j][k][i].DEF/2) + (i*unit_shift),3,0 | state[j][k][i].DEF/2);
+                    //ctx.fillRect(x_offset-1+110+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].L.DEF/2);
+                    //ctx.fillRect(x_offset-1+125+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].R.DEF/2);
+                    //ctx.fillRect(x_offset-1+140+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DEF/2) + (i*unit_shift),3,0 | state[j][k][i].B.DEF/2);
+                    //ctx.fillText("DEF",x_offset+117.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
                     ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.DEF,x_offset+95+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.DEF/2))
-                    ctx.fillText(state[j][k][i].L.DEF,x_offset+110+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.DEF/2))
-                    ctx.fillText(state[j][k][i].R.DEF,x_offset+125+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.DEF/2))
-                    ctx.fillText(state[j][k][i].B.DEF,x_offset+140+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.DEF/2))
+                    ctx.fillText(state[j][k][i].DEF,x_offset+95+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].DEF/2))
+                    //ctx.fillText(state[j][k][i].L.DEF,x_offset+110+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.DEF/2))
+                    //ctx.fillText(state[j][k][i].R.DEF,x_offset+125+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.DEF/2))
+                    //ctx.fillText(state[j][k][i].B.DEF,x_offset+140+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.DEF/2))
                     ctx.fillText("H",x_offset+95+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("L",x_offset+110+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("R",x_offset+125+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("B",x_offset+140+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("L",x_offset+110+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("R",x_offset+125+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("B",x_offset+140+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].H.ACC/2);
-                    ctx.fillRect(x_offset-1+180+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].L.ACC/2);
-                    ctx.fillRect(x_offset-1+195+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].R.ACC/2);
-                    ctx.fillRect(x_offset-1+210+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].B.ACC/2);
-                    ctx.fillText("ACC",x_offset+187.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
-                    ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].H.ACC,x_offset+165+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.ACC/2))
-                    ctx.fillText(state[j][k][i].L.ACC,x_offset+180+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.ACC/2))
-                    ctx.fillText(state[j][k][i].R.ACC,x_offset+195+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.ACC/2))
-                    ctx.fillText(state[j][k][i].B.ACC,x_offset+210+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.ACC/2))
-                    ctx.fillText("H",x_offset+165+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("L",x_offset+180+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("R",x_offset+195+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.fillText("B",x_offset+210+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.font = '11px monospace';
+                    /*
+                    //ctx.fillRect(x_offset-1+165+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].H.ACC/2);
+                    //ctx.fillRect(x_offset-1+180+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].L.ACC/2);
+                    //ctx.fillRect(x_offset-1+195+(user_shift*user_count),y_offset - (0 | state[j][k][i].R.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].R.ACC/2);
+                    //ctx.fillRect(x_offset-1+210+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.ACC/2) + (i*unit_shift),3,0 | state[j][k][i].B.ACC/2);
+                    //ctx.fillText("ACC",x_offset+187.5+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    //ctx.font = '9px monospace';
+                    //ctx.fillText(state[j][k][i].H.ACC,x_offset+165+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].H.ACC/2))
+                    //ctx.fillText(state[j][k][i].L.ACC,x_offset+180+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].L.ACC/2))
+                    //ctx.fillText(state[j][k][i].R.ACC,x_offset+195+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].R.ACC/2))
+                    //ctx.fillText(state[j][k][i].B.ACC,x_offset+210+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.ACC/2))
+                    //ctx.fillText("H",x_offset+165+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("L",x_offset+180+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("R",x_offset+195+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.fillText("B",x_offset+210+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.font = '11px monospace';
 
                     ctx.fillRect(x_offset-1+235+(user_shift*user_count),y_offset - (0 | state[j][k][i].H.CRT/2) + (i*unit_shift),3,0 | state[j][k][i].H.CRT/2);
                     ctx.fillRect(x_offset-1+250+(user_shift*user_count),y_offset - (0 | state[j][k][i].L.CRT/2) + (i*unit_shift),3,0 | state[j][k][i].L.CRT/2);
@@ -1756,7 +1766,7 @@ function drawStartersTable2() {
                         ctx.fillText(state[j][k][i].B.Weight,x_offset+490+(user_shift*user_count), y_offset-10 + (i*unit_shift) - (0 | state[j][k][i].B.Weight/2) )
                     }
                     ctx.font = '11px monospace';
-
+                    */
 
                     ctx.fillRect(x_offset-1+515+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.SPD/2) + (i*unit_shift),3,0 | state[j][k][i].B.SPD/2);
                     ctx.fillText("SPD",x_offset+515+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
@@ -1765,12 +1775,12 @@ function drawStartersTable2() {
                     ctx.fillText("B",x_offset+515+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
                     ctx.font = '11px monospace';
 
-                    ctx.fillRect(x_offset-1+540+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),3,0 | state[j][k][i].B.DOG/2);
-                    ctx.fillText("DOG",x_offset+540+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
-                    ctx.font = '9px monospace';
-                    ctx.fillText(state[j][k][i].B.DOG,x_offset+540+(user_shift*user_count), y_offset - 10 + (i*unit_shift) - (0 | state[j][k][i].B.DOG/2) )
-                    ctx.fillText("B",x_offset+540+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
-                    ctx.font = '11px monospace';
+                    //ctx.fillRect(x_offset-1+540+(user_shift*user_count),y_offset - (0 | state[j][k][i].B.DOG/2) + (i*unit_shift),3,0 | state[j][k][i].B.DOG/2);
+                    //ctx.fillText("DOG",x_offset+540+(user_shift*user_count), y_offset+25 + (i*unit_shift) )
+                    //ctx.font = '9px monospace';
+                    //ctx.fillText(state[j][k][i].B.DOG,x_offset+540+(user_shift*user_count), y_offset - 10 + (i*unit_shift) - (0 | state[j][k][i].B.DOG/2) )
+                    //ctx.fillText("B",x_offset+540+(user_shift*user_count), y_offset+10 + (i*unit_shift) )
+                    //ctx.font = '11px monospace';
 
                     /*
                     // write part desc
@@ -2044,11 +2054,11 @@ function drawHeatMap(){
                 //ctx.fillStyle = 'white';
                 //ctx.fillText("DOG",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("WGT",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("WGT",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
                 ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
@@ -2082,22 +2092,22 @@ function drawHeatMap(){
                 y_shift = y_shift+20;
 
 
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("H",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("H",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
 
-                ctx.fillStyle = calcColour(state[i][j][k].H.HP)
+                ctx.fillStyle = calcColour(state[i][j][k].HP)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                ctx.fillText(state[i][j][k].HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25
-                ctx.fillStyle = calcColour(state[i][j][k].H.DEF)
+                ctx.fillStyle = calcColour(state[i][j][k].DEF)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                ctx.fillText(state[i][j][k].DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
@@ -2105,17 +2115,17 @@ function drawHeatMap(){
                 //ctx.fillStyle = 'black';
                 //ctx.fillText(state[i][j][k].H.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.Weight)
+                //ctx.fillStyle = calcColour(state[i][j][k].H.Weight)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                ctx.fillStyle = calcColour(state[i][j][k].ATK)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].H.ATK)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].H.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                ctx.fillText(state[i][j][k].ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].H.ACC)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
@@ -2145,41 +2155,41 @@ function drawHeatMap(){
                 y_shift=y_shift+20;
                 x_shift=0;
 
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("L",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("L",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
 
-                ctx.fillStyle = calcColour(state[i][j][k].L.HP)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
-                ctx.fillStyle = calcColour(state[i][j][k].L.DEF)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.HP)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
+                //ctx.fillStyle = calcColour(state[i][j][k].L.DEF)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].L.DOG)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 //ctx.font = '10px monospace';
                 //ctx.fillStyle = 'black';
                 //ctx.fillText(state[i][j][k].L.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.Weight)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].L.ATK)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].L.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.Weight)
+                // ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].L.ATK)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].L.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].L.ACC)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 //ctx.font = '10px monospace';
@@ -2205,44 +2215,44 @@ function drawHeatMap(){
                 //ctx.fillText(state[i][j][k].L.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
 
-                y_shift=y_shift+20;
-                x_shift=0;
+                //y_shift=y_shift+20;
+                //x_shift=0;
 
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("R",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("R",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
 
-                ctx.fillStyle = calcColour(state[i][j][k].R.HP)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
-                ctx.fillStyle = calcColour(state[i][j][k].R.DEF)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.HP)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
+                //ctx.fillStyle = calcColour(state[i][j][k].R.DEF)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].R.DOG)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 //ctx.font = '10px monospace';
                 //ctx.fillStyle = 'black';
                 //ctx.fillText(state[i][j][k].R.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.Weight)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].R.ATK)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].R.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.Weight)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].R.ATK)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].R.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].R.ACC)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 //ctx.font = '10px monospace';
@@ -2268,44 +2278,44 @@ function drawHeatMap(){
                 //ctx.fillText(state[i][j][k].R.CLU,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
 
-                y_shift=y_shift+20;
-                x_shift=0;
+                //y_shift=y_shift+20;
+                //x_shift=0;
 
-                ctx.fillStyle = '#848884';
-                ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
-                ctx.fillStyle = 'white';
-                ctx.fillText("B",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
+                //ctx.fillStyle = '#848884';
+                //ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
+                //ctx.fillStyle = 'white';
+                //ctx.fillText("B",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
 
-                ctx.fillStyle = calcColour(state[i][j][k].B.HP)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25
-                ctx.fillStyle = calcColour(state[i][j][k].B.DEF)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.HP)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25
+                //ctx.fillStyle = calcColour(state[i][j][k].B.DEF)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].B.DOG)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 //ctx.font = '10px monospace';
                 //ctx.fillStyle = 'black';
                 //ctx.fillText(state[i][j][k].B.DOG,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 //x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.Weight)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
-                ctx.fillStyle = calcColour(state[i][j][k].B.ATK)
-                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
-                ctx.font = '10px monospace';
-                ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].B.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.Weight)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.Weight,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
+                //ctx.fillStyle = calcColour(state[i][j][k].B.ATK)
+                //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                //ctx.font = '10px monospace';
+                //ctx.fillStyle = 'black';
+                //ctx.fillText(state[i][j][k].B.ATK,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                //x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].B.ACC)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 //ctx.font = '10px monospace';

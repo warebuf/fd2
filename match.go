@@ -7,8 +7,6 @@ import (
 	"github.com/gorilla/websocket"
 	"github.com/kr/pretty"
 	"math"
-	"strings"
-
 	"math/rand"
 	"strconv"
 	"sync"
@@ -33,15 +31,21 @@ type hero struct {
 
 	Status int // 0 = requires destination, 1 = in route, 2 = attacking something
 
-	H part
-	L part
-	R part
-	B part
+	//H part
+	//L part
+	//R part
+	//B part
+
+	HP  int
+	ATK int
+	DEF int
+	SPD int
 
 	Battle *Camp
 	TTD    float64
 }
 
+/*
 type part struct {
 	SECTION int // 0 is H, 1 is L, 2 is R, 3 is B
 	SERIAL  int
@@ -64,6 +68,7 @@ type part struct {
 
 	SPD int
 }
+*/
 
 type attack struct {
 	Attacker []int      //i,j,k
@@ -98,7 +103,7 @@ type match struct {
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
 
-	bench map[string][]*part // team, user index to part
+	//bench map[string][]*part // team, user index to part
 
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^
@@ -209,7 +214,7 @@ func m_read(m *match_socket) {
 				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the hero is alive and at starting position
-					if (m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].H.HP > 0) &&
+					if (m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].HP > 0) &&
 						((m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 0) ||
 							(sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start) &&
 								(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 1))) {
@@ -232,7 +237,7 @@ func m_read(m *match_socket) {
 									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
 										if (m.m.team_client_hero[i][j][k].Bot == false) &&
 											(m.m.team_client_hero[i][j][k].Status == 0) &&
-											(m.m.team_client_hero[i][j][k].H.HP > 0) {
+											(m.m.team_client_hero[i][j][k].HP > 0) {
 											sim_check = false
 											break
 										}
@@ -308,166 +313,167 @@ func m_read(m *match_socket) {
 					m.m.start_ticker <- true
 				}
 			} else if msg.Event == "swapRequest" {
-				fmt.Println("recieved swapRequest")
-				indices := strings.Split(msg.Message, `;`)
-				if indices[1] == indices[4] {
-					if indices[1] == "0" { //head
-						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].H = m.m.team_client_hero[team_index][player_index][unit_index_2].H
-							m.m.team_client_hero[team_index][player_index][unit_index_2].H = temp
-						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H // same as b
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = &temp
+				/*
+					fmt.Println("recieved swapRequest")
+						indices := strings.Split(msg.Message, `;`)
+						if indices[1] == indices[4] {
+							if indices[1] == "0" { //head
+								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].H = m.m.team_client_hero[team_index][player_index][unit_index_2].H
+									m.m.team_client_hero[team_index][player_index][unit_index_2].H = temp
+								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H // same as b
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = &temp
 
-						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].H
-							m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.bench[tp_index][unit_index_1]
-							m.m.bench[tp_index][unit_index_1] = &temp
+								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].H
+									m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.bench[tp_index][unit_index_1]
+									m.m.bench[tp_index][unit_index_1] = &temp
 
-						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.bench[tp_index][unit_index_1]
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = temp
+								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.bench[tp_index][unit_index_1]
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = temp
+								}
+
+							} else if indices[1] == "1" { //larm
+								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].L = m.m.team_client_hero[team_index][player_index][unit_index_2].L
+									m.m.team_client_hero[team_index][player_index][unit_index_2].L = temp
+								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L // same as b
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].L = *m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = &temp
+
+								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].L
+									m.m.team_client_hero[team_index][player_index][unit_index_2].L = *m.m.bench[tp_index][unit_index_1]
+									m.m.bench[tp_index][unit_index_1] = &temp
+
+								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.bench[tp_index][unit_index_1]
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = temp
+								}
+							} else if indices[1] == "2" { //rarm
+								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].R = m.m.team_client_hero[team_index][player_index][unit_index_2].R
+									m.m.team_client_hero[team_index][player_index][unit_index_2].R = temp
+								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R // same as b
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].R = *m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = &temp
+
+								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].R
+									m.m.team_client_hero[team_index][player_index][unit_index_2].R = *m.m.bench[tp_index][unit_index_1]
+									m.m.bench[tp_index][unit_index_1] = &temp
+
+								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.bench[tp_index][unit_index_1]
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = temp
+								}
+							} else if indices[1] == "3" { //bottom
+								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].B = m.m.team_client_hero[team_index][player_index][unit_index_2].B
+									m.m.team_client_hero[team_index][player_index][unit_index_2].B = temp
+								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B // same as b
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.team_client_hero[team_index][player_index][unit_index_1].B = *m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = &temp
+
+								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									team_index := m.m.uuid_to_team_int[m.u.uid].a
+									player_index := m.m.uuid_to_team_int[m.u.uid].b
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].B
+									m.m.team_client_hero[team_index][player_index][unit_index_2].B = *m.m.bench[tp_index][unit_index_1]
+									m.m.bench[tp_index][unit_index_1] = &temp
+
+								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
+									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
+									unit_index_1, _ := strconv.Atoi(indices[2])
+									temp := m.m.bench[tp_index][unit_index_1]
+									unit_index_2, _ := strconv.Atoi(indices[5])
+									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
+									m.m.bench[tp_index][unit_index_2] = temp
+								}
+							}
+
+							// send updated bench, send updated starters
+							m.m.sharebench()
+							m.m.sharepos(nil, 0)
+
 						}
-
-					} else if indices[1] == "1" { //larm
-						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].L = m.m.team_client_hero[team_index][player_index][unit_index_2].L
-							m.m.team_client_hero[team_index][player_index][unit_index_2].L = temp
-						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L // same as b
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].L = *m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = &temp
-
-						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].L
-							m.m.team_client_hero[team_index][player_index][unit_index_2].L = *m.m.bench[tp_index][unit_index_1]
-							m.m.bench[tp_index][unit_index_1] = &temp
-
-						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.bench[tp_index][unit_index_1]
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = temp
-						}
-					} else if indices[1] == "2" { //rarm
-						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].R = m.m.team_client_hero[team_index][player_index][unit_index_2].R
-							m.m.team_client_hero[team_index][player_index][unit_index_2].R = temp
-						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R // same as b
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].R = *m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = &temp
-
-						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].R
-							m.m.team_client_hero[team_index][player_index][unit_index_2].R = *m.m.bench[tp_index][unit_index_1]
-							m.m.bench[tp_index][unit_index_1] = &temp
-
-						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.bench[tp_index][unit_index_1]
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = temp
-						}
-					} else if indices[1] == "3" { //bottom
-						if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].B = m.m.team_client_hero[team_index][player_index][unit_index_2].B
-							m.m.team_client_hero[team_index][player_index][unit_index_2].B = temp
-						} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B // same as b
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.team_client_hero[team_index][player_index][unit_index_1].B = *m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = &temp
-
-						} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							team_index := m.m.uuid_to_team_int[m.u.uid].a
-							player_index := m.m.uuid_to_team_int[m.u.uid].b
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							temp := m.m.team_client_hero[team_index][player_index][unit_index_2].B
-							m.m.team_client_hero[team_index][player_index][unit_index_2].B = *m.m.bench[tp_index][unit_index_1]
-							m.m.bench[tp_index][unit_index_1] = &temp
-
-						} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-							tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-							unit_index_1, _ := strconv.Atoi(indices[2])
-							temp := m.m.bench[tp_index][unit_index_1]
-							unit_index_2, _ := strconv.Atoi(indices[5])
-							m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-							m.m.bench[tp_index][unit_index_2] = temp
-						}
-					}
-
-					// send updated bench, send updated starters
-					m.m.sharebench()
-					m.m.sharepos(nil, 0)
-
-				}
-
+				*/
 			} else if msg.Event == "resign" {
 
 				m.m.ended = true
@@ -547,7 +553,7 @@ func createMatch(pl *permission_list) *match {
 			turn:         "null",
 			start_ticker: make(chan bool),
 
-			bench: make(map[string][]*part),
+			//bench: make(map[string][]*part),
 
 			char_sel_done:   make(map[uuid.UUID]bool),
 			char_sel_ticker: make(chan bool),
@@ -594,93 +600,98 @@ func createMatch(pl *permission_list) *match {
 			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)} // assigning a pair of ints (team, pos in team) to each client
 			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))
 
-			namesh := []string{
-				"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER", "RAINMAN",
-				"CARMACK", "CAGED", "JINZO", "LOADED GUN CONJECTURE",
-			}
-			namesl := []string{
-				"TERRACOTTA PINCER", "LEFT HAND FREE", "ULTRA MIAMI BLASTER", "LEFT HOOK", "ONE INCH PUNCH", "DEATH BEAM",
-				"ONE EDGE BLADE", "QUICKSHOT", "24 INCH PYTHON", "SIMULATED WAR",
-			}
-			namesr := []string{
-				"SUPER SWORD", "DEATHBLADE", "ONE HIT KILL", "CARNAGE", "WESTERN LIGHT", "EAST BEAST", "ECOLOGICAL DISASTER",
-				"NUCLEAR UPPERCUT", "LONG BOMB", "GUINSOO", "GARTNER HYPE CYCLE",
-			}
-			namesb := []string{
-				"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",
-				"SOUND OF THE RAIN", "HOG WILD", "CAT TAIL", "HELLKICK", "YEAR ZERO",
-			}
+			/*
+				namesh := []string{
+						"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER", "RAINMAN",
+						"CARMACK", "CAGED", "JINZO", "LOADED GUN CONJECTURE",
+					}
+					namesl := []string{
+						"TERRACOTTA PINCER", "LEFT HAND FREE", "ULTRA MIAMI BLASTER", "LEFT HOOK", "ONE INCH PUNCH", "DEATH BEAM",
+						"ONE EDGE BLADE", "QUICKSHOT", "24 INCH PYTHON", "SIMULATED WAR",
+					}
+					namesr := []string{
+						"SUPER SWORD", "DEATHBLADE", "ONE HIT KILL", "CARNAGE", "WESTERN LIGHT", "EAST BEAST", "ECOLOGICAL DISASTER",
+						"NUCLEAR UPPERCUT", "LONG BOMB", "GUINSOO", "GARTNER HYPE CYCLE",
+					}
+					namesb := []string{
+						"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",
+						"SOUND OF THE RAIN", "HOG WILD", "CAT TAIL", "HELLKICK", "YEAR ZERO",
+					}
+			*/
 
 			for y := 0; y < 5; y++ {
-				temph := rand.Intn(len(namesh))
-				templ := rand.Intn(len(namesl))
-				tempr := rand.Intn(len(namesr))
-				tempb := rand.Intn(len(namesb))
-				h := part{
-					SECTION:     0,
-					SERIAL:      temph,
-					NAME:        namesh[temph],
-					HP:          rand.Intn(99) + 1,
-					DOG:         rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
-				larm := part{
-					SECTION:     1,
-					SERIAL:      templ,
-					NAME:        namesl[templ],
-					HP:          rand.Intn(99) + 1,
-					DOG:         rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
-				rarm := part{
-					SECTION:     2,
-					SERIAL:      templ,
-					NAME:        namesr[tempr],
-					HP:          rand.Intn(99) + 1,
-					DOG:         rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
-				btm := part{
-					SECTION:     3,
-					SERIAL:      tempb,
-					NAME:        namesb[tempb],
-					HP:          rand.Intn(99) + 1,
-					ATK:         rand.Intn(99) + 1,
-					DEF:         rand.Intn(99) + 1,
-					ACC:         rand.Intn(99) + 1,
-					CRT:         rand.Intn(99) + 1,
-					CD:          rand.Intn(99) + 1,
-					CLU:         rand.Intn(99) + 1,
-					SPD:         rand.Intn(99) + 1,
-					DOG:         rand.Intn(99) + 1,
-					Use_current: 0,
-					Use_outof:   0,
-					Weight:      rand.Intn(99) + 1,
-				}
+				/*
+					temph := rand.Intn(len(namesh))
+						templ := rand.Intn(len(namesl))
+						tempr := rand.Intn(len(namesr))
+						tempb := rand.Intn(len(namesb))
+						h := part{
+							SECTION:     0,
+							SERIAL:      temph,
+							NAME:        namesh[temph],
+							HP:          rand.Intn(99) + 1,
+							DOG:         rand.Intn(99) + 1,
+							ATK:         rand.Intn(99) + 1,
+							DEF:         rand.Intn(99) + 1,
+							ACC:         rand.Intn(99) + 1,
+							CRT:         rand.Intn(99) + 1,
+							CD:          rand.Intn(99) + 1,
+							CLU:         rand.Intn(99) + 1,
+							Use_current: 0,
+							Use_outof:   0,
+							Weight:      rand.Intn(99) + 1,
+						}
+						larm := part{
+							SECTION:     1,
+							SERIAL:      templ,
+							NAME:        namesl[templ],
+							HP:          rand.Intn(99) + 1,
+							DOG:         rand.Intn(99) + 1,
+							ATK:         rand.Intn(99) + 1,
+							DEF:         rand.Intn(99) + 1,
+							ACC:         rand.Intn(99) + 1,
+							CRT:         rand.Intn(99) + 1,
+							CD:          rand.Intn(99) + 1,
+							CLU:         rand.Intn(99) + 1,
+							Use_current: 0,
+							Use_outof:   0,
+							Weight:      rand.Intn(99) + 1,
+						}
+						rarm := part{
+							SECTION:     2,
+							SERIAL:      templ,
+							NAME:        namesr[tempr],
+							HP:          rand.Intn(99) + 1,
+							DOG:         rand.Intn(99) + 1,
+							ATK:         rand.Intn(99) + 1,
+							DEF:         rand.Intn(99) + 1,
+							ACC:         rand.Intn(99) + 1,
+							CRT:         rand.Intn(99) + 1,
+							CD:          rand.Intn(99) + 1,
+							CLU:         rand.Intn(99) + 1,
+							Use_current: 0,
+							Use_outof:   0,
+							Weight:      rand.Intn(99) + 1,
+						}
+						btm := part{
+							SECTION:     3,
+							SERIAL:      tempb,
+							NAME:        namesb[tempb],
+							HP:          rand.Intn(99) + 1,
+							ATK:         rand.Intn(99) + 1,
+							DEF:         rand.Intn(99) + 1,
+							ACC:         rand.Intn(99) + 1,
+							CRT:         rand.Intn(99) + 1,
+							CD:          rand.Intn(99) + 1,
+							CLU:         rand.Intn(99) + 1,
+							SPD:         rand.Intn(99) + 1,
+							DOG:         rand.Intn(99) + 1,
+							Use_current: 0,
+							Use_outof:   0,
+							Weight:      rand.Intn(99) + 1,
+						}
+				*/
+
 				temp_coordinate := Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot: j.bot_status,
@@ -694,10 +705,15 @@ func createMatch(pl *permission_list) *match {
 
 					Status: 0,
 
-					H: h,
-					L: larm,
-					R: rarm,
-					B: btm,
+					//H: h,
+					//L: larm,
+					//R: rarm,
+					//B: btm,
+
+					HP:  rand.Intn(100) + 1,
+					ATK: rand.Intn(100) + 1,
+					DEF: rand.Intn(100) + 1,
+					SPD: rand.Intn(100) + 1,
 
 					Battle: nil,
 					TTD:    1.0,
@@ -705,89 +721,91 @@ func createMatch(pl *permission_list) *match {
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
-			ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
+			//ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
 
-			for y := 0; y < 5; y++ {
-				pick := rand.Intn(4)
-				if pick == 0 {
-					temp := rand.Intn(len(namesh))
-					p := &part{
-						SECTION:     0,
-						SERIAL:      temp,
-						NAME:        namesh[temp],
-						HP:          rand.Intn(99) + 1,
-						DOG:         rand.Intn(99) + 1,
-						ATK:         rand.Intn(99) + 1,
-						DEF:         rand.Intn(99) + 1,
-						ACC:         rand.Intn(99) + 1,
-						CRT:         rand.Intn(99) + 1,
-						CD:          rand.Intn(99) + 1,
-						CLU:         rand.Intn(99) + 1,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      rand.Intn(99) + 1,
+			/*
+				for y := 0; y < 5; y++ {
+						pick := rand.Intn(4)
+						if pick == 0 {
+							temp := rand.Intn(len(namesh))
+							p := &part{
+								SECTION:     0,
+								SERIAL:      temp,
+								NAME:        namesh[temp],
+								HP:          rand.Intn(99) + 1,
+								DOG:         rand.Intn(99) + 1,
+								ATK:         rand.Intn(99) + 1,
+								DEF:         rand.Intn(99) + 1,
+								ACC:         rand.Intn(99) + 1,
+								CRT:         rand.Intn(99) + 1,
+								CD:          rand.Intn(99) + 1,
+								CLU:         rand.Intn(99) + 1,
+								Use_current: 0,
+								Use_outof:   0,
+								Weight:      rand.Intn(99) + 1,
+							}
+							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+						} else if pick == 1 {
+							temp := rand.Intn(len(namesl))
+							p := &part{
+								SECTION:     1,
+								SERIAL:      temp,
+								NAME:        namesl[temp],
+								HP:          rand.Intn(99) + 1,
+								DOG:         rand.Intn(99) + 1,
+								ATK:         rand.Intn(99) + 1,
+								DEF:         rand.Intn(99) + 1,
+								ACC:         rand.Intn(99) + 1,
+								CRT:         rand.Intn(99) + 1,
+								CD:          rand.Intn(99) + 1,
+								CLU:         rand.Intn(99) + 1,
+								Use_current: 0,
+								Use_outof:   0,
+								Weight:      rand.Intn(99) + 1,
+							}
+							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+						} else if pick == 2 {
+							temp := rand.Intn(len(namesr))
+							p := &part{
+								SECTION:     2,
+								SERIAL:      temp,
+								NAME:        namesr[temp],
+								HP:          rand.Intn(99) + 1,
+								DOG:         rand.Intn(99) + 1,
+								ATK:         rand.Intn(99) + 1,
+								DEF:         rand.Intn(99) + 1,
+								ACC:         rand.Intn(99) + 1,
+								CRT:         rand.Intn(99) + 1,
+								CD:          rand.Intn(99) + 1,
+								CLU:         rand.Intn(99) + 1,
+								Use_current: 0,
+								Use_outof:   0,
+								Weight:      rand.Intn(99) + 1,
+							}
+							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+						} else {
+							temp := rand.Intn(len(namesb))
+							p := &part{
+								SECTION:     3,
+								SERIAL:      temp,
+								NAME:        namesb[temp],
+								HP:          rand.Intn(99) + 1,
+								ATK:         rand.Intn(99) + 1,
+								DEF:         rand.Intn(99) + 1,
+								ACC:         rand.Intn(99) + 1,
+								CRT:         rand.Intn(99) + 1,
+								CD:          rand.Intn(99) + 1,
+								CLU:         rand.Intn(99) + 1,
+								SPD:         rand.Intn(99) + 1,
+								DOG:         rand.Intn(99) + 1,
+								Use_current: 0,
+								Use_outof:   0,
+								Weight:      rand.Intn(99) + 1,
+							}
+							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
+						}
 					}
-					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-				} else if pick == 1 {
-					temp := rand.Intn(len(namesl))
-					p := &part{
-						SECTION:     1,
-						SERIAL:      temp,
-						NAME:        namesl[temp],
-						HP:          rand.Intn(99) + 1,
-						DOG:         rand.Intn(99) + 1,
-						ATK:         rand.Intn(99) + 1,
-						DEF:         rand.Intn(99) + 1,
-						ACC:         rand.Intn(99) + 1,
-						CRT:         rand.Intn(99) + 1,
-						CD:          rand.Intn(99) + 1,
-						CLU:         rand.Intn(99) + 1,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      rand.Intn(99) + 1,
-					}
-					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-				} else if pick == 2 {
-					temp := rand.Intn(len(namesr))
-					p := &part{
-						SECTION:     2,
-						SERIAL:      temp,
-						NAME:        namesr[temp],
-						HP:          rand.Intn(99) + 1,
-						DOG:         rand.Intn(99) + 1,
-						ATK:         rand.Intn(99) + 1,
-						DEF:         rand.Intn(99) + 1,
-						ACC:         rand.Intn(99) + 1,
-						CRT:         rand.Intn(99) + 1,
-						CD:          rand.Intn(99) + 1,
-						CLU:         rand.Intn(99) + 1,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      rand.Intn(99) + 1,
-					}
-					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-				} else {
-					temp := rand.Intn(len(namesb))
-					p := &part{
-						SECTION:     3,
-						SERIAL:      temp,
-						NAME:        namesb[temp],
-						HP:          rand.Intn(99) + 1,
-						ATK:         rand.Intn(99) + 1,
-						DEF:         rand.Intn(99) + 1,
-						ACC:         rand.Intn(99) + 1,
-						CRT:         rand.Intn(99) + 1,
-						CD:          rand.Intn(99) + 1,
-						CLU:         rand.Intn(99) + 1,
-						SPD:         rand.Intn(99) + 1,
-						DOG:         rand.Intn(99) + 1,
-						Use_current: 0,
-						Use_outof:   0,
-						Weight:      rand.Intn(99) + 1,
-					}
-					ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-				}
-			}
+			*/
 
 			if ans.game_mode == "ffa" {
 				team_int++
@@ -1197,8 +1215,8 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if (m.team_client_hero[i][j][k].H.HP > 0) && (m.team_client_hero[i][j][k].Status == 1) && (m.team_client_hero[i][j][k].B.SPD != 0) {
-							units_of_time := toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].B.SPD), 3)
+						if (m.team_client_hero[i][j][k].HP > 0) && (m.team_client_hero[i][j][k].Status == 1) && (m.team_client_hero[i][j][k].SPD != 0) {
+							units_of_time := toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].SPD), 3)
 							if units_of_time < min_units {
 								min_units = units_of_time
 							}
@@ -1212,26 +1230,10 @@ func (m *match) run() {
 				if (m.camps[i].HP > 0) && (len(m.camps[i].Units) > 0) {
 					total_dmg := 0.0
 					for j := 0; j < len(m.camps[i].Units); j++ {
-						if m.camps[i].Units[j].H.HP > 0 {
-							avg_sum := 0.0
-							avg_count := 0.0
-							if m.camps[i].Units[j].H.HP > 0 {
-								avg_sum += float64(m.camps[i].Units[j].H.ATK)
-								avg_count += 1
+						if m.camps[i].Units[j].HP > 0 {
+							if m.camps[i].Units[j].HP > 0 {
+								total_dmg += float64(m.camps[i].Units[j].ATK)
 							}
-							if m.camps[i].Units[j].L.HP > 0 {
-								avg_sum += float64(m.camps[i].Units[j].L.ATK)
-								avg_count += 1
-							}
-							if m.camps[i].Units[j].R.HP > 0 {
-								avg_sum += float64(m.camps[i].Units[j].R.ATK)
-								avg_count += 1
-							}
-							if m.camps[i].Units[j].B.HP > 0 {
-								avg_sum += float64(m.camps[i].Units[j].B.ATK)
-								avg_count += 1
-							}
-							total_dmg += (avg_sum / avg_count)
 						}
 					}
 
@@ -1249,26 +1251,27 @@ func (m *match) run() {
 
 			has_user_cmd := false
 
-			// calculate TTD for each camp
+			// calculate TTD for each unit, save the units that are going to attack next
 			atk_list := make([]*attack, 0)
 			for i := 0; i < len(m.camps); i++ {
-				if m.camps[i].HP > 0 && m.camps[i].Units != nil {
+				if m.camps[i].HP > 0 {
 					for j := 0; j < len(m.camps[i].Units); j++ {
+						if m.camps[i].Units[j].HP > 0 {
+							m.camps[i].Units[j].TTD -= min_units
+							if m.camps[i].Units[j].TTD <= 0.1 {
+								m.camps[i].Units[j].TTD = 0
 
-						m.camps[i].Units[j].TTD -= min_units
-						if m.camps[i].Units[j].TTD <= 0.1 {
-							m.camps[i].Units[j].TTD = 0
-
-							a := &attack{
-								Attacker: make([]int, 3),
-								Defender: make([][]int, 0),
-								Damage:   make([][]string, 0),
-								Type:     "hit",
+								a := &attack{
+									Attacker: make([]int, 3),
+									Defender: make([][]int, 0),
+									Damage:   make([][]string, 0),
+									Type:     "hit",
+								}
+								a.Attacker[0] = m.camps[i].Units[j].Position.I
+								a.Attacker[1] = m.camps[i].Units[j].Position.J
+								a.Attacker[2] = m.camps[i].Units[j].Position.K
+								atk_list = append(atk_list, a)
 							}
-							a.Attacker[0] = m.camps[i].Units[j].Position.I
-							a.Attacker[1] = m.camps[i].Units[j].Position.J
-							a.Attacker[2] = m.camps[i].Units[j].Position.K
-							atk_list = append(atk_list, a)
 						}
 					}
 				}
@@ -1280,24 +1283,9 @@ func (m *match) run() {
 					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP > 0) {
 
 					atk_power := 0.0
-					part_count := 0.0
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].H.HP > 0 {
-						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].H.ATK)
-						part_count += 1
+					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].HP > 0 {
+						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].ATK)
 					}
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].L.HP > 0 {
-						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].L.ATK)
-						part_count += 1
-					}
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].R.HP > 0 {
-						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].R.ATK)
-						part_count += 1
-					}
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].B.HP > 0 {
-						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].B.ATK)
-						part_count += 1
-					}
-					atk_power = atk_power / part_count
 
 					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].Battle.HP -= int(atk_power)
 					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[0]][atk_list[i].Attacker[0]].TTD = 1
@@ -1323,9 +1311,9 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if m.team_client_hero[i][j][k].H.HP > 0 {
+						if m.team_client_hero[i][j][k].HP > 0 {
 
-							distanceTravelled := min_units * float64(m.team_client_hero[i][j][k].B.SPD)
+							distanceTravelled := min_units * float64(m.team_client_hero[i][j][k].SPD)
 							newDistanceLeft := m.team_client_hero[i][j][k].DistanceLeft - distanceTravelled
 
 							if newDistanceLeft <= 0.1 {
@@ -1350,7 +1338,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
 
-							fmt.Println(i, j, k, m.team_client_hero[i][j][k].B.SPD, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].DistanceLeft)
+							fmt.Println(i, j, k, m.team_client_hero[i][j][k].SPD, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].DistanceLeft)
 						}
 					}
 				}
@@ -1498,34 +1486,37 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		}
 	}
 }
+
+/*
 func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
 
-	ans := [][]int{}
+		ans := [][]int{}
 
-	closest := 999999.99
+		closest := 999999.99
 
-	// calculate closest enemy
-	for i := 0; i < len(state); i++ {
-		if i != atk_t {
-			for j := 0; j < len(state[i]); j++ {
-				for k := 0; k < len(state[i][j]); k++ {
-					if state[i][j][k].H.HP > 0 {
-						dist := getDistanceTwoPoints(state[atk_t][atk_u][atk_b].Position, state[i][j][k].Position)
-						if dist == closest {
-							closest = dist
-							ans = append(ans, []int{i, j, k})
-						} else if dist < closest {
-							closest = dist
-							ans = append([][]int{}, []int{i, j, k})
+		// calculate closest enemy
+		for i := 0; i < len(state); i++ {
+			if i != atk_t {
+				for j := 0; j < len(state[i]); j++ {
+					for k := 0; k < len(state[i][j]); k++ {
+						if state[i][j][k].H.HP > 0 {
+							dist := getDistanceTwoPoints(state[atk_t][atk_u][atk_b].Position, state[i][j][k].Position)
+							if dist == closest {
+								closest = dist
+								ans = append(ans, []int{i, j, k})
+							} else if dist < closest {
+								closest = dist
+								ans = append([][]int{}, []int{i, j, k})
+							}
 						}
 					}
 				}
 			}
 		}
+
+		return ans
 	}
 
-	return ans
-}
 func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]int) [][]string {
 
 	fmt.Println("called close attack")
@@ -1542,86 +1533,88 @@ func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]in
 	// attack first closest enemy
 	atk_power := 0
 	part_count := 0
-	if state[atk_t][atk_u][atk_b].H.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].H.ATK
+	if state[atk_t][atk_u][atk_b].HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].ATK
 		part_count += 1
 	}
-	if state[atk_t][atk_u][atk_b].L.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].L.ATK
+	if state[atk_t][atk_u][atk_b].HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].ATK
 		part_count += 1
 	}
-	if state[atk_t][atk_u][atk_b].R.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].R.ATK
+	if state[atk_t][atk_u][atk_b].HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].ATK
 		part_count += 1
 	}
-	if state[atk_t][atk_u][atk_b].B.HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].B.ATK
+	if state[atk_t][atk_u][atk_b].HP > 0 {
+		atk_power += state[atk_t][atk_u][atk_b].ATK
 		part_count += 1
 	}
 	atk_power = atk_power / part_count
 
-	hweight := int(0)
-	lweight := int(0)
-	rweight := int(0)
-	bweight := int(0)
-	sumweight := int(0)
 
-	dmg_list := [][]string{} // each unit attacked, each part attacked
+		hweight := int(0)
+			lweight := int(0)
+			rweight := int(0)
+			bweight := int(0)
+			sumweight := int(0)
+			dmg_list := [][]string{} // each unit attacked, each part attacked
 
-	if state[closest_i][closest_j][closest_k].H.HP > 0 {
-		hweight = state[closest_i][closest_j][closest_k].H.Weight
-	}
-	if state[closest_i][closest_j][closest_k].L.HP > 0 {
-		lweight = state[closest_i][closest_j][closest_k].L.Weight
-	}
-	if state[closest_i][closest_j][closest_k].R.HP > 0 {
-		rweight = state[closest_i][closest_j][closest_k].R.Weight
-	}
-	if state[closest_i][closest_j][closest_k].B.HP > 0 {
-		bweight = state[closest_i][closest_j][closest_k].B.Weight
-	}
+				if state[closest_i][closest_j][closest_k].HP > 0 {
+					hweight = state[closest_i][closest_j][closest_k].H.Weight
+				}
+				if state[closest_i][closest_j][closest_k].L.HP > 0 {
+					lweight = state[closest_i][closest_j][closest_k].L.Weight
+				}
+				if state[closest_i][closest_j][closest_k].R.HP > 0 {
+					rweight = state[closest_i][closest_j][closest_k].R.Weight
+				}
+				if state[closest_i][closest_j][closest_k].B.HP > 0 {
+					bweight = state[closest_i][closest_j][closest_k].B.Weight
+				}
 
-	sumweight = hweight + lweight + rweight + bweight
+				sumweight = hweight + lweight + rweight + bweight
 
-	fmt.Println(hweight, lweight, rweight, bweight)
-	random_number := rand.Intn(sumweight)
+				fmt.Println(hweight, lweight, rweight, bweight)
+				random_number := rand.Intn(sumweight)
 
-	if random_number < hweight {
-		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].H.DEF > 0 {
-			dmg = atk_power - state[closest_i][closest_j][closest_k].H.DEF
-		}
-		fmt.Println("DMG", dmg)
-		state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
-		dmg_list = append(dmg_list, []string{"H;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-	} else if random_number < hweight+lweight {
-		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].L.DEF > 0 {
-			dmg = atk_power - state[closest_i][closest_j][closest_k].L.DEF
-		}
-		fmt.Println("DMG", dmg)
-		state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
-		dmg_list = append(dmg_list, []string{"L;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-	} else if random_number < hweight+lweight+rweight {
-		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].R.DEF > 0 {
-			dmg = atk_power - state[closest_i][closest_j][closest_k].R.DEF
-		}
-		fmt.Println("DMG", dmg)
-		state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
-		dmg_list = append(dmg_list, []string{"R;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-	} else {
-		dmg := 0
-		if atk_power-state[closest_i][closest_j][closest_k].B.DEF > 0 {
-			dmg = atk_power - state[closest_i][closest_j][closest_k].B.DEF
-		}
-		fmt.Println("DMG", dmg)
-		state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
-		dmg_list = append(dmg_list, []string{"B;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-	}
+				if random_number < hweight {
+					dmg := 0
+					if atk_power-state[closest_i][closest_j][closest_k].H.DEF > 0 {
+						dmg = atk_power - state[closest_i][closest_j][closest_k].H.DEF
+					}
+					fmt.Println("DMG", dmg)
+					state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
+					dmg_list = append(dmg_list, []string{"H;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
+				} else if random_number < hweight+lweight {
+					dmg := 0
+					if atk_power-state[closest_i][closest_j][closest_k].L.DEF > 0 {
+						dmg = atk_power - state[closest_i][closest_j][closest_k].L.DEF
+					}
+					fmt.Println("DMG", dmg)
+					state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
+					dmg_list = append(dmg_list, []string{"L;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
+				} else if random_number < hweight+lweight+rweight {
+					dmg := 0
+					if atk_power-state[closest_i][closest_j][closest_k].R.DEF > 0 {
+						dmg = atk_power - state[closest_i][closest_j][closest_k].R.DEF
+					}
+					fmt.Println("DMG", dmg)
+					state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
+					dmg_list = append(dmg_list, []string{"R;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
+				} else {
+					dmg := 0
+					if atk_power-state[closest_i][closest_j][closest_k].B.DEF > 0 {
+						dmg = atk_power - state[closest_i][closest_j][closest_k].B.DEF
+					}
+					fmt.Println("DMG", dmg)
+					state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
+					dmg_list = append(dmg_list, []string{"B;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
+				}
 
-	return dmg_list
+return dmg_list
 }
+*/
+
 func game_over_check(state [][][]*hero) bool {
 
 	// check all teams, if there are two+ teams with alive heroes, then it is not game over
@@ -1630,7 +1623,7 @@ func game_over_check(state [][][]*hero) bool {
 		at_least_one_alive := false
 		for j := 0; j < len(state[i]); j++ {
 			for k := 0; k < len(state[i][j]); k++ {
-				if state[i][j][k].H.HP > 0 {
+				if state[i][j][k].HP > 0 {
 					at_least_one_alive = true
 					break
 				}
@@ -1650,25 +1643,29 @@ func game_over_check(state [][][]*hero) bool {
 	return true
 }
 func (m *match) sharebench() {
-	fmt.Println("sharebench")
 
-	marshalled, _ := json.Marshal(m.bench)
+	/*
+		fmt.Println("sharebench")
 
-	// send updated positions to everyone
-	for _, i := range m.gamer_uid_to_msid_to_match_socket {
-		for _, j := range i {
-			select {
-			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+			marshalled, _ := json.Marshal(m.bench)
+
+			// send updated positions to everyone
+			for _, i := range m.gamer_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+					}
+				}
 			}
-		}
-	}
-	for _, i := range m.spectator_uid_to_msid_to_match_socket {
-		for _, j := range i {
-			select {
-			case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+			for _, i := range m.spectator_uid_to_msid_to_match_socket {
+				for _, j := range i {
+					select {
+					case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
+					}
+				}
 			}
-		}
-	}
+	*/
+
 }
 func (m *match) shareint() {
 	fmt.Println("shareint")

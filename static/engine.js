@@ -405,7 +405,7 @@ function calcAndDrawAttack() {
                 if(time_queue[animating_state]!="") {
                     total_units_of_time += parseFloat(time_queue[animating_state])
                     total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-                    event_log.push(time_queue[animating_state].toString() + " units of time has passed")
+                    event_log.push(time_queue[animating_state].toString() + " ticks have passed")
                     if(event_log.length >= 25) {
                         event_log.shift()
                     }
@@ -640,7 +640,7 @@ function drawUnitsOfTime() {
     ctx.textAlign = "center";
     ctx.font = '11px monospace';
     ctx.fillStyle = 'white';
-    time_string = total_units_of_time+" units of time"
+    time_string = total_units_of_time+" ticks"
     ctx.fillText(time_string,c.width/2, 35);
 }
 

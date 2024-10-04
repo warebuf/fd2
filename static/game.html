@@ -492,9 +492,9 @@ function setupHoverable() {
                 }
             } else {
                 if(mostNorthCoordinate == null) {
-                    mostNorthCoordinate = camps[i].XY
-                } else if(mostNorthCoordinate.Y < camps[i].XY.Y) {
-                    mostNorthCoordinate = camps[i].XY
+                    mostNorthCoordinate = state[my_team][my_int].Position
+                } else if(mostNorthCoordinate.Y < state[my_team][my_int].Position.Y) {
+                    mostNorthCoordinate = state[my_team][my_int].Position
                 }
             }
         }

@@ -139,6 +139,8 @@ function calcPos() {
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++
+            setupHoverable()
+
         } else {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {

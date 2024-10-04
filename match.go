@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
-	"github.com/kr/pretty"
 	"math"
 	"math/rand"
 	"strconv"
@@ -226,8 +225,6 @@ func m_read(m *match_socket) {
 						} else {
 							fmt.Printf("this route does not exist")
 						}
-
-						pretty.Print(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index])
 
 						if set_route {
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
@@ -1471,8 +1468,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 				marshalled, err := json.Marshal(m.team_client_hero[i][j][k])
 				temp[i][j][k] = string(marshalled)
-				pretty.Println(m.team_client_hero[i][j][k])
-				pretty.Println(err)
 			}
 		}
 	}
@@ -1482,8 +1477,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		marshalled, _ := json.Marshal(m.camps[i])
 		tempCamp = append(tempCamp, string(marshalled))
 	}
-	pretty.Print(tempCamp)
-	fmt.Println(tempCamp)
 
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {

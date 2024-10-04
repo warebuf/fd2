@@ -16,7 +16,7 @@ import (
 type Camp struct {
 	HP    int
 	XY    Coordinate
-	Units []*hero
+	Units [][]int // second array is of the form i, j, k for a *hero object in TCH
 }
 
 type hero struct {
@@ -576,7 +576,7 @@ func createMatch(pl *permission_list) *match {
 			random_x := float64(rand.Intn(10))
 			random_y := float64(rand.Intn(10))
 			c := Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
-			ans.camps = append(ans.camps, &Camp{HP: rand.Intn(10)*100 + 100, XY: c, Units: make([]*hero, 0)})
+			ans.camps = append(ans.camps, &Camp{HP: rand.Intn(10)*100 + 100, XY: c, Units: make([][]int, 0)})
 		}
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
@@ -1229,10 +1229,11 @@ func (m *match) run() {
 			for i := 0; i < len(m.camps); i++ {
 				if (m.camps[i].HP > 0) && (len(m.camps[i].Units) > 0) {
 					for j := 0; j < len(m.camps[i].Units); j++ {
-						if m.camps[i].Units[j].HP > 0 {
-							if m.camps[i].Units[j].HP > 0 {
-								ttd := m.camps[i].Units[j].TTD / float64(m.camps[i].Units[j].ATK)
-								fmt.Println("ttd", ttd, i, j, m.camps[i].Units[j].TTD, m.camps[i].Units[j].ATK)
+						unitOfInterest := m.team_client_hero[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
+						if unitOfInterest.HP > 0 {
+							if unitOfInterest.HP > 0 {
+								ttd := unitOfInterest.TTD / float64(unitOfInterest.ATK)
+								fmt.Println("ttd", ttd, i, j, unitOfInterest.TTD, unitOfInterest.ATK)
 								fmt.Println(i, m.camps[i].HP)
 
 								if ttd < min_units {
@@ -1253,10 +1254,12 @@ func (m *match) run() {
 			for i := 0; i < len(m.camps); i++ {
 				if m.camps[i].HP > 0 {
 					for j := 0; j < len(m.camps[i].Units); j++ {
-						if m.camps[i].Units[j].HP > 0 {
-							m.camps[i].Units[j].TTD = m.camps[i].Units[j].TTD - (min_units * float64(m.camps[i].Units[j].ATK))
-							if m.camps[i].Units[j].TTD <= 0.1 {
-								m.camps[i].Units[j].TTD = 0
+						unitOfInterest := m.team_client_hero[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
+
+						if unitOfInterest.HP > 0 {
+							unitOfInterest.TTD = unitOfInterest.TTD - (min_units * float64(unitOfInterest.ATK))
+							if unitOfInterest.TTD <= 0.1 {
+								unitOfInterest.TTD = 0
 
 								a := &attack{
 									Attacker: make([]int, 3),
@@ -1264,12 +1267,12 @@ func (m *match) run() {
 									Damage:   make([][]string, 0),
 									Type:     "hit",
 								}
-								a.Attacker[0] = m.camps[i].Units[j].Position.I
-								a.Attacker[1] = m.camps[i].Units[j].Position.J
-								a.Attacker[2] = m.camps[i].Units[j].Position.K
+								a.Attacker[0] = unitOfInterest.Position.I
+								a.Attacker[1] = unitOfInterest.Position.J
+								a.Attacker[2] = unitOfInterest.Position.K
 								atk_list = append(atk_list, a)
 							}
-							fmt.Println("simulated TTD", (min_units * float64(m.camps[i].Units[j].ATK)), m.camps[i].Units[j].TTD)
+							fmt.Println("simulated TTD", (min_units * float64(unitOfInterest.ATK)), unitOfInterest.TTD)
 						}
 					}
 				}
@@ -1295,11 +1298,12 @@ func (m *match) run() {
 					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP < 0 {
 						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[1]].Battle.HP = 0
 						for j := 0; j < len(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units); j++ {
-							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j].TTD = 100
-							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j].Status = 0
+							unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j]
+							m.team_client_hero[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
+							m.team_client_hero[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
 						}
 						has_user_cmd = true
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([]*hero, 0)
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([][]int, 0)
 					}
 				}
 
@@ -1323,7 +1327,8 @@ func (m *match) run() {
 								if m.camps[m.team_client_hero[i][j][k].Destination.I].HP > 0 {
 									m.team_client_hero[i][j][k].Status = 2
 									m.team_client_hero[i][j][k].Battle = m.camps[m.team_client_hero[i][j][k].Destination.I]
-									m.team_client_hero[i][j][k].Battle.Units = append(m.team_client_hero[i][j][k].Battle.Units, m.team_client_hero[i][j][k])
+									appending := []int{i, j, k}
+									m.team_client_hero[i][j][k].Battle.Units = append(m.team_client_hero[i][j][k].Battle.Units, appending)
 								} else {
 									m.team_client_hero[i][j][k].Status = 0
 									has_user_cmd = true

@@ -537,15 +537,22 @@ function determineCardinal(x1, x2, y1, y2){
 
 function setupHoverable() {
 
+    let mostNorthActive = null;
     let mostNorthCoordinate = null
 
     if(state_machine == 0) {
         for(let i = 0; i < state[my_team][my_int].length; i++) {
             if(state[my_team][my_int][i].Status==0) {
+                if(mostNorthActive == null) {
+                    mostNorthActive = state[my_team][my_int][i].Position
+                } else if(mostNorthActive.Y < state[my_team][my_int][i].Position.Y) {
+                    mostNorthActive = state[my_team][my_int][i].Position
+                }
+            } else {
                 if(mostNorthCoordinate == null) {
-                    mostNorthCoordinate = state[my_team][my_int][i].Position
-                } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
-                    mostNorthCoordinate = state[my_team][my_int][i].Position
+                    mostNorthCoordinate = camps[i].XY
+                } else if(mostNorthCoordinate.Y < camps[i].XY.Y) {
+                    mostNorthCoordinate = camps[i].XY
                 }
             }
         }
@@ -559,7 +566,8 @@ function setupHoverable() {
         }
     }
 
-    hoverable = mostNorthCoordinate;
+    if(mostNorthActive!=null){hoverable=mostNorthActive;}
+    else {hoverable = mostNorthCoordinate;}
 }
 
 function calculateNextHoverable(direction) {

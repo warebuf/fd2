@@ -1299,7 +1299,7 @@ func (m *match) run() {
 							m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j].Status = 0
 						}
 						has_user_cmd = true
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = nil
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([]*hero, 0)
 					}
 				}
 

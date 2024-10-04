@@ -315,6 +315,7 @@
     var action_buffer = ""
 
     var hoverable = null;
+    var hoverable_coordinate = null;
     var selected_hoverable = null;
     // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
 
@@ -476,65 +477,6 @@ function resign(){
     socket.send(JSON.stringify({ "Event": 'resign' }))
 }
 
-function determineCardinal(x1, x2, y1, y2){
-
-        if( (x1==x2) && (y1==y2) ) {
-            return 'S'
-        }
-
-        let x = x2 - x1;
-        let y = y2 - y1;
-        let absolute_max = Math.max(Math.abs(x), Math.abs(y))
-        let absolute_max_x = absolute_max;
-        let absolute_max_y = absolute_max;
-        if(x<0) {
-            absolute_max_x = -absolute_max
-        }
-        if(y<0) {
-            absolute_max_y = -absolute_max
-        }
-
-    if((x==0) && (y>0)) {return 'U'}
-    else if((x==0) && (y<0)) {return 'D'}
-    else if((x>0) && (y==0)) {return 'R'}
-    else if((x<0) && (y==0)) {return 'L'}
-    if( (x>0) && (y>0) ) { // QUADRANT1
-        if ((x==absolute_max_x) && (y==absolute_max_y)) {
-            return 'UR'
-        } else if( (x<absolute_max_x) ) {
-            return 'U'
-        } else {
-            return 'R'
-        }
-    } else if( (x<0) && (y>0) ) { // QUADRANT2
-        if ((x==absolute_max_x) && (y==absolute_max_y)) {
-            return 'UL'
-        } else if( (x>absolute_max_x) ) {
-            return 'U'
-        } else {
-            return 'L'
-        }
-    } else if( (x<0) && (y<0) ) { // QUADRANT3
-        if ((x==absolute_max_x) && (y==absolute_max_y)) {
-            return 'DL'
-        } else if( (x>absolute_max_x) ) {
-            return 'D'
-        } else {
-            return 'L'
-        }
-    } else { // QUADRANT4
-        if ((x==absolute_max_x) && (y==absolute_max_y)) {
-            return 'DR'
-        } else if( (x<absolute_max_x) ) {
-            return 'D'
-        } else {
-            return 'R'
-        }
-    }
-
-    return 'E' // E for error
-}
-
 function setupHoverable() {
 
     let mostNorthActive = null;
@@ -566,8 +508,28 @@ function setupHoverable() {
         }
     }
 
-    if(mostNorthActive!=null){hoverable=mostNorthActive;}
-    else {hoverable = mostNorthCoordinate;}
+    if(mostNorthActive!=null){
+        hoverable=mostNorthActive;
+    }
+    else {
+        hoverable = mostNorthCoordinate;
+    }
+
+    if(hoverable!=null) {
+        if(hoverable.Type=="camp") {
+            hoverable_coordinate = null;
+        } else if(hoverable.Type=="unit"){
+            hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
+        }
+    }
+
+
+}
+
+function followHoverable() {
+        if(hoverable_coordinate != null) {
+            hoverable = hoverable_coordinate.Position
+        }
 }
 
 function calculateNextHoverable(direction) {
@@ -668,6 +630,14 @@ function calculateNextHoverable(direction) {
         hoverable = closestCardinalCoordinate;
     } else if(closestWrapCoordinate != null) {
         hoverable = closestWrapCoordinate;
+    }
+
+    if(hoverable!=null) {
+        if(hoverable.Type=="camp") {
+            hoverable_coordinate = null;
+        } else if(hoverable.Type=="unit"){
+            hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
+        }
     }
 
 }

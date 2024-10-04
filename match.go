@@ -1465,6 +1465,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 			temp[i][j] = make([]string, len(m.team_client_hero[i][j]))
 			for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 				marshalled, _ := json.Marshal(m.team_client_hero[i][j][k])
+				pretty.Print(marshalled)
 				temp[i][j][k] = string(marshalled)
 			}
 		}

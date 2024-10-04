@@ -508,12 +508,9 @@ function setupHoverable() {
         }
     }
 
-    if(mostNorthActive!=null){
-        hoverable=mostNorthActive;
-    }
-    else {
-        hoverable = mostNorthCoordinate;
-    }
+    console.log(mostNorthActive, mostNorthCoordinate)
+    if(mostNorthActive!=null){hoverable=mostNorthActive;}
+    else {hoverable = mostNorthCoordinate;}
 
     if(hoverable!=null) {
         if(hoverable.Type=="camp") {

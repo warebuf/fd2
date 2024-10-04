@@ -112,7 +112,6 @@ function calcPos() {
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
-
                     if (
                         (state[i][j][k].Status != match_data[animating_state][i][j][k].Status) ||
                         (coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position)==false) ||

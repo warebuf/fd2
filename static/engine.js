@@ -178,6 +178,7 @@ function calcPos() {
                     }
                 }
             }
+            followHoverable()
         }
     }
 }

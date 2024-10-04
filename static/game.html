@@ -552,9 +552,9 @@ function setupHoverable() {
     } else if(state_machine == 1) {
         for(let i = 0; i < camps.length; i++) {
             if(mostNorthCoordinate == null) {
-                mostNorthCoordinate = camps[i]
-            } else if(mostNorthCoordinate.Y < camps[i].Y) {
-                mostNorthCoordinate = camps[i]
+                mostNorthCoordinate = camps[i].XY
+            } else if(mostNorthCoordinate.Y < camps[i].XY.Y) {
+                mostNorthCoordinate = camps[i].XY
             }
         }
     }

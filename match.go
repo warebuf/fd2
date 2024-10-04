@@ -1476,6 +1476,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		tempCamp = append(tempCamp, string(marshalled))
 	}
 	pretty.Print(tempCamp)
+	fmt.Println(tempCamp)
 
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {

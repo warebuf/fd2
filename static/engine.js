@@ -2187,7 +2187,7 @@ function drawHeatMap(){
                 let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
                 let radius = 10;
                 let lineWidth = 3
-                percentage = percentage.toFixed(0)
+
                 // Draw the background circle
                 ctx.beginPath();
                 ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, 0, 2 * Math.PI, false);
@@ -2208,12 +2208,12 @@ function drawHeatMap(){
                 // Add text inside the circle
                 ctx.font = "8px monospace";
                 ctx.fillStyle = 'black';
-                ctx.fillText(100*percentage + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
+                ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
                 //
                 ctx.fillStyle = 'white';
                 x_shift = x_shift+50;
-                ctx.fillText(state[i][j][k].DistanceLeft, x_offset+x_shift+t_shift, y_offset+y_shift+2);
+                ctx.fillText(state[i][j][k].DistanceLeft.toFixed(0), x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift+10;
                 ctx.fillText(state[i][j][k].TTD.toFixed(0), x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift+10;

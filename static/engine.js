@@ -381,28 +381,28 @@ function drawProgressCircle() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 // Draw the background circle
-                context.beginPath();
-                context.arc(centerX+(k*50), centerY+(i*50), radius, 0, 2 * Math.PI, false);
-                context.fillStyle = '#ddd';
-                context.fill();
-                context.lineWidth = lineWidth;
-                context.strokeStyle = '#ddd';
-                context.stroke();
+                ctx.beginPath();
+                ctx.arc(centerX+(k*50), centerY+(i*50), radius, 0, 2 * Math.PI, false);
+                ctx.fillStyle = '#ddd';
+                ctx.fill();
+                ctx.lineWidth = lineWidth;
+                ctx.strokeStyle = '#ddd';
+                ctx.stroke();
 
                 // Draw the progress circle
                 context.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
-                context.arc(centerX+(k*50), centerY+(i*50), radius, startAngle, endAngle, false);
-                context.strokeStyle = '#4caf50'; // Color for the progress
-                context.stroke();
+                ctx.arc(centerX+(k*50), centerY+(i*50), radius, startAngle, endAngle, false);
+                ctx.strokeStyle = '#4caf50'; // Color for the progress
+                ctx.stroke();
 
                 // Add text inside the circle
-                context.font = "24px Arial";
-                context.fillStyle = '#000';
-                context.textAlign = 'center';
-                context.textBaseline = 'middle';
-                context.fillText(state[i][j][k].TTD + '%', centerX+(k*50), centerY+(j+50));
+                ctx.font = "24px Arial";
+                ctx.fillStyle = '#000';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(state[i][j][k].TTD + '%', centerX+(k*50), centerY+(j+50));
             }
         }
     }

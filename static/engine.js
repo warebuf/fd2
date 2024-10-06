@@ -75,7 +75,6 @@ function anime() {
         drawAttack()
         drawPos()
         drawState()
-        drawProgressCircle()
         drawHoverable()
         drawPotentialPaths()
         drawPaths()
@@ -374,48 +373,6 @@ function drawState() {
             }
         }
     }
-}
-
-function drawProgressCircle() {
-
-    let centerX = 50;
-    let centerY = 600;
-    let radius = 15;
-    let lineWidth = 5;
-
-    for(let i = 0; i < state.length; i++) {
-        for(let j = 0; j < state[i].length; j++) {
-            for(let k = 0; k < state[i][j].length; k++) {
-
-                let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
-                percentage = percentage.toFixed(0)
-                // Draw the background circle
-                ctx.beginPath();
-                ctx.arc(centerX+(k*100), centerY+(i*100), radius, 0, 2 * Math.PI, false);
-                ctx.fillStyle = '#ddd';
-                ctx.fill();
-                ctx.lineWidth = lineWidth;
-                ctx.strokeStyle = '#ddd';
-                ctx.stroke();
-
-                // Draw the progress circle
-                ctx.beginPath();
-                var startAngle = -Math.PI / 2; // Start at the top
-                var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
-                ctx.arc(centerX+(k*100), centerY+(i*100), radius, startAngle, endAngle, false);
-                ctx.strokeStyle = '#4caf50'; // Color for the progress
-                ctx.stroke();
-
-                // Add text inside the circle
-                ctx.font = "11px monospace";
-                ctx.fillStyle = '#000';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(100*percentage + '%', centerX+(k*100), centerY+(i*100));
-            }
-        }
-    }
-
 }
 
 function drawHoverable() {
@@ -1910,9 +1867,6 @@ function drawHeatMap(){
     let t_shift = 0;
 
     for(let i = 0; i < state.length; i++) {
-
-        ctx.textAlign = "center";
-
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
@@ -2227,6 +2181,31 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].SPD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
+
+                let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
+                percentage = percentage.toFixed(0)
+                // Draw the background circle
+                ctx.beginPath();
+                ctx.arc(x_offset+x_shift+t_shift+(k*100), y_offset+y_shift+(i*100), radius, 0, 2 * Math.PI, false);
+                ctx.fillStyle = '#ddd';
+                ctx.fill();
+                ctx.lineWidth = lineWidth;
+                ctx.strokeStyle = '#ddd';
+                ctx.stroke();
+
+                // Draw the progress circle
+                ctx.beginPath();
+                var startAngle = -Math.PI / 2; // Start at the top
+                var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
+                ctx.arc(x_offset+x_shift+t_shift+(k*100), y_offset+y_shift+(i*100), radius, startAngle, endAngle, false);
+                ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
+                ctx.stroke();
+
+                // Add text inside the circle
+                ctx.font = "11px monospace";
+                ctx.fillText(100*percentage + '%', x_offset+x_shift+t_shift+(k*100), y_offset+y_shift+(i*100));
+
+
 
                 y_shift=y_shift+45;
                 x_shift=0;

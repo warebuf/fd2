@@ -165,6 +165,7 @@ function calcPos() {
                                 if( (state[i][j][k].DistanceLeft < match_data[animating_state][i][j][k].DistanceLeft) ){
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                     state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                                    if(state[i][j][k].DistanceLeft == 0) {state[i][j][k].Status = 2;}
                                 }
                             }
                         } else if(state[i][j][k].Status == 2) {

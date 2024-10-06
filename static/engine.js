@@ -387,8 +387,8 @@ function drawProgressCircle() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
-                let percentage = Math.floor(state[i][j][k].TTD/state[i][j][k].TTDo * 10) / 10
-                percentage = percentage.toFixed(1)
+                let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
+                percentage = percentage.toFixed(0)
                 // Draw the background circle
                 ctx.beginPath();
                 ctx.arc(centerX+(k*100), centerY+(i*100), radius, 0, 2 * Math.PI, false);

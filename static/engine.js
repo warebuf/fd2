@@ -379,7 +379,7 @@ function drawState() {
 function drawProgressCircle() {
 
     let centerX = 100;
-    let centerY = 500;
+    let centerY = 700;
     let radius = 15;
     let lineWidth = 5;
 
@@ -388,6 +388,7 @@ function drawProgressCircle() {
             for(let k = 0; k < state[i][j].length; k++) {
 
                 let percentage = Math.floor(state[i][j][k].TTD/state[i][j][k].TTDo * 10) / 10
+                percentage = percentage.toFixed(1)
                 // Draw the background circle
                 ctx.beginPath();
                 ctx.arc(centerX+(k*100), centerY+(i*100), radius, 0, 2 * Math.PI, false);

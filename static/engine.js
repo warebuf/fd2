@@ -75,6 +75,7 @@ function anime() {
         drawAttack()
         drawPos()
         drawState()
+        drawProgressCircle()
         drawHoverable()
         drawPotentialPaths()
         drawPaths()

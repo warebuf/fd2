@@ -448,7 +448,6 @@
                         match_data.push(md)
                         camp_data.push(cdata)
 
-                        console.log("atk_data",msg.Atk)
                         if(msg.Atk == null) {
                             atk_data.push([])
                         } else {
@@ -508,7 +507,6 @@ function setupHoverable() {
         }
     }
 
-    console.log(state_machine,mostNorthActive, mostNorthCoordinate)
     if(mostNorthActive!=null){hoverable=mostNorthActive;}
     else {hoverable = mostNorthCoordinate;}
 

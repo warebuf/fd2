@@ -214,7 +214,6 @@ function drawAttack() {
             let atki = atk_obj.Attacker[0]
             let atkj = atk_obj.Attacker[1]
             let atkk = atk_obj.Attacker[2]
-            console.log(atk_obj)
 
             state[atki][atkj][atkk].Battle.HP = state[atki][atkj][atkk].Battle.HP - state[atki][atkj][atkk].ATK
             state[atki][atkj][atkk].TTD = state[atki][atkj][atkk].TTDo

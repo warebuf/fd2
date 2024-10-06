@@ -715,9 +715,10 @@ func createMatch(pl *permission_list) *match {
 					SPD: rand.Intn(100) + 1,
 
 					Battle: nil,
-					TTD:    100.0,
+					TTD:    0.0,
 					TTDo:   0.0,
 				}
+				temp.TTD = float64(temp.AS)
 				temp.TTDo = float64(temp.AS)
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
@@ -1285,7 +1286,7 @@ func (m *match) run() {
 					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
 
 					unitOfInterest.Battle.HP -= unitOfInterest.ATK
-					unitOfInterest.TTD = float64(unitOfInterest.TTDo)
+					unitOfInterest.TTD = unitOfInterest.TTDo
 
 					if unitOfInterest.Battle.HP < 0 {
 						unitOfInterest.Battle.HP = 0

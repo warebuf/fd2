@@ -200,24 +200,28 @@ function drawAttack() {
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)+250
 
-        let atk_obj = JSON.parse(atk_data[animating_state][i]);
-        let atki = atk_obj.Attacker[0]
-        let atkj = atk_obj.Attacker[1]
-        let atkk = atk_obj.Attacker[2]
-        console.log(atk_obj)
+        for(let i=0; i < atk_data[animating_state].length; i++) {
+            let atk_obj = JSON.parse(atk_data[animating_state][i]);
+            let atki = atk_obj.Attacker[0]
+            let atkj = atk_obj.Attacker[1]
+            let atkk = atk_obj.Attacker[2]
+            console.log(atk_obj)
 
-        state[atki][atkj][atkk].Battle.HP = state[atki][atkj][atkk].Battle.HP - state[atki][atkj][atkk].ATK
-        state[atki][atkj][atkk].TTD = state[atki][atkj][atkk].TTDo
+            state[atki][atkj][atkk].Battle.HP = state[atki][atkj][atkk].Battle.HP - state[atki][atkj][atkk].ATK
+            state[atki][atkj][atkk].TTD = state[atki][atkj][atkk].TTDo
 
-        if(state[atki][atkj][atkk].Battle.HP<0) {
-            state[atki][atkj][atkk].Battle.HP=0;
-            for(let i = 0; i < state[atki][atkj][atkk].Battle.Units.length; i++) {
-                let unitOfInterest = state[atki][atkj][atkk].Battle.Units[i];
-                state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTDo
-                state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
+            if(state[atki][atkj][atkk].Battle.HP<0) {
+                state[atki][atkj][atkk].Battle.HP=0;
+                for(let j = 0; j < state[atki][atkj][atkk].Battle.Units.length; j++) {
+                    let unitOfInterest = state[atki][atkj][atkk].Battle.Units[j];
+                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTDo
+                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
+                }
+                state[atki][atkj][atkk].Battle.Units = [];
             }
-            state[atki][atkj][atkk].Battle.Units = [];
         }
+
+
 
         if ( attacking_frames_count==59 ) {
             event_log.push(atk_data[animating_state][i])

@@ -380,8 +380,8 @@ function drawProgressCircle() {
 
     let centerX = c.width / 2;
     let centerY = c.height / 2;
-    let radius = 80;
-    let lineWidth = 15;
+    let radius = 15;
+    let lineWidth = 5;
 
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {

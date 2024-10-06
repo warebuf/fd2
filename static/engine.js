@@ -406,7 +406,7 @@ function drawProgressCircle() {
                 ctx.stroke();
 
                 // Add text inside the circle
-                ctx.font = "24px Arial";
+                ctx.font = "11px monospace";
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';

@@ -84,6 +84,7 @@ function anime() {
         drawLog()
         if(view==0){
             drawHeatMap()
+            drawCampHP()
         } else if(view==1) {
             drawStartersTable2()
         } else if(view==2) {
@@ -2222,6 +2223,15 @@ function drawHeatMap(){
         t_shift = t_shift + 300;
     }
 
+}
+
+function drawCampHP() {
+    let x = 100
+    let y = 700
+
+    for(let i = 0; i < camps.length; i++) {
+        ctx.fillText(i+": " + camps[i].HP, x, y+(i*10))
+    }
 }
 
 function calcColour(n){

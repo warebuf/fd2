@@ -388,7 +388,7 @@ function drawProgressCircle() {
             for(let k = 0; k < state[i][j].length; k++) {
                 // Draw the background circle
                 ctx.beginPath();
-                ctx.arc(centerX+(k*50), centerY+(i*50), radius, 0, 2 * Math.PI, false);
+                ctx.arc(centerX+(k*100), centerY+(i*100), radius, 0, 2 * Math.PI, false);
                 ctx.fillStyle = '#ddd';
                 ctx.fill();
                 ctx.lineWidth = lineWidth;
@@ -399,7 +399,7 @@ function drawProgressCircle() {
                 context.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
-                ctx.arc(centerX+(k*50), centerY+(i*50), radius, startAngle, endAngle, false);
+                ctx.arc(centerX+(k*100), centerY+(i*100), radius, startAngle, endAngle, false);
                 ctx.strokeStyle = '#4caf50'; // Color for the progress
                 ctx.stroke();
 
@@ -408,7 +408,7 @@ function drawProgressCircle() {
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(state[i][j][k].TTD + '%', centerX+(k*50), centerY+(j+50));
+                ctx.fillText(state[i][j][k].TTD + '%', centerX+(k*100), centerY+(i*100));
             }
         }
     }

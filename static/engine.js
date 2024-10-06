@@ -187,7 +187,12 @@ function calcPos() {
                                     attacking_frames_count=1
                                 }
                             }
-                            else if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD}
+                            else if(
+                                (state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) &&
+                                (match_data[animating_state][i][j][k].TTD != 100)
+                            ) {
+                                state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
+                            }
 
 
 

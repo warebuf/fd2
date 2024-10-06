@@ -386,6 +386,8 @@ function drawProgressCircle() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
+
+                let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
                 // Draw the background circle
                 ctx.beginPath();
                 ctx.arc(centerX+(k*100), centerY+(i*100), radius, 0, 2 * Math.PI, false);
@@ -398,7 +400,7 @@ function drawProgressCircle() {
                 // Draw the progress circle
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
-                var endAngle = (state[i][j][k].TTD/state[i][j][k].TTDo / 100) * 2 * Math.PI + startAngle;
+                var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
                 ctx.arc(centerX+(k*100), centerY+(i*100), radius, startAngle, endAngle, false);
                 ctx.strokeStyle = '#4caf50'; // Color for the progress
                 ctx.stroke();

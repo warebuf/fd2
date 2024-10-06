@@ -378,8 +378,8 @@ function drawState() {
 
 function drawProgressCircle() {
 
-    let centerX = 100;
-    let centerY = 700;
+    let centerX = 50;
+    let centerY = 600;
     let radius = 15;
     let lineWidth = 5;
 

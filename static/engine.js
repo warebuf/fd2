@@ -2188,15 +2188,6 @@ function drawHeatMap(){
                 let radius = 10;
                 let lineWidth = 3
 
-                // Draw the background circle
-                ctx.beginPath();
-                ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, 0, 2 * Math.PI, false);
-                ctx.fillStyle = '#ddd';
-                ctx.fill();
-                ctx.lineWidth = lineWidth;
-                ctx.strokeStyle = '#ddd';
-                ctx.stroke();
-
                 // Draw the progress circle
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
@@ -2207,7 +2198,7 @@ function drawHeatMap(){
 
                 // Add text inside the circle
                 ctx.font = "8px monospace";
-                ctx.fillStyle = 'black';
+                ctx.fillStyle = 'white';
                 ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
                 //

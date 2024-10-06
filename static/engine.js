@@ -2183,6 +2183,8 @@ function drawHeatMap(){
                 x_shift = x_shift+25;
 
                 let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
+                let radius = 10;
+                let lineWidth = 3
                 percentage = percentage.toFixed(0)
                 // Draw the background circle
                 ctx.beginPath();

@@ -2228,6 +2228,7 @@ function drawHeatMap(){
 function drawCampHP() {
     let x = 100
     let y = 700
+    ctx.font = '11px monospace';
 
     for(let i = 0; i < camps.length; i++) {
         ctx.fillText(i+": " + camps[i].HP, x, y+(i*10))

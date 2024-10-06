@@ -166,8 +166,14 @@ function calcPos() {
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                     state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                     if(state[i][j][k].DistanceLeft == 0) {
-                                        state[i][j][k].Status = 2;
-                                        camps[state[i].Destination.I].Units.append([i,j,k])
+                                        if(camps[state[i].Destination.I].HP > 0) {
+                                            state[i][j][k].Status = 2;
+                                            state[i][j][k].Battle = camps[state[i].Destination.I]
+                                            camps[state[i].Destination.I].Units.append([i,j,k])
+                                        } else {
+                                            state[i][j][k].Status = 0;
+                                        }
+
                                     }
                                 }
                             }

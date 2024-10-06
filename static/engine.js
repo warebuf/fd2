@@ -2211,10 +2211,11 @@ function drawHeatMap(){
                 ctx.fillText(100*percentage + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
                 //
+                ctx.fillStyle = 'white';
                 x_shift = x_shift+50;
                 ctx.fillText(state[i][j][k].DistanceLeft, x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift+10;
-                ctx.fillText(state[i][j][k].TTD, x_offset+x_shift+t_shift, y_offset+y_shift+2);
+                ctx.fillText(state[i][j][k].TTD.toFixed(0), x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift+10;
                 ctx.fillText(state[i][j][k].TTDo, x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift-20;

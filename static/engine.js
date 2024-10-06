@@ -169,7 +169,7 @@ function calcPos() {
                                         if(camps[state[i][j][k].Destination.I].HP > 0) {
                                             state[i][j][k].Status = 2;
                                             state[i][j][k].Battle = camps[state[i][j][k].Destination.I]
-                                            camps[state[i].Destination.I].Units.append([i,j,k])
+                                            camps[state[i][j][k].Destination.I].Units.append([i,j,k])
                                         } else {
                                             state[i][j][k].Status = 0;
                                         }

@@ -219,31 +219,31 @@ function drawAttack() {
                 }
                 state[atki][atkj][atkk].Battle.Units = [];
             }
-        }
 
-
-
-        if ( attacking_frames_count==59 ) {
-            event_log.push(atk_data[animating_state][i])
-            if(event_log.length >= 25) {
-                event_log.shift()
-            }
-            state[atk_i][atk_j][atk_k].Start = state[atk_i][atk_j][atk_k].Position
-            state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
-            state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
-            state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
-            state[atk_i][atk_j][atk_k].State = 0
-
-            // add the time to the event log
-            if(time_queue[animating_state]!="") {
-                total_units_of_time += parseFloat(time_queue[animating_state])
-                total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-                event_log.push(time_queue[animating_state].toString() + " ticks have passed")
+            if ( attacking_frames_count==59 ) {
+                event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
                     event_log.shift()
                 }
+                state[atki][atkj][atkk].Start = state[atki][atkj][atkk].Position
+                state[atki][atkj][atkk].Destination = match_data[animating_state][atki][atkj][atkk].Destination
+                state[atki][atkj][atkk].DistanceLeft = match_data[animating_state][atki][atkj][atkk].DistanceLeft
+                state[atki][atkj][atkk].Angle = match_data[animating_state][atki][atkj][atkk].Angle
+                state[atki][atkj][atkk].State = 0
+
+                // add the time to the event log
+                if(time_queue[animating_state]!="") {
+                    total_units_of_time += parseFloat(time_queue[animating_state])
+                    total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+                    event_log.push(time_queue[animating_state].toString() + " ticks have passed")
+                    if(event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                }
             }
         }
+
+
 
         attacking_frames_count++
         if(attacking_frames_count==60) {attacking_frames_count = 0}

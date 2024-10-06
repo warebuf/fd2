@@ -411,7 +411,7 @@ function drawProgressCircle() {
                 ctx.fillStyle = '#000';
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'middle';
-                ctx.fillText(percentage + '%', centerX+(k*100), centerY+(i*100));
+                ctx.fillText(100*percentage + '%', centerX+(k*100), centerY+(i*100));
             }
         }
     }

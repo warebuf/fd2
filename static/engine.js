@@ -2188,7 +2188,7 @@ function drawHeatMap(){
                 percentage = percentage.toFixed(0)
                 // Draw the background circle
                 ctx.beginPath();
-                ctx.arc(x_offset+x_shift+t_shift+(k*100), y_offset+y_shift+(i*100), radius, 0, 2 * Math.PI, false);
+                ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, 0, 2 * Math.PI, false);
                 ctx.fillStyle = '#ddd';
                 ctx.fill();
                 ctx.lineWidth = lineWidth;
@@ -2199,13 +2199,13 @@ function drawHeatMap(){
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
-                ctx.arc(x_offset+x_shift+t_shift+(k*100), y_offset+y_shift+(i*100), radius, startAngle, endAngle, false);
+                ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, startAngle, endAngle, false);
                 ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
                 ctx.stroke();
 
                 // Add text inside the circle
                 ctx.font = "11px monospace";
-                ctx.fillText(100*percentage + '%', x_offset+x_shift+t_shift+(k*100), y_offset+y_shift+(i*100));
+                ctx.fillText(100*percentage + '%', x_offset+x_shift+t_shift, y_offset+y_shift);
 
 
 

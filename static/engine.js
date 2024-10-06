@@ -193,10 +193,6 @@ function calcPos() {
     }
 }
 
-function calcTTD() {
-
-}
-
 function drawAttack() {
 
     if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {

@@ -1297,8 +1297,6 @@ func (m *match) run() {
 						has_user_cmd = true
 						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([][]int, 0)
 					}
-
-					// POSSIBLY SET unitOfInterest.Battle here to nil
 				}
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {

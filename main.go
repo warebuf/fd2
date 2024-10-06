@@ -249,7 +249,6 @@ func indexHandler(res http.ResponseWriter, req *http.Request) {
 		"Men are anxious to improve their circumstances, but are unwilling to improve themselves, they therefore remain bound.",
 		"The man who does not shrink from self-crucifixion can never fail to accomplish the object which his heart is set.",
 		"There is no difference between a hero and a coward in what they feel. It's what they do that makes them different.",
-		"For the mouth speaks what the heart is full of.",
 		"Don't be afraid to give up the good for the great.",
 		"If you wish to succeed you should strike out on new paths, rather than travel the worn paths of accepted success.",
 		"I do not think that there is any other quality so essential to success of any kind as the quality of perseverance. It overcomes almost everything, even nature.",

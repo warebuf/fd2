@@ -72,7 +72,7 @@ function anime() {
         drawCamps()
         drawCampSelect()
         calcPos()
-        calcAndDrawAttack()
+        drawAttack()
         drawPos()
         drawState()
         drawHoverable()
@@ -194,52 +194,43 @@ function drawAttack() {
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)+250
 
-        let atk_json_obj = JSON.parse(atk_data[animating_state][i]);
-        console.log(atk_json_obj)
+        let atk_obj = JSON.parse(atk_data[animating_state][i]);
+        let atki = atk_obj.Attacker[0]
+        let atkj = atk_obj.Attacker[1]
+        let atkk = atk_obj.Attacker[2]
+        console.log(atk_obj)
 
-        attacking_frames_count++
-        if(attacking_frames_count==60) {attacking_frames_count = 0}
-    }
+        state[atki][atkj][atkk].Battle.HP = state[atki][atkj][atkk].Battle.HP - state[atki][atkj][atkk].ATK
+        state[atki][atkj][atkk].TTD = state[atki][atkj][atkk].TTDo
 
-}
+        if(state[atki][atkj][atkk].Battle.HP<0) {
+            state[atki][atkj][atkk].Battle.HP=0;
+            for(let i = 0; i < state[atki][atkj][atkk].Battle.Units.length; i++) {
+                let unitOfInterest = state[atki][atkj][atkk].Battle.Units[i];
+                state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTDo
+                state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
+            }
+            state[atki][atkj][atkk].Battle.Units = [];
+        }
 
-function calcAndDrawAttack() {
-    if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
+        if ( attacking_frames_count==59 ) {
+            event_log.push(atk_data[animating_state][i])
+            if(event_log.length >= 25) {
+                event_log.shift()
+            }
+            state[atk_i][atk_j][atk_k].Start = state[atk_i][atk_j][atk_k].Position
+            state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
+            state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
+            state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
+            state[atk_i][atk_j][atk_k].State = 0
 
-        let w = Math.round(c.width/2)
-        let h = Math.round(c.height/2)+250
-
-        ctx.fillStyle = 'white';
-        ctx.textAlign = "center";
-        ctx.font = '10px monospace';
-        for(let i = 0; i < atk_data[animating_state].length; i++) { // iterate through all attacks
-
-            let atk_json_obj = JSON.parse(atk_data[animating_state][i]);
-            let atk_i = atk_json_obj.Attacker[0]
-            let atk_j = atk_json_obj.Attacker[1]
-            let atk_k = atk_json_obj.Attacker[2]
-
-            let type = atk_json_obj.Type
-
-            if ( attacking_frames_count==59 ) {
-                event_log.push(atk_data[animating_state][i])
+            // add the time to the event log
+            if(time_queue[animating_state]!="") {
+                total_units_of_time += parseFloat(time_queue[animating_state])
+                total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
+                event_log.push(time_queue[animating_state].toString() + " ticks have passed")
                 if(event_log.length >= 25) {
                     event_log.shift()
-                }
-                state[atk_i][atk_j][atk_k].Start = state[atk_i][atk_j][atk_k].Position
-                state[atk_i][atk_j][atk_k].Destination = match_data[animating_state][atk_i][atk_j][atk_k].Destination
-                state[atk_i][atk_j][atk_k].DistanceLeft = match_data[animating_state][atk_i][atk_j][atk_k].DistanceLeft
-                state[atk_i][atk_j][atk_k].Angle = match_data[animating_state][atk_i][atk_j][atk_k].Angle
-                state[atk_i][atk_j][atk_k].State = 0
-
-                // add the time to the event log
-                if(time_queue[animating_state]!="") {
-                    total_units_of_time += parseFloat(time_queue[animating_state])
-                    total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-                    event_log.push(time_queue[animating_state].toString() + " ticks have passed")
-                    if(event_log.length >= 25) {
-                        event_log.shift()
-                    }
                 }
             }
         }

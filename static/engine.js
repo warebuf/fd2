@@ -1882,7 +1882,7 @@ function drawHeatMap(){
                 ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
-                ctx.fillText("DEF",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                ctx.fillText("AS",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25
                 //ctx.fillStyle = '#848884';
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
@@ -1938,11 +1938,11 @@ function drawHeatMap(){
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].HP,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25
-                ctx.fillStyle = calcColour(state[i][j][k].DEF)
+                ctx.fillStyle = calcColour(state[i][j][k].AS)
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
-                ctx.fillText(state[i][j][k].DEF,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                ctx.fillText(state[i][j][k].AS,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
                 x_shift = x_shift+25;
                 //ctx.fillStyle = calcColour(state[i][j][k].H.DOG)
                 //ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)

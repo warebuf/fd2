@@ -396,7 +396,7 @@ function drawProgressCircle() {
                 ctx.stroke();
 
                 // Draw the progress circle
-                context.beginPath();
+                ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
                 ctx.arc(centerX+(k*100), centerY+(i*100), radius, startAngle, endAngle, false);

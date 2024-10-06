@@ -2197,7 +2197,7 @@ function drawHeatMap(){
                 ctx.stroke();
 
                 // Add text inside the circle
-                ctx.font = "8px monospace";
+                ctx.font = "5px monospace";
                 ctx.fillStyle = 'white';
                 ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 

@@ -398,7 +398,7 @@ function drawProgressCircle() {
                 // Draw the progress circle
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
-                var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
+                var endAngle = (state[i][j][k].TTD/state[i][j][k].TTDo / 100) * 2 * Math.PI + startAngle;
                 ctx.arc(centerX+(k*100), centerY+(i*100), radius, startAngle, endAngle, false);
                 ctx.strokeStyle = '#4caf50'; // Color for the progress
                 ctx.stroke();

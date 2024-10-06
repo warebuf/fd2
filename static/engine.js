@@ -178,12 +178,20 @@ function calcPos() {
                                 }
                             }
                         } else if(state[i][j][k].Status == 2) {
-                            state[i][j][k].TTD -= (0.025*state[i][j][k].AS)
-                            if(state[i][j][k].TTD <= 0) {
-                                if(attacking_frames_count==0){
-                                    attacking_frames_count=1
+
+                            if(state[i][j][k].TTD > match_data[animating_state][i][j][k].TTD) {
+                                state[i][j][k].TTD -= (0.025*state[i][j][k].AS)
+                                if(state[i][j][k].TTD <= 0) {
+                                    state[i][j][k].TTD = 0
+                                    if(attacking_frames_count==0){
+                                        attacking_frames_count=1
+                                    }
                                 }
-                            } else if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD}
+                                else if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD}
+                            }
+
+
+
                         }
                     }
                 }

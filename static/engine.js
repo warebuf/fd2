@@ -2205,9 +2205,8 @@ function drawHeatMap(){
 
                 // Add text inside the circle
                 ctx.font = "11px monospace";
+                ctx.fillStyle = 'black';
                 ctx.fillText(100*percentage + '%', x_offset+x_shift+t_shift, y_offset+y_shift);
-
-
 
                 y_shift=y_shift+45;
                 x_shift=0;

@@ -377,6 +377,12 @@ function drawState() {
 }
 
 function drawProgressCircle() {
+
+    let centerX = canvas.width / 2;
+    let centerY = canvas.height / 2;
+    let radius = 80;
+    let lineWidth = 15;
+
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {

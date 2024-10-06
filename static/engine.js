@@ -163,7 +163,7 @@ function calcPos() {
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
                                 state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.025)
 
-                                if( (state[i][j][k].DistanceLeft < match_data[animating_state][i][j][k].DistanceLeft) ){
+                                if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                     state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                     if(state[i][j][k].DistanceLeft == 0) {

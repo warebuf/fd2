@@ -43,7 +43,6 @@ type hero struct {
 
 	Battle *Camp
 	TTD    float64
-	TTDo   float64
 }
 
 /*
@@ -715,11 +714,8 @@ func createMatch(pl *permission_list) *match {
 					SPD: rand.Intn(100) + 1,
 
 					Battle: nil,
-					TTD:    0.0,
-					TTDo:   0.0,
+					TTD:    100.0,
 				}
-				temp.TTD = float64(temp.AS)
-				temp.TTDo = float64(temp.AS)
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
@@ -1286,13 +1282,13 @@ func (m *match) run() {
 					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
 
 					unitOfInterest.Battle.HP -= unitOfInterest.ATK
-					unitOfInterest.TTD = unitOfInterest.TTDo
+					unitOfInterest.TTD = 100
 
 					if unitOfInterest.Battle.HP < 0 {
 						unitOfInterest.Battle.HP = 0
 						for j := 0; j < len(unitOfInterest.Battle.Units); j++ {
 							unitOfInterest2 := unitOfInterest.Battle.Units[j]
-							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTDo
+							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = 100
 							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Status = 0
 						}
 						has_user_cmd = true

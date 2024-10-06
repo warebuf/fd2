@@ -216,13 +216,13 @@ function drawAttack() {
             let atkk = atk_obj.Attacker[2]
 
             state[atki][atkj][atkk].Battle.HP = state[atki][atkj][atkk].Battle.HP - state[atki][atkj][atkk].ATK
-            state[atki][atkj][atkk].TTD = state[atki][atkj][atkk].TTDo
+            state[atki][atkj][atkk].TTD = 100
 
             if(state[atki][atkj][atkk].Battle.HP<0) {
                 state[atki][atkj][atkk].Battle.HP=0;
                 for(let j = 0; j < state[atki][atkj][atkk].Battle.Units.length; j++) {
                     let unitOfInterest = state[atki][atkj][atkk].Battle.Units[j];
-                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTDo
+                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
                 }
                 state[atki][atkj][atkk].Battle.Units = [];
@@ -2184,7 +2184,7 @@ function drawHeatMap(){
 
 
                 // draw percentage circle
-                let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
+                let percentage = state[i][j][k].TTD/100
                 let radius = 10;
                 let lineWidth = 3
 

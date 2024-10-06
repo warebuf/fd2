@@ -375,6 +375,39 @@ function drawState() {
     }
 }
 
+function drawProgressCircle() {
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                // Draw the background circle
+                context.beginPath();
+                context.arc(centerX+(k*50), centerY+(i*50), radius, 0, 2 * Math.PI, false);
+                context.fillStyle = '#ddd';
+                context.fill();
+                context.lineWidth = lineWidth;
+                context.strokeStyle = '#ddd';
+                context.stroke();
+
+                // Draw the progress circle
+                context.beginPath();
+                var startAngle = -Math.PI / 2; // Start at the top
+                var endAngle = (percentage / 100) * 2 * Math.PI + startAngle;
+                context.arc(centerX+(k*50), centerY+(i*50), radius, startAngle, endAngle, false);
+                context.strokeStyle = '#4caf50'; // Color for the progress
+                context.stroke();
+
+                // Add text inside the circle
+                context.font = "24px Arial";
+                context.fillStyle = '#000';
+                context.textAlign = 'center';
+                context.textBaseline = 'middle';
+                context.fillText(state[i][j][k].TTD + '%', centerX+(k*50), centerY+(j+50));
+            }
+        }
+    }
+
+}
+
 function drawHoverable() {
     if(hoverable!=null){
         let w = Math.round(c.width/2)-250

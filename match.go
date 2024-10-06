@@ -16,6 +16,7 @@ type Camp struct {
 	HP    int
 	XY    Coordinate
 	Units [][]int // second array is of the form i, j, k for a *hero object in TCH
+
 }
 
 type hero struct {
@@ -37,11 +38,12 @@ type hero struct {
 
 	HP  int
 	ATK int
-	DEF int
+	AS  int
 	SPD int
 
 	Battle *Camp
 	TTD    float64
+	TTDo   float64
 }
 
 /*
@@ -709,12 +711,14 @@ func createMatch(pl *permission_list) *match {
 
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,
-					DEF: rand.Intn(100) + 1,
+					AS:  rand.Intn(100) + 1,
 					SPD: rand.Intn(100) + 1,
 
 					Battle: nil,
 					TTD:    100.0,
+					TTDo:   0.0,
 				}
+				temp.TTDo = float64(temp.AS)
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
@@ -1228,14 +1232,11 @@ func (m *match) run() {
 					for j := 0; j < len(m.camps[i].Units); j++ {
 						unitOfInterest := m.team_client_hero[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
 						if unitOfInterest.HP > 0 {
-							if unitOfInterest.HP > 0 {
-								ttd := unitOfInterest.TTD / float64(unitOfInterest.ATK)
-								fmt.Println("ttd", ttd, i, j, unitOfInterest.TTD, unitOfInterest.ATK)
-								fmt.Println(i, m.camps[i].HP)
+							ttd := unitOfInterest.TTD / float64(unitOfInterest.AS)
+							fmt.Println("ttd", ttd, i, j, unitOfInterest.TTD, unitOfInterest.AS, i, m.camps[i].HP)
 
-								if ttd < min_units {
-									min_units = ttd
-								}
+							if ttd < min_units {
+								min_units = ttd
 							}
 						}
 					}
@@ -1252,9 +1253,8 @@ func (m *match) run() {
 				if m.camps[i].HP > 0 {
 					for j := 0; j < len(m.camps[i].Units); j++ {
 						unitOfInterest := m.team_client_hero[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
-
 						if unitOfInterest.HP > 0 {
-							unitOfInterest.TTD = unitOfInterest.TTD - (min_units * float64(unitOfInterest.ATK))
+							unitOfInterest.TTD = unitOfInterest.TTD - (min_units * float64(unitOfInterest.AS))
 							if unitOfInterest.TTD <= 0.1 {
 								unitOfInterest.TTD = 0
 
@@ -1269,7 +1269,7 @@ func (m *match) run() {
 								a.Attacker[2] = unitOfInterest.Position.K
 								atk_list = append(atk_list, a)
 							}
-							fmt.Println("simulated TTD", (min_units * float64(unitOfInterest.ATK)), unitOfInterest.TTD)
+							fmt.Println("simulated TTD", (min_units * float64(unitOfInterest.AS)), unitOfInterest.TTD)
 						}
 					}
 				}
@@ -1280,28 +1280,25 @@ func (m *match) run() {
 				if atk_list[i].Type == "hit" &&
 					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
 
-					atk_power := 0.0
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].HP > 0 {
-						atk_power += float64(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].ATK)
-					}
+					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 
-					fmt.Println(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP)
+					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
 
-					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP -= int(atk_power)
-					m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].TTD = 100
+					unitOfInterest.Battle.HP -= unitOfInterest.ATK
+					unitOfInterest.TTD = float64(unitOfInterest.TTDo)
 
-					fmt.Println(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP)
-
-					if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP < 0 {
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP = 0
-						for j := 0; j < len(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units); j++ {
-							unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units[j]
-							m.team_client_hero[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
-							m.team_client_hero[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
+					if unitOfInterest.Battle.HP < 0 {
+						unitOfInterest.Battle.HP = 0
+						for j := 0; j < len(unitOfInterest.Battle.Units); j++ {
+							unitOfInterest2 := unitOfInterest.Battle.Units[j]
+							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTDo
+							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Status = 0
 						}
 						has_user_cmd = true
 						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([][]int, 0)
 					}
+
+					// POSSIBLY SET unitOfInterest.Battle here to nil
 				}
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {

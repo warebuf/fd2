@@ -2180,8 +2180,11 @@ function drawHeatMap(){
                 ctx.font = '10px monospace';
                 ctx.fillStyle = 'black';
                 ctx.fillText(state[i][j][k].SPD,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
-                x_shift = x_shift+25;
+                x_shift = x_shift+50;
 
+
+
+                // draw percentage circle
                 let percentage = state[i][j][k].TTD/state[i][j][k].TTDo
                 let radius = 10;
                 let lineWidth = 3

@@ -292,7 +292,7 @@ function drawCamps() {
             if(camps[i].Units[j].Status == 2) {
                 // draw percentage circle
                 let percentage = (100-camps[i].Units[j].TTD)/100
-
+                console.log(percentage)
                 let radius = 10;
 
                 // Draw the progress circle

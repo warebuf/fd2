@@ -289,7 +289,6 @@ function drawCamps() {
         ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
 
         for(let j = 0; j < camps[i].Units.length; j++) {
-            console.log("get here", camps[i].Units[j])
             let unitOfInterest = state[camps[i].Units[j][0]][camps[i].Units[j][1]][camps[i].Units[j][2]]
 
             if(unitOfInterest.Status == 2) {

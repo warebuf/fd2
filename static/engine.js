@@ -272,29 +272,6 @@ function drawPos(){
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].HP > 0) {
                     drawRotated('>',w+(state[i][j][k].Position.X*2.5),h+(-state[i][j][k].Position.Y*2.5),state[i][j][k].Angle, "11", 3, "white")
-
-                    if(state[i][j][k].Status == 2) {
-                        // draw percentage circle
-                        let percentage = (100-state[i][j][k].TTD)/100
-                        let radius = 10;
-
-                        // Draw the progress circle
-                        ctx.beginPath();
-                        var startAngle = -Math.PI / 2; // Start at the top
-                        var endAngle = percentage * 2 * Math.PI + startAngle;
-                        ctx.arc(w+(state[i][j][k].Position.X*2.5) + 10, h+(-state[i][j][k].Position.Y*2.5) + 10, radius, startAngle, endAngle, false);
-
-                        if((percentage != 0) && (percentage != 1)) {
-                            // Close the path to form a wedge
-                            ctx.lineTo(w+(state[i][j][k].Position.X*2.5) + 10, h+(-state[i][j][k].Position.Y*2.5) + 10); // Draw line to center of the circle
-                            ctx.closePath(); // Automatically draws a line from the last point to the starting point
-                        }
-                        ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
-                        ctx.stroke();
-
-                    }
-
-
                 }
             }
         }
@@ -310,6 +287,30 @@ function drawCamps() {
 
     for(let i = 0; i < camps.length; i++) {
         ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
+
+        for(let j = 0; j < camps[i].length; j++) {
+            if(camps[i].Units[j].Status == 2) {
+                // draw percentage circle
+                let percentage = (100-camps[i].Units[j].TTD)/100
+                let radius = 10;
+
+                // Draw the progress circle
+                ctx.beginPath();
+                var startAngle = -Math.PI / 2; // Start at the top
+                var endAngle = percentage * 2 * Math.PI + startAngle;
+                ctx.arc(w+(camps[i].Units[j].Position.X*2.5) + 10, h+(-camps[i].Units[j].Position.Y*2.5) + 10, radius, startAngle, endAngle, false);
+
+                if((percentage != 0) && (percentage != 1)) {
+                    // Close the path to form a wedge
+                    ctx.lineTo(w+(camps[i].Units[j].Position.X*2.5) + 10, h+(-camps[i].Units[j].Position.Y*2.5) + 10); // Draw line to center of the circle
+                    ctx.closePath(); // Automatically draws a line from the last point to the starting point
+                }
+                ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
+                ctx.stroke();
+
+            }
+        }
+
     }
 
     ctx.fillStyle = "white";

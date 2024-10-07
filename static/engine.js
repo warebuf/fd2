@@ -2193,14 +2193,14 @@ function drawHeatMap(){
                 var endAngle = percentage * 2 * Math.PI + startAngle;
                 ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, startAngle, endAngle, false);
 
-                // Close the path to form a wedge
-                ctx.lineTo(x_offset+x_shift+t_shift, y_offset+y_shift); // Draw line to center of the circle
-                ctx.closePath(); // Automatically draws a line from the last point to the starting point
 
                 if((percentage != 0) && (percentage != 1)) {
-                    ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
-                    ctx.stroke();
+                    // Close the path to form a wedge
+                    ctx.lineTo(x_offset+x_shift+t_shift, y_offset+y_shift); // Draw line to center of the circle
+                    ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
+                ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
+                ctx.stroke();
 
                 // Add text inside the circle
                 ctx.font = "7px monospace";

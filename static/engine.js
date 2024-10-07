@@ -335,7 +335,6 @@ function drawCamps() {
                 } else {
                     ctx.strokeStyle = 'blue';
                 }
-
                 ctx.stroke();
             }
         }

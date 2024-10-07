@@ -2197,7 +2197,7 @@ function drawHeatMap(){
                 ctx.lineTo(x_offset+x_shift+t_shift, y_offset+y_shift); // Draw line to center of the circle
                 ctx.closePath(); // Automatically draws a line from the last point to the starting point
 
-                if((percentage != 0) && (percentage != 100)) {
+                if((percentage != 0) && (percentage != 1)) {
                     ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
                     ctx.stroke();
                 }

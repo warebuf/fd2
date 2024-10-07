@@ -40,7 +40,6 @@ anime()
 function removeB1() {
 
 	// send message to server to create match
-	var e1 = document.getElementById("formatselect").value;
 	socket.send(JSON.stringify({ "Event": 'createPermissionList', "Message": 'ffa' }))
 
 	var button = document.getElementById("b1");

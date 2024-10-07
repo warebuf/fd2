@@ -289,8 +289,9 @@ function drawCamps() {
         ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
 
         for(let j = 0; j < camps[i].Units.length; j++) {
-            let unitOfInterest = state[camps[i].Units[0]][camps[i].Units[1]][camps[i].Units[2]]
-            console.log("get here", unitOfInterest.Status)
+            console.log("get here", camps[i].Units[j])
+            let unitOfInterest = state[camps[i].Units[j][0]][camps[i].Units[j][1]][camps[i].Units[j][2]]
+
             if(unitOfInterest.Status == 2) {
                 // draw percentage circle
                 let percentage = (100-unitOfInterest.TTD)/100

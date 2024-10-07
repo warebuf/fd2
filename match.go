@@ -310,168 +310,6 @@ func m_read(m *match_socket) {
 				if all_done {
 					m.m.start_ticker <- true
 				}
-			} else if msg.Event == "swapRequest" {
-				/*
-					fmt.Println("recieved swapRequest")
-						indices := strings.Split(msg.Message, `;`)
-						if indices[1] == indices[4] {
-							if indices[1] == "0" { //head
-								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].H = m.m.team_client_hero[team_index][player_index][unit_index_2].H
-									m.m.team_client_hero[team_index][player_index][unit_index_2].H = temp
-								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].H // same as b
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].H = *m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].H
-									m.m.team_client_hero[team_index][player_index][unit_index_2].H = *m.m.bench[tp_index][unit_index_1]
-									m.m.bench[tp_index][unit_index_1] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.bench[tp_index][unit_index_1]
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = temp
-								}
-
-							} else if indices[1] == "1" { //larm
-								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].L = m.m.team_client_hero[team_index][player_index][unit_index_2].L
-									m.m.team_client_hero[team_index][player_index][unit_index_2].L = temp
-								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].L // same as b
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].L = *m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].L
-									m.m.team_client_hero[team_index][player_index][unit_index_2].L = *m.m.bench[tp_index][unit_index_1]
-									m.m.bench[tp_index][unit_index_1] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.bench[tp_index][unit_index_1]
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = temp
-								}
-							} else if indices[1] == "2" { //rarm
-								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].R = m.m.team_client_hero[team_index][player_index][unit_index_2].R
-									m.m.team_client_hero[team_index][player_index][unit_index_2].R = temp
-								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].R // same as b
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].R = *m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].R
-									m.m.team_client_hero[team_index][player_index][unit_index_2].R = *m.m.bench[tp_index][unit_index_1]
-									m.m.bench[tp_index][unit_index_1] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.bench[tp_index][unit_index_1]
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = temp
-								}
-							} else if indices[1] == "3" { //bottom
-								if indices[0] == "0" && indices[3] == "0" { //first piece is a starter, second piece is a starter
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].B = m.m.team_client_hero[team_index][player_index][unit_index_2].B
-									m.m.team_client_hero[team_index][player_index][unit_index_2].B = temp
-								} else if indices[0] == "0" && indices[3] == "1" { // first piece is a starter, second piece is a bench
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_1].B // same as b
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.team_client_hero[team_index][player_index][unit_index_1].B = *m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "0" { // first piece is a bench, second piece is a starter
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									team_index := m.m.uuid_to_team_int[m.u.uid].a
-									player_index := m.m.uuid_to_team_int[m.u.uid].b
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									temp := m.m.team_client_hero[team_index][player_index][unit_index_2].B
-									m.m.team_client_hero[team_index][player_index][unit_index_2].B = *m.m.bench[tp_index][unit_index_1]
-									m.m.bench[tp_index][unit_index_1] = &temp
-
-								} else if indices[0] == "1" && indices[3] == "1" { // both are bench
-									tp_index := m.m.uuid_to_team_int[m.u.uid].ab
-									unit_index_1, _ := strconv.Atoi(indices[2])
-									temp := m.m.bench[tp_index][unit_index_1]
-									unit_index_2, _ := strconv.Atoi(indices[5])
-									m.m.bench[tp_index][unit_index_1] = m.m.bench[tp_index][unit_index_2]
-									m.m.bench[tp_index][unit_index_2] = temp
-								}
-							}
-
-							// send updated bench, send updated starters
-							m.m.sharebench()
-							m.m.sharepos(nil, 0)
-
-						}
-				*/
 			} else if msg.Event == "resign" {
 
 				m.m.ended = true
@@ -1272,36 +1110,6 @@ func (m *match) run() {
 				}
 			}
 
-			// simulate all attacks
-			for i := 0; i < len(atk_list); i++ {
-				if atk_list[i].Type == "hit" &&
-					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
-
-					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
-
-					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
-
-					unitOfInterest.Battle.HP -= unitOfInterest.ATK
-					unitOfInterest.TTD = 100
-
-					if unitOfInterest.Battle.HP < 0 {
-						unitOfInterest.Battle.HP = 0
-						for j := 0; j < len(unitOfInterest.Battle.Units); j++ {
-							unitOfInterest2 := unitOfInterest.Battle.Units[j]
-							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = 100
-							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Status = 0
-						}
-						has_user_cmd = true
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([][]int, 0)
-					}
-				}
-
-				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
-					m.ended = true
-				}
-
-			}
-
 			// move all unit positions
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -1347,11 +1155,44 @@ func (m *match) run() {
 			num, _ := strconv.Atoi(m.turn[5:])
 			if len(atk_list) > 0 {
 				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
+				m.sharepos(nil, 0)
 			} else {
 				m.turn = "TURN " + strconv.Itoa(num+1)
+				m.sharepos(atk_list, min_units)
 			}
 
-			m.sharepos(atk_list, min_units)
+			// simulate all attacks
+			for i := 0; i < len(atk_list); i++ {
+				if atk_list[i].Type == "hit" &&
+					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
+
+					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
+
+					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
+
+					unitOfInterest.Battle.HP -= unitOfInterest.ATK
+					unitOfInterest.TTD = 100
+
+					if unitOfInterest.Battle.HP < 0 {
+						unitOfInterest.Battle.HP = 0
+						for j := 0; j < len(unitOfInterest.Battle.Units); j++ {
+							unitOfInterest2 := unitOfInterest.Battle.Units[j]
+							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = 100
+							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Status = 0
+						}
+						has_user_cmd = true
+						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([][]int, 0)
+					}
+				}
+
+				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
+					m.ended = true
+				}
+			}
+
+			if len(atk_list) > 0 {
+				m.sharepos(atk_list, min_units)
+			}
 
 			if game_over_check(m.team_client_hero) {
 
@@ -1487,134 +1328,6 @@ func (m *match) sharepos(a []*attack, utime float64) {
 		}
 	}
 }
-
-/*
-func closest_enemies(state [][][]*hero, atk_t int, atk_u int, atk_b int) [][]int {
-
-		ans := [][]int{}
-
-		closest := 999999.99
-
-		// calculate closest enemy
-		for i := 0; i < len(state); i++ {
-			if i != atk_t {
-				for j := 0; j < len(state[i]); j++ {
-					for k := 0; k < len(state[i][j]); k++ {
-						if state[i][j][k].H.HP > 0 {
-							dist := getDistanceTwoPoints(state[atk_t][atk_u][atk_b].Position, state[i][j][k].Position)
-							if dist == closest {
-								closest = dist
-								ans = append(ans, []int{i, j, k})
-							} else if dist < closest {
-								closest = dist
-								ans = append([][]int{}, []int{i, j, k})
-							}
-						}
-					}
-				}
-			}
-		}
-
-		return ans
-	}
-
-func close_attack(state [][][]*hero, atk_t int, atk_u int, atk_b int, def [][]int) [][]string {
-
-	fmt.Println("called close attack")
-
-	if len(def) == 0 {
-		fmt.Println("no more enemies to attack")
-		return [][]string{}
-	}
-
-	closest_i := def[0][0]
-	closest_j := def[0][1]
-	closest_k := def[0][2]
-
-	// attack first closest enemy
-	atk_power := 0
-	part_count := 0
-	if state[atk_t][atk_u][atk_b].HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].ATK
-		part_count += 1
-	}
-	if state[atk_t][atk_u][atk_b].HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].ATK
-		part_count += 1
-	}
-	if state[atk_t][atk_u][atk_b].HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].ATK
-		part_count += 1
-	}
-	if state[atk_t][atk_u][atk_b].HP > 0 {
-		atk_power += state[atk_t][atk_u][atk_b].ATK
-		part_count += 1
-	}
-	atk_power = atk_power / part_count
-
-
-		hweight := int(0)
-			lweight := int(0)
-			rweight := int(0)
-			bweight := int(0)
-			sumweight := int(0)
-			dmg_list := [][]string{} // each unit attacked, each part attacked
-
-				if state[closest_i][closest_j][closest_k].HP > 0 {
-					hweight = state[closest_i][closest_j][closest_k].H.Weight
-				}
-				if state[closest_i][closest_j][closest_k].L.HP > 0 {
-					lweight = state[closest_i][closest_j][closest_k].L.Weight
-				}
-				if state[closest_i][closest_j][closest_k].R.HP > 0 {
-					rweight = state[closest_i][closest_j][closest_k].R.Weight
-				}
-				if state[closest_i][closest_j][closest_k].B.HP > 0 {
-					bweight = state[closest_i][closest_j][closest_k].B.Weight
-				}
-
-				sumweight = hweight + lweight + rweight + bweight
-
-				fmt.Println(hweight, lweight, rweight, bweight)
-				random_number := rand.Intn(sumweight)
-
-				if random_number < hweight {
-					dmg := 0
-					if atk_power-state[closest_i][closest_j][closest_k].H.DEF > 0 {
-						dmg = atk_power - state[closest_i][closest_j][closest_k].H.DEF
-					}
-					fmt.Println("DMG", dmg)
-					state[closest_i][closest_j][closest_k].H.HP = state[closest_i][closest_j][closest_k].H.HP - dmg
-					dmg_list = append(dmg_list, []string{"H;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-				} else if random_number < hweight+lweight {
-					dmg := 0
-					if atk_power-state[closest_i][closest_j][closest_k].L.DEF > 0 {
-						dmg = atk_power - state[closest_i][closest_j][closest_k].L.DEF
-					}
-					fmt.Println("DMG", dmg)
-					state[closest_i][closest_j][closest_k].L.HP = state[closest_i][closest_j][closest_k].L.HP - dmg
-					dmg_list = append(dmg_list, []string{"L;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-				} else if random_number < hweight+lweight+rweight {
-					dmg := 0
-					if atk_power-state[closest_i][closest_j][closest_k].R.DEF > 0 {
-						dmg = atk_power - state[closest_i][closest_j][closest_k].R.DEF
-					}
-					fmt.Println("DMG", dmg)
-					state[closest_i][closest_j][closest_k].R.HP = state[closest_i][closest_j][closest_k].R.HP - dmg
-					dmg_list = append(dmg_list, []string{"R;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-				} else {
-					dmg := 0
-					if atk_power-state[closest_i][closest_j][closest_k].B.DEF > 0 {
-						dmg = atk_power - state[closest_i][closest_j][closest_k].B.DEF
-					}
-					fmt.Println("DMG", dmg)
-					state[closest_i][closest_j][closest_k].B.HP = state[closest_i][closest_j][closest_k].B.HP - dmg
-					dmg_list = append(dmg_list, []string{"B;" + strconv.Itoa(dmg) + ";" + strconv.Itoa(hweight) + ";" + strconv.Itoa(lweight) + ";" + strconv.Itoa(rweight) + ";" + strconv.Itoa(bweight) + ";" + strconv.Itoa(random_number)})
-				}
-
-return dmg_list
-}
-*/
 
 func game_over_check(state [][][]*hero) bool {
 

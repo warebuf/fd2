@@ -310,11 +310,11 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) + 10, radius, startAngle, endAngle, false);
+                ctx.arc(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) - 15, radius, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) {
                     // Close the path to form a wedge
-                    ctx.lineTo(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) + 10); // Draw line to center of the circle
+                    ctx.lineTo(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) - 15); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress

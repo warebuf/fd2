@@ -303,7 +303,7 @@ function drawCamps() {
             let unitOfInterest = state[camps[i].Units[j][0]][camps[i].Units[j][1]][camps[i].Units[j][2]]
             if(unitOfInterest.Status == 2) {
 
-                let x_shift = -int(x_shift_tracker.length/2)*5
+                let x_shift = -Math.round(x_shift_tracker.length/2)*5
                 let y_shift = 15;
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
                     y_shift = -15;

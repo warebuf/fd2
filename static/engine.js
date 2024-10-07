@@ -2186,7 +2186,7 @@ function drawHeatMap(){
                 // draw percentage circle
                 let percentage = state[i][j][k].TTD/100
                 let radius = 10;
-                let lineWidth = 3
+                let lineWidth = 10
 
                 // Draw the progress circle
                 ctx.beginPath();

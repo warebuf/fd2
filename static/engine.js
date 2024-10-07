@@ -2186,7 +2186,8 @@ function drawHeatMap(){
                 // draw percentage circle
                 let percentage = state[i][j][k].TTD/100
                 let radius = 10;
-                let lineWidth = 10
+
+                ctx.lineWidth = 15;
 
                 // Draw the progress circle
                 ctx.beginPath();
@@ -2194,7 +2195,6 @@ function drawHeatMap(){
                 var endAngle = percentage * 2 * Math.PI + startAngle;
                 ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, startAngle, endAngle, false);
                 ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
-                ctx.lineWidth = radius;
                 ctx.stroke();
 
                 // Add text inside the circle

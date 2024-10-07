@@ -288,10 +288,11 @@ function drawCamps() {
     for(let i = 0; i < camps.length; i++) {
         ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
 
-        for(let j = 0; j < camps[i].length; j++) {
+        for(let j = 0; j < camps[i].Units.length; j++) {
             if(camps[i].Units[j].Status == 2) {
                 // draw percentage circle
                 let percentage = (100-camps[i].Units[j].TTD)/100
+
                 let radius = 10;
 
                 // Draw the progress circle

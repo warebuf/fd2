@@ -44,10 +44,6 @@ function removeB1() {
 
 	var button = document.getElementById("b1");
 	button.remove();
-	var menu1 = document.getElementById("opponent");
-	menu1.remove();
-	var menu2 = document.getElementById("format");
-	menu2.remove();
 
 	document.getElementById("mid_div").insertAdjacentHTML('beforeend',"<button id='b2' onclick=removeB2()>Cancel Matchmaking</button>");
 

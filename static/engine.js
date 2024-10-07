@@ -307,10 +307,10 @@ function drawCamps() {
                 let y_shift = 15;
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
                     y_shift = -15;
-                    x_shift += x_shift_tracker[0][0]*5
+                    x_shift += x_shift_tracker[0][0]*10
                     x_shift_tracker[0][0] += 1
                 } else {
-                    x_shift += x_shift_tracker[1][0]*5
+                    x_shift += x_shift_tracker[1][0]*10
                     x_shift_tracker[1][0] += 1
                 }
 

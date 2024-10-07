@@ -311,7 +311,7 @@ function drawCamps() {
                     x_shift += x_shift_tracker[0][0]*20
                     x_shift_tracker[0][0] += 1
                 } else {
-                    x_shift = -Math.round(x_shift_tracker[1].length/2)*5
+                    x_shift = -Math.round(x_shift_tracker[1].length/2)*10
                     x_shift += x_shift_tracker[1][0]*20
                     x_shift_tracker[1][0] += 1
                 }
@@ -330,7 +330,12 @@ function drawCamps() {
                     ctx.lineTo(w+(unitOfInterest.Position.X*2.5) + x_shift, h+(-unitOfInterest.Position.Y*2.5) + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
-                ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
+                if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
+                    ctx.strokeStyle = 'green';
+                } else {
+                    ctx.strokeStyle = 'blue';
+                }
+
                 ctx.stroke();
             }
         }

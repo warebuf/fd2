@@ -41,8 +41,7 @@ function removeB1() {
 
 	// send message to server to create match
 	var e1 = document.getElementById("formatselect").value;
-	var e2 = document.getElementById("opponentselect").value;
-	socket.send(JSON.stringify({ "Event": 'createPermissionList', "Message": e1+e2 }))
+	socket.send(JSON.stringify({ "Event": 'createPermissionList', "Message": 'ffa' }))
 
 	var button = document.getElementById("b1");
 	button.remove();
@@ -59,24 +58,5 @@ function removeB2() {
 	var button = document.getElementById("b2");
 	button.remove();
 	document.getElementById("mid_div").insertAdjacentHTML('beforeend',"<button id='b1' onclick=removeB1()>Create a Match</button>");
-
-	document.getElementById("container").insertAdjacentHTML('beforeend',
-		"<div id=\"format\">\n" +
-		"\t\t<label>Choose a Format:</label>\n" +
-		"\t\t<select id=\"formatselect\">\n" +
-		"\t\t\t<option value=\"ffa\">Free For All</option>\n" +
-		"\t\t\t<option value=\"tea\">Team</option>\n" +
-		"\t\t\t<option value=\"1vx\">1vX</option>\n" +
-		"\t\t</select>\n" +
-		"\n" +
-		"\t</div>");
-	
-	document.getElementById("container").insertAdjacentHTML('beforeend',
-		"<div id=\"opponent\"> <label>Choose Number of Opponent:</label> <select id=\"opponentselect\"> " +
-		"			<option value=\"1\">1</option>" +
-		"			<option value=\"3\">3</option>" +
-		"			<option value=\"9\">9</option>" +
-		"			<option value=\"99\">99</option>" +
-			"</select>	</div>");
 }
 

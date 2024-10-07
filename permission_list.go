@@ -90,7 +90,7 @@ func p_read(p *permission_socket) {
 
 				fmt.Println("received createPermissionList")
 
-				perm_list := createPL(msg)
+				perm_list := createPL()
 				go perm_list.run()
 				psocketBroadcast(&pmessage{Event: "newPL", Message: perm_list.game_mode + strconv.Itoa(int(perm_list.capacity)), When: time.Now(), PLID: perm_list.plid}) // let everyone know there is a new room
 				perm_list.gamer_permission_signup <- p
@@ -146,7 +146,7 @@ func p_read(p *permission_socket) {
 	}
 }
 
-func createPL(msg *pmessage) *permission_list {
+func createPL() *permission_list {
 	fmt.Println("called 'createMatch'")
 
 	var ans *permission_list
@@ -160,48 +160,14 @@ func createPL(msg *pmessage) *permission_list {
 		plid_to_permission_list.mutex.RUnlock()
 		if !found {
 
-			gm := "ffa"
-
-			num := uint(1)
-			sd := uint(2)
-			if len(msg.Message) < 4 {
-				gm = "ffa"
-				num = 1
-			} else {
-				if msg.Message[0:3] == "ffa" {
-					gm = "ffa"
-				} else if msg.Message[0:3] == "tea" {
-					gm = "tea"
-				} else if msg.Message[0:3] == "1vx" {
-					gm = "1vx"
-				} else {
-					gm = "ffa"
-				}
-				num_ops, _ := strconv.Atoi(msg.Message[3:])
-
-				if (num_ops < 100) && (num_ops > 1) {
-					num = uint(num_ops)
-				} else {
-					num = 2
-				}
-
-				if gm == "ffa" {
-					sd = num
-				} else if gm == "tea" {
-					sd = 2
-				} else if gm == "1vx" {
-					sd = 2
-				}
-			}
-
 			ans = &permission_list{
 
 				mutex: sync.RWMutex{},
 
 				plid:      random_number,
-				game_mode: gm,
-				capacity:  num,
-				sides:     sd,
+				game_mode: "ffa",
+				capacity:  2,
+				sides:     2,
 				started:   false,
 
 				gamer_permission_signup:  make(chan *permission_socket),

@@ -617,7 +617,7 @@ func createMatch(pl *permission_list) *match {
 					}
 			*/
 
-			for y := 0; y < 5; y++ {
+			for y := 0; y < 3; y++ {
 				/*
 					temph := rand.Intn(len(namesh))
 						templ := rand.Intn(len(namesl))

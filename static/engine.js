@@ -158,10 +158,10 @@ function calcPos() {
                                 coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
                                 (state[i][j][k].DistanceLeft > match_data[animating_state][i][j][k].DistanceLeft)
                             ) {
-                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.025)
+                                let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
                                 state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.025)
+                                state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
 
                                 if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
                                     state[i][j][k].Position = match_data[animating_state][i][j][k].Position
@@ -180,7 +180,7 @@ function calcPos() {
                             }
                         } else if(state[i][j][k].Status == 2) {
 
-                            state[i][j][k].TTD -= (0.025*state[i][j][k].AS)
+                            state[i][j][k].TTD -= (0.015*state[i][j][k].AS)
                             if(state[i][j][k].TTD <= 0) {
                                 state[i][j][k].TTD = 0
                                 if(attacking_frames_count==0){

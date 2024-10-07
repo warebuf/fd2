@@ -288,9 +288,19 @@ function drawCamps() {
     for(let i = 0; i < camps.length; i++) {
         ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
 
+        let timer_count = []
+        timer_count.push([])
+        timer_count.push([])
+        for(let j = 0; j < camps[i].Units.length; j++) {
+            if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
+                timer_count[0].push(true)
+            } else {
+                timer_count[1].push(true)
+            }
+        }
+
         for(let j = 0; j < camps[i].Units.length; j++) {
             let unitOfInterest = state[camps[i].Units[j][0]][camps[i].Units[j][1]][camps[i].Units[j][2]]
-
             if(unitOfInterest.Status == 2) {
                 // draw percentage circle
                 let percentage = (100-unitOfInterest.TTD)/100
@@ -300,19 +310,17 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc(w+(unitOfInterest.Position.X*2.5) + 10, h+(-unitOfInterest.Position.Y*2.5) + 10, radius, startAngle, endAngle, false);
+                ctx.arc(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) + 10, radius, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) {
                     // Close the path to form a wedge
-                    ctx.lineTo(w+(unitOfInterest.Position.X*2.5) + 10, h+(-unitOfInterest.Position.Y*2.5) + 10); // Draw line to center of the circle
+                    ctx.lineTo(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) + 10); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
                 ctx.stroke();
-
             }
         }
-
     }
 
     ctx.fillStyle = "white";

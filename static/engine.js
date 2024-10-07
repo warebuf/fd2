@@ -215,17 +215,19 @@ function drawAttack() {
             let atkj = atk_obj.Attacker[1]
             let atkk = atk_obj.Attacker[2]
 
-            state[atki][atkj][atkk].Battle.HP = state[atki][atkj][atkk].Battle.HP - state[atki][atkj][atkk].ATK
+            let campOfInterest = state[atki][atkj][atkk].Battle
+
+            campOfInterest.HP -= state[atki][atkj][atkk].ATK
             state[atki][atkj][atkk].TTD = 100
 
-            if(state[atki][atkj][atkk].Battle.HP<0) {
-                state[atki][atkj][atkk].Battle.HP=0;
-                for(let j = 0; j < state[atki][atkj][atkk].Battle.Units.length; j++) {
-                    let unitOfInterest = state[atki][atkj][atkk].Battle.Units[j];
+            if(campOfInterest.HP<=0) {
+                campOfInterest.HP=0;
+                for(let j = 0; j < campOfInterest.Units.length; j++) {
+                    let unitOfInterest = campOfInterest.Units[j];
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
                 }
-                state[atki][atkj][atkk].Battle.Units = [];
+                campOfInterest.Units = []
             }
 
             if ( attacking_frames_count==59 ) {

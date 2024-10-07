@@ -304,13 +304,12 @@ function drawCamps() {
             if(unitOfInterest.Status == 2) {
                 // draw percentage circle
                 let percentage = (100-unitOfInterest.TTD)/100
-                let radius = 10;
 
                 // Draw the progress circle
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) - 15, radius, startAngle, endAngle, false);
+                ctx.arc(w+(unitOfInterest.Position.X*2.5), h+(-unitOfInterest.Position.Y*2.5) - 15, 5, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) {
                     // Close the path to form a wedge

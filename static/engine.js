@@ -2187,13 +2187,16 @@ function drawHeatMap(){
                 let percentage = state[i][j][k].TTD/100
                 let radius = 10;
 
-                ctx.lineWidth = 20;
-
                 // Draw the progress circle
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
                 ctx.arc(x_offset+x_shift+t_shift, y_offset+y_shift, radius, startAngle, endAngle, false);
+
+                // Close the path to form a wedge
+                ctx.lineTo(x_offset+x_shift+t_shift, y_offset+y_shift); // Draw line to center of the circle
+                ctx.closePath(); // Automatically draws a line from the last point to the starting point
+
                 ctx.strokeStyle = '#4caf50'; // y_offset+y_shift for the progress
                 ctx.stroke();
 

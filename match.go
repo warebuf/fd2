@@ -1027,8 +1027,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
-						if (m.team_client_hero[i][j][k].Bot == true) &&
-							(m.team_client_hero[i][j][k].Status == 0) {
+						if (m.team_client_hero[i][j][k].Bot == true) && (m.team_client_hero[i][j][k].Status == 0) {
 
 							random_number := rand.Intn(len(m.camps))
 							//random_number := rand.Intn(len(m.camps) + 1)

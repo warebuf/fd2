@@ -175,8 +175,8 @@ function calcPos() {
                                             camps[state[i][j][k].Destination.I].Units.push([i,j,k])
                                         } else {
                                             state[i][j][k].Status = 0;
+                                            console.log(i,j,k, "STATUS WAS CHANGED TO 0")
                                         }
-
                                     }
                                 }
                                 console.log(i,j,k, state[i][j][k].Position)
@@ -411,8 +411,7 @@ function drawState() {
                 // draw symbol if ready for action
                 if(turn.substring(0,4) == "TURN") {
                     if (
-                        (state[i][j][k].HP > 0) &&
-                        (state[i][j][k].Status == 0)
+                        (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0)
                     ) {
                         ctx.fillStyle = 'white'
                         ctx.textAlign = "center";

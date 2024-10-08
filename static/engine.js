@@ -292,11 +292,8 @@ function drawCamps() {
         x_shift_tracker.push([]) // list of my_team units at this camp
         x_shift_tracker.push([]) // list of enemy units at this camp
         for(let j = 0; j < camps[i].Units.length; j++) {
-            if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
-                x_shift_tracker[0].push(0)
-            } else {
-                x_shift_tracker[1].push(0)
-            }
+            if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {x_shift_tracker[0].push(0)}
+            else {x_shift_tracker[1].push(0)}
         }
 
         for(let j = 0; j < camps[i].Units.length; j++) {
@@ -312,7 +309,6 @@ function drawCamps() {
                     x_shift = -Math.floor(x_shift_tracker[0].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[0][0]*20
                     x_shift_tracker[0][0] += 1
-                    console.log(-Math.floor(x_shift_tracker[0].length/2)*10-(odd*10), -Math.floor(x_shift_tracker[0].length/2)*10, -Math.floor(x_shift_tracker[0].length/2), x_shift_tracker[0].length)
                 } else {
                     x_shift = -Math.floor(x_shift_tracker[1].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[1][0]*20
@@ -328,16 +324,12 @@ function drawCamps() {
                 var endAngle = percentage * 2 * Math.PI + startAngle;
                 ctx.arc(w+(unitOfInterest.Position.X*2.5) + x_shift, h+(-unitOfInterest.Position.Y*2.5) + y_shift, 5, startAngle, endAngle, false);
 
-                if((percentage != 0) && (percentage != 1)) {
-                    // Close the path to form a wedge
+                if((percentage != 0) && (percentage != 1)) { // Close the path to form a wedge
                     ctx.lineTo(w+(unitOfInterest.Position.X*2.5) + x_shift, h+(-unitOfInterest.Position.Y*2.5) + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
-                if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
-                    ctx.strokeStyle = 'blue';
-                } else {
-                    ctx.strokeStyle = 'green';
-                }
+                if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {ctx.strokeStyle = 'blue';}
+                else {ctx.strokeStyle = 'green';}
                 ctx.stroke();
             }
         }

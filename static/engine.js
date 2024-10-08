@@ -310,6 +310,8 @@ function drawCamps() {
                     x_shift += x_shift_tracker[0][0]*20
                     x_shift_tracker[0][0] += 1
                 } else {
+                    odd = x_shift_tracker[1].length%2;
+                    if(x_shift_tracker[1].length==1){odd=0;}
                     x_shift = -Math.floor(x_shift_tracker[1].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[1][0]*20
                     x_shift_tracker[1][0] += 1

@@ -154,7 +154,7 @@ function calcPos() {
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }
                         } else if(state[i][j][k].Status == 1) {
-                            
+                            console.log(i,j,k)
                             if(
                                 coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
                                 (state[i][j][k].DistanceLeft > match_data[animating_state][i][j][k].DistanceLeft)

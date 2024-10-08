@@ -177,6 +177,8 @@ function calcPos() {
 
                                     }
                                 }
+                                console.log(i,j,k, state[i][j][k].Position)
+
                             }
                         } else if(state[i][j][k].Status == 2) {
 

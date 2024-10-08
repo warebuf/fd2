@@ -109,12 +109,6 @@ anime()
 function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
-        if(quickResetHotfix) {
-            quickResetHotfix = false;
-            selected_hoverable = null;
-            state_machine = 0;
-        }
-
         let all_states_correct = true
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
@@ -146,26 +140,31 @@ function calcPos() {
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++
-            if(animating_state>=match_data.length) {quickResetHotfix= true;}
             setupHoverable()
 
         } else {
+
+            // update status first
+
+
+
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
                         console.log(i,j,k,state[i][j][k].Status, state[i][j][k].DistanceLeft, state[i][j][k].Position)
                         if(state[i][j][k].Status == 0) { // wait for input
-                            if(match_data[animating_state][i][j][k].Status==1) {
+                            if(match_data[animating_state][i][j][k].Status!=0) {
                                 state[i][j][k].Status = 1
                                 state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
                                 state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
-                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                                state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination)
                             }
                         } else if(state[i][j][k].Status == 1) {
-                            if(
-                                //coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
-                                (state[i][j][k].DistanceLeft >= match_data[animating_state][i][j][k].DistanceLeft)
-                            ) {
+
+                            if( state[i][j][k].Battle.HP <= 0) {
+                                state[i][j][k].Status = 0;
+                                //state[i][j][k].Battle = [];
+                            } else {
                                 let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
                                 state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                                 state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
@@ -187,13 +186,20 @@ function calcPos() {
                             }
                         } else if(state[i][j][k].Status == 2) {
 
-                            state[i][j][k].TTD -= (0.015*state[i][j][k].AS)
-                            if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {
-                                state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
+                            if(state[i][j][k].Battle.HP <= 0) {
+                                state[i][j][k].Status = 0;
+                                //state[i][j][k].Battle = [];
+                            } else {
+                                state[i][j][k].TTD -= (0.015*state[i][j][k].AS)
+                                if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {
+                                    state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
+                                }
                                 if(state[i][j][k].TTD==0){
                                     attacking_frames_count=1
                                 }
                             }
+
+
 
 
 

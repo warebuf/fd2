@@ -312,6 +312,7 @@ function drawCamps() {
                     x_shift = -Math.floor(x_shift_tracker[0].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[0][0]*20
                     x_shift_tracker[0][0] += 1
+                    console.log(-Math.floor(x_shift_tracker[0].length/2)*10-(odd*10), -Math.floor(x_shift_tracker[0].length/2)*10, -Math.floor(x_shift_tracker[0].length/2), x_shift_tracker[0].length)
                 } else {
                     x_shift = -Math.floor(x_shift_tracker[1].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[1][0]*20
@@ -333,9 +334,9 @@ function drawCamps() {
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
-                    ctx.strokeStyle = 'green';
-                } else {
                     ctx.strokeStyle = 'blue';
+                } else {
+                    ctx.strokeStyle = 'green';
                 }
                 ctx.stroke();
             }

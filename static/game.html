@@ -324,6 +324,8 @@
     var view = 0;
     var settings_menu = 0;
 
+    var quickResetHotfix = true;
+
     function reception() {
 
         if (!window["WebSocket"]) {
@@ -418,7 +420,7 @@
                         // turn the JSON into javascript objects
                         let temp = msg.TCH;
                         let md = [];
-                        for (i = 0; i < temp.length; i++) {
+                        for (let i = 0; i < temp.length; i++) {
                             md[i] = new Array();
                             for (j = 0; j < temp[i].length; j++) {
                                 md[i][j] = new Array();

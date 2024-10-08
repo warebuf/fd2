@@ -109,6 +109,12 @@ anime()
 function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
+        if(quickResetHotfix) {
+            quickResetHotfix = false;
+            selected_hoverable = null;
+            state_machine = 0;
+        }
+
         let all_states_correct = true
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
@@ -140,6 +146,7 @@ function calcPos() {
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++
+            if(animating_state>=match_data.length) {quickResetHotfix= true;}
             setupHoverable()
 
         } else {

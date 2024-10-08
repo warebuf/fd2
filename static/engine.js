@@ -146,6 +146,7 @@ function calcPos() {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
+                        console.log(i,j,k)
                         if(state[i][j][k].Status == 0) { // wait for input
                             if(match_data[animating_state][i][j][k].Status==1) {
                                 state[i][j][k].Status = 1
@@ -154,7 +155,7 @@ function calcPos() {
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }
                         } else if(state[i][j][k].Status == 1) {
-                            console.log(i,j,k)
+                            console.log(i,j,k, "made it status 1")
                             if(
                                 coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
                                 (state[i][j][k].DistanceLeft > match_data[animating_state][i][j][k].DistanceLeft)

@@ -305,13 +305,14 @@ function drawCamps() {
 
                 let x_shift = 0;
                 let y_shift = 15;
+                let odd = x_shift_tracker[0].length%2
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
                     y_shift = -15;
-                    x_shift = -Math.floor(x_shift_tracker[0].length/2)*10
+                    x_shift = -Math.floor(x_shift_tracker[0].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[0][0]*20
                     x_shift_tracker[0][0] += 1
                 } else {
-                    x_shift = -Math.floor(x_shift_tracker[1].length/2)*10
+                    x_shift = -Math.floor(x_shift_tracker[1].length/2)*10-(odd*10)
                     x_shift += x_shift_tracker[1][0]*20
                     x_shift_tracker[1][0] += 1
                 }

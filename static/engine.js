@@ -147,6 +147,7 @@ function calcPos() {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
                         if(state[i][j][k].Status == 0) { // wait for input
+                            console.log(i,j,k, state[i][j][k].Status, match_data[animating_state][i][j][k].Status)
                             if(match_data[animating_state][i][j][k].Status==1) {
                                 state[i][j][k].Status = 1
                                 state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination

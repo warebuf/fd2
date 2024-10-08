@@ -153,6 +153,7 @@ function calcPos() {
                                 state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
                                 state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                                console.log(i,j,k, state[i][j][k].Status, match_data[animating_state][i][j][k].Status)
                             }
                         } else if(state[i][j][k].Status == 1) {
                             if(

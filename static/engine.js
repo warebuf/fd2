@@ -314,7 +314,7 @@ function drawCamps() {
                     x_shift = -Math.round(x_shift_tracker[1].length/2)*10
                     x_shift += x_shift_tracker[1][0]*20
                     x_shift_tracker[1][0] += 1
-                    console.log(unitOfInterest.Position, x_shift_tracker, x_shift, x_shift_tracker[1].length)
+                    console.log(unitOfInterest.Position, x_shift_tracker, x_shift, x_shift_tracker[1].length, x_shift_tracker[1].length/2, Math.round(x_shift_tracker[1].length/2))
                 }
 
                 // draw percentage circle

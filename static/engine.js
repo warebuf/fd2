@@ -306,6 +306,7 @@ function drawCamps() {
                 let x_shift = 0;
                 let y_shift = 15;
                 let odd = x_shift_tracker[0].length%2
+                if(x_shift_tracker[0]==1){odd=0;}
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
                     y_shift = -15;
                     x_shift = -Math.floor(x_shift_tracker[0].length/2)*10-(odd*10)

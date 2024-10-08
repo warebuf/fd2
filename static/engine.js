@@ -289,8 +289,8 @@ function drawCamps() {
         ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
 
         let x_shift_tracker = []
-        x_shift_tracker.push([])
-        x_shift_tracker.push([])
+        x_shift_tracker.push([]) // list of my_team units at this camp
+        x_shift_tracker.push([]) // list of enemy units at this camp
         for(let j = 0; j < camps[i].Units.length; j++) {
             if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
                 x_shift_tracker[0].push(0)
@@ -314,7 +314,7 @@ function drawCamps() {
                     x_shift = -Math.round(x_shift_tracker[1].length/2)*10
                     x_shift += x_shift_tracker[1][0]*20
                     x_shift_tracker[1][0] += 1
-                    console.log(unitOfInterest.Position, x_shift_tracker, x_shift, y_shift)
+                    console.log(unitOfInterest.Position, x_shift_tracker, x_shift, x_shift_tracker[1].length)
                 }
 
                 // draw percentage circle

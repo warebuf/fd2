@@ -155,7 +155,7 @@ function calcPos() {
                             }
                         } else if(state[i][j][k].Status == 1) {
                             if(
-                                coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
+                                //coordinateEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) &&
                                 (state[i][j][k].DistanceLeft >= match_data[animating_state][i][j][k].DistanceLeft)
                             ) {
                                 let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
@@ -164,7 +164,7 @@ function calcPos() {
                                 state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
 
                                 if( (state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft) ){
-                                    state[i][j][k].Position = match_data[animating_state][i][j][k].Position
+                                    state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                     state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                     if(state[i][j][k].DistanceLeft <= 0) {
                                         if(camps[state[i][j][k].Destination.I].HP > 0) {
@@ -173,7 +173,6 @@ function calcPos() {
                                             camps[state[i][j][k].Destination.I].Units.push([i,j,k])
                                         } else {
                                             state[i][j][k].Status = 0;
-                                            console.log(i,j,k, "STATUS WAS CHANGED TO 0")
                                         }
                                     }
                                 }

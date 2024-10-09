@@ -223,9 +223,8 @@ function drawAttack() {
             let campOfInterest = state[atki][atkj][atkk].Battle
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
-
+            /*
             state[atki][atkj][atkk].TTD = 100
-
             if(campOfInterest.HP<=0) {
                 campOfInterest.HP=0;
                 for(let j = 0; j < campOfInterest.Units.length; j++) {
@@ -236,6 +235,10 @@ function drawAttack() {
                 }
                 campOfInterest.Units = []
             }
+             */
+
+
+
 
             if ( attacking_frames_count==59 ) {
                 event_log.push(atk_data[animating_state][i])

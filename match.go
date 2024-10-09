@@ -1216,7 +1216,7 @@ func (m *match) run() {
 						unitOfInterest2.Status = 0
 						unitOfInterest2.Battle = nil
 					}
-					if(unitOfInterest.Bot == false) {
+					if unitOfInterest.Bot == false {
 						has_user_cmd = true
 					}
 					campOfInterest.Units = make([][]int, 0)

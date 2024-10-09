@@ -1170,11 +1170,11 @@ func (m *match) run() {
 
 			num, _ := strconv.Atoi(m.turn[5:])
 			if len(atk_list) > 0 {
-				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
-				m.sharepos(nil, 0)
-			} else {
 				m.turn = "TURN " + strconv.Itoa(num+1)
 				m.sharepos(atk_list, min_units)
+			} else {
+				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
+				m.sharepos(nil, 0)
 			}
 
 			if game_over_check(m.team_client_hero) {

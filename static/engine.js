@@ -223,8 +223,12 @@ function drawAttack() {
             let atkk = atk_obj.Attacker[2]
 
             let campOfInterest = state[atki][atkj][atkk].Battle
+            console.log(campOfInterest, campOfInterest.HP)
 
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
+            console.log(campOfInterest, campOfInterest.HP)
+
+
             state[atki][atkj][atkk].TTD = 100
 
             if(campOfInterest.HP<=0) {

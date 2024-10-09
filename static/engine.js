@@ -149,17 +149,15 @@ function calcPos() {
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
-
                         if(state[i][j][k].Status == 0) {
-                            skipCycle = true
+                            skipCycle = true;
                             if(match_data[animating_state][i][j][k].Status!=0) {
-                                state[i][j][k].Status = 1
-                                state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination
-                                state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle
-                                state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination)
+                                state[i][j][k].Status = 1;
+                                state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
+                                state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
+                                state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
                             }
                         }
-
                     }
                 }
             }
@@ -233,7 +231,6 @@ function drawAttack() {
             state[atki][atkj][atkk].TTD = 100
 
             if(campOfInterest.HP<=0) {
-                console.log("gothere")
                 campOfInterest.HP=0;
                 for(let j = 0; j < campOfInterest.Units.length; j++) {
                     let unitOfInterest = campOfInterest.Units[j];

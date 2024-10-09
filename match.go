@@ -1153,14 +1153,12 @@ func (m *match) run() {
 
 			// simulate all attacks
 			for i := 0; i < len(atk_list); i++ {
-				if atk_list[i].Type == "hit" && (m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
 
-					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
-					campOfInterest := unitOfInterest.Battle
-					campOfInterest.HP -= unitOfInterest.ATK
-					if campOfInterest.HP <= 0 {
-						campOfInterest.HP = 0
-					}
+				unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
+				campOfInterest := unitOfInterest.Battle
+				campOfInterest.HP -= unitOfInterest.ATK
+				if campOfInterest.HP <= 0 {
+					campOfInterest.HP = 0
 				}
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {

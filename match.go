@@ -1151,15 +1151,6 @@ func (m *match) run() {
 				}
 			}
 
-			num, _ := strconv.Atoi(m.turn[5:])
-			if len(atk_list) > 0 {
-				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
-				m.sharepos(nil, 0)
-			} else {
-				m.turn = "TURN " + strconv.Itoa(num+1)
-				m.sharepos(atk_list, min_units)
-			}
-
 			// simulate all attacks
 			for i := 0; i < len(atk_list); i++ {
 				if atk_list[i].Type == "hit" &&
@@ -1191,7 +1182,12 @@ func (m *match) run() {
 				}
 			}
 
+			num, _ := strconv.Atoi(m.turn[5:])
 			if len(atk_list) > 0 {
+				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
+				m.sharepos(nil, 0)
+			} else {
+				m.turn = "TURN " + strconv.Itoa(num+1)
 				m.sharepos(atk_list, min_units)
 			}
 

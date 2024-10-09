@@ -146,6 +146,7 @@ function calcPos() {
 
             // update status first
             let skipCycle = false;
+            let clearCamp = false;
             for(let i = 0; i < state.length; i++) {
                 for(let j = 0; j < state[i].length; j++) {
                     for(let k = 0; k < state[i][j].length; k++) {
@@ -157,7 +158,21 @@ function calcPos() {
                                 state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
                                 state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
                             }
+                        } else if(state[i][j][k].Status == 2) {
+                            if((state[i][j][k].Battle != null) && (state[i][j][k].Battle.HP <= 0)) {
+                                state[i][j][k].Status = 0;
+                                state[i][j][k].Battle = null;
+                                clearCamp = true;
+                            }
                         }
+                    }
+                }
+            }
+
+            if(clearCamp) {
+                for(let i = 0; i < camps.length; i++) {
+                    if(camps[i].HP <= 0) {
+                        camps[i].Battle = [];
                     }
                 }
             }
@@ -187,7 +202,7 @@ function calcPos() {
                                 }
                             } else if(state[i][j][k].Status == 2) {
                                 state[i][j][k].TTD -= (0.015*state[i][j][k].AS)
-                                if(state[i][j][k].TTD < match_data[animating_state][i][j][k].TTD) {
+                                if(state[i][j][k].TTD <= match_data[animating_state][i][j][k].TTD) {
                                     state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
                                 }
                                 if(state[i][j][k].TTD==0){

@@ -1153,27 +1153,13 @@ func (m *match) run() {
 
 			// simulate all attacks
 			for i := 0; i < len(atk_list); i++ {
-				if atk_list[i].Type == "hit" &&
-					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
+				if atk_list[i].Type == "hit" && (m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
 
 					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 					campOfInterest := unitOfInterest.Battle
-
-					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
-
 					campOfInterest.HP -= unitOfInterest.ATK
-					unitOfInterest.TTD = 100
-
-					if campOfInterest.HP < 0 {
+					if campOfInterest.HP <= 0 {
 						campOfInterest.HP = 0
-						for j := 0; j < len(campOfInterest.Units); j++ {
-							unitOfInterest2 := campOfInterest.Units[j]
-							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = 100
-							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Status = 0
-							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Battle = nil
-						}
-						has_user_cmd = true
-						campOfInterest.Units = make([][]int, 0)
 					}
 				}
 
@@ -1192,8 +1178,6 @@ func (m *match) run() {
 			}
 
 			if game_over_check(m.team_client_hero) {
-
-				// just setting this for now to make sure we don't call 'SIMULATE' anymore
 				has_user_cmd = true
 
 				m.ended = true
@@ -1217,6 +1201,31 @@ func (m *match) run() {
 					}
 				}
 
+			}
+
+			// determine if camp is dead, reset camps
+			for i := 0; i < len(atk_list); i++ {
+				if atk_list[i].Type == "hit" && (m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
+					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
+					campOfInterest := unitOfInterest.Battle
+					if campOfInterest == nil {
+						continue
+					} else if campOfInterest.HP <= 0 {
+						for j := 0; j < len(campOfInterest.Units); j++ {
+							unitOfInterest2 := m.team_client_hero[campOfInterest.Units[j][0]][campOfInterest.Units[j][1]][campOfInterest.Units[j][2]]
+							unitOfInterest2.TTD = 100
+							unitOfInterest2.Status = 0
+							unitOfInterest2.Battle = nil
+						}
+						has_user_cmd = true
+						campOfInterest.Units = make([][]int, 0)
+					} else if unitOfInterest.TTD == 0 {
+						unitOfInterest.TTD = 100
+					}
+				}
+			}
+			if len(atk_list) > 0 {
+				m.sharepos(nil, 0)
 			}
 
 			// send new timer to everyone

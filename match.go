@@ -1205,23 +1205,21 @@ func (m *match) run() {
 
 			// determine if camp is dead, reset camps
 			for i := 0; i < len(atk_list); i++ {
-				if atk_list[i].Type == "hit" && (m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
-					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
-					campOfInterest := unitOfInterest.Battle
-					if campOfInterest == nil {
-						continue
-					} else if campOfInterest.HP <= 0 {
-						for j := 0; j < len(campOfInterest.Units); j++ {
-							unitOfInterest2 := m.team_client_hero[campOfInterest.Units[j][0]][campOfInterest.Units[j][1]][campOfInterest.Units[j][2]]
-							unitOfInterest2.TTD = 100
-							unitOfInterest2.Status = 0
-							unitOfInterest2.Battle = nil
-						}
-						has_user_cmd = true
-						campOfInterest.Units = make([][]int, 0)
-					} else if unitOfInterest.TTD == 0 {
-						unitOfInterest.TTD = 100
+				unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
+				campOfInterest := unitOfInterest.Battle
+				if campOfInterest == nil {
+					continue
+				} else if campOfInterest.HP <= 0 {
+					for j := 0; j < len(campOfInterest.Units); j++ {
+						unitOfInterest2 := m.team_client_hero[campOfInterest.Units[j][0]][campOfInterest.Units[j][1]][campOfInterest.Units[j][2]]
+						unitOfInterest2.TTD = 100
+						unitOfInterest2.Status = 0
+						unitOfInterest2.Battle = nil
 					}
+					has_user_cmd = true
+					campOfInterest.Units = make([][]int, 0)
+				} else if unitOfInterest.TTD == 0 {
+					unitOfInterest.TTD = 100
 				}
 			}
 			if len(atk_list) > 0 {

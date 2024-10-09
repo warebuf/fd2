@@ -214,8 +214,6 @@ function drawAttack() {
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)+250
 
-        console.log(animating_state, atk_data[animating_state])
-
         for(let i=0; i < atk_data[animating_state].length; i++) {
             let atk_obj = JSON.parse(atk_data[animating_state][i]);
             let atki = atk_obj.Attacker[0]
@@ -223,9 +221,7 @@ function drawAttack() {
             let atkk = atk_obj.Attacker[2]
 
             let campOfInterest = state[atki][atkj][atkk].Battle
-            console.log(campOfInterest, campOfInterest.HP)
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
-            console.log(campOfInterest, campOfInterest.HP)
 
 
             state[atki][atkj][atkk].TTD = 100
@@ -237,8 +233,6 @@ function drawAttack() {
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Battle = null;
-
-                    console.log("WTF???", unitOfInterest[0],unitOfInterest[1],unitOfInterest[2])
                 }
                 campOfInterest.Units = []
             }

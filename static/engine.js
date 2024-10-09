@@ -216,6 +216,8 @@ function drawAttack() {
         let w = Math.round(c.width/2)
         let h = Math.round(c.height/2)+250
 
+        console.log(animating_state, atk_data[animating_state])
+
         for(let i=0; i < atk_data[animating_state].length; i++) {
             let atk_obj = JSON.parse(atk_data[animating_state][i]);
             let atki = atk_obj.Attacker[0]
@@ -224,7 +226,6 @@ function drawAttack() {
 
             let campOfInterest = state[atki][atkj][atkk].Battle
             console.log(campOfInterest, campOfInterest.HP)
-
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
             console.log(campOfInterest, campOfInterest.HP)
 

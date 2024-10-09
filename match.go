@@ -1166,21 +1166,23 @@ func (m *match) run() {
 					(m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.HP > 0) {
 
 					unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
+					campOfInterest := unitOfInterest.Battle
 
 					fmt.Println(unitOfInterest.Battle.HP, unitOfInterest.ATK)
 
-					unitOfInterest.Battle.HP -= unitOfInterest.ATK
+					campOfInterest.HP -= unitOfInterest.ATK
 					unitOfInterest.TTD = 100
 
-					if unitOfInterest.Battle.HP < 0 {
-						unitOfInterest.Battle.HP = 0
-						for j := 0; j < len(unitOfInterest.Battle.Units); j++ {
-							unitOfInterest2 := unitOfInterest.Battle.Units[j]
+					if campOfInterest.HP < 0 {
+						campOfInterest.HP = 0
+						for j := 0; j < len(campOfInterest.Units); j++ {
+							unitOfInterest2 := campOfInterest.Units[j]
 							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].TTD = 100
 							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Status = 0
+							m.team_client_hero[unitOfInterest2[0]][unitOfInterest2[1]][unitOfInterest2[2]].Battle = nil
 						}
 						has_user_cmd = true
-						m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Battle.Units = make([][]int, 0)
+						campOfInterest.Units = make([][]int, 0)
 					}
 				}
 

@@ -233,6 +233,7 @@ function drawAttack() {
                     let unitOfInterest = campOfInterest.Units[j];
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
                     state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
+
                     console.log("WTF???", unitOfInterest[0],unitOfInterest[1],unitOfInterest[2])
                 }
                 campOfInterest.Units = []

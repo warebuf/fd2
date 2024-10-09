@@ -228,6 +228,7 @@ function drawAttack() {
             state[atki][atkj][atkk].TTD = 100
 
             if(campOfInterest.HP<=0) {
+                console.log("gothere")
                 campOfInterest.HP=0;
                 for(let j = 0; j < campOfInterest.Units.length; j++) {
                     let unitOfInterest = campOfInterest.Units[j];

@@ -1127,7 +1127,9 @@ func (m *match) run() {
 									m.team_client_hero[i][j][k].Battle.Units = append(m.team_client_hero[i][j][k].Battle.Units, appending)
 								} else {
 									m.team_client_hero[i][j][k].Status = 0
-									has_user_cmd = true
+									if m.team_client_hero[i][j][k].Bot == false {
+										has_user_cmd = true
+									}
 								}
 								m.team_client_hero[i][j][k].Position = m.team_client_hero[i][j][k].Destination
 								m.team_client_hero[i][j][k].Position.Type = "unit"
@@ -1214,7 +1216,9 @@ func (m *match) run() {
 						unitOfInterest2.Status = 0
 						unitOfInterest2.Battle = nil
 					}
-					has_user_cmd = true
+					if(unitOfInterest.Bot == false) {
+						has_user_cmd = true
+					}
 					campOfInterest.Units = make([][]int, 0)
 				} else if unitOfInterest.TTD == 0 {
 					unitOfInterest.TTD = 100

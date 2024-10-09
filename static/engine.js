@@ -161,6 +161,7 @@ function calcPos() {
                         } else if(state[i][j][k].Status == 2) {
                             if((state[i][j][k].Battle != null) && (state[i][j][k].Battle.HP <= 0)) {
                                 state[i][j][k].Status = 0;
+                                state[i][j][k].TTD = 100;
                                 state[i][j][k].Battle = null;
                                 clearCamp = true;
                             }

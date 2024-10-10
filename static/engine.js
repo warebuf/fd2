@@ -109,25 +109,74 @@ anime()
 function calcPos() {
     if( (animating_state < match_data.length) && (attacking_frames_count <= 0) ) {
 
-        let all_states_correct = true
+        let all_status_correct = true;
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
-                    if (
-                        (state[i][j][k].Status != match_data[animating_state][i][j][k].Status) ||
-                        (coordinateEqual(state[i][j][k].Position, match_data[animating_state][i][j][k].Position)==false) ||
-                        (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD)
-                    ) {
-                        all_states_correct = false;
-                        break;
+                    if(state[i][j][k].Status != match_data[animating_state][i][j][k].Status) {
+                        all_status_correct = false;
+                        if(state[i][j][k].Status == 0) {
+                            state[i][j][k].Status = 1;
+                            state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
+                            state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
+                            state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
+                        } else if(state[i][j][k].Status == 1) {
+                            if(state[i][j][k].DistanceLeft <= 0) {
+                                if(camps[state[i][j][k].Destination.I].HP > 0) {
+                                    state[i][j][k].Status = 2;
+                                    state[i][j][k].Battle = camps[state[i][j][k].Destination.I]
+                                    camps[state[i][j][k].Destination.I].Units.push([i,j,k])
+                                } else {
+                                    state[i][j][k].Status = 0;
+                                }
+                            }
+                        } else if(state[i][j][k].Status == 2) {
+                            if((state[i][j][k].Battle != null) && (state[i][j][k].Battle.HP <= 0)) {
+                                state[i][j][k].Status = 0;
+                                state[i][j][k].TTD = 100;
+                                state[i][j][k].Battle.Units = []
+                                state[i][j][k].Battle = null;
+                            }
+                        }
                     }
                 }
-                if(all_states_correct==false) {break;}
             }
-            if(all_states_correct==false) {break;}
         }
 
-        if(all_states_correct) {
+        let all_distances_correct = true;
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length; k++) {
+                    if(state[i][j][k].Status == 1) {
+                        if(state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
+                            all_distances_correct = false;
+                            let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
+                            state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
+                            state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
+                            state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
+                            if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
+                                state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
+                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                            }
+                        }
+                    } else if(state[i][j][k].Status == 2) {
+                        if(state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD) {
+                            all_distances_correct = false;
+                            state[i][j][k].TTD -= (0.015*state[i][j][k].AS)
+                            if(state[i][j][k].TTD <= match_data[animating_state][i][j][k].TTD) {
+                                state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
+                            }
+                            if(state[i][j][k].TTD==0){
+                                attacking_frames_count=1
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        followHoverable()
+
+        if(all_status_correct && all_distances_correct) {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
@@ -141,78 +190,6 @@ function calcPos() {
             turn = turn_queue[animating_state]
             animating_state++
             setupHoverable()
-
-        } else {
-
-            // update status first
-            let clearCamp = false;
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length; k++) {
-                        if(state[i][j][k].Status == 0) {
-                            if(match_data[animating_state][i][j][k].Status!=0) {
-                                state[i][j][k].Status = 1;
-                                state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
-                                state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
-                                state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
-                            }
-                        } else if(state[i][j][k].Status == 2) {
-                            if((state[i][j][k].Battle != null) && (state[i][j][k].Battle.HP <= 0)) {
-                                state[i][j][k].Status = 0;
-                                state[i][j][k].TTD = 100;
-                                state[i][j][k].Battle = null;
-                                clearCamp = true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            if(clearCamp) {
-                for(let i = 0; i < camps.length; i++) {
-                    if(camps[i].HP <= 0) {
-                        camps[i].Battle = [];
-                    }
-                }
-            }
-
-            for(let i = 0; i < state.length; i++) {
-                for(let j = 0; j < state[i].length; j++) {
-                    for(let k = 0; k < state[i][j].length; k++) {
-                        if(state[i][j][k].Status == 1) {
-                            let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
-                            state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
-                            state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                            state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
-
-                            if( (state[i][j][k].DistanceLeft < match_data[animating_state][i][j][k].DistanceLeft) ){
-                                state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
-                                state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                                if(state[i][j][k].DistanceLeft <= 0) {
-                                    if(camps[state[i][j][k].Destination.I].HP > 0) {
-                                        state[i][j][k].Status = 2;
-                                        state[i][j][k].Battle = camps[state[i][j][k].Destination.I]
-                                        camps[state[i][j][k].Destination.I].Units.push([i,j,k])
-                                    } else {
-                                        state[i][j][k].Status = 0;
-                                    }
-                                }
-                            }
-                        } else if(state[i][j][k].Status == 2) {
-                            state[i][j][k].TTD -= (0.015*state[i][j][k].AS)
-                            if(state[i][j][k].TTD <= match_data[animating_state][i][j][k].TTD) {
-                                state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
-                            }
-                            if(state[i][j][k].TTD==0){
-                                attacking_frames_count=1
-                            }
-                        }
-                    }
-                }
-            }
-
-
-            followHoverable()
         }
     }
 }
@@ -234,23 +211,6 @@ function drawAttack() {
 
             let campOfInterest = state[atki][atkj][atkk].Battle
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
-
-            /*
-            state[atki][atkj][atkk].TTD = 100
-            if(campOfInterest.HP<=0) {
-                campOfInterest.HP=0;
-                for(let j = 0; j < campOfInterest.Units.length; j++) {
-                    let unitOfInterest = campOfInterest.Units[j];
-                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].TTD = 100
-                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Status = 0
-                    state[unitOfInterest[0]][unitOfInterest[1]][unitOfInterest[2]].Battle = null;
-                }
-                campOfInterest.Units = []
-            }
-             */
-
-
-
 
             if ( attacking_frames_count==59 ) {
                 event_log.push(atk_data[animating_state][i])

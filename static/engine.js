@@ -164,7 +164,7 @@ function calcPos() {
                                 state[i][j][k].TTD = 100;
                                 state[i][j][k].Battle = null;
                                 clearCamp = true;
-                            }
+                            } 
                         }
                     }
                 }

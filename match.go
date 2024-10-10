@@ -97,6 +97,7 @@ type match struct {
 	ended     bool
 
 	// each client is represented as an int
+	state_count      int
 	team_client_hero [][][]*hero
 	camps            []*Camp
 
@@ -363,6 +364,7 @@ func createMatch(pl *permission_list) *match {
 			sides:     pl.sides,
 			ended:     false,
 
+			state_count:      0,
 			team_client_hero: make([][][]*hero, 0, 0),
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
@@ -1261,8 +1263,9 @@ func (m *match) run() {
 				}
 			}
 
-			if has_user_cmd == false {
-				fmt.Println("concurrent SIMULATE called")
+			m.state_count += 1
+			if (has_user_cmd == false) && (m.state_count < 1000) {
+				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
 			}
 

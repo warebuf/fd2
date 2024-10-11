@@ -2396,12 +2396,11 @@ function updateDamageNumbers() {
 
 function drawDamageNumbers() {
 
-    console.log(damageNumbers)
-
     for (let dmgNum of damageNumbers) {
 
         ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y)
 
+        /*
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect
         ctx.font = `${dmgNum.fontSize * dmgNum.scale}px Arial`;  // Font size based on scale
@@ -2409,5 +2408,7 @@ function drawDamageNumbers() {
         ctx.textAlign = 'center';
         ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y);  // Draw damage number
         ctx.restore();
+         */
+
     }
 }

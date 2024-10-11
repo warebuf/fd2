@@ -2342,6 +2342,7 @@ function getAngle(c1,c2) {
 }
 
 function createDamageNumber(damage, x, y) {
+    console.log("called")
     let color = 'white';
     let fontSize = 24;
 

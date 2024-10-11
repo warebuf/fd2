@@ -200,8 +200,6 @@ function drawAttack() {
 
     if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
 
-        ctx.fillRect(100,100,100,100);
-
         let w = Math.round(c.width/2)-250
         let h = Math.round(c.height/2)+250
 

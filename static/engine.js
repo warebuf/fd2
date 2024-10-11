@@ -2395,7 +2395,7 @@ function drawDamageNumbers() {
     console.log("testest", damageNumbers)
     for (let dmgNum of damageNumbers) {
 
-        ctx.fillText('TEST TEST', 100, 100)
+        ctx.fillText(dmgNum.damage, 100, 100)
 
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect

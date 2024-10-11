@@ -1030,14 +1030,8 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if (m.team_client_hero[i][j][k].Bot == true) && (m.team_client_hero[i][j][k].Status == 0) {
-
 							random_number := rand.Intn(len(m.camps))
-							//random_number := rand.Intn(len(m.camps) + 1)
-							if random_number == len(m.camps) {
-								// should wait for the camp to spawn
-							} else {
-								setPath(m.team_client_hero, i, j, k, m.camps[random_number].XY)
-							}
+							setPath(m.team_client_hero, i, j, k, m.camps[random_number].XY)
 							gave_bots_acts = true
 						}
 					}
@@ -1069,8 +1063,6 @@ func (m *match) run() {
 						unitOfInterest := m.team_client_hero[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
 						if unitOfInterest.HP > 0 {
 							ttd := unitOfInterest.TTD / float64(unitOfInterest.AS)
-							fmt.Println("ttd", ttd, i, j, unitOfInterest.TTD, unitOfInterest.AS, i, m.camps[i].HP)
-
 							if ttd < min_units {
 								min_units = ttd
 							}
@@ -1105,7 +1097,6 @@ func (m *match) run() {
 								a.Attacker[2] = unitOfInterest.Position.K
 								atk_list = append(atk_list, a)
 							}
-							fmt.Println("simulated TTD", (min_units * float64(unitOfInterest.AS)), unitOfInterest.TTD)
 						}
 					}
 				}

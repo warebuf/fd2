@@ -212,7 +212,7 @@ function drawAttack() {
             let campOfInterest = state[atki][atkj][atkk].Battle
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
-            if ( attacking_frames_count==59 ) {
+            if ( attacking_frames_count==14 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
                     event_log.shift()
@@ -236,7 +236,7 @@ function drawAttack() {
         }
 
         attacking_frames_count++
-        if(attacking_frames_count==60) {attacking_frames_count = 0}
+        if(attacking_frames_count==15) {attacking_frames_count = 0}
     }
 }
 

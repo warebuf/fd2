@@ -218,22 +218,10 @@ function drawAttack() {
                 console.log(campOfInterest.XY.X, campOfInterest.XY.Y, w, h, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
                 createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
             }
-
-            if ( attacking_frames_count==14 ) {
-                event_log.push(atk_data[animating_state][i])
-                if(event_log.length >= 25) {
-                    event_log.shift()
-                }
-                state[atki][atkj][atkk].Start = state[atki][atkj][atkk].Position
-                state[atki][atkj][atkk].Destination = match_data[animating_state][atki][atkj][atkk].Destination
-                state[atki][atkj][atkk].DistanceLeft = match_data[animating_state][atki][atkj][atkk].DistanceLeft
-                state[atki][atkj][atkk].Angle = match_data[animating_state][atki][atkj][atkk].Angle
-                state[atki][atkj][atkk].State = 0
-            }
         }
 
         attacking_frames_count++
-        if(attacking_frames_count==15) {attacking_frames_count = 0}
+        if(attacking_frames_count==1) {attacking_frames_count = 0}
     }
 }
 
@@ -2395,7 +2383,6 @@ function updateDamageNumbers() {
 }
 
 function drawDamageNumbers() {
-
     for (let dmgNum of damageNumbers) {
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect

@@ -214,7 +214,9 @@ function drawAttack() {
             let campOfInterest = state[atki][atkj][atkk].Battle
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
-            createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
+            if( attacking_frames_count == 1) {
+                createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
+            }
 
             if ( attacking_frames_count==14 ) {
                 event_log.push(atk_data[animating_state][i])
@@ -2344,6 +2346,8 @@ function getAngle(c1,c2) {
 function createDamageNumber(damage, x, y) {
     let color = 'white';
     let fontSize = 24;
+
+    console.log("testtest", attacking_frames_count, animating_state)
 
     damageNumbers.push({
         x: x,

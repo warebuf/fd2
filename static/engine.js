@@ -202,7 +202,7 @@ function drawAttack() {
 
         ctx.fillRect(100,100,100,100);
 
-        let w = Math.round(c.width/2)
+        let w = Math.round(c.width/2)-250
         let h = Math.round(c.height/2)+250
 
         for(let i=0; i < atk_data[animating_state].length; i++) {
@@ -215,7 +215,7 @@ function drawAttack() {
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
             if( attacking_frames_count == 1) {
-                console.log(campOfInterest.XY.X, campOfInterest.Y, w, h)
+                console.log(campOfInterest.XY.X, campOfInterest.XY.Y, w, h, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
                 createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
             }
 

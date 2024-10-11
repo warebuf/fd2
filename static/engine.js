@@ -215,6 +215,7 @@ function drawAttack() {
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
             if( attacking_frames_count == 1) {
+                console.log(campOfInterest.XY.X, campOfInterest.XY.Y)
                 createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
             }
 
@@ -2346,8 +2347,6 @@ function getAngle(c1,c2) {
 function createDamageNumber(damage, x, y) {
     let color = 'white';
     let fontSize = 24;
-
-    console.log("testtest", attacking_frames_count, animating_state)
 
     damageNumbers.push({
         x: x,

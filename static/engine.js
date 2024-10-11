@@ -214,7 +214,7 @@ function drawAttack() {
             let campOfInterest = state[atki][atkj][atkk].Battle
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
-            createDamageNumber(state[atki][atkj][atkk].ATK, campOfInterest.X, campOfInterest.Y)
+            createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.X*2.5), h-(campOfInterest.Y*2.5))
 
             if ( attacking_frames_count==14 ) {
                 event_log.push(atk_data[animating_state][i])

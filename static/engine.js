@@ -2394,6 +2394,9 @@ function updateDamageNumbers() {
 function drawDamageNumbers() {
     console.log("testest", damageNumbers)
     for (let dmgNum of damageNumbers) {
+
+        ctx.fillText('TEST TEST', 100, 100)
+
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect
         ctx.font = `${dmgNum.fontSize * dmgNum.scale}px Arial`;  // Font size based on scale

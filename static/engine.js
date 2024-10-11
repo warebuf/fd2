@@ -215,6 +215,7 @@ function drawAttack() {
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
             if( attacking_frames_count == 1) {
+                console.log(campOfInterest.XY.X, campOfInterest.Y, w, h)
                 createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
             }
 

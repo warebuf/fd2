@@ -2397,18 +2397,10 @@ function updateDamageNumbers() {
 function drawDamageNumbers() {
 
     for (let dmgNum of damageNumbers) {
-
-        ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y)
-
-        /*
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect
-        ctx.font = `${dmgNum.fontSize * dmgNum.scale}px Arial`;  // Font size based on scale
-        ctx.fillStyle = dmgNum.color;  // Set the color based on damage type
         ctx.textAlign = 'center';
         ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y);  // Draw damage number
         ctx.restore();
-         */
-
     }
 }

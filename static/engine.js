@@ -2342,8 +2342,6 @@ function getAngle(c1,c2) {
 }
 
 function createDamageNumber(damage, x, y) {
-    console.log("called", attacking_frames_count, animating_state)
-    console.log(damageNumbers)
     let color = 'white';
     let fontSize = 24;
 
@@ -2392,7 +2390,9 @@ function updateDamageNumbers() {
 }
 
 function drawDamageNumbers() {
-    console.log("testest", damageNumbers)
+
+    console.log(damageNumbers)
+
     for (let dmgNum of damageNumbers) {
 
         ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y)

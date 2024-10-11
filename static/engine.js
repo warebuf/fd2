@@ -2343,6 +2343,7 @@ function getAngle(c1,c2) {
 
 function createDamageNumber(damage, x, y) {
     console.log("called", attacking_frames_count, animating_state)
+    console.log(damageNumbers)
     let color = 'white';
     let fontSize = 24;
 

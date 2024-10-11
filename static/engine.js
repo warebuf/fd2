@@ -79,6 +79,8 @@ function anime() {
         drawPotentialPaths()
         drawPaths()
         //drawStats()
+        drawDamageNumbers()
+        updateDamageNumbers()
         drawTurn()
         drawUnitsOfTime()
         drawLog()
@@ -180,7 +182,7 @@ function calcPos() {
             if((time_queue[animating_state]!="") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-                event_log.push(time_queue[animating_state].toString() + " units of time has passed")
+                event_log.push(time_queue[animating_state].toString() + " ticks have passed")
                 if(event_log.length >= 25) {
                     event_log.shift()
                 }
@@ -212,6 +214,8 @@ function drawAttack() {
             let campOfInterest = state[atki][atkj][atkk].Battle
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
+            createDamageNumber(state[atki][atkj][atkk].ATK, campOfInterest.X, campOfInterest.Y)
+
             if ( attacking_frames_count==14 ) {
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
@@ -222,16 +226,6 @@ function drawAttack() {
                 state[atki][atkj][atkk].DistanceLeft = match_data[animating_state][atki][atkj][atkk].DistanceLeft
                 state[atki][atkj][atkk].Angle = match_data[animating_state][atki][atkj][atkk].Angle
                 state[atki][atkj][atkk].State = 0
-
-                // add the time to the event log
-                if(time_queue[animating_state]!="") {
-                    total_units_of_time += parseFloat(time_queue[animating_state])
-                    total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
-                    event_log.push(time_queue[animating_state].toString() + " ticks have passed")
-                    if(event_log.length >= 25) {
-                        event_log.shift()
-                    }
-                }
             }
         }
 
@@ -2345,4 +2339,65 @@ function getAngle(c1,c2) {
         theta = theta + (2 * Math.PI)
     }
     return theta
+}
+
+function createDamageNumber(damage, x, y) {
+    let color = 'white';
+    let fontSize = 24;
+
+    damageNumbers.push({
+        x: x,
+        y: y,
+        damage: damage,
+        color: color,
+        fontSize: fontSize,
+        scale: 1.2,  // Initial pop-up effect
+        opacity: 1,
+        lifetime: 0,  // Timer for animation
+        duration: 1000,  // Total animation duration (in ms)
+        isActive: true
+    });
+}
+
+// Update function to animate damage numbers with upward motion and fading
+function updateDamageNumbers() {
+    for (let i = 0; i < damageNumbers.length; i++) {
+        const dmgNum = damageNumbers[i];
+
+        if (dmgNum.isActive) {
+            const progress = dmgNum.lifetime / dmgNum.duration;
+
+            dmgNum.y -= 1.5; // Float upwards slightly
+
+            // Scale back to normal size from pop-up
+            if (dmgNum.lifetime < 200) {
+                dmgNum.scale = 1.2 - (dmgNum.lifetime / 200) * 0.2;  // Shrink slightly over time
+            }
+
+            // Fade-out effect
+            dmgNum.opacity = Math.max(0, 1 - progress);  // Reduces opacity as the lifetime progresses
+            dmgNum.lifetime += 16;  // Increment lifetime (assuming ~60fps)
+
+            // Deactivate number when animation is complete
+            if (progress >= 1) {
+                dmgNum.isActive = false;
+            }
+        }
+    }
+
+    // Remove inactive damage numbers
+    damageNumbers = damageNumbers.filter(dmgNum => dmgNum.isActive);
+}
+
+function drawDamageNumbers() {
+    // Draw damage numbers
+    for (let dmgNum of damageNumbers) {
+        ctx.save();
+        ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect
+        ctx.font = `${dmgNum.fontSize * dmgNum.scale}px Arial`;  // Font size based on scale
+        ctx.fillStyle = dmgNum.color;  // Set the color based on damage type
+        ctx.textAlign = 'center';
+        ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y);  // Draw damage number
+        ctx.restore();
+    }
 }

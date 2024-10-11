@@ -2392,7 +2392,7 @@ function updateDamageNumbers() {
 }
 
 function drawDamageNumbers() {
-    // Draw damage numbers
+    console.log("testest", damageNumbers)
     for (let dmgNum of damageNumbers) {
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect

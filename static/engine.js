@@ -121,7 +121,7 @@ function calcPos() {
                             state[i][j][k].Status = 1;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
-                            state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
+                            state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
                         } else if(state[i][j][k].Status == 1) {
                             if(state[i][j][k].DistanceLeft <= 0) {
                                 if(camps[state[i][j][k].Destination.I].HP > 0) {
@@ -2230,7 +2230,7 @@ function drawHeatMap(){
                 y_shift=y_shift+10;
                 ctx.fillText(state[i][j][k].Position.X, x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift+10;
-                ctx.fillText(state[i][j][k].Position.X, x_offset+x_shift+t_shift, y_offset+y_shift+2);
+                ctx.fillText(state[i][j][k].Position.Y, x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift-30;
 
                 y_shift=y_shift+45;

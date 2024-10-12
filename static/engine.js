@@ -157,6 +157,7 @@ function calcPos() {
                             state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
                             state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
                             if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
+                                console.log(i,j,k,state[i][j][k].Position, match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }

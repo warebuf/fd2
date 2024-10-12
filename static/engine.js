@@ -2220,19 +2220,6 @@ function drawHeatMap(){
                 ctx.fillStyle = 'white';
                 ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
-                //
-		        ctx.font = "20px monospace";
-                ctx.fillStyle = 'white';
-                x_shift = x_shift+50;
-                ctx.fillText(state[i][j][k].DistanceLeft.toFixed(0), x_offset+x_shift+t_shift, y_offset+y_shift+2);
-                y_shift=y_shift+10;
-                ctx.fillText(state[i][j][k].Status, x_offset+x_shift+t_shift, y_offset+y_shift+2);
-                y_shift=y_shift+10;
-                ctx.fillText(state[i][j][k].Position.X, x_offset+x_shift+t_shift, y_offset+y_shift+2);
-                y_shift=y_shift+10;
-                ctx.fillText(state[i][j][k].Position.Y, x_offset+x_shift+t_shift, y_offset+y_shift+2);
-                y_shift=y_shift-30;
-
                 y_shift=y_shift+45;
                 x_shift=0;
 

@@ -2228,8 +2228,10 @@ function drawHeatMap(){
                 y_shift=y_shift+10;
                 ctx.fillText(state[i][j][k].Status, x_offset+x_shift+t_shift, y_offset+y_shift+2);
                 y_shift=y_shift+10;
-                ctx.fillText(state[i][j][k].Position, x_offset+x_shift+t_shift, y_offset+y_shift+2);
-                y_shift=y_shift-20;
+                ctx.fillText(state[i][j][k].Position.X, x_offset+x_shift+t_shift, y_offset+y_shift+2);
+                y_shift=y_shift+10;
+                ctx.fillText(state[i][j][k].Position.X, x_offset+x_shift+t_shift, y_offset+y_shift+2);
+                y_shift=y_shift-30;
 
                 y_shift=y_shift+45;
                 x_shift=0;

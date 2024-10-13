@@ -2390,12 +2390,12 @@ function drawEXPBar(locationX, locationY, EXP) {
     const barWidth = 3;
     const barHeight = 4;
     const gap = 1;
-    const borderRadius = 1;
+    const borderRadius = 2;
 
     const filled = Math.floor(((EXP%100)/100)*totalBars)
 
     for (let i = 0; i < totalBars; i++) {
-        const xPos = locationX + i * (barWidth + gap)+17;
+        const xPos = locationX + i * (barWidth + gap)+18;
         let fillColor = '#333'; // gray
         if (i < filled) {
             fillColor = '#4A90E2'; // blue

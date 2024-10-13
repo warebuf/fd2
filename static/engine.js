@@ -2390,7 +2390,7 @@ function drawEXPBar(locationX, locationY, EXP) {
     const barWidth = 3;
     const barHeight = 4;
     const gap = 1;
-    const borderRadius = 2;
+    const borderRadius = 1;
 
     const filled = Math.floor(((EXP%100)/100)*totalBars)
 
@@ -2411,6 +2411,7 @@ function drawEXPBar(locationX, locationY, EXP) {
         ctx.fill();
     }
     ctx.fillStyle = 'white';
+    ctx.textAlign = "left";
     //ctx.fillText(`${EXP%100}/100`, locationX+95, locationY+barHeight);
     ctx.fillText(`EXP`, locationX, locationY+barHeight);
 }

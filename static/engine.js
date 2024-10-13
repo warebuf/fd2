@@ -2386,7 +2386,7 @@ function drawEXPBar(locationX, locationY, EXP) {
     const totalBars = 20;
     const barWidth = 3;
     const barHeight = 4;
-    const gap = 5;
+    const gap = 1;
     const borderRadius = 2;
     const backgroundWidth = (totalBars * barWidth) + ((totalBars-1)*gap)
     const backgroundHeight = barHeight + 10;

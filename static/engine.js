@@ -157,8 +157,6 @@ function calcPos() {
                             state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
                             state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
                             if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
-                                console.log(i,j,k,state[i][j][k].DistanceLeft, match_data[animating_state][i][j][k].DistanceLeft)
-                                console.log(i,j,k,state[i][j][k].Position, match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }
@@ -2220,6 +2218,9 @@ function drawHeatMap(){
                 ctx.fillStyle = 'white';
                 ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
+                drawEXPBar(x_offset+x_shift+t_shift,y_offset+y_shift+2, state[i][j][k].EXP)
+
+
                 y_shift=y_shift+45;
                 x_shift=0;
 
@@ -2378,4 +2379,41 @@ function drawDamageNumbers() {
         ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y);  // Draw damage number
         ctx.restore();
     }
+}
+
+function drawEXPBar(locationX, locationY, EXP) {
+
+    const totalBars = 20;
+    const barWidth = 30;
+    const barHeight = 40;
+    const gap = 5;
+    const borderRadius = 2;
+    const backgroundWidth = (totalBars * barWidth) + ((totalBars-1)*gap)
+    const backgroundHeight = barHeight + 10;
+
+    ctx.fillStyle = '#555';  // Dark gray background
+    ctx.fillRect(startX - 5, startY - 5, backgroundWidth + 10, backgroundHeight);
+
+    for (let i = 0; i < totalBars; i++) {
+        const xPos = startX + i * (barWidth + gap);
+        let fillColor = '#333';
+
+        if (i < filled) {
+            fillColor = '#4A90E2'; // blue bar
+        } else {
+            fillColor = '#333'; // gray bar
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(xPos + borderRadius, locationY);
+        ctx.arcTo(xPos + barWidth, locationY, xPos + width, locationY + height, borderRadius);
+        ctx.arcTo(xPos + barWidth, locationY + height, xPos, locationY + height, borderRadius);
+        ctx.arcTo(xPos, locationY + height, xPos, locationY, borderRadius);
+        ctx.arcTo(xPos, locationY, xPos + barWidth, locationY, borderRadius);
+        ctx.closePath();
+        ctx.fillStyle = fillColor;
+        ctx.fill();
+    }
+
+
 }

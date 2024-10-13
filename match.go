@@ -28,8 +28,7 @@ type hero struct {
 
 	DistanceLeft float64
 	Angle        float64
-
-	Status int // 0 = requires destination, 1 = in route, 2 = attacking something
+	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
 
 	//H part
 	//L part
@@ -40,6 +39,8 @@ type hero struct {
 	ATK int
 	AS  int
 	SPD int
+
+	EXP int
 
 	Battle *Camp
 	TTD    float64
@@ -1148,12 +1149,16 @@ func (m *match) run() {
 
 			// simulate all attacks
 			for i := 0; i < len(atk_list); i++ {
-
 				unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 				campOfInterest := unitOfInterest.Battle
-				campOfInterest.HP -= unitOfInterest.ATK
-				if campOfInterest.HP <= 0 {
-					campOfInterest.HP = 0
+				if campOfInterest.HP > 0 {
+					campOfInterest.HP -= unitOfInterest.ATK
+					if campOfInterest.HP <= 0 {
+						campOfInterest.HP = 0
+						unitOfInterest.EXP += 25
+					} else {
+						unitOfInterest.EXP += 10
+					}
 				}
 
 				if m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
@@ -1213,7 +1218,7 @@ func (m *match) run() {
 						has_user_cmd = true
 					}
 					campOfInterest.Units = make([][]int, 0)
-				} else if unitOfInterest.TTD == 0 {
+				} else if unitOfInterest.TTD <= 0 {
 					unitOfInterest.TTD = 100
 				}
 			}

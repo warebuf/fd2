@@ -1888,7 +1888,7 @@ function drawHeatMap(){
 
                 x_shift += 24*4
                 ctx.textAlign = "right";
-                ctx.fillText("LVL " + Math.floor(state[i][j][k].EXP/100)+1,x_offset+x_shift+t_shift,y_offset+y_shift);
+                ctx.fillText("LVL " + string(Math.floor(state[i][j][k].EXP/100)+1),x_offset+x_shift+t_shift,y_offset+y_shift);
 
                 x_shift = 0;
                 y_shift = y_shift+5

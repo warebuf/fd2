@@ -2218,11 +2218,14 @@ function drawHeatMap(){
                 ctx.fillStyle = 'white';
                 ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
-                drawEXPBar(x_offset+x_shift+t_shift,y_offset+y_shift+2, state[i][j][k].EXP)
-
 
                 y_shift=y_shift+45;
                 x_shift=0;
+
+                y_shift=y_shift-45;
+                drawEXPBar(x_offset+x_shift+t_shift,y_offset+y_shift+2, state[i][j][k].EXP)
+                y_shift=y_shift+45;
+
 
             }
         }
@@ -2388,19 +2391,14 @@ function drawEXPBar(locationX, locationY, EXP) {
     const barHeight = 4;
     const gap = 1;
     const borderRadius = 2;
-    const backgroundWidth = (totalBars * barWidth) + ((totalBars-1)*gap)
-    const backgroundHeight = barHeight;
-
 
     const filled = Math.floor(((EXP%100)/100)*totalBars)
 
     for (let i = 0; i < totalBars; i++) {
         const xPos = locationX + i * (barWidth + gap);
-        let fillColor = '#333';
+        let fillColor = '#333'; // gray
         if (i < filled) {
-            fillColor = '#4A90E2'; // blue bar
-        } else {
-            fillColor = '#333'; // gray bar
+            fillColor = '#4A90E2'; // blue
         }
         ctx.beginPath();
         ctx.moveTo(xPos + borderRadius, locationY);
@@ -2412,6 +2410,4 @@ function drawEXPBar(locationX, locationY, EXP) {
         ctx.fillStyle = fillColor;
         ctx.fill();
     }
-
-
 }

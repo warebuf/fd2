@@ -2411,6 +2411,6 @@ function drawEXPBar(locationX, locationY, EXP) {
         ctx.fill();
     }
     ctx.fillStyle = 'white';
-    ctx.fillText(`${EXP%100}/100`, locationX+90, locationY+barHeight);
+    ctx.fillText(`${EXP%100}/100`, locationX+95, locationY+barHeight);
 
 }

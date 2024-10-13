@@ -2222,9 +2222,9 @@ function drawHeatMap(){
                 y_shift=y_shift+45;
                 x_shift=0;
 
-                y_shift=y_shift-30;
+                y_shift=y_shift-40;
                 drawEXPBar(x_offset+x_shift+t_shift,y_offset+y_shift+2, state[i][j][k].EXP)
-                y_shift=y_shift+30;
+                y_shift=y_shift+40;
 
 
             }

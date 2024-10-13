@@ -2408,9 +2408,9 @@ function drawEXPBar(locationX, locationY, EXP) {
 
         ctx.beginPath();
         ctx.moveTo(xPos + borderRadius, locationY);
-        ctx.arcTo(xPos + barWidth, locationY, xPos + barWidth, locationY + height, borderRadius);
-        ctx.arcTo(xPos + barWidth, locationY + height, xPos, locationY + height, borderRadius);
-        ctx.arcTo(xPos, locationY + height, xPos, locationY, borderRadius);
+        ctx.arcTo(xPos + barWidth, locationY, xPos + barWidth, locationY + barHeight, borderRadius);
+        ctx.arcTo(xPos + barWidth, locationY + barHeight, xPos, locationY + barHeight, borderRadius);
+        ctx.arcTo(xPos, locationY + barHeight, xPos, locationY, borderRadius);
         ctx.arcTo(xPos, locationY, xPos + barWidth, locationY, borderRadius);
         ctx.closePath();
         ctx.fillStyle = fillColor;

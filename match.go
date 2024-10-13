@@ -20,7 +20,8 @@ type Camp struct {
 }
 
 type hero struct {
-	Bot bool
+	Bot  bool
+	Name string
 
 	Start       Coordinate
 	Position    Coordinate
@@ -439,101 +440,18 @@ func createMatch(pl *permission_list) *match {
 			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)} // assigning a pair of ints (team, pos in team) to each client
 			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))
 
-			/*
-				namesh := []string{
-						"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER", "RAINMAN",
-						"CARMACK", "CAGED", "JINZO", "LOADED GUN CONJECTURE",
-					}
-					namesl := []string{
-						"TERRACOTTA PINCER", "LEFT HAND FREE", "ULTRA MIAMI BLASTER", "LEFT HOOK", "ONE INCH PUNCH", "DEATH BEAM",
-						"ONE EDGE BLADE", "QUICKSHOT", "24 INCH PYTHON", "SIMULATED WAR",
-					}
-					namesr := []string{
-						"SUPER SWORD", "DEATHBLADE", "ONE HIT KILL", "CARNAGE", "WESTERN LIGHT", "EAST BEAST", "ECOLOGICAL DISASTER",
-						"NUCLEAR UPPERCUT", "LONG BOMB", "GUINSOO", "GARTNER HYPE CYCLE",
-					}
-					namesb := []string{
-						"PEANUT BUTTER SOCKS", "NUTSHOT", "SPIDER LEGS", "THUNDERTHIGHS", "INFINITY FEET",
-						"SOUND OF THE RAIN", "HOG WILD", "CAT TAIL", "HELLKICK", "YEAR ZERO",
-					}
-			*/
+			names := []string{
+				"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER",
+				"RAINMAN", "CARMACK", "CAGED", "JINZO", "LOADED GUN CONJECTURE",
+				"TERRACOTTA PINCER", "DEATH BEAM", "ONE EDGE BLADE", "DEATHBLADE", "GUINSOO",
+				"SOUND OF THE RAIN", "CAT TAIL", "HOG WILD", "YEAR ZERO",
+			}
 
 			for y := 0; y < 3; y++ {
-				/*
-					temph := rand.Intn(len(namesh))
-						templ := rand.Intn(len(namesl))
-						tempr := rand.Intn(len(namesr))
-						tempb := rand.Intn(len(namesb))
-						h := part{
-							SECTION:     0,
-							SERIAL:      temph,
-							NAME:        namesh[temph],
-							HP:          rand.Intn(99) + 1,
-							DOG:         rand.Intn(99) + 1,
-							ATK:         rand.Intn(99) + 1,
-							DEF:         rand.Intn(99) + 1,
-							ACC:         rand.Intn(99) + 1,
-							CRT:         rand.Intn(99) + 1,
-							CD:          rand.Intn(99) + 1,
-							CLU:         rand.Intn(99) + 1,
-							Use_current: 0,
-							Use_outof:   0,
-							Weight:      rand.Intn(99) + 1,
-						}
-						larm := part{
-							SECTION:     1,
-							SERIAL:      templ,
-							NAME:        namesl[templ],
-							HP:          rand.Intn(99) + 1,
-							DOG:         rand.Intn(99) + 1,
-							ATK:         rand.Intn(99) + 1,
-							DEF:         rand.Intn(99) + 1,
-							ACC:         rand.Intn(99) + 1,
-							CRT:         rand.Intn(99) + 1,
-							CD:          rand.Intn(99) + 1,
-							CLU:         rand.Intn(99) + 1,
-							Use_current: 0,
-							Use_outof:   0,
-							Weight:      rand.Intn(99) + 1,
-						}
-						rarm := part{
-							SECTION:     2,
-							SERIAL:      templ,
-							NAME:        namesr[tempr],
-							HP:          rand.Intn(99) + 1,
-							DOG:         rand.Intn(99) + 1,
-							ATK:         rand.Intn(99) + 1,
-							DEF:         rand.Intn(99) + 1,
-							ACC:         rand.Intn(99) + 1,
-							CRT:         rand.Intn(99) + 1,
-							CD:          rand.Intn(99) + 1,
-							CLU:         rand.Intn(99) + 1,
-							Use_current: 0,
-							Use_outof:   0,
-							Weight:      rand.Intn(99) + 1,
-						}
-						btm := part{
-							SECTION:     3,
-							SERIAL:      tempb,
-							NAME:        namesb[tempb],
-							HP:          rand.Intn(99) + 1,
-							ATK:         rand.Intn(99) + 1,
-							DEF:         rand.Intn(99) + 1,
-							ACC:         rand.Intn(99) + 1,
-							CRT:         rand.Intn(99) + 1,
-							CD:          rand.Intn(99) + 1,
-							CLU:         rand.Intn(99) + 1,
-							SPD:         rand.Intn(99) + 1,
-							DOG:         rand.Intn(99) + 1,
-							Use_current: 0,
-							Use_outof:   0,
-							Weight:      rand.Intn(99) + 1,
-						}
-				*/
-
 				temp_coordinate := Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
-					Bot: j.bot_status,
+					Bot:  j.bot_status,
+					Name: names[rand.Intn((len(names)))],
 
 					Start:       temp_coordinate,
 					Position:    temp_coordinate,
@@ -543,11 +461,6 @@ func createMatch(pl *permission_list) *match {
 					Angle:        getTheta(temp_coordinate, temp_coordinate),
 
 					Status: 0,
-
-					//H: h,
-					//L: larm,
-					//R: rarm,
-					//B: btm,
 
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,

@@ -1882,6 +1882,10 @@ function drawHeatMap(){
             for(let k = 0; k < state[i][j].length; k++) {
 
 
+                ctx.textAlign = "left";
+                ctx.fillText(state[i][j][k].Name,x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                y_shift = y_shift+20
+
                 ctx.textAlign = "center";
 
                 ctx.fillStyle = '#848884';

@@ -1885,6 +1885,12 @@ function drawHeatMap(){
                 ctx.textAlign = "left";
                 ctx.font = '10px monospace';
                 ctx.fillText(state[i][j][k].Name,x_offset+x_shift+t_shift,y_offset+y_shift);
+
+                x_shift += 24*4
+                ctx.textAlign = "right";
+                ctx.fillText(Math.floor(state[i][j][k].EXP/100)+1,x_offset+x_shift+t_shift,y_offset+y_shift);
+
+                x_shift = 0;
                 y_shift = y_shift+5
 
                 ctx.textAlign = "center";

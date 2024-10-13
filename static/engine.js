@@ -2384,8 +2384,8 @@ function drawDamageNumbers() {
 function drawEXPBar(locationX, locationY, EXP) {
 
     const totalBars = 20;
-    const barWidth = 30;
-    const barHeight = 40;
+    const barWidth = 15;
+    const barHeight = 20;
     const gap = 5;
     const borderRadius = 2;
     const backgroundWidth = (totalBars * barWidth) + ((totalBars-1)*gap)

@@ -2395,7 +2395,7 @@ function drawEXPBar(locationX, locationY, EXP) {
     const filled = Math.floor(((EXP%100)/100)*totalBars)
 
     for (let i = 0; i < totalBars; i++) {
-        const xPos = locationX + i * (barWidth + gap)+17;
+        const xPos = locationX + i * (barWidth + gap)+18;
         let fillColor = '#333'; // gray
         if (i < filled) {
             fillColor = '#4A90E2'; // blue
@@ -2414,5 +2414,5 @@ function drawEXPBar(locationX, locationY, EXP) {
     ctx.textAlign = "left";
     //ctx.fillText(`${EXP%100}/100`, locationX+95, locationY+barHeight);
     //ctx.font = '6px monospace';
-    ctx.fillText(`EXP`, locationX, locationY+barHeight);
+    ctx.fillText(`EXP`, locationX+1, locationY+barHeight);
 }

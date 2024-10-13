@@ -2391,8 +2391,6 @@ function drawEXPBar(locationX, locationY, EXP) {
     const backgroundWidth = (totalBars * barWidth) + ((totalBars-1)*gap)
     const backgroundHeight = barHeight;
 
-    ctx.fillStyle = '#555';  // Dark gray background
-    ctx.fillRect(locationX , locationY , backgroundWidth, backgroundHeight);
 
     const filled = Math.floor(EXP/100*totalBars)
 

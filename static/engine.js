@@ -2384,8 +2384,8 @@ function drawDamageNumbers() {
 function drawEXPBar(locationX, locationY, EXP) {
 
     const totalBars = 20;
-    const barWidth = 15;
-    const barHeight = 20;
+    const barWidth = 3;
+    const barHeight = 4;
     const gap = 5;
     const borderRadius = 2;
     const backgroundWidth = (totalBars * barWidth) + ((totalBars-1)*gap)
@@ -2399,13 +2399,11 @@ function drawEXPBar(locationX, locationY, EXP) {
     for (let i = 0; i < totalBars; i++) {
         const xPos = locationX + i * (barWidth + gap);
         let fillColor = '#333';
-
         if (i < filled) {
             fillColor = '#4A90E2'; // blue bar
         } else {
             fillColor = '#333'; // gray bar
         }
-
         ctx.beginPath();
         ctx.moveTo(xPos + borderRadius, locationY);
         ctx.arcTo(xPos + barWidth, locationY, xPos + barWidth, locationY + barHeight, borderRadius);

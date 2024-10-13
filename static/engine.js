@@ -2392,7 +2392,7 @@ function drawEXPBar(locationX, locationY, EXP) {
     const backgroundHeight = barHeight;
 
 
-    const filled = Math.floor(EXP/100*totalBars)
+    const filled = Math.floor((EXP%100)*totalBars)
 
     for (let i = 0; i < totalBars; i++) {
         const xPos = locationX + i * (barWidth + gap);

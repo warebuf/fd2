@@ -2230,7 +2230,7 @@ function drawHeatMap(){
                 ctx.fillText((100*percentage).toFixed(0) + '%', x_offset+x_shift+t_shift, y_offset+y_shift+2);
 
 
-                y_shift=y_shift+45;
+                y_shift=y_shift+60;
                 x_shift=0;
 
                 y_shift=y_shift-20;

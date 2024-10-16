@@ -31,10 +31,10 @@ type hero struct {
 	Angle        float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
 
-	//H part
-	//L part
-	//R part
-	//B part
+	H part
+	L part
+	R part
+	B part
 
 	HP  int
 	ATK int
@@ -47,7 +47,6 @@ type hero struct {
 	TTD    float64
 }
 
-/*
 type part struct {
 	SECTION int // 0 is H, 1 is L, 2 is R, 3 is B
 	SERIAL  int
@@ -70,7 +69,6 @@ type part struct {
 
 	SPD int
 }
-*/
 
 type attack struct {
 	Attacker []int      //i,j,k
@@ -1126,9 +1124,9 @@ func (m *match) run() {
 						unitOfInterest2.TTD = 100
 						unitOfInterest2.Status = 0
 						unitOfInterest2.Battle = nil
-					}
-					if unitOfInterest.Bot == false {
-						has_user_cmd = true
+						if unitOfInterest2.Bot == false {
+							has_user_cmd = true
+						}
 					}
 					campOfInterest.Units = make([][]int, 0)
 				} else if unitOfInterest.TTD <= 0 {

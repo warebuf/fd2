@@ -2351,7 +2351,6 @@ function createDamageNumber(damage, x, y) {
     });
 }
 
-// Update function to animate damage numbers with upward motion and fading
 function updateDamageNumbers() {
     for (let i = 0; i < damageNumbers.length; i++) {
         const dmgNum = damageNumbers[i];

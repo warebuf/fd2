@@ -73,7 +73,6 @@ function anime() {
         calcPos()
         drawAttack()
         drawPos()
-        drawState()
         drawHoverable()
         drawCamps()
         drawPotentialPaths()
@@ -327,70 +326,6 @@ function drawCampSelect() {
         }
     }
 
-}
-
-function drawState() {
-
-    let w = Math.round(c.width/2)-250
-    let h = Math.round(c.height/2)+250
-
-    x0 = Math.round(c.width/2)-250 - 45
-    y0 = Math.round(c.height/2)-250
-    let space = 590
-
-    ctx.textAlign = "left";
-
-    for(let i = 0; i < state.length; i++) {
-        for(let j = 0; j < state[i].length; j++) {
-            for(let k = 0; k < state[i][j].length; k++) {
-                if (state[i][j][k].HP > 0) {
-                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
-                    else{ctx.fillStyle = 'green';}
-                } else {
-                    ctx.fillStyle = 'red';
-                }
-                ctx.fillRect(x0+(space*i), y0-9 + (k*125)+(j*700), 5, 5);
-
-                /*
-                 if (state[i][j][k].L.HP > 0) {
-                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
-                    else{ctx.fillStyle = 'green';}
-
-                } else {
-                    ctx.fillStyle = 'red';
-                }
-                ctx.fillRect(x0-5+(space*i), y0-4 + (k*125)+(j*700), 5, 7); // make it 270,5,7 OR 269,6,4
-                if (state[i][j][k].R.HP > 0) {
-                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
-                    else{ctx.fillStyle = 'green';}
-                } else {
-                    ctx.fillStyle = 'red';
-                }
-                ctx.fillRect(x0+5+(space*i), y0-4 + (k*125)+(j*700), 5, 7);
-                if (state[i][j][k].B.HP > 0) {
-                    if(i==my_team && j==my_int) {ctx.fillStyle = 'blue';}
-                    else{ctx.fillStyle = 'green';}
-
-                } else {
-                    ctx.fillStyle = 'red';
-                }
-                ctx.fillRect(x0+(space*i), y0+1 + (k*125)+(j*700), 5, 7);
-                 */
-
-
-                // draw symbol if ready for action
-                if(turn.substring(0,4) == "TURN") {
-                    if (
-                        (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0)
-                    ) {
-                        ctx.fillStyle = 'white'
-                        ctx.textAlign = "center";
-                        ctx.fillText("*", x0-15+(space*i),  y0+2 + (k*125)+(j*700) );
-                    }
-                }
-            }
-        }
-    }
 }
 
 function drawHoverable() {
@@ -1895,6 +1830,30 @@ function drawHeatMap(){
 
                 x_shift = 0;
                 y_shift = y_shift+5
+
+                if(turn.substring(0,4) == "TURN") {
+
+                    if(state_machine==0) {
+                        if(hoverable.Type == "unit") {
+                            if((hoverable.I == i) && (hoverable.J==j) && (hoverable.K==k)) {
+                                ctx.fillStyle = 'red'
+                                ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 3, 3);
+                            }
+                        }
+                    } else if(state_machine==1) {
+                        if(selected_hoverable.Type == "unit") {
+                            if((selected_hoverable.I == i) && (selected_hoverable.J==j) && (selected_hoverable.K==k)) {
+                                ctx.fillStyle = 'red'
+                                ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 3, 3);
+                            }
+                        }
+                    }
+
+                    if ( (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0) ){
+                        ctx.fillStyle = 'green'
+                        ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 5, 5);
+                    }
+                }
 
                 ctx.textAlign = "center";
 

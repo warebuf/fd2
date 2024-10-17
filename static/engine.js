@@ -443,8 +443,13 @@ function drawUnitsOfTime() {
 
 function drawLog() {
 
-    let x = Math.round(c.width/2) - 250
-    let y = Math.round(c.height/2) + 300
+    let x = 10
+    let y = 10
+
+    if(view==1) {
+        x = Math.round(c.width/2) - 250
+        y = Math.round(c.height/2) + 300
+    }
 
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";

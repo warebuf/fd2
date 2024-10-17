@@ -2236,7 +2236,7 @@ function drawHeatMap(){
                 y_shift=y_shift+25;
                 drawEXPBar(x_offset+x_shift+t_shift,y_offset+y_shift+2, state[i][j][k].EXP)
 
-                y_shift=y_shift+100;
+                y_shift=y_shift+70;
             }
         }
         y_shift = 0;

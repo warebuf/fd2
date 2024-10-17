@@ -1871,8 +1871,9 @@ function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
 
 function drawHeatMap(){
 
-    let x_offset = 30
-    let y_offset = 175
+
+    let x_offset = Math.round(c.width/2) - 250
+    let y_offset = Math.round(c.height/2) + 300
 
     let x_shift = 0;
     let y_shift = 0;

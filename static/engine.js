@@ -1819,37 +1819,35 @@ function drawHeatMap(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
+                if ( (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0) ){
+                    ctx.fillStyle = 'green'
+                    ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 5, 5);
+                }
+
+                ctx.textAlign = "left";
+                ctx.font = '8px monospace';
+                ctx.fillStyle = 'white'
                 if(state_machine==0) {
                     if(hoverable.Type == "unit") {
                         if((hoverable.I == i) && (hoverable.J==j) && (hoverable.K==k)) {
                             ctx.fillStyle = 'red'
-                            ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 3, 3);
                         }
                     }
                 } else if(state_machine==1) {
                     if(selected_hoverable.Type == "unit") {
                         if((selected_hoverable.I == i) && (selected_hoverable.J==j) && (selected_hoverable.K==k)) {
                             ctx.fillStyle = 'red'
-                            ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 3, 3);
                         }
                     }
                 }
-
-                ctx.textAlign = "left";
-                ctx.font = '8px monospace';
                 ctx.fillText(state[i][j][k].Name,x_offset+x_shift+t_shift,y_offset+y_shift);
-
                 x_shift += 24*4
                 ctx.textAlign = "right";
                 ctx.fillText("LV. " + (Math.floor(state[i][j][k].EXP/100)+1),x_offset+x_shift+t_shift,y_offset+y_shift);
-
                 x_shift = 0;
                 y_shift = y_shift+5
 
-                if ( (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0) ){
-                    ctx.fillStyle = 'green'
-                    ctx.fillRect(x_offset+x_shift+t_shift, y_offset+y_shift, 5, 5);
-                }
+
 
                 ctx.textAlign = "center";
 

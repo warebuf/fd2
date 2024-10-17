@@ -61,6 +61,8 @@
     document.onkeydown = function (e) {
         switch (e.key) {
 
+            case 'E':
+            case 'e':
             case "Enter":
                 if(phase=="CHARACTER SELECTION"){
 
@@ -137,6 +139,8 @@
                 else if(view==3){view=0}
                 break;
 
+            case 'A':
+            case 'a':
             case "ArrowLeft":
 
                 if(phase=="CHARACTER SELECTION"){
@@ -151,6 +155,8 @@
                 }
 
                 break;
+            case 'R':
+            case 'r':
             case "ArrowRight":
 
                 if(phase=="CHARACTER SELECTION"){
@@ -164,6 +170,8 @@
                 }
 
                 break;
+            case 'W':
+            case 'w':
             case "ArrowUp":
                 if(phase=="CHARACTER SELECTION") {
 
@@ -225,6 +233,8 @@
                     calculateNextHoverable(0);
                 }
                 break;
+            case 'S':
+            case 's':
             case "ArrowDown":
                 if(phase=="CHARACTER SELECTION") {
 
@@ -251,6 +261,8 @@
                 }
                 break;
 
+            case 'Q':
+            case 'q':
             case "Backspace":
                 if(state_machine==1) {
                     state_machine = 0;

@@ -220,6 +220,10 @@ function drawAttack() {
 
             if( attacking_frames_count == 1) {
                 createDamageNumber(state[atki][atkj][atkk].ATK, w+(campOfInterest.XY.X*2.5), h-(campOfInterest.XY.Y*2.5))
+                event_log.push(atk_data[animating_state][i])
+                if(event_log.length >= 25) {
+                    event_log.shift()
+                }
             }
         }
 

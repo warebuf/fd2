@@ -2199,7 +2199,7 @@ function drawHeatMap(){
         }
         y_shift = 0;
         x_shift = 0;
-        t_shift = t_shift + 600;
+        t_shift = t_shift + 750;
     }
 
 }

@@ -443,8 +443,8 @@ function drawUnitsOfTime() {
 
 function drawLog() {
 
-    let x = 10
-    let y = 10
+    let x = 50
+    let y = 50
 
     if(view==1) {
         x = Math.round(c.width/2) - 250
@@ -2199,7 +2199,7 @@ function drawHeatMap(){
         }
         y_shift = 0;
         x_shift = 0;
-        t_shift = t_shift + 1000;
+        t_shift = t_shift + 600;
     }
 
 }

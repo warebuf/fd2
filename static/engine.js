@@ -119,10 +119,17 @@ function calcPos() {
                         all_status_correct = false;
                         if(state[i][j][k].Status == 0) {
                             state[i][j][k].Status = 1;
+                            state[i][j][k].Start = state[i][j][k].Position
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
                             state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
-                        } else if(state[i][j][k].Status == 1) {
+                        } else if(state[i][j][k].Status == 1) 
+                            if(state[i][j][k].Destination != match_data[animating_state][i][j][k].Destination) {
+                                state[i][j][k].Start = state[i][j][k].Position
+                                state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
+                                state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
+                                state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
+                            }
                             if(state[i][j][k].DistanceLeft <= 0) {
                                 if(camps[state[i][j][k].Destination.I].HP > 0) {
                                     state[i][j][k].Status = 2;

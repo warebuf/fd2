@@ -245,6 +245,7 @@ func m_read(m *match_socket) {
 							}
 							if sim_check == true {
 								fmt.Println("simulate")
+								m.m.sharepos(nil, 0)
 								m.m.simulate <- true
 							} else {
 								m.m.sharepos(nil, 0)

@@ -224,6 +224,7 @@ func m_read(m *match_socket) {
 
 						if set_route { // possibly check if camp is still up here
 							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route)
+							m.m.sharepos(nil, 0)
 						} else {
 							fmt.Printf("this route does not exist")
 						}
@@ -245,10 +246,7 @@ func m_read(m *match_socket) {
 							}
 							if sim_check == true {
 								fmt.Println("simulate")
-								m.m.sharepos(nil, 0)
 								m.m.simulate <- true
-							} else {
-								m.m.sharepos(nil, 0)
 							}
 						}
 

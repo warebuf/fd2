@@ -508,13 +508,8 @@ function drawUnitsOfTime() {
 
 function drawLog() {
 
-    let x = 1400
-    let y = 250
-
-    if(view==1) {
-        x = Math.round(c.width/2) - 250
-        y = Math.round(c.height/2) + 300
-    }
+    let x = Math.round(c.width/2) - 250
+    let y = Math.round(c.height/2) + 300
 
     for(i =0; i<event_log.length;i++) {
         ctx.textAlign = "left";
@@ -2245,7 +2240,7 @@ function drawHeatMap(){
         }
         y_shift = 0;
         x_shift = 0;
-        t_shift = t_shift + 300;
+        t_shift = t_shift + 1000;
     }
 
 }

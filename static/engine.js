@@ -1821,7 +1821,7 @@ function drawHeatMap(){
 
                 if ( (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0) ){
                     ctx.fillStyle = 'green'
-                    ctx.fillRect(x_offset+x_shift+t_shift-10, y_offset+y_shift+10, 5, 5);
+                    ctx.fillRect(x_offset+x_shift+t_shift+100, y_offset+y_shift, 5, 5);
                 }
 
                 ctx.textAlign = "left";

@@ -767,6 +767,8 @@ function quicksortCoordinates(arr) {
 
 // of coordinates of the same position, give the one further down in array if GREATER
 function coordinateCompare(c1,c2,greater) {
+
+    console.log(c1,c2)
     if((c1.Type=="camp") && (c2.Type=="unit")) {
         if(greater) {return c1}
         else {return c2}

@@ -581,7 +581,7 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
+                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], false)
                     console.log(0, closestCardinalCoordinate)
                 }
             }
@@ -592,7 +592,7 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
+                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], false)
                     console.log(1, closestCardinalCoordinate)
                 }
             }
@@ -603,7 +603,7 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
+                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], true)
                     console.log(2, closestCardinalCoordinate)
                 }
             }
@@ -614,7 +614,7 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
+                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], true)
                     console.log(3, closestCardinalCoordinate)
                 }
             }

@@ -580,6 +580,8 @@ function calculateNextHoverable(direction) {
                 if(closestCardinalDistance>dist) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
+                } else if(closestCardinalDistance==dist) {
+                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
                 }
             }
         } else if(direction==1) {
@@ -588,6 +590,8 @@ function calculateNextHoverable(direction) {
                 if(closestCardinalDistance>dist) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
+                } else if(closestCardinalDistance==dist) {
+                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
                 }
             }
         } else if(direction==2) {
@@ -596,6 +600,8 @@ function calculateNextHoverable(direction) {
                 if(closestCardinalDistance>dist) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
+                } else if(closestCardinalDistance==dist) {
+                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
                 }
             }
         } else if(direction==3) {
@@ -604,6 +610,8 @@ function calculateNextHoverable(direction) {
                 if(closestCardinalDistance>dist) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
+                } else if(closestCardinalDistance==dist) {
+                    closestCardinalCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
                 }
             }
         }
@@ -630,6 +638,13 @@ function calculateNextHoverable(direction) {
                 closestWrapCoordinate = hoverables[i];
                 closestWrapDistance = wrapDist;
             }
+            else if(closestWrapDistance==wrapDist) {
+                if((direction==3) || (direction==2)) {
+                    closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
+                } else {
+                    closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
+                }
+            }
         }
     }
 
@@ -644,7 +659,7 @@ function calculateNextHoverable(direction) {
                 (hoverable.J == sortedSameCoordinates[i].J) &&
                 (hoverable.K == sortedSameCoordinates[i].K)
             ) {
-                if( (direction==0) || (direction==2) ) {
+                if( (direction==3) || (direction==2) ) {
                     if(i+1<sortedSameCoordinates.length) {
                         hoverable = sortedSameCoordinates[i+1]
                         found = true;
@@ -745,6 +760,34 @@ function quicksortCoordinates(arr) {
     return arr;
 }
 
+// of coordinates of the same position, give the one further down in array if GREATER
+function coordinateCompare(c1,c2,greater) {
+    if((c1.Type=="camp") && (c2.Type=="unit")) {
+        if(greater) {return c1}
+        else {return c2}
+    } else if((c1.Type=="unit") && (c2.Type=="unit")) {
+        if(c2.I<c1.I) {
+            if(greater) {return c1}
+            else {return c2}
+        } else if(c1.I==c2.I) {
+            if (c2.J<c1.J) {
+                if(greater) {return c1}
+                else {return c2}
+            } else if(c2.J==c1.J) {
+                if (c2.K<c1.K) {
+                    if(greater) {return c1}
+                    else {return c2}
+                }
+            }
+        }
+    } else if((c1.Type=="camp") && (c2.Type=="camp")) {
+        if(c2.I<c1.I) {
+            if(greater) {return c1}
+            else {return c2}
+        }
+    }
+    return c2;
+}
 
 
 </script>

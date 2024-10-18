@@ -582,7 +582,6 @@ function calculateNextHoverable(direction) {
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
                     closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], false)
-                    console.log(0, closestCardinalCoordinate)
                 }
             }
         } else if(direction==1) {
@@ -593,7 +592,6 @@ function calculateNextHoverable(direction) {
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
                     closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], false)
-                    console.log(1, closestCardinalCoordinate)
                 }
             }
         } else if(direction==2) {
@@ -604,7 +602,6 @@ function calculateNextHoverable(direction) {
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
                     closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], true)
-                    console.log(2, closestCardinalCoordinate)
                 }
             }
         } else if(direction==3) {
@@ -615,7 +612,6 @@ function calculateNextHoverable(direction) {
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
                     closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], true)
-                    console.log(3, closestCardinalCoordinate)
                 }
             }
         }
@@ -648,7 +644,6 @@ function calculateNextHoverable(direction) {
                 } else {
                     closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
                 }
-                console.log("wrap", closestWrapCoordinate)
             }
         }
     }
@@ -767,8 +762,6 @@ function quicksortCoordinates(arr) {
 
 // of coordinates of the same position, give the one further down in array if GREATER
 function coordinateCompare(c1,c2,greater) {
-
-    console.log(c1,c2)
     if((c1.Type=="camp") && (c2.Type=="unit")) {
         if(greater) {return c1}
         else {return c2}

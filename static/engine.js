@@ -1822,7 +1822,8 @@ function drawHeatMap(){
 
                 if ( state[i][j][k].HP > 0 ){
                     ctx.beginPath();
-                    if(state[i][j][k].Status == 0) {ctx.fillStyle = 'green';}
+                    if(state[i][j][k].Status == 0){ctx.fillStyle = 'green';}
+                    else {ctx.fillStyle = 'white';}
                     ctx.arc(x_offset+x_shift+t_shift-10, y_offset+y_shift, 5, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
                     ctx.stroke();
 

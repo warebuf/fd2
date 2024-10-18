@@ -1824,13 +1824,13 @@ function drawHeatMap(){
                     if(state[i][j][k].Status == 0){
                         ctx.beginPath();
                         ctx.fillStyle = 'green';
-                        ctx.arc(x_offset+x_shift+t_shift-10, y_offset+y_shift, 3, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
+                        ctx.arc(x_offset+x_shift+t_shift-10, y_offset+y_shift-3, 3, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
                         ctx.stroke();
                     }
                     else {
                         ctx.beginPath();
                         ctx.fillStyle = 'white';
-                        ctx.arc(x_offset+x_shift+t_shift-10, y_offset+y_shift, 3, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
+                        ctx.arc(x_offset+x_shift+t_shift-10, y_offset+y_shift-3, 3, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
                         ctx.stroke();
                     }
                 }

@@ -640,9 +640,9 @@ function calculateNextHoverable(direction) {
             }
             else if(closestWrapDistance==wrapDist) {
                 if((direction==3) || (direction==2)) {
-                    closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
-                } else {
                     closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
+                } else {
+                    closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
                 }
             }
         }

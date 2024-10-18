@@ -330,7 +330,6 @@
     var hoverable = null;
     var hoverable_coordinate = null;
     var selected_hoverable = null;
-    // TODO: SOLVE FOR SAME COORDINATE CORNER CASE
 
     var total_units_of_time = 0;
 
@@ -492,7 +491,7 @@ function resign(){
 function setupHoverable() {
 
     let mostNorthActive = null;
-    let mostNorthCoordinate = null
+    let mostNorthCoordinate = null;
 
     if(state_machine == 0) {
         for(let i = 0; i < state[my_team][my_int].length; i++) {
@@ -531,7 +530,6 @@ function setupHoverable() {
         }
     }
 
-
 }
 
 function followHoverable() {
@@ -566,11 +564,15 @@ function calculateNextHoverable(direction) {
     let closestWrapCoordinate = null; // this handles wrapping
     let closestWrapDistance = Number.MAX_SAFE_INTEGER;
 
+    let sameCoordinate = []
 
     for(let i = 0; i < hoverables.length; i++) {
         let dist = getDistance(hoverable, hoverables[i])
 
-        if(dist==0){continue;}
+        if(dist==0){
+            sameCoordinate.push(hoverables[i]);
+            continue;
+        }
 
         if(direction==0) {
             if(hoverables[i].Y>hoverable.Y) {
@@ -629,12 +631,17 @@ function calculateNextHoverable(direction) {
                 closestWrapDistance = wrapDist;
             }
         }
-
-
-
     }
 
-    if(closestCardinalCoordinate != null) {
+    // sort sameCoordinate
+    let sortedSameCoordinates = quicksortCoordinates(sameCoordinate);
+    console.log(sortedSameCoordinates)
+
+    // get the next sameCoordinate
+    if(sameCoordinate.length > 1) {
+
+    }
+    else if(closestCardinalCoordinate != null) {
         hoverable = closestCardinalCoordinate;
     } else if(closestWrapCoordinate != null) {
         hoverable = closestWrapCoordinate;
@@ -648,6 +655,74 @@ function calculateNextHoverable(direction) {
         }
     }
 
+}
+
+function quicksortCoordinates(arr) {
+    let stack = [];
+
+    // Push initial values of low and high to the stack
+    stack.push(0);
+    stack.push(arr.length - 1);
+
+    // Keep popping from the stack while it is not empty
+    while (stack.length > 0) {
+        // Pop high and low from the stack
+        let high = stack.pop();
+        let low = stack.pop();
+
+        if (low < high) {
+            // Partition the array and get the pivot index
+            let pivot = arr[high];
+            let i = low - 1;
+
+            for (let j = low; j < high; j++) {
+
+                let swap = false;
+                if ((arr[j].Type=="unit") && (pivot.Type=="camp")) {
+                    swap = true;
+                } else if ((arr[j].Type=="unit") && (pivot.Type=="unit")) {
+                    if(arr[j].I < pivot.I) {
+                        swap = true;
+                    } else if(arr[j].I==pivot.I) {
+                        if(arr[j].J<pivot.J) {
+                            swap = true;
+                        } else if(arr[j].K==pivot.K) {
+                            if(arr[j].K<pivot.K) {
+                                swap = true;
+                            }
+                        }
+                    }
+                } else if ((arr[j].Type=="camp") && (pivot.Type=="camp")) {
+                    if(arr[j].I < pivot.I) {
+                        swap = true;
+                    }
+                }
+
+                if (swap) {
+                    i++;
+                    [arr[i], arr[j]] = [arr[j], arr[i]]; // Swap elements
+                }
+            }
+
+            // Place pivot in its correct position
+            [arr[i + 1], arr[high]] = [arr[high], arr[i + 1]];
+            let pivotIndex = i + 1;
+
+            // Push left side of the pivot to the stack
+            if (pivotIndex - 1 > low) {
+                stack.push(low);
+                stack.push(pivotIndex - 1);
+            }
+
+            // Push right side of the pivot to the stack
+            if (pivotIndex + 1 < high) {
+                stack.push(pivotIndex + 1);
+                stack.push(high);
+            }
+        }
+    }
+
+    return arr;
 }
 
 

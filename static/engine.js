@@ -1805,14 +1805,6 @@ function drawBoard() {
     //ctx.fillRect(Math.round(c.width/2),h, 1, 500);
 }
 
-function drawSinglePoint(shift_x,shift_y,center_x,center_y, color){
-    ctx.beginPath();
-    ctx.fillStyle = color;
-
-    ctx.arc(center_x+shift_x, center_y+shift_y, 3, 0, 2 * Math.PI);
-    ctx.fill();
-}
-
 function drawHeatMap(){
 
 
@@ -2214,6 +2206,12 @@ function drawCampHP() {
     ctx.font = '11px monospace';
 
     for(let i = 0; i < camps.length; i++) {
+        ctx.fillStyle = 'white';
+        if(hoverable != null) {
+            if((hoverable.Type=='camp') && (hoverable.I==i)) {
+                ctx.fillStyle = 'red';
+            }
+        }
         ctx.fillText(i+": " + camps[i].HP, x, y+(i*10))
     }
 }

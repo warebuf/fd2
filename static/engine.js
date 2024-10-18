@@ -1820,9 +1820,12 @@ function drawHeatMap(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
-                if ( (state[i][j][k].HP > 0) && (state[i][j][k].Status == 0) ){
-                    ctx.fillStyle = 'green'
-                    ctx.fillRect(x_offset+x_shift+t_shift+120, y_offset+y_shift, 5, 5);
+                if ( state[i][j][k].HP > 0 ){
+                    ctx.beginPath();
+                    if(state[i][j][k].Status == 0) {ctx.fillStyle = 'green';}
+                    ctx.arc(x_offset+x_shift+t_shift-10, y_offset+y_shift, 5, 0, 2 * Math.PI); // (x, y, radius, startAngle, endAngle)
+                    ctx.stroke();
+
                 }
 
                 ctx.textAlign = "left";

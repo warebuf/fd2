@@ -564,24 +564,43 @@ function calculateNextHoverable(direction) {
     let closestWrapCoordinate = null; // this handles wrapping
     let closestWrapDistance = Number.MAX_SAFE_INTEGER;
 
-    let sameCoordinate = []
+    let nextSameCoordinate = null;
 
     for(let i = 0; i < hoverables.length; i++) {
         let dist = getDistance(hoverable, hoverables[i])
-
         if(dist==0){
-            sameCoordinate.push(hoverables[i]);
-            continue;
+            if((direction==2) || (direction==3)) {
+                if(isFirstCoordinateGreater(hoverables[i], hoverable)) {
+                    if(nextSameCoordinate==null) {
+                        nextSameCoordinate = hoverables[i];
+                    } else {
+                        if(isFirstCoordinateGreater(nextSameCoordinate, hoverables[i])) {
+                            nextSameCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            } else {
+                if(isFirstCoordinateGreater(hoverable, hoverables[i])) {
+                    if(nextSameCoordinate==null) {
+                        nextSameCoordinate = hoverables[i];
+                    } else {
+                        if(isFirstCoordinateGreater(hoverables[i], nextSameCoordinate)) {
+                            nextSameCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            }
         }
-
-        if(direction==0) {
+        else if(direction==0) {
             if(hoverables[i].Y>hoverable.Y) {
                 let dist = getDistance(hoverable, hoverables[i])
                 if(closestCardinalDistance>dist) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], false)
+                    if(isFirstCoordinateGreater(hoverables[i], closestCardinalCoordinate)) {
+                        closestCardinalCoordinate = hoverables[i];
+                    }
                 }
             }
         } else if(direction==1) {
@@ -591,7 +610,9 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], false)
+                    if(isFirstCoordinateGreater(hoverables[i], closestCardinalCoordinate)) {
+                        closestCardinalCoordinate = hoverables[i];
+                    }
                 }
             }
         } else if(direction==2) {
@@ -601,7 +622,9 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], true)
+                    if(isFirstCoordinateGreater(closestCardinalCoordinate, hoverables[i])) {
+                        closestCardinalCoordinate = hoverables[i];
+                    }
                 }
             }
         } else if(direction==3) {
@@ -611,7 +634,9 @@ function calculateNextHoverable(direction) {
                     closestCardinalCoordinate = hoverables[i];
                     closestCardinalDistance = dist;
                 } else if(closestCardinalDistance==dist) {
-                    closestCardinalCoordinate = coordinateCompare(closestCardinalCoordinate, hoverables[i], true)
+                    if(isFirstCoordinateGreater(closestCardinalCoordinate, hoverables[i])) {
+                        closestCardinalCoordinate = hoverables[i];
+                    }
                 }
             }
         }
@@ -640,54 +665,25 @@ function calculateNextHoverable(direction) {
             }
             else if(closestWrapDistance==wrapDist) {
                 if((direction==3) || (direction==2)) {
-                    closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], false)
+                    if(isFirstCoordinateGreater(closestWrapCoordinate, hoverables[i])) {
+                        closestWrapCoordinate = hoverables[i];
+                    }
                 } else {
-                    closestWrapCoordinate = coordinateCompare(closestWrapCoordinate, hoverables[i], true)
+                    if(isFirstCoordinateGreater(hoverables[i], closestWrapDistance)) {
+                        closestWrapDistance = hoverables[i];
+                    }
                 }
             }
         }
     }
 
-    let found = false;
-    // sort the coordinates at the current hoverable spot, find the next hoverable
-    if( (sameCoordinate.length > 1) && (hoverable != null) ) {
-        let sortedSameCoordinates = quicksortCoordinates(sameCoordinate);
-        for(let i = 0 ; i < sortedSameCoordinates.length; i++) {
-            if(
-                (hoverable.Type == sortedSameCoordinates[i].Type) &&
-                (hoverable.I == sortedSameCoordinates[i].I) &&
-                (hoverable.J == sortedSameCoordinates[i].J) &&
-                (hoverable.K == sortedSameCoordinates[i].K)
-            ) {
-                if( (direction==3) || (direction==2) ) {
-                    if(i+1<sortedSameCoordinates.length) {
-                        hoverable = sortedSameCoordinates[i+1]
-                        found = true;
-                    }
-                } else {
-                    if(i>0) {
-                        hoverable = sortedSameCoordinates[i-1]
-                        found = true;
-                    }
-                }
-            }
-        }
-    }
-    // if no coordinates at the same spot, get the closest one OR wrap
-    if(found==false) {
-        if(closestCardinalCoordinate != null) {
-            hoverable = closestCardinalCoordinate;
-        } else if(closestWrapCoordinate != null) {
-            hoverable = closestWrapCoordinate;
-        }
-    }
+    if(nextSameCoordinate != null) {hoverable = nextSameCoordinate;}
+    else if(closestCardinalCoordinate != null) {hoverable = closestCardinalCoordinate;}
+    else if(closestWrapCoordinate != null) {hoverable = closestWrapCoordinate;}
 
     if(hoverable!=null) {
-        if(hoverable.Type=="camp") {
-            hoverable_coordinate = null;
-        } else if(hoverable.Type=="unit"){
-            hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
-        }
+        if(hoverable.Type=="camp") {hoverable_coordinate = null;}
+        else if(hoverable.Type=="unit"){hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]}
     }
 
 }
@@ -760,33 +756,27 @@ function quicksortCoordinates(arr) {
     return arr;
 }
 
-// of coordinates of the same position, give the one further down in array if GREATER
-function coordinateCompare(c1,c2,greater) {
+function isFirstCoordinateGreater(c1,c2) {
     if((c1.Type=="camp") && (c2.Type=="unit")) {
-        if(greater) {return c1}
-        else {return c2}
+        return true;
     } else if((c1.Type=="unit") && (c2.Type=="unit")) {
         if(c2.I<c1.I) {
-            if(greater) {return c1}
-            else {return c2}
+            return true;
         } else if(c1.I==c2.I) {
             if (c2.J<c1.J) {
-                if(greater) {return c1}
-                else {return c2}
+                return true;
             } else if(c2.J==c1.J) {
                 if (c2.K<c1.K) {
-                    if(greater) {return c1}
-                    else {return c2}
+                    return true;
                 }
             }
         }
     } else if((c1.Type=="camp") && (c2.Type=="camp")) {
         if(c2.I<c1.I) {
-            if(greater) {return c1}
-            else {return c2}
+            return true;
         }
     }
-    return c2;
+    return false;
 }
 
 

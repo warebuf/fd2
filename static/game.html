@@ -514,18 +514,20 @@ function setupHoverable() {
         }
     } else if(state_machine == 1) {
         for(let i = 0; i < camps.length; i++) {
-            let dist = getDistance(camps[i].XY, hoverable);
-            if(closestCamp == null) {
-                closestCamp = camps[i].XY
-                closestCampDist = dist
-            } else if(dist <= closestCampDist) {
-                if(dist==closestCampDist) {
-                    if(camps[i].XY.Y<closestCamp.Y) {
-                        closestCamp = camps[i].XY
-                    }
-                } else {
+            if(camps[i].HP>0) {
+                let dist = getDistance(camps[i].XY, hoverable);
+                if(closestCamp == null) {
                     closestCamp = camps[i].XY
                     closestCampDist = dist
+                } else if(dist <= closestCampDist) {
+                    if(dist==closestCampDist) {
+                        if(camps[i].XY.Y<closestCamp.Y) {
+                            closestCamp = camps[i].XY
+                        }
+                    } else {
+                        closestCamp = camps[i].XY
+                        closestCampDist = dist
+                    }
                 }
             }
         }

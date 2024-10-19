@@ -155,6 +155,7 @@
                 }
 
                 break;
+
             case 'D':
             case 'd':
             case "ArrowRight":
@@ -170,7 +171,8 @@
                 }
 
                 break;
-            case 'W':
+
+                case 'W':
             case 'w':
             case "ArrowUp":
                 if(phase=="CHARACTER SELECTION") {
@@ -233,7 +235,8 @@
                     calculateNextHoverable(0);
                 }
                 break;
-            case 'S':
+
+                case 'S':
             case 's':
             case "ArrowDown":
                 if(phase=="CHARACTER SELECTION") {
@@ -249,6 +252,7 @@
                     returntomatchmaking()
                 }
                 break;
+
             case "Escape":
                 if(settings_menu==0){
                     settings_menu=1
@@ -491,7 +495,7 @@ function resign(){
 function setupHoverable() {
 
     let mostNorthActive = null;
-    let mostNorthCoordinate = null;
+    //let mostNorthCoordinate = null;
 
     let closestCamp = null;
     let closestCampDist = Number.MAX_SAFE_INTEGER;
@@ -505,11 +509,13 @@ function setupHoverable() {
                     mostNorthActive = state[my_team][my_int][i].Position
                 }
             } else {
+                /*
                 if(mostNorthCoordinate == null) {
                     mostNorthCoordinate = state[my_team][my_int][i].Position
                 } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
                     mostNorthCoordinate = state[my_team][my_int][i].Position
                 }
+                 */
             }
         }
     } else if(state_machine == 1) {
@@ -544,7 +550,6 @@ function setupHoverable() {
             hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
         }
     }
-
 }
 
 function followHoverable() {

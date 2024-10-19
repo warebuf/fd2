@@ -495,7 +495,6 @@ function resign(){
 function setupHoverable() {
 
     let mostNorthActive = null;
-    //let mostNorthCoordinate = null;
 
     let closestCamp = null;
     let closestCampDist = Number.MAX_SAFE_INTEGER;
@@ -508,15 +507,6 @@ function setupHoverable() {
                 } else if(mostNorthActive.Y < state[my_team][my_int][i].Position.Y) {
                     mostNorthActive = state[my_team][my_int][i].Position
                 }
-            } else {
-                /*
-                if(mostNorthCoordinate == null) {
-                    mostNorthCoordinate = state[my_team][my_int][i].Position
-                } else if(mostNorthCoordinate.Y < state[my_team][my_int][i].Position.Y) {
-                    mostNorthCoordinate = state[my_team][my_int][i].Position
-                }
-                 */
-
             }
         }
     } else if(state_machine == 1) {
@@ -541,7 +531,6 @@ function setupHoverable() {
     }
 
     if(mostNorthActive!=null){hoverable=mostNorthActive;}
-    //else if(mostNorthCoordinate!=null) {hoverable = mostNorthCoordinate;}
     else if(closestCamp!=null) {hoverable = closestCamp;}
 
     if(hoverable!=null) {

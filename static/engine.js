@@ -67,7 +67,7 @@ function anime() {
 
     } else if (match_data.length > 0) {
 
-        //drawGrid()
+        drawGrid()
         drawBoard()
         drawCampSelect()
         calcPos()
@@ -86,12 +86,7 @@ function anime() {
         if(view==0){
             drawHeatMap()
             drawCampHP()
-        } else if(view==1) {
-            drawStartersTable2()
-        } else if(view==2) {
             drawCumulStats()
-        } else if(view==3){
-
         }
 
     }

@@ -50,7 +50,6 @@ function anime() {
     }
 
     if(phase=="CHARACTER SELECTION") {
-
         //drawGrid()
         drawPhase()
         drawLog()
@@ -66,8 +65,6 @@ function anime() {
         //ctx.fillRect(1150,40 , 1, 800);
 
     } else if (match_data.length > 0) {
-
-        drawGrid()
         drawBoard()
         drawCampSelect()
         calcPos()
@@ -88,7 +85,6 @@ function anime() {
             drawCampHP()
             drawCumulStats()
         }
-
     }
 
     frame_count += 1
@@ -97,8 +93,7 @@ function anime() {
         if(even==0) {even = 1}
         else {even=0}
     }
-
-
+    
 }
 anime()
 
@@ -809,16 +804,6 @@ function drawError(){
     if(err_count==50) {
         err_msg_index = 0
         err_count = 0
-    }
-}
-
-function drawGrid() {
-    for(i=0;i<200;i++) {
-        for(j=0;j<100;j++) {
-            ctx.textAlign = "left";
-            ctx.fillStyle = 'grey';
-            ctx.fillRect((i*10),(j*10),1,1);
-        }
     }
 }
 

@@ -493,6 +493,9 @@ function setupHoverable() {
     let mostNorthActive = null;
     let mostNorthCoordinate = null;
 
+    let closestCamp = null;
+    let closestCampDist = Number.MAX_SAFE_INTEGER;
+
     if(state_machine == 0) {
         for(let i = 0; i < state[my_team][my_int].length; i++) {
             if(state[my_team][my_int][i].Status==0) {
@@ -511,16 +514,26 @@ function setupHoverable() {
         }
     } else if(state_machine == 1) {
         for(let i = 0; i < camps.length; i++) {
-            if(mostNorthCoordinate == null) {
-                mostNorthCoordinate = camps[i].XY
-            } else if(mostNorthCoordinate.Y < camps[i].XY.Y) {
-                mostNorthCoordinate = camps[i].XY
+            let dist = getDistance(camps[i].XY, hoverable);
+            if(closestCamp == null) {
+                closestCamp = camps[i].XY
+                closestCampDist = dist
+            } else if(dist <= closestCampDist) {
+                if(dist==closestCampDist) {
+                    if(camps[i].XY.Y<closestCamp.XY.Y) {
+                        closestCamp = camps[i].XY
+                    }
+                } else {
+                    closestCamp = camps[i].XY
+                    closestCampDist = dist
+                }
             }
         }
     }
 
     if(mostNorthActive!=null){hoverable=mostNorthActive;}
-    else {hoverable = mostNorthCoordinate;}
+    else if(mostNorthCoordinate!=null) {hoverable = mostNorthCoordinate;}
+    else if(closestCamp!=null) {hoverable = closestCamp;}
 
     if(hoverable!=null) {
         if(hoverable.Type=="camp") {

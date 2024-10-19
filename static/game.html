@@ -516,6 +516,7 @@ function setupHoverable() {
                     mostNorthCoordinate = state[my_team][my_int][i].Position
                 }
                  */
+
             }
         }
     } else if(state_machine == 1) {
@@ -540,7 +541,7 @@ function setupHoverable() {
     }
 
     if(mostNorthActive!=null){hoverable=mostNorthActive;}
-    else if(mostNorthCoordinate!=null) {hoverable = mostNorthCoordinate;}
+    //else if(mostNorthCoordinate!=null) {hoverable = mostNorthCoordinate;}
     else if(closestCamp!=null) {hoverable = closestCamp;}
 
     if(hoverable!=null) {

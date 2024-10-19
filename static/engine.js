@@ -197,7 +197,7 @@ function calcPos() {
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++
-            followHoverable()
+            setupHoverable()
         }
     }
 }

@@ -83,7 +83,6 @@ function anime() {
         if(view==0){
             drawHeatMap()
             drawCampHP()
-            drawCumulStats()
         }
     }
 
@@ -93,7 +92,7 @@ function anime() {
         if(even==0) {even = 1}
         else {even=0}
     }
-    
+
 }
 anime()
 
@@ -1787,7 +1786,6 @@ function drawBoard() {
 
 function drawHeatMap(){
 
-
     let x_offset = Math.round(c.width/2) - 400
     let y_offset = Math.round(c.height/2) - 250
 
@@ -1838,10 +1836,7 @@ function drawHeatMap(){
                 x_shift = 0;
                 y_shift = y_shift+5
 
-
-
                 ctx.textAlign = "center";
-
                 ctx.fillStyle = '#848884';
                 ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
                 ctx.fillStyle = 'white';
@@ -2221,10 +2216,6 @@ function calcColour(n){
         return "rgb("+(255-((n-71)*8))+",255,0)"
     }
     return "black"
-}
-
-function drawCumulStats(){
-
 }
 
 function drawTarget(x,y){

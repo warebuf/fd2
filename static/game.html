@@ -317,6 +317,7 @@
     var match_data = new Array();
     var atk_data = new Array();
     var camp_data = new Array();
+    var cumu_data = new Array();
 
     var time_queue = []
     var turn_queue = []
@@ -677,6 +678,7 @@ function calculateNextHoverable(direction) {
                         closestWrapCoordinate = hoverables[i];
                     }
                 } else {
+                    console.log(hoverables[i], closestWrapDistance)
                     if(isFirstCoordinateGreater(hoverables[i], closestWrapDistance)) {
                         closestWrapCoordinate = hoverables[i];
                     }

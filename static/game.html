@@ -678,7 +678,7 @@ function calculateNextHoverable(direction) {
                         closestWrapCoordinate = hoverables[i];
                     }
                 } else {
-                    console.log(hoverables[i], closestWrapDistance)
+                    console.log(hoverables[i], closestWrapDistance, isFirstCoordinateGreater(hoverables[i], closestWrapDistance))
                     if(isFirstCoordinateGreater(hoverables[i], closestWrapDistance)) {
                         closestWrapCoordinate = hoverables[i];
                     }

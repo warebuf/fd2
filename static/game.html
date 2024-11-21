@@ -40,6 +40,8 @@
 
 <body>
 
+<div id="fps">FPS: 0</div>
+
 <div id="container">
 
     <div id="sel_but"></div>
@@ -339,7 +341,7 @@
     var view = 0;
     var settings_menu = 0;
 
-    function reception() {
+    function main() {
 
         if (!window["WebSocket"]) {
             alert("Error: Your browser does not support web sockets.")
@@ -477,7 +479,7 @@
             }
         }
     }
-    reception()
+    main()
 
 function returntomatchmaking(){
     window.location.href = 'http://{{.host}}/waitroom'

@@ -23,7 +23,22 @@ window.requestAnimFrame = (function(){
 
 window.cancelAnimationFrame = window.cancelAnimationFrame || window.mozCancelAnimationFrame || function(requestID){clearTimeout(requestID)};
 
+
+let last = performance.now();
+let frameTimes = [];
+let fps = 0;
+
 function anime() {
+
+    const current = performance.now();
+    frameTimes.push(current - last)
+    if(frameTimes.length > 30) frameTimes.shift();
+    fps = Math.round(1000 / (frameTimes.reduce((a, b) => a + b) / frameTimes.length));
+    last = current;
+
+    // Update FPS display
+    document.getElementById("fps").textContent = `FPS: ${fps}`;
+
     window.requestAnimFrame(anime);
     ctx.fillStyle = '#101010';
     //ctx.clearRect(0,0,innerWidth,innerHeight);
@@ -92,6 +107,8 @@ function anime() {
         if(even==0) {even = 1}
         else {even=0}
     }
+
+
 
 }
 anime()

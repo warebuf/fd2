@@ -19,6 +19,15 @@ type Camp struct {
 
 }
 
+type cumulativeStats struct {
+	DistanceTravelled float64
+	DamageTaken int
+	DamageGiven int
+	AttacksMade int
+	LocationsReached int
+	CampsDestroyed int
+}
+
 type hero struct {
 	Bot  bool
 	Name string

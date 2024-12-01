@@ -2385,13 +2385,6 @@ function drawEXPBar(locationX, locationY, EXP) {
     ctx.fillText(`EXP`, locationX+1, locationY+barHeight);
 }
 
-function drawBezierCurve(b) {
-    ctx.beginPath();
-    ctx.moveTo(b[0].X, b[0].Y);  // Start point
-    ctx.bezierCurveTo(b[1].X, b[1].Y, b[2].X, b[2].Y, b[3].X, b[3].Y);  // Cubic Bezier curve
-    ctx.stroke();
-}
-
 function drawObstacles() {
 
     for(let i = 0; i < obstacles.length; i++ ){
@@ -2407,6 +2400,27 @@ function drawObstacles() {
 
         }
     }
+
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, 566);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(0, 566);
+    ctx.lineTo(566, 566);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(566, 566);
+    ctx.lineTo(566, 0);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(566, 0);
+    ctx.lineTo(0, 0);
+    ctx.stroke();
 
 }
 

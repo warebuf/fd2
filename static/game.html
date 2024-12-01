@@ -356,6 +356,8 @@
     var view = 0;
     var settings_menu = 0;
 
+    var obstacles = [];
+
     function main() {
 
         if (!window["WebSocket"]) {
@@ -420,16 +422,10 @@
                     }
                 }
                 else if(msg.Event == 'obstacles') {
-
                     const temp = msg.Message.split('\n')
-
                     for(let i = 0; i < temp.length; i++) {
-                        console.log("string", temp[i])
-                        console.log("obj", JSON.parse(temp[i]))
+                        obstacles.push(JSON.parse(temp[i]))
                     }
-
-
-
                 }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")

@@ -162,7 +162,8 @@ func init() {
 }
 
 func loadObstacles(fp string) {
-	file, _ := os.Open("./obstacles/" + fp)
+	fmt.Println("/obstacles/" + fp)
+	file, _ := os.Open("/obstacles/" + fp)
 	content, _ := ioutil.ReadAll(file)
 	str := string(content)
 	obstacles = append(obstacles, str)

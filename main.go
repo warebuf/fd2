@@ -158,10 +158,11 @@ func init() {
 	fmt.Println("initializing...")
 	obstacles = make([]string, 0, 1)
 	loadObstacles("lol-sum-rift-obs.txt")
+	fmt.Println("finished init \n")
 }
 
 func loadObstacles(fp string) {
-	file, _ := os.Open(fp)
+	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := ioutil.ReadAll(file)
 	str := string(content)
 	obstacles = append(obstacles, str)

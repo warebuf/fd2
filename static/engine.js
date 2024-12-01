@@ -2404,21 +2404,21 @@ function drawObstacles() {
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(0, 400);
+    ctx.lineTo(0, 500);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, 400);
-    ctx.lineTo(400, 400);
+    ctx.moveTo(0, 500);
+    ctx.lineTo(500, 500);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(400, 400);
-    ctx.lineTo(400, 0);
+    ctx.moveTo(500, 500);
+    ctx.lineTo(500, 0);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(400, 0);
+    ctx.moveTo(500, 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
 

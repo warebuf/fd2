@@ -421,7 +421,7 @@
                 }
                 else if(msg.Event == 'obstacles') {
 
-                    const obj = data.split('\n').map(line => JSON.parse(line));
+                    const obj = msg.Message.split('\n').map(line => JSON.parse(line));
                     console.log(obj)
 
                 }

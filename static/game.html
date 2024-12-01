@@ -424,7 +424,8 @@
                     const temp = msg.Message.split('\n')
 
                     for(let i = 0; i < temp.length; i++) {
-                        console.log(JSON.parse(temp[i]))
+                        console.log("string", temp)
+                        console.log("obj", JSON.parse(temp[i]))
                     }
 
 

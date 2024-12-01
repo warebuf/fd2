@@ -2400,8 +2400,9 @@ function drawObstacles() {
         ctx.beginPath();
         ctx.moveTo(obstacles[i].X1, obstacles[i].Y1);  // Start point
         ctx.bezierCurveTo(obstacles[i].X2, obstacles[i].Y2, obstacles[i].X3, obstacles[i].Y3, obstacles[i].X4, obstacles[i].Y4);  // Cubic Bezier curve
+        ctx.strokeStyle = "green";
         ctx.stroke();
-        
+
     } else if([i].Shape == "CIRCLE") {
 
     }

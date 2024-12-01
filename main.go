@@ -1,11 +1,13 @@
 package main
 
 import (
+	"io/ioutil"
 	"log"
 	"math"
 	"math/rand"
 	"net/http"
 	"net/url"
+	"os"
 	"strconv"
 
 	//"os"
@@ -126,6 +128,8 @@ type pbase struct {
 	mutex  sync.RWMutex
 }
 
+var obstacles []string
+
 var uid_to_user userbase
 var rid_to_room roombase
 var mid_to_match matchbase
@@ -149,6 +153,19 @@ type msid_to_socket struct {
 var roomname_to_rid rname_to_rid
 var sid_to_sock sid_to_socket
 var msid_to_sock msid_to_socket
+
+func init() {
+	obstacles = make([]string, 0, 1)
+	loadObstacles("lol-sum-rift-obs.txt")
+}
+
+func loadObstacles(fp string) {
+	file, _ := os.Open(fp)
+	content, _ := ioutil.ReadAll(file)
+	str := string(content)
+	obstacles = append(obstacles, str)
+	fmt.Println(str)
+}
 
 func main() {
 

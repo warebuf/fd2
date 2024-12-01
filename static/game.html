@@ -422,10 +422,11 @@
                 else if(msg.Event == 'obstacles') {
 
                     const temp = msg.Message.split('\n')
-                    console.log(temp)
+                    
+                    for(let i = 0; i < temp.length; i++) {
+                        console.log(temp)
+                    }
 
-                    const obj = temp.map(line => JSON.parse(line));
-                    console.log(obj)
 
 
                 }

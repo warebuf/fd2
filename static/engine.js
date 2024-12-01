@@ -81,6 +81,7 @@ function anime() {
 
     } else if (match_data.length > 0) {
         drawBoard()
+        drawObstacles()
         drawCampSelect()
         calcPos()
         drawAttack()
@@ -2383,3 +2384,26 @@ function drawEXPBar(locationX, locationY, EXP) {
     //ctx.font = '6px monospace';
     ctx.fillText(`EXP`, locationX+1, locationY+barHeight);
 }
+
+function drawBezierCurve(b) {
+    ctx.beginPath();
+    ctx.moveTo(b[0].X, b[0].Y);  // Start point
+    ctx.bezierCurveTo(b[1].X, b[1].Y, b[2].X, b[2].Y, b[3].X, b[3].Y);  // Cubic Bezier curve
+    ctx.stroke();
+}
+
+function drawObstacles() {
+
+    let i = 3;
+
+    if(obstacles[i].Shape == "BEZIER") {
+        ctx.beginPath();
+        ctx.moveTo(obstacles[i].X1, obstacles[i].Y1);  // Start point
+        ctx.bezierCurveTo(obstacles[i].X2, obstacles[i].Y2, obstacles[i].X3, obstacles[i].Y3, obstacles[i].X4, obstacles[i].Y4);  // Cubic Bezier curve
+        ctx.stroke();
+    } else if([i].Shape == "CIRCLE") {
+
+    }
+
+}
+

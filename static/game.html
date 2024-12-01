@@ -426,6 +426,8 @@
                     for(let i = 0; i < temp.length; i++) {
                         obstacles.push(JSON.parse(temp[i]))
                     }
+
+
                 }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")
@@ -744,6 +746,9 @@ function isFirstCoordinateGreater(c1,c2) {
     }
     return false;
 }
+
+
+
 
 
 </script>

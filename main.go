@@ -1,7 +1,7 @@
 package main
 
 import (
-	"io/ioutil"
+	"io"
 	"log"
 	"math"
 	"math/rand"
@@ -164,10 +164,10 @@ func init() {
 func loadObstacles(fp string) {
 	fmt.Println("/obstacles/" + fp)
 	file, _ := os.Open("/obstacles/" + fp)
-	content, _ := ioutil.ReadAll(file)
+	content, _ := io.ReadAll(file)
 	str := string(content)
-	obstacles = append(obstacles, str)
 	fmt.Println(str)
+	obstacles = append(obstacles, str)
 }
 
 func main() {

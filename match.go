@@ -21,11 +21,11 @@ type Camp struct {
 
 type cumulativeStats struct {
 	DistanceTravelled float64
-	DamageTaken int
-	DamageGiven int
-	AttacksMade int
-	LocationsReached int
-	CampsDestroyed int
+	DamageTaken       int
+	DamageGiven       int
+	AttacksMade       int
+	LocationsReached  int
+	CampsDestroyed    int
 }
 
 type hero struct {
@@ -626,7 +626,10 @@ func (m *match) run() {
 
 			fmt.Println("joined the game")
 
-			// send the joined user a list of all historic messages
+			// send the map to the new user
+			ws.incoming_message <- &message{Event: "obstacles", Message: obstacles[0]}
+
+			// send message history to new user
 			for _, j := range m.message_logs {
 				ws.incoming_message <- j
 			}
@@ -635,7 +638,7 @@ func (m *match) run() {
 				ws.incoming_message <- &message{Event: "game_over"}
 			}
 
-			// let all participants know that a new user has joined (if only socket for this user that has joined)
+			// communicate to all participants - a new user has joined ( only unique users, not unique sockets )
 			if check_uid == false {
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 

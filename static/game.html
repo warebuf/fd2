@@ -419,6 +419,9 @@
                         event_log.shift()
                     }
                 }
+                else if(msg.Event == 'obstacles') {
+                    console.log(msg.Event, msg.Message)
+                }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")
 

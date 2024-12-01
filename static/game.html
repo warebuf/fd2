@@ -421,8 +421,12 @@
                 }
                 else if(msg.Event == 'obstacles') {
 
-                    const obj = msg.Message.split('\n').map(line => JSON.parse(line));
+                    const temp = msg.Message.split('\n')
+                    console.log(temp)
+
+                    const obj = temp.map(line => JSON.parse(line));
                     console.log(obj)
+
 
                 }
                 else if(msg.Event == 'game_state') {

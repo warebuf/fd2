@@ -163,7 +163,10 @@ func init() {
 
 func loadObstacles(fp string) {
 	fmt.Println("/obstacles/" + fp)
-	file, _ := os.Open("/obstacles/" + fp)
+	file, err := os.Open("/obstacles/" + fp)
+	if err != nil {
+		log.Fatalf("Failed to open file: %v", err)
+	}
 	content, _ := io.ReadAll(file)
 	str := string(content)
 	fmt.Println(str)

@@ -420,7 +420,10 @@
                     }
                 }
                 else if(msg.Event == 'obstacles') {
-                    console.log(msg.Event, msg.Message)
+
+                    const obj = data.split('\n').map(line => JSON.parse(line));
+                    console.log(obj)
+
                 }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")

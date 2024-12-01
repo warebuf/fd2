@@ -155,6 +155,7 @@ var sid_to_sock sid_to_socket
 var msid_to_sock msid_to_socket
 
 func init() {
+	fmt.Println("initializing...")
 	obstacles = make([]string, 0, 1)
 	loadObstacles("lol-sum-rift-obs.txt")
 }

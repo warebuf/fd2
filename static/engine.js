@@ -2410,6 +2410,8 @@ function drawObstacles() {
         }
     }
 
+    ctx.fillRect(50,50,100,100);
+
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, 0);

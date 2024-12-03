@@ -264,7 +264,7 @@ function drawCamps() {
     ctx.fillStyle = "red";
 
     for(let i = 0; i < camps.length; i++) {
-        ctx.fillRect(camps[i].XY.X,camps[i].XY.Y*2.5,1,1);
+        ctx.fillRect(camps[i].XY.X,camps[i].XY.Y,1,1);
 
         let x_shift_tracker = []
         x_shift_tracker.push([]) // list of my_team units at this camp

@@ -263,11 +263,8 @@ function drawCamps() {
 
     ctx.fillStyle = "red";
 
-    let w = Math.round(c.width/2)-250
-    let h = Math.round(c.height/2)+250
-
     for(let i = 0; i < camps.length; i++) {
-        ctx.fillRect(w+(camps[i].XY.X*2.5),h-(camps[i].XY.Y*2.5),1,1);
+        ctx.fillRect(camps[i].XY.X,camps[i].XY.Y*2.5,1,1);
 
         let x_shift_tracker = []
         x_shift_tracker.push([]) // list of my_team units at this camp
@@ -277,13 +274,14 @@ function drawCamps() {
             else {x_shift_tracker[1].push(0)}
         }
 
+        // this draws the attack circles
         for(let j = 0; j < camps[i].Units.length; j++) {
             let unitOfInterest = state[camps[i].Units[j][0]][camps[i].Units[j][1]][camps[i].Units[j][2]]
             if(unitOfInterest.Status == 2) {
 
                 let x_shift = 0;
                 let y_shift = 15;
-                let odd = x_shift_tracker[0].length%2
+                let odd = x_shift_tracker[0].length%2;
                 if(x_shift_tracker[0].length==1){odd=0;}
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {
                     y_shift = -15;
@@ -305,10 +303,10 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc(w+(unitOfInterest.Position.X*2.5) + x_shift, h+(-unitOfInterest.Position.Y*2.5) + y_shift, 5, startAngle, endAngle, false);
+                ctx.arc((unitOfInterest.Position.X*2.5) + x_shift, (-unitOfInterest.Position.Y*2.5) + y_shift, 5, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) { // Close the path to form a wedge
-                    ctx.lineTo(w+(unitOfInterest.Position.X*2.5) + x_shift, h+(-unitOfInterest.Position.Y*2.5) + y_shift); // Draw line to center of the circle
+                    ctx.lineTo((unitOfInterest.Position.X*2.5) + x_shift, (-unitOfInterest.Position.Y*2.5) + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {ctx.strokeStyle = 'blue';}
@@ -2409,8 +2407,6 @@ function drawObstacles() {
 
         }
     }
-
-    ctx.fillRect(50,50,100,100);
 
     ctx.lineWidth = 1;
     ctx.beginPath();

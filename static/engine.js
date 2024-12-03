@@ -2387,12 +2387,21 @@ function drawEXPBar(locationX, locationY, EXP) {
 
 function drawObstacles() {
 
+    // have to draw everything from bottom left corner
+    // therefore we make all coordinates negative and shift it back into the view
+    // ie coordinate (100,100) -> (-100,-100) -> (-100+500,-100+500) -> (400,400)
+    const boardXY = 500;
+
     for(let i = 0; i < obstacles.length; i++ ){
 
         if(obstacles[i].Shape == "BEZIER") {
             ctx.beginPath();
-            ctx.moveTo(obstacles[i].X1, obstacles[i].Y1);  // Start point
-            ctx.bezierCurveTo(obstacles[i].X2, obstacles[i].Y2, obstacles[i].X3, obstacles[i].Y3, obstacles[i].X4, obstacles[i].Y4);  // Cubic Bezier curve
+            ctx.moveTo(-obstacles[i].X1+boardXY, -obstacles[i].Y1+boardXY);
+            ctx.bezierCurveTo(
+                -obstacles[i].X2+boardXY, -obstacles[i].Y2+boardXY,
+                -obstacles[i].X3+boardXY, -obstacles[i].Y3+boardXY,
+                -obstacles[i].X4+boardXY, -obstacles[i].Y4+boardXY
+            );
             ctx.strokeStyle = "white";
             ctx.stroke();
 
@@ -2404,21 +2413,21 @@ function drawObstacles() {
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(0, 0);
-    ctx.lineTo(0, 500);
+    ctx.lineTo(0, boardXY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, 500);
-    ctx.lineTo(500, 500);
+    ctx.moveTo(0, boardXY);
+    ctx.lineTo(boardXY, boardXY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(500, 500);
-    ctx.lineTo(500, 0);
+    ctx.moveTo(boardXY, boardXY);
+    ctx.lineTo(boardXY, 0);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(500, 0);
+    ctx.moveTo(boardXY, 0);
     ctx.lineTo(0, 0);
     ctx.stroke();
 

@@ -303,10 +303,10 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc((unitOfInterest.Position.X*2.5) + x_shift, (-unitOfInterest.Position.Y*2.5) + y_shift, 5, startAngle, endAngle, false);
+                ctx.arc((unitOfInterest.Position.X) + x_shift, (unitOfInterest.Position.Y) + y_shift, 5, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) { // Close the path to form a wedge
-                    ctx.lineTo((unitOfInterest.Position.X*2.5) + x_shift, (-unitOfInterest.Position.Y*2.5) + y_shift); // Draw line to center of the circle
+                    ctx.lineTo((unitOfInterest.Position.X) + x_shift, (unitOfInterest.Position.Y) + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {ctx.strokeStyle = 'blue';}

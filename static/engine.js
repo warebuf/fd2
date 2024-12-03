@@ -2410,7 +2410,7 @@ function drawObstacles() {
         }
     }
 
-    ctx.fillRect(50,50,100,100);
+    ctx.fillRect(-50+boardXY,-50+boardXY,100,100);
 
     ctx.lineWidth = 1;
     ctx.beginPath();

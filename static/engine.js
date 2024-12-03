@@ -263,8 +263,10 @@ function drawCamps() {
 
     ctx.fillStyle = "red";
 
+    const dimension = 500;
+
     for(let i = 0; i < camps.length; i++) {
-        ctx.fillRect(camps[i].XY.X,camps[i].XY.Y,1,1);
+        ctx.fillRect(camps[i].XY.X,-camps[i].XY.Y+500,1,1);
 
         let x_shift_tracker = []
         x_shift_tracker.push([]) // list of my_team units at this camp
@@ -303,10 +305,10 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc((unitOfInterest.Position.X) + x_shift, (unitOfInterest.Position.Y) + y_shift, 5, startAngle, endAngle, false);
+                ctx.arc((unitOfInterest.Position.X) + x_shift, (-unitOfInterest.Position.Y+500) + y_shift, 5, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) { // Close the path to form a wedge
-                    ctx.lineTo((unitOfInterest.Position.X) + x_shift, (unitOfInterest.Position.Y) + y_shift); // Draw line to center of the circle
+                    ctx.lineTo((unitOfInterest.Position.X) + x_shift, (-unitOfInterest.Position.Y+500) + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {ctx.strokeStyle = 'blue';}
@@ -2385,9 +2387,8 @@ function drawEXPBar(locationX, locationY, EXP) {
 
 function drawObstacles() {
 
-    // have to draw everything from bottom left corner
-    // therefore we make all coordinates negative and shift it back into the view
-    // ie coordinate (100,100) -> (-100,-100) -> (-100+500,-100+500) -> (400,400)
+    // have to draw everything from bottom left corner not the top left corner
+    // so we mirror the y-coordinate and shift it down by the board length
     const boardXY = 500;
 
     for(let i = 0; i < obstacles.length; i++ ){

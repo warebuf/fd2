@@ -80,7 +80,7 @@ function anime() {
         //ctx.fillRect(1150,40 , 1, 800);
 
     } else if (match_data.length > 0) {
-        drawBoard()
+
         drawObstacles()
         drawCampSelect()
         calcPos()

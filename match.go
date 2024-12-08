@@ -419,8 +419,8 @@ func createMatch(pl *permission_list) *match {
 		// creating camps
 		random_count := 5 + rand.Intn(5)
 		for i := 0; i < random_count; i++ {
-			random_x := float64(rand.Intn(10))
-			random_y := float64(rand.Intn(10))
+			random_x := float64(rand.Intn(40))
+			random_y := float64(rand.Intn(40))
 			c := Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
 			ans.camps = append(ans.camps, &Camp{HP: rand.Intn(10)*100 + 100, XY: c, Units: make([][]int, 0)})
 		}
@@ -454,7 +454,7 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			for y := 0; y < 3; y++ {
-				temp_coordinate := Coordinate{X: float64(team_int * 200), Y: 200 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
+				temp_coordinate := Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:  j.bot_status,
 					Name: names[rand.Intn((len(names)))],

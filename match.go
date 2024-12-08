@@ -454,7 +454,7 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			for y := 0; y < 3; y++ {
-				temp_coordinate := Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 50), Type: "unit", I: team_int, J: client_int, K: y}
+				temp_coordinate := Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:  j.bot_status,
 					Name: names[rand.Intn((len(names)))],

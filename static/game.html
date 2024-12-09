@@ -132,7 +132,19 @@
 
                     if(state_machine==0) {
                         // if the current hoverable is a unit, continue
-                        if((hoverable.Type == "unit") && (hoverable.I == my_team) && (hoverable.J == my_int) && ((state[hoverable.I][hoverable.J][hoverable.K].Status==0)) || ((state[hoverable.I][hoverable.J][hoverable.K].Status==1) && coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start) )) {
+                        if(
+                            (
+                                (hoverable.Type == "unit") &&
+                                (hoverable.I == my_team) &&
+                                (hoverable.J == my_int) &&
+                                (state[hoverable.I][hoverable.J][hoverable.K].Status==0)
+                            )
+                            ||
+                            (
+                                (state[hoverable.I][hoverable.J][hoverable.K].Status==1) &&
+                                coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
+                            )
+                        ) {
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();

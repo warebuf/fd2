@@ -11,7 +11,7 @@ c.height = document.body.clientHeight;
 
 const dimension = 500;
 const width = Math.round(c.width/2)-(dimension/2);
-const height = Math.round(c.height/2)-(dimension/2);
+const height = Math.round(c.height/2)+(dimension/2);
 
 console.log("width, height", width, height);
 
@@ -218,9 +218,6 @@ function calcPos() {
 function drawAttack() {
 
     if( (animating_state < match_data.length) && (attacking_frames_count > 0) ) {
-
-        let w = Math.round(c.width/2)-250
-        let h = Math.round(c.height/2)+250
 
         for(let i=0; i < atk_data[animating_state].length; i++) {
             let atk_obj = JSON.parse(atk_data[animating_state][i]);
@@ -1528,21 +1525,6 @@ function drawImage(){
     img8 = new Image();
     img8.src = "/images/8.png"
     ctx.drawImage(img8, 350,350, img8.width*.3, img8.height*.3);
-}
-
-function drawBoard() {
-
-    let w = Math.round(c.width/2)-250
-    let h = Math.round(c.height/2)-250
-    ctx.textAlign = "left";
-    ctx.fillStyle = 'grey';
-
-    ctx.fillRect(w,h ,500,1);
-    ctx.fillRect(w,h+500 ,500,1);
-    ctx.fillRect(w,h,1,500);
-    ctx.fillRect(w+500,h ,1,500);
-
-    //ctx.fillRect(Math.round(c.width/2),h, 1, 500);
 }
 
 function drawHeatMap(){

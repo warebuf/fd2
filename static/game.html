@@ -383,7 +383,8 @@
             socket.onmessage = function(e) {
                 var receive_time = Date.now()
                 var msg = eval('('+e.data+')');
-                console.log("msg_init", msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn, msg.Spawns, msg.POAs);
+                //console.log("msg_init", msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn, msg.Spawns, msg.POAs);
+                console.log("msg received", msg.Event)
 
                 var msg_date = msg.When.substring(0,10);
                 var msg_time = msg.When.substring(11,19);

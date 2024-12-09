@@ -166,7 +166,7 @@ func loadObstacles(fp string) {
 	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	fmt.Println(str)
+	//fmt.Println(str)
 	obstacles = append(obstacles, str)
 }
 

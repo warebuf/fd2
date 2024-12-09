@@ -7,6 +7,8 @@ const dimension = 500;
 const width = Math.round(c.width/2)-(dimension/2);
 const height = Math.round(c.height/2)-(dimension/2);
 
+console.log("width, height", width, height);
+
 //c.width = window.innerWidth;
 //c.height = window.innerHeight;
 

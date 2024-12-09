@@ -3,17 +3,17 @@ console.log("loaded js");
 var c = document.getElementById("myCanvas");
 const ctx = c.getContext("2d");
 
-const dimension = 500;
-const width = Math.round(c.width/2)-(dimension/2);
-const height = Math.round(c.height/2)-(dimension/2);
-
-console.log("width, height", width, height);
-
 //c.width = window.innerWidth;
 //c.height = window.innerHeight;
 
 c.width = document.body.clientWidth;
 c.height = document.body.clientHeight;
+
+const dimension = 500;
+const width = Math.round(c.width/2)-(dimension/2);
+const height = Math.round(c.height/2)-(dimension/2);
+
+console.log("width, height", width, height);
 
 // shim layer with setTimeout fallback
 window.requestAnimFrame = (function(){

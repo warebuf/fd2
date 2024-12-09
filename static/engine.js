@@ -2137,16 +2137,16 @@ function drawObstacles() {
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(width, height);
-    ctx.lineTo(width, height+boardXY);
+    ctx.lineTo(width, height-boardXY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(width, height+boardXY);
-    ctx.lineTo(width+boardXY, height+boardXY);
+    ctx.moveTo(width, height-boardXY);
+    ctx.lineTo(width+boardXY, height-boardXY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(width+boardXY, height+boardXY);
+    ctx.moveTo(width+boardXY, height-boardXY);
     ctx.lineTo(width+boardXY, height);
     ctx.stroke();
 

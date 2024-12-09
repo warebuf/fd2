@@ -3,6 +3,10 @@ console.log("loaded js");
 var c = document.getElementById("myCanvas");
 const ctx = c.getContext("2d");
 
+const dimension = 500;
+const width = Math.round(c.width/2)-(dimension/2);
+const height = Math.round(c.height/2)-(dimension/2);
+
 //c.width = window.innerWidth;
 //c.height = window.innerHeight;
 
@@ -226,7 +230,7 @@ function drawAttack() {
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
             if( attacking_frames_count == 1) {
-                createDamageNumber(state[atki][atkj][atkk].ATK, campOfInterest.XY.X, -campOfInterest.XY.Y+500)
+                createDamageNumber(state[atki][atkj][atkk].ATK, width+campOfInterest.XY.X, height-campOfInterest.XY.Y)
                 event_log.push(atk_data[animating_state][i])
                 if(event_log.length >= 25) {
                     event_log.shift()
@@ -240,7 +244,6 @@ function drawAttack() {
 }
 
 function drawPos(){
-    const dimension = 500;
 
     ctx.fillStyle = "white";
 
@@ -251,7 +254,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].HP > 0) {
-                    drawRotated('>',(state[i][j][k].Position.X),(-state[i][j][k].Position.Y)+dimension,state[i][j][k].Angle, "11", 3, "white")
+                    drawRotated('>',width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y,state[i][j][k].Angle, "11", 3, "white")
                 }
             }
         }
@@ -262,10 +265,8 @@ function drawCamps() {
 
     ctx.fillStyle = "red";
 
-    const dimension = 500;
-
     for(let i = 0; i < camps.length; i++) {
-        ctx.fillRect(camps[i].XY.X,-camps[i].XY.Y+500,1,1);
+        ctx.fillRect(width+camps[i].XY.X,height-camps[i].XY.Y,1,1);
 
         let x_shift_tracker = []
         x_shift_tracker.push([]) // list of my_team units at this camp
@@ -304,10 +305,10 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc((unitOfInterest.Position.X) + x_shift, (-unitOfInterest.Position.Y+500) + y_shift, 5, startAngle, endAngle, false);
+                ctx.arc(width+(unitOfInterest.Position.X) + x_shift, height - unitOfInterest.Position.Y + y_shift, 5, startAngle, endAngle, false);
 
                 if((percentage != 0) && (percentage != 1)) { // Close the path to form a wedge
-                    ctx.lineTo((unitOfInterest.Position.X) + x_shift, (-unitOfInterest.Position.Y+500) + y_shift); // Draw line to center of the circle
+                    ctx.lineTo(width + unitOfInterest.Position.X + x_shift, height - unitOfInterest.Position.Y + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 if((camps[i].Units[j][0]==my_team) && (camps[i].Units[j][1]==my_int)) {ctx.strokeStyle = 'blue';}
@@ -323,15 +324,13 @@ function drawCamps() {
 function drawCampSelect() {
     if(state_machine == 1) {
         if(even) {
-            let w = Math.round(c.width/2)-250
-            let h = Math.round(c.height/2)+250
 
             ctx.fillStyle = "white";
             for(let i = 0; i < camps.length; i++) {
-                ctx.fillRect(camps[i].XY.X-5,-camps[i].XY.Y+500+5,1,1);
-                ctx.fillRect(camps[i].XY.X-5,-camps[i].XY.Y+500-5,1,1);
-                ctx.fillRect(camps[i].XY.X+5,-camps[i].XY.Y+500+5,1,1);
-                ctx.fillRect(camps[i].XY.X+5,-camps[i].XY.Y+500-5,1,1);
+                ctx.fillRect(width+camps[i].XY.X-5,height-camps[i].XY.Y+5,1,1);
+                ctx.fillRect(width+camps[i].XY.X-5,height-camps[i].XY.Y-5,1,1);
+                ctx.fillRect(width+camps[i].XY.X+5,height-camps[i].XY.Y+5,1,1);
+                ctx.fillRect(width+camps[i].XY.X+5,height-camps[i].XY.Y-5,1,1);
             }
         }
     }
@@ -339,13 +338,11 @@ function drawCampSelect() {
 
 function drawHoverable() {
     if(hoverable!=null){
-        let w = Math.round(c.width/2)-250
-        let h = Math.round(c.height/2)+250
         ctx.fillStyle = 'pink'
-        ctx.fillRect(hoverable.X-10,-hoverable.Y+500+10,20,1);
-        ctx.fillRect(hoverable.X-10,-hoverable.Y+500-10,20,1);
-        ctx.fillRect(hoverable.X-10,-hoverable.Y+500-10,1,20);
-        ctx.fillRect(hoverable.X+10,-hoverable.Y+500-10,1,20);
+        ctx.fillRect(width+hoverable.X-10,height-hoverable.Y+10,20,1);
+        ctx.fillRect(width+hoverable.X-10,height-hoverable.Y-10,20,1);
+        ctx.fillRect(width+hoverable.X-10,height-hoverable.Y-10,1,20);
+        ctx.fillRect(width+hoverable.X+10,height-hoverable.Y-10,1,20);
         ctx.fillStyle = 'white'
     }
 }
@@ -356,9 +353,6 @@ function drawPotentialPaths() {
 
     }
     else if(state_machine==1) {
-
-        let w = Math.round(c.width/2)-250
-        let h = Math.round(c.height/2)+250
 
         if((selected_hoverable!=null) && (selected_hoverable.Type == "unit") && (selected_hoverable.I == my_team) && (selected_hoverable.J == my_int)) {
             for(let i = 0; i < camps.length; i++) {
@@ -372,8 +366,8 @@ function drawPotentialPaths() {
                         colour = "grey";
                     }
                     ctx.strokeStyle = colour;
-                    ctx.moveTo(selected_hoverable.X, -selected_hoverable.Y+500);
-                    ctx.lineTo(camps[i].XY.X, -camps[i].XY.Y+500);
+                    ctx.moveTo(width+selected_hoverable.X, height-selected_hoverable.Y);
+                    ctx.lineTo(width+camps[i].XY.X, height-camps[i].XY.Y);
                     ctx.stroke();
 
                     // write distance
@@ -386,7 +380,7 @@ function drawPotentialPaths() {
                         radians = getAngle(camps[i].XY, selected_hoverable)
                     }
 
-                    drawRotated(dist,mid[0],-mid[1]+500,radians, "8", 10, colour);
+                    drawRotated(dist,width+mid[0],height-mid[1],radians, "8", 10, colour);
 
                     // write TTL, may not do this, not sure
 
@@ -401,8 +395,6 @@ function drawPotentialPaths() {
 
 function drawPaths() {
 
-        let w = Math.round(c.width/2)-250
-        let h = Math.round(c.height/2)+250
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
@@ -410,8 +402,8 @@ function drawPaths() {
                     if(state[i][j][k].HP>0 && state[i][j][k].State == 0) {
                         ctx.beginPath();
                         ctx.strokeStyle = "grey";
-                        ctx.moveTo(state[i][j][k].Start.X, -state[i][j][k].Start.Y+500);
-                        ctx.lineTo(state[i][j][k].Destination.X, -state[i][j][k].Destination.Y+500);
+                        ctx.moveTo(width+state[i][j][k].Start.X, height-state[i][j][k].Start.Y);
+                        ctx.lineTo(width+state[i][j][k].Destination.X, height-state[i][j][k].Destination.Y);
                         ctx.stroke();
                     }
 
@@ -2144,11 +2136,11 @@ function drawObstacles() {
 
         if(obstacles[i].Shape == "BEZIER") {
             ctx.beginPath();
-            ctx.moveTo(obstacles[i].X1, -obstacles[i].Y1+boardXY);
+            ctx.moveTo(width+obstacles[i].X1, height-obstacles[i].Y1);
             ctx.bezierCurveTo(
-                obstacles[i].X2, -obstacles[i].Y2+boardXY,
-                obstacles[i].X3, -obstacles[i].Y3+boardXY,
-                obstacles[i].X4, -obstacles[i].Y4+boardXY
+                width+obstacles[i].X2, height-obstacles[i].Y2,
+                width+obstacles[i].X3, height-obstacles[i].Y3,
+                width+obstacles[i].X4, height-obstacles[i].Y4
             );
             ctx.strokeStyle = "white";
             ctx.stroke();
@@ -2160,23 +2152,23 @@ function drawObstacles() {
 
     ctx.lineWidth = 1;
     ctx.beginPath();
-    ctx.moveTo(0, 0);
-    ctx.lineTo(0, boardXY);
+    ctx.moveTo(width, height);
+    ctx.lineTo(width, height+boardXY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(0, boardXY);
-    ctx.lineTo(boardXY, boardXY);
+    ctx.moveTo(width, height+boardXY);
+    ctx.lineTo(width+boardXY, height+boardXY);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(boardXY, boardXY);
-    ctx.lineTo(boardXY, 0);
+    ctx.moveTo(width+boardXY, height+boardXY);
+    ctx.lineTo(width+boardXY, height);
     ctx.stroke();
 
     ctx.beginPath();
-    ctx.moveTo(boardXY, 0);
-    ctx.lineTo(0, 0);
+    ctx.moveTo(width+boardXY, height);
+    ctx.lineTo(width, height);
     ctx.stroke();
 
 }

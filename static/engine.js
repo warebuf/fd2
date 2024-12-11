@@ -2135,8 +2135,9 @@ function drawObstacles() {
     }
 
     ctx.fillStyle = "orange";
-    for(let i = 0; i <intersections.length; i++) {
-        ctx.fillRect(width+obstacles[i].X, height-obstacles[i].Y, 1, 1);
+    for(let i = 0; i < intersections.length; i++) {
+        console.log(intersections[i]);
+        ctx.fillRect(width+intersections[i].X, height-intersections[i].Y, 1, 1);
     }
     ctx.fillStyle = "white";
 

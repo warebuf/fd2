@@ -439,8 +439,13 @@
                     for(let i = 0; i < temp.length; i++) {
                         obstacles.push(JSON.parse(temp[i]))
                     }
-
-
+                }
+                else if(msg.Event == 'intersections') {
+                    const temp = msg.Message.split('\n')
+                    for(let i = 0; i < temp.length; i++) {
+                        console.log(temp[i])
+                        //obstacles.push(JSON.parse(temp[i]))
+                    }
                 }
                 else if(msg.Event == 'game_state') {
                     console.log("received game_state")

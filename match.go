@@ -628,6 +628,7 @@ func (m *match) run() {
 
 			// send the map to the new user
 			ws.incoming_message <- &message{Event: "obstacles", Message: obstacles[0]}
+			ws.incoming_message <- &message{Event: "intersections", Message: obstacles[0]}
 
 			// send message history to new user
 			for _, j := range m.message_logs {

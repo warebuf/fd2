@@ -129,6 +129,7 @@ type pbase struct {
 }
 
 var obstacles []string
+var intersections []string
 
 var uid_to_user userbase
 var rid_to_room roombase
@@ -167,7 +168,6 @@ func loadObstacles(fp string) {
 	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	//fmt.Println(str)
 	obstacles = append(obstacles, str)
 }
 
@@ -176,8 +176,7 @@ func loadIntersections(fp string) {
 	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	fmt.Println(str)
-	//obstacles = append(obstacles, str)
+	intersections = append(intersections, str)
 }
 
 func main() {

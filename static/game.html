@@ -369,6 +369,7 @@
     var settings_menu = 0;
 
     var obstacles = [];
+    var intersections = [];
 
     function main() {
 
@@ -444,7 +445,7 @@
                     const temp = msg.Message.split('\n')
                     for(let i = 0; i < temp.length; i++) {
                         console.log(temp[i])
-                        //obstacles.push(JSON.parse(temp[i]))
+                        intersections.push(JSON.parse(temp[i]))
                     }
                 }
                 else if(msg.Event == 'game_state') {

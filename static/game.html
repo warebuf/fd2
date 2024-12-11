@@ -444,7 +444,6 @@
                 else if(msg.Event == 'intersections') {
                     const temp = msg.Message.split('\n')
                     for(let i = 0; i < temp.length; i++) {
-                        console.log(temp[i])
                         intersections.push(JSON.parse(temp[i]))
                     }
                 }

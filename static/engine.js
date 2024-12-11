@@ -2134,6 +2134,12 @@ function drawObstacles() {
         }
     }
 
+    ctx.fillStyle = "orange";
+    for(let i = 0; i <intersections.length; i++) {
+        ctx.fillRect(width+obstacles[i].X, height-obstacles[i].Y, 1, 1);
+    }
+    ctx.fillStyle = "white";
+
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(width, height);

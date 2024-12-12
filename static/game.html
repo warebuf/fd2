@@ -199,7 +199,7 @@
 
                 break;
 
-                case 'W':
+            case 'W':
             case 'w':
             case "ArrowUp":
                 if(phase=="CHARACTER SELECTION") {
@@ -263,7 +263,7 @@
                 }
                 break;
 
-                case 'S':
+            case 'S':
             case 's':
             case "ArrowDown":
                 if(phase=="CHARACTER SELECTION") {
@@ -301,8 +301,31 @@
                     setupHoverable();
                 }
                 break;
+
+            case 'b':
+            case 'B':
+                a2++;
+                if(a2==a1){
+                    a2++;
+                }
+
+                if(a2>intersections.length-1) {
+                    a2 = 0;
+                    a1++;
+                    if(a1>intersections.length-1) {
+                        a1 = 0;
+                        a2 = 1;
+                    }
+                }
+                console.log(a1,a2);
+                console.log(aStar(a1,a2));
+                break;
+
         }
     }
+
+    var a1 = 0;
+    var a2 = 1;
 
     // important data
     var socket = null; // socket object for this tab

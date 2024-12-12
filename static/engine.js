@@ -2165,6 +2165,9 @@ function drawObstacles() {
 
 class AStarNode {
     constructor(Origin, x, y, g = 0, h = 0, parent = null) {
+
+        console.log("ASTAR")
+
         this.X = x;
         this.Y = y;
         this.G = g; // cost from start
@@ -2178,6 +2181,9 @@ class AStarNode {
 function aStar(s, g) {
     const openList = []; // nodes to explore
     const closedList = new Set(); // nodes completely explored, prevents backtracking
+
+    console.log("s", s)
+    console.log("g", g)
 
     // create start and goal nodes
     let start = new AStarNode(s, s.X, s.Y, 0, 0, null);

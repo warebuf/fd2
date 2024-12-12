@@ -2166,7 +2166,7 @@ function drawObstacles() {
 class AStarNode {
     constructor(Origin, x, y, g = 0, h = 0, parent = null) {
 
-        console.log("ASTAR")
+        console.log("ASD")
 
         this.X = x;
         this.Y = y;
@@ -2186,18 +2186,18 @@ function aStar(s, g) {
     console.log("g", g)
 
     // create start and goal nodes
-    let start = new AStarNode(s, s.X, s.Y, 0, 0, null);
-    let goal = new AStarNode(g, g.X, g.Y, 0, 0, null);
+    let startNode = new AStarNode(s, s.X, s.Y, 0, 0, null);
+    let goalNode = new AStarNode(g, g.X, g.Y, 0, 0, null);
 
-    start.H = heuristic(start, goal);
-    start.F = start.G + start.H;
-    openList.push(start);
+    startNode.H = heuristic(startNode, goalNode);
+    startNode.F = startNode.G + startNode.H;
+    openList.push(startNode);
 
     while (openList.length > 0) {
         openList.sort((a, b) => a.F - b.F); // sort by lowest f value (priority queue)
         const currentNode = openList.shift();
 
-        if (isSameNode(currentNode, goal)) { // found the goal, reconstruct and return the path
+        if (isSameNode(currentNode, goalNode)) { // found the goal, reconstruct and return the path
             const path = [];
             let node = currentNode;
             while (node !== null) {
@@ -2228,11 +2228,11 @@ function aStar(s, g) {
             }
 
             if (found == null) {
-                let newNode = new AStarNode(neighbor, neighbor.X, neighbor.Y, tentativeG, heuristic(neighbor, goal), currentNode);
+                let newNode = new AStarNode(neighbor, neighbor.X, neighbor.Y, tentativeG, heuristic(neighbor, goalNode), currentNode);
                 openList.push(newNode);
             } else if (tentativeG < found.G) {
                 found.G = tentativeG;
-                found.H = heuristic(found, goal);
+                found.H = heuristic(found, goalNode);
                 found.F = found.G + found.H;
                 found.parent = currentNode;
             }

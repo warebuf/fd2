@@ -1,5 +1,18 @@
 console.log("loaded js");
 
+class AStarNode {
+    constructor(Origin, x, y, g = 0, h = 0, parent = null) {
+
+        this.X = x;
+        this.Y = y;
+        this.G = g; // cost from start
+        this.H = h; // Heuristic cost
+        this.F = g + h; // Total cost
+        this.parent = parent;
+        this.origin = Origin;
+    }
+}
+
 var c = document.getElementById("myCanvas");
 const ctx = c.getContext("2d");
 
@@ -2163,20 +2176,9 @@ function drawObstacles() {
 
 }
 
-class AStarNode {
-    constructor(Origin, x, y, g = 0, h = 0, parent = null) {
 
-        this.X = x;
-        this.Y = y;
-        this.G = g; // cost from start
-        this.H = h; // Heuristic cost
-        this.F = g + h; // Total cost
-        this.parent = parent;
-        this.origin = Origin;
-    }
-}
 
-console.log(1, typeof AStarNode);
+console.log("HELLO???")
 
 function aStar(s, g) {
     const openList = []; // nodes to explore

@@ -262,7 +262,7 @@ function drawPos(){
 
 function drawCamps() {
 
-    ctx.fillStyle = "red";
+    ctx.fillStyle = "green";
 
     for(let i = 0; i < camps.length; i++) {
         ctx.fillRect(width+camps[i].XY.X,height-camps[i].XY.Y,1,1);
@@ -2134,7 +2134,7 @@ function drawObstacles() {
         }
     }
 
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "red";
     for(let i = 0; i < intersections.length; i++) {
         console.log(intersections[i]);
         ctx.fillRect(width+intersections[i].X, height-intersections[i].Y, 1, 1);

@@ -2164,3 +2164,76 @@ function drawObstacles() {
 
 }
 
+class AStarNode {
+    constructor(Origin, x, y, g = 0, h = 0, parent = null) {
+        this.X = x;
+        this.Y = y;
+        this.G = g; // cost from start
+        this.H = h; // Heuristic cost
+        this.F = g + h; // Total cost
+        this.parent = parent;
+        this.origin = Origin;
+    }
+}
+
+function aStar(s, g) {
+    const openList = []; // nodes to explore
+    const closedList = new Set(); // nodes completely explored, prevents backtracking
+
+    // create start and goal nodes
+    let start = new AStarNode(s, s.X, s.Y, 0, 0, null);
+    let goal = new AStarNode(g, g.X, g.Y, 0, 0, null);
+
+    start.H = heuristic(start, goal);
+    start.F = start.G + start.H;
+    openList.push(start);
+
+    while (openList.length > 0) {
+        openList.sort((a, b) => a.F - b.F); // sort by lowest f value (priority queue)
+        const currentNode = openList.shift();
+
+        if (isSameNode(currentNode, goal)) { // found the goal, reconstruct and return the path
+            const path = [];
+            let node = currentNode;
+            while (node !== null) {
+                path.push([node.X, node.Y]);
+                node = node.parent;
+            }
+            return path.reverse();
+        }
+
+        closedList.add(`${currentNode.X},${currentNode.Y}`);
+
+        for (let i = 0; i < currentNode.origin.Edges.length; i++) {
+
+            const neighbor = currentNode.origin.Edges[i];
+
+            if (closedList.has(`${neighbor.X},${neighbor.Y}`)) {
+                continue;
+            }
+
+            const tentativeG = currentNode.G + currentNode.origin.EdgeLength[i];
+
+            let found = null;
+            for (let j = 0; j < openList.length; j++) {
+                if (isSameNode(openList[j], neighbor)) {
+                    found = openList[j];
+                    break;
+                }
+            }
+
+            if (found == null) {
+                let newNode = new AStarNode(neighbor, neighbor.X, neighbor.Y, tentativeG, heuristic(neighbor, goal), currentNode);
+                openList.push(newNode);
+            } else if (tentativeG < found.G) {
+                found.G = tentativeG;
+                found.H = heuristic(found, goal);
+                found.F = found.G + found.H;
+                found.parent = currentNode;
+            }
+
+        }
+    }
+
+    return [];
+}

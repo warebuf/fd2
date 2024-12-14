@@ -2215,7 +2215,7 @@ function aStar(s, g) {
 
         for (let i = 0; i < currentNode.origin.Edges.length; i++) {
 
-            const neighbor = currentNode.origin.Edges[i];
+            const neighbor = intersections[currentNode.origin.Edges[i]];
 
             if (closedList.has(`${neighbor.X},${neighbor.Y}`)) {
                 continue;

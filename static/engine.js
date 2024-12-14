@@ -2179,14 +2179,15 @@ function drawObstacles() {
 
 
 
+function heuristic(node, goal) { // euclidean distance
+    const dx = goal.X - node.X;
+    const dy = goal.Y - node.Y;
+    return Math.sqrt(dx * dx + dy * dy);
+}
 
 function aStar(s, g) {
     const openList = []; // nodes to explore
     const closedList = new Set(); // nodes completely explored, prevents backtracking
-
-    console.log("s", s);
-    console.log("g", g);
-    console.log(2, typeof AStarNode);
 
     // create start and goal nodes
     let startNode = new AStarNode(s, s.X, s.Y, 0, 0, null);

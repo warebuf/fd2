@@ -2201,7 +2201,7 @@ function aStar(s, g) {
         openList.sort((a, b) => a.F - b.F); // sort by lowest f value (priority queue)
         const currentNode = openList.shift();
 
-        if (isSameNode(currentNode, goalNode)) { // found the goal, reconstruct and return the path
+        if ( (currentNode.X == goalNode.X) && (currentNode.Y == currentNode.Y) ) { // found the goal, reconstruct and return the path
             const path = [];
             let node = currentNode;
             while (node !== null) {

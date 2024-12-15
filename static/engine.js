@@ -2218,7 +2218,7 @@ function aStar(s, g) {
 
         for (let i = 0; i < currentNode.origin.Edges.length; i++) {
 
-            const neighbor = intersections[currentNode.origin.Edges[i]];
+            const neighbor = intersections[ parseInt(currentNode.origin.Edges[i].slice(1), 10) ];
 
             if (closedList.has(`${neighbor.X},${neighbor.Y}`)) {
                 continue;

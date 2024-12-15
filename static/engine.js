@@ -120,7 +120,7 @@ function anime() {
             drawCampHP()
         }
         if(path != []) {
-            drawPath(path)
+            drawComplexPath(path)
         }
     }
 
@@ -408,7 +408,7 @@ function drawPotentialPaths() {
 
 }
 
-function drawComplexPath() {
+function drawPaths() {
 
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {

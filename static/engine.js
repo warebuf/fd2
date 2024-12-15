@@ -2225,7 +2225,7 @@ function aStar(s, g) {
 
             let found = null;
             for (let j = 0; j < openList.length; j++) {
-                if (isSameNode(openList[j], neighbor)) {
+                if ( (openList.X == neighbor.X) && (openList.Y == neighbor.Y) ) {
                     found = openList[j];
                     break;
                 }

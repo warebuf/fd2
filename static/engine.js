@@ -119,6 +119,9 @@ function anime() {
             drawHeatMap()
             drawCampHP()
         }
+        if(path != []) {
+            drawPath(path)
+        }
     }
 
     frame_count += 1
@@ -405,7 +408,7 @@ function drawPotentialPaths() {
 
 }
 
-function drawPaths() {
+function drawComplexPath() {
 
         for(let i = 0; i < state.length; i++) {
             for(let j = 0; j < state[i].length; j++) {
@@ -2245,4 +2248,15 @@ function aStar(s, g) {
     }
 
     return [];
+}
+
+function drawComplexPath(path) {
+    for (let i = 0; i < path.length - 1; i++) {
+        ctx.beginPath();    // Begin a new path
+        ctx.strokeStyle = "blue";
+        ctx.moveTo(path[i][0], path[i][1]); // Move to the starting point
+        ctx.lineTo(path[i + 1][0], path[i + 1][1]); // Draw a line to the ending point
+        ctx.stroke();       // Render the line
+    }
+
 }

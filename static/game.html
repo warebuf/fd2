@@ -318,7 +318,10 @@
                     }
                 }
                 console.log(a1,a2, aStar(intersections[a1],intersections[a2]));
+                const startTime = performance.now();
                 path = aStar(intersections[a1],intersections[a2]);
+                const endTime = performance.now();
+                console.log(`Execution Time: ${endTime - startTime}ms`);
                 break;
 
         }
@@ -464,13 +467,13 @@
                 else if(msg.Event == 'obstacles') {
                     const temp = msg.Message.split('\n')
                     for(let i = 0; i < temp.length; i++) {
-                        obstacles.push(JSON.parse(temp[i]))
+                        obstacles.push(JSON.parse(temp[i]));
                     }
                 }
                 else if(msg.Event == 'intersections') {
                     const temp = msg.Message.split('\n')
                     for(let i = 0; i < temp.length; i++) {
-                        intersections.push(JSON.parse(temp[i]))
+                        intersections.push(JSON.parse(temp[i]));
                     }
                 }
                 else if(msg.Event == 'game_state') {

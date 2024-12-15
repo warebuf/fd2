@@ -2258,7 +2258,6 @@ function drawComplexPath(path) {
         ctx.lineTo(width+path[i + 1][0], height - path[i + 1][1]); // Draw a line to the ending point
         ctx.stroke();       // Render the line
     }
-
 }
 
 function addDynamicNode() {

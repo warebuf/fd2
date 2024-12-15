@@ -2260,3 +2260,15 @@ function drawComplexPath(path) {
     }
 
 }
+
+function addDynamicNode() {
+
+}
+
+function removeDynamicNode() {
+
+}
+
+
+
+

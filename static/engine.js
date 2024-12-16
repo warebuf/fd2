@@ -2262,6 +2262,10 @@ function drawComplexPath(path) {
 
 function addDynamicNode() {
 
+    for(let i = 0; i < intersections.length; i++) {
+        console.log(i, intersections[i])
+    }
+
 }
 
 function removeDynamicNode() {

@@ -68,6 +68,78 @@
 </div>
 
 
+<script>
+    var a1 = 0;
+    var a2 = 1;
+
+    // important data
+    var socket = null; // socket object for this tab
+    var my_team = -1; // the user's team index
+    var my_int = -1; // the user's player index
+
+    // state stuff
+    var animating_state = -1 // where are we at in the dataset
+    var phase = "null";
+    var turn = "null"; // the current phase/turn
+    var sent_time = null; // the time that the turn ends
+
+    var game_over = false;
+
+    var attacking_frames_count = 0
+
+    // the board state
+    var state = []
+    var camps = [];
+
+    var h_index = 0
+    var l_index = 0
+    var r_index = 0
+    var b_index = 0
+
+    var bench = null
+    var bench_index = 0
+
+    var screen_index = 0
+    var x_index_1 = 0
+    var y_index_1 = 0
+    var second_index = false
+    var screen_index_2 = 0
+    var x_index_2 = 0
+    var y_index_2 = 0
+
+    var err_msg_index = 0
+    var err_count = 0
+
+    // datasets
+    var match_data = new Array();
+    var atk_data = new Array();
+    var camp_data = new Array();
+    var cumu_data = new Array();
+
+    var time_queue = []
+    var turn_queue = []
+    var event_log = []
+
+    var damageNumbers = []; // UI related, holds the damage number animation
+
+    var frame_count = 0;
+    var state_machine = 0;
+    var even = 0; // just a small global variable to let us know when to flash camp icons
+    var action_buffer = ""
+
+    var hoverable = null;
+    var hoverable_coordinate = null;
+    var selected_hoverable = null;
+
+    var total_units_of_time = 0;
+
+    var view = 0;
+    var settings_menu = 0;
+
+    var obstacles = [];
+    var intersections = [];
+    var path = [];
+</script>
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
 
@@ -330,76 +402,7 @@
         }
     }
 
-    var a1 = 0;
-    var a2 = 1;
 
-    // important data
-    var socket = null; // socket object for this tab
-    var my_team = -1; // the user's team index
-    var my_int = -1; // the user's player index
-
-    // state stuff
-    var animating_state = -1 // where are we at in the dataset
-    var phase = "null";
-    var turn = "null"; // the current phase/turn
-    var sent_time = null; // the time that the turn ends
-
-    var game_over = false;
-
-    var attacking_frames_count = 0
-
-    // the board state
-    var state = []
-    var camps = [];
-
-    var h_index = 0
-    var l_index = 0
-    var r_index = 0
-    var b_index = 0
-
-    var bench = null
-    var bench_index = 0
-
-    var screen_index = 0
-    var x_index_1 = 0
-    var y_index_1 = 0
-    var second_index = false
-    var screen_index_2 = 0
-    var x_index_2 = 0
-    var y_index_2 = 0
-
-    var err_msg_index = 0
-    var err_count = 0
-
-    // datasets
-    var match_data = new Array();
-    var atk_data = new Array();
-    var camp_data = new Array();
-    var cumu_data = new Array();
-
-    var time_queue = []
-    var turn_queue = []
-    var event_log = []
-
-    var damageNumbers = []; // UI related, holds the damage number animation
-
-    var frame_count = 0;
-    var state_machine = 0;
-    var even = 0; // just a small global variable to let us know when to flash camp icons
-    var action_buffer = ""
-
-    var hoverable = null;
-    var hoverable_coordinate = null;
-    var selected_hoverable = null;
-
-    var total_units_of_time = 0;
-
-    var view = 0;
-    var settings_menu = 0;
-
-    var obstacles = [];
-    var intersections = [];
-    var path = [];
 
 
 

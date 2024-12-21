@@ -2136,11 +2136,11 @@ function drawObstacles() {
 
         if(obstacles[i].Shape == "BEZIER") {
             ctx.beginPath();
-            ctx.moveTo(width+obstacles[i].X1, height-obstacles[i].Y1);
+            ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
             ctx.bezierCurveTo(
-                width+obstacles[i].X2, height-obstacles[i].Y2,
-                width+obstacles[i].X3, height-obstacles[i].Y3,
-                width+obstacles[i].X4, height-obstacles[i].Y4
+                width+obstacles[i].points[1].x, height-obstacles[i].points[1].y,
+                width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
+                width+obstacles[i].points[3].y, height-obstacles[i].points[3].y
             );
             ctx.strokeStyle = "white";
             ctx.stroke();

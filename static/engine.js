@@ -2179,9 +2179,6 @@ function drawObstacles() {
 
 }
 
-
-
-
 function heuristic(node, goal) { // euclidean distance
     const dx = goal.X - node.X;
     const dy = goal.Y - node.Y;
@@ -2260,18 +2257,10 @@ function drawComplexPath(path) {
     }
 }
 
-function addDynamicNode() {
+function findPath(unit) {
 
-    for(let i = 0; i < intersections.length; i++) {
-        console.log(i, intersections[i])
-    }
+    console.log(unit.Position)
 
 }
-
-function removeDynamicNode() {
-
-}
-
-
 
 

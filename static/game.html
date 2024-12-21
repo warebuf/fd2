@@ -473,8 +473,8 @@
                 else if(msg.Event == 'obstacles') {
                     const temp = msg.Message.split('\n')
                     for (let i = 0; i < temp.length; i++) {
-                        const temp = JSON.parse(temp[i]);
-                        const curve = new Bezier(temp.X1, temp.Y1, temp.X2, temp.Y2, temp.X3, temp.Y3, temp.X4, temp.Y4);
+                        const obs = JSON.parse(temp[i]);
+                        const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
                         console.log(i, curve)
                         obstacles.push(temp);
                     }

@@ -74,10 +74,771 @@
 </div>
 
 
-
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
-<script type="module" src="/static/main.js"></script>
 <script src="/static/engine.js"></script>
+
+<script type="module">
+
+
+    import {Bezier} from "https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/src/bezier.min.js";
+
+    document.onkeydown = function (e) {
+        switch (e.key) {
+
+            case 'E':
+            case 'e':
+            case "Enter":
+                if (phase == "CHARACTER SELECTION") {
+
+                    if (second_index == false) {
+                        second_index = true
+
+                        screen_index_2 = screen_index
+                        x_index_2 = x_index_1
+                        if (screen_index == 1) {
+                            if (x_index_1 == 0) {
+                                y_index_2 = y_index_1 + h_index
+                            } else if (x_index_1 == 1) {
+                                y_index_2 = y_index_1 + l_index
+                            } else if (x_index_1 == 2) {
+                                y_index_2 = y_index_1 + r_index
+                            } else if (x_index_1 == 3) {
+                                y_index_2 = y_index_1 + b_index
+                            }
+                        } else {
+                            y_index_2 = y_index_1
+                        }
+
+                    } else if (second_index == true) {
+
+                        if (x_index_1 == x_index_2) {
+
+                            let y1 = ""
+                            if (screen_index == 1) {
+                                if (x_index_1 == 0) {
+                                    y1 = y_index_1 + h_index
+                                } else if (x_index_1 == 1) {
+                                    y1 = y_index_1 + l_index
+                                } else if (x_index_1 == 2) {
+                                    y1 = y_index_1 + r_index
+                                } else if (x_index_1 == 3) {
+                                    y1 = y_index_1 + b_index
+                                }
+
+                            } else {
+                                y1 = y_index_1
+                            }
+
+                            const s = screen_index + ';' + x_index_1 + ';' + y1 + ';' + screen_index_2 + ';' + x_index_2 + ';' + y_index_2
+                            socket.send(JSON.stringify({"Event": "swapRequest", "Message": s}))
+                            console.log("sent swapreq")
+                        } else {
+                            console.log("CANNOT SWAP INCOMPATIBLE BODY PARTS")
+                            err_msg_index = 1
+                        }
+
+                        second_index = false
+                    }
+                } else {
+                    console.log("enter")
+
+                    if (state_machine == 0) {
+                        // if the current hoverable is a unit, continue
+                        if (
+                            (
+                                (hoverable.Type == "unit") &&
+                                (hoverable.I == my_team) &&
+                                (hoverable.J == my_int) &&
+                                (state[hoverable.I][hoverable.J][hoverable.K].Status == 0)
+                            )
+                            ||
+                            (
+                                (state[hoverable.I][hoverable.J][hoverable.K].Status == 1) &&
+                                coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
+                            )
+                        ) {
+
+                            findPath(state[my_team][my_int][selected_hoverable.K]);
+
+                            selected_hoverable = hoverable;
+                            state_machine = 1;
+                            setupHoverable();
+                        }
+                    } else if (state_machine == 1) {
+                        // if the current hoverable is a POA, continue
+
+                        socket.send(JSON.stringify({
+                            "Event": 'act',
+                            "Message": action_buffer,
+                            "Team_index": my_team,
+                            "Client_index": my_int,
+                            "Hero_index": selected_hoverable.K,
+                            Route: hoverable
+                        }))
+                        selected_hoverable = null;
+                        state_machine = 0;
+                        setupHoverable();
+                    }
+
+                }
+                break;
+
+            case 'C':
+            case 'c':
+                if (view == 0) {
+                    view = 1
+                } else if (view == 1) {
+                    view = 0
+                }
+                break;
+
+            case 'A':
+            case 'a':
+            case "ArrowLeft":
+
+                if (phase == "CHARACTER SELECTION") {
+
+                    x_index_1 = x_index_1 - 1
+                    if (x_index_1 < 0) {
+                        x_index_1 = 3
+                    }
+                } else if (match_data.length > 0) {
+                    calculateNextHoverable(1);
+                }
+
+                break;
+
+            case 'D':
+            case 'd':
+            case "ArrowRight":
+
+                if (phase == "CHARACTER SELECTION") {
+                    x_index_1 = x_index_1 + 1
+                    if (x_index_1 > 3) {
+                        x_index_1 = 0
+                    }
+                } else if (match_data.length > 0) {
+                    calculateNextHoverable(2);
+                }
+
+                break;
+
+            case 'W':
+            case 'w':
+            case "ArrowUp":
+                if (phase == "CHARACTER SELECTION") {
+
+                    if (screen_index == 1) {
+                        if (x_index_1 == 0) { //h case
+                            y_index_1 = y_index_1 - 1
+                            if (y_index_1 < 0) {
+                                if (h_index > 0) {
+                                    h_index = h_index - 1
+                                    y_index_1 = 0
+                                } else {
+                                    screen_index = 0
+                                    y_index_1 = 4
+                                }
+                            }
+                        } else if (x_index_1 == 1) {
+                            y_index_1 = y_index_1 - 1
+                            if (y_index_1 < 0) {
+                                if (l_index > 0) {
+                                    l_index = l_index - 1
+                                    y_index_1 = 0
+                                } else {
+                                    screen_index = 0
+                                    y_index_1 = 4
+                                }
+                            }
+                        } else if (x_index_1 == 2) {
+                            y_index_1 = y_index_1 - 1
+                            if (y_index_1 < 0) {
+                                if (r_index > 0) {
+                                    r_index = r_index - 1
+                                    y_index_1 = 0
+                                } else {
+                                    screen_index = 0
+                                    y_index_1 = 4
+                                }
+                            }
+                        } else if (x_index_1 == 3) {
+                            y_index_1 = y_index_1 - 1
+                            if (y_index_1 < 0) {
+                                if (b_index > 0) {
+                                    b_index = b_index - 1
+                                    y_index_1 = 0
+                                } else {
+                                    screen_index = 0
+                                    y_index_1 = 4
+                                }
+                            }
+                        }
+                    } else {
+                        y_index_1 = y_index_1 - 1
+                        if (y_index_1 < 0) {
+                            screen_index = 1
+                            y_index_1 = 4
+                        }
+                    }
+                } else if (match_data.length > 0) {
+                    calculateNextHoverable(0);
+                }
+                break;
+
+            case 'S':
+            case 's':
+            case "ArrowDown":
+                if (phase == "CHARACTER SELECTION") {
+
+                } else if (match_data.length > 0) {
+                    calculateNextHoverable(3);
+                }
+                break;
+
+            case ' ':
+                if (game_over == true) {
+                    returntomatchmaking()
+                }
+                break;
+
+            case "Escape":
+                if (settings_menu == 0) {
+                    settings_menu = 1
+                    document.getElementById("settings").insertAdjacentHTML('beforeend', "<button id='resign' onclick=resign()>Resign</button>");
+                } else {
+                    settings_menu = 0
+                    let s = document.getElementById("settings").getElementsByTagName("button")
+                    s[0].remove()
+                }
+                break;
+
+            case 'Q':
+            case 'q':
+            case "Backspace":
+                if (state_machine == 1) {
+                    state_machine = 0;
+                    selected_hoverable = null;
+                    setupHoverable();
+                }
+                break;
+
+            case 'b':
+            case 'B':
+                a2++;
+                if (a2 == a1) {
+                    a2++;
+                }
+
+                if (a2 > intersections.length - 1) {
+                    a2 = 0;
+                    a1++;
+                    if (a1 > intersections.length - 1) {
+                        a1 = 0;
+                        a2 = 1;
+                    }
+                }
+                console.log(a1, a2, aStar(intersections[a1], intersections[a2]));
+                const startTime = performance.now();
+                path = aStar(intersections[a1], intersections[a2]);
+                const endTime = performance.now();
+                console.log(`Execution Time: ${endTime - startTime}ms`);
+                break;
+
+        }
+    }
+
+    var a1 = 0;
+    var a2 = 1;
+
+    // important data
+    var socket = null; // socket object for this tab
+    var my_team = -1; // the user's team index
+    var my_int = -1; // the user's player index
+
+    // state stuff
+    var animating_state = -1 // where are we at in the dataset
+    var phase = "null";
+    var turn = "null"; // the current phase/turn
+    var sent_time = null; // the time that the turn ends
+
+    var game_over = false;
+
+    var attacking_frames_count = 0
+
+    // the board state
+    var state = []
+    var camps = [];
+
+    var h_index = 0
+    var l_index = 0
+    var r_index = 0
+    var b_index = 0
+
+    var bench = null
+    var bench_index = 0
+
+    var screen_index = 0
+    var x_index_1 = 0
+    var y_index_1 = 0
+    var second_index = false
+    var screen_index_2 = 0
+    var x_index_2 = 0
+    var y_index_2 = 0
+
+    var err_msg_index = 0
+    var err_count = 0
+
+    // datasets
+    var match_data = new Array();
+    var atk_data = new Array();
+    var camp_data = new Array();
+    var cumu_data = new Array();
+
+    var time_queue = []
+    var turn_queue = []
+    var event_log = []
+
+    var damageNumbers = []; // UI related, holds the damage number animation
+
+    var frame_count = 0;
+    var state_machine = 0;
+    var even = 0; // just a small global variable to let us know when to flash camp icons
+    var action_buffer = ""
+
+    var hoverable = null;
+    var hoverable_coordinate = null;
+    var selected_hoverable = null;
+
+    var total_units_of_time = 0;
+
+    var view = 0;
+    var settings_menu = 0;
+
+    var obstacles = [];
+    var intersections = [];
+    var path = [];
+
+
+    function main() {
+
+        if (!window["WebSocket"]) {
+            alert("Error: Your browser does not support web sockets.")
+        } else {
+            socket = new WebSocket("ws://{{.host}}/msocket?matchid={{.mid}}");
+            socket.onclose = function () {
+                alert("Connection has been closed.");
+            }
+
+            socket.onmessage = function (e) {
+                var receive_time = Date.now()
+                var msg = eval('(' + e.data + ')');
+                //console.log("msg_init", msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn, msg.Spawns, msg.POAs);
+                console.log("msg received", msg.Event)
+
+                var msg_date = msg.When.substring(0, 10);
+                var msg_time = msg.When.substring(11, 19);
+
+                if (msg.Event == 'clockSyncRequest') {
+                    console.log("dif", Date.parse(msg.When) - receive_time)
+                    socket.send(JSON.stringify({"Event": 'clockSyncResponse', "Message": receive_time.toString()}))
+                } else if (msg.Event == 'entered') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
+                    if (event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                } else if (msg.Event == 'left') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
+                    if (event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                } else if (msg.Event == 'assignInt') {
+                    let temp_string = msg.Message.split(";")
+                    my_team = parseInt(temp_string[0])
+                    my_int = parseInt(temp_string[1])
+                } else if (msg.Event == 'ticker_start') {
+                    sent_time = Date.parse(msg.Message)
+                } else if (msg.Event == 'bench') {
+                    bench = JSON.parse(msg.Message)
+                } else if (msg.Event == 'update_phase') {
+                    if (phase == "null") {
+                        phase = msg.Phase
+                        if (phase == "CHARACTER SELECTION") {
+                            document.getElementById("sel_but").insertAdjacentHTML('beforeend', "<button id='a1' onclick=endCharSelect()>finished</button>");
+                        }
+                    } else if (phase == "CHARACTER SELECTION") {
+                        var menu2 = document.getElementById("sel_but");
+                        menu2.remove();
+                        phase = msg.Phase
+                    }
+                } else if (msg.Event == 'sel_finished') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' finished unit selection.')
+                    if (event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                } else if (msg.Event == 'obstacles') {
+                    const temp = msg.Message.split('\n')
+                    for (let i = 0; i < temp.length; i++) {
+                        const temp = JSON.parse(temp[i]);
+                        const curve = new Bezier(temp.X1, temp.Y1, temp.X2, temp.Y2, temp.X3, temp.Y3, temp.X4, temp.Y4);
+                        console.log(i, curve)
+                        obstacles.push(temp);
+                    }
+                } else if (msg.Event == 'intersections') {
+                    const temp = msg.Message.split('\n')
+                    for (let i = 0; i < temp.length; i++) {
+                        intersections.push(JSON.parse(temp[i]));
+                    }
+                } else if (msg.Event == 'game_state') {
+                    console.log("received game_state")
+
+                    if (phase == "CHARACTER SELECTION") {
+                        let temp = msg.TCH;
+                        let md = [];
+                        for (let i = 0; i < temp.length; i++) {
+                            md[i] = new Array();
+                            for (let j = 0; j < temp[i].length; j++) {
+                                md[i][j] = new Array();
+                                for (let k = 0; k < temp[i][j].length; k++) {
+                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
+                                }
+                            }
+                        }
+
+                        let cdata = [];
+                        for (let i = 0; i < msg.Camps.length; i++) {
+                            cdata.push(JSON.parse(msg.Camps[i]))
+                        }
+
+                        state = md
+                        camps = cdata
+
+                    } else {
+                        turn_queue.push(msg.Turn)
+                        time_queue.push(msg.UnitsOfTime)
+
+                        // turn the JSON into javascript objects
+                        let temp = msg.TCH;
+                        let md = [];
+                        for (let i = 0; i < temp.length; i++) {
+                            md[i] = new Array();
+                            for (let j = 0; j < temp[i].length; j++) {
+                                md[i][j] = new Array();
+                                for (let k = 0; k < temp[i][j].length; k++) {
+                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
+                                }
+                            }
+                        }
+
+                        let cdata = [];
+                        for (let i = 0; i < msg.Camps.length; i++) {
+                            cdata.push(JSON.parse(msg.Camps[i]))
+                        }
+
+
+                        // this triggers if they refreshed the page
+                        if (animating_state == -1) {
+                            let temp_string = msg.Message.split(";")
+                            my_team = parseInt(temp_string[0])
+                            my_int = parseInt(temp_string[1])
+                            state = md;
+                            animating_state = 0
+                            camps = cdata
+                            setupHoverable()
+                        }
+
+                        match_data.push(md)
+                        camp_data.push(cdata)
+
+                        if (msg.Atk == null) {
+                            atk_data.push([])
+                        } else {
+                            atk_data.push(msg.Atk)
+                        }
+                    }
+                } else if (msg.Event == 'game_over') {
+                    game_over = true
+                    document.getElementById("test").insertAdjacentHTML('beforeend', "<button id='b1' onclick=returntomatchmaking()>RETURN TO MATCHMAKING</button>");
+                }
+            }
+        }
+    }
+
+    main()
+
+    function returntomatchmaking() {
+        window.location.href = 'http://{{.host}}/waitroom'
+    }
+
+    function endCharSelect() {
+        socket.send(JSON.stringify({"Event": 'endCharSel'}))
+    }
+
+    function resign() {
+        socket.send(JSON.stringify({"Event": 'resign'}))
+    }
+
+    function setupHoverable() {
+
+        let mostNorthActive = null;
+
+        let closestCamp = null;
+        let closestCampDist = Number.MAX_SAFE_INTEGER;
+
+        if (state_machine == 0) {
+            for (let i = 0; i < state[my_team][my_int].length; i++) {
+                if (state[my_team][my_int][i].Status == 0) {
+                    if (mostNorthActive == null) {
+                        mostNorthActive = state[my_team][my_int][i].Position
+                    } else if (mostNorthActive.Y < state[my_team][my_int][i].Position.Y) {
+                        mostNorthActive = state[my_team][my_int][i].Position
+                    }
+                }
+            }
+        } else if (state_machine == 1) {
+            for (let i = 0; i < camps.length; i++) {
+                if (camps[i].HP > 0) {
+                    let dist = getDistance(camps[i].XY, hoverable);
+                    if (closestCamp == null) {
+                        closestCamp = camps[i].XY
+                        closestCampDist = dist
+                    } else if (dist <= closestCampDist) {
+                        if (dist == closestCampDist) {
+                            if (camps[i].XY.Y < closestCamp.Y) {
+                                closestCamp = camps[i].XY
+                            }
+                        } else {
+                            closestCamp = camps[i].XY
+                            closestCampDist = dist
+                        }
+                    }
+                }
+            }
+        }
+
+        if (mostNorthActive != null) {
+            hoverable = mostNorthActive;
+        } else if (closestCamp != null) {
+            hoverable = closestCamp;
+        }
+
+        if (hoverable != null) {
+            if (hoverable.Type == "camp") {
+                hoverable_coordinate = null;
+            } else if (hoverable.Type == "unit") {
+                hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
+            }
+        }
+    }
+
+    function followHoverable() {
+        if (hoverable_coordinate != null) {
+            hoverable = hoverable_coordinate.Position
+        }
+    }
+
+    function calculateNextHoverable(direction) {
+        let hoverables = []
+
+        if (state_machine == 0) {
+            for (let i = 0; i < state.length; i++) {
+                for (let j = 0; j < state[i].length; j++) {
+                    for (let k = 0; k < state[i][j].length; k++) {
+                        hoverables.push(state[i][j][k].Position)
+                    }
+                }
+            }
+        }
+
+        if (camps.length > 0) {
+            for (let i = 0; i < camps.length; i++) {
+                hoverables.push(camps[i].XY)
+            }
+        }
+
+        // next figure out the U,L,R,D
+        let closestCardinalCoordinate = null;
+        let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
+
+        let closestWrapCoordinate = null; // this handles wrapping
+        let closestWrapDistance = Number.MAX_SAFE_INTEGER;
+
+        let nextSameCoordinate = null;
+
+        for (let i = 0; i < hoverables.length; i++) {
+            let dist = getDistance(hoverable, hoverables[i])
+            if (dist == 0) {
+                if ((direction == 2) || (direction == 3)) {
+                    if (isFirstCoordinateGreater(hoverables[i], hoverable)) {
+                        if (nextSameCoordinate == null) {
+                            nextSameCoordinate = hoverables[i];
+                        } else {
+                            if (isFirstCoordinateGreater(nextSameCoordinate, hoverables[i])) {
+                                nextSameCoordinate = hoverables[i];
+                            }
+                        }
+                    }
+                } else {
+                    if (isFirstCoordinateGreater(hoverable, hoverables[i])) {
+                        if (nextSameCoordinate == null) {
+                            nextSameCoordinate = hoverables[i];
+                        } else {
+                            if (isFirstCoordinateGreater(hoverables[i], nextSameCoordinate)) {
+                                nextSameCoordinate = hoverables[i];
+                            }
+                        }
+                    }
+                }
+            } else if (direction == 0) {
+                if (hoverables[i].Y > hoverable.Y) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if (closestCardinalDistance > dist) {
+                        closestCardinalCoordinate = hoverables[i];
+                        closestCardinalDistance = dist;
+                    } else if (closestCardinalDistance == dist) {
+                        if (isFirstCoordinateGreater(hoverables[i], closestCardinalCoordinate)) {
+                            closestCardinalCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            } else if (direction == 1) {
+                if (hoverable.X > hoverables[i].X) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if (closestCardinalDistance > dist) {
+                        closestCardinalCoordinate = hoverables[i];
+                        closestCardinalDistance = dist;
+                    } else if (closestCardinalDistance == dist) {
+                        if (isFirstCoordinateGreater(hoverables[i], closestCardinalCoordinate)) {
+                            closestCardinalCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            } else if (direction == 2) {
+                if (hoverable.X < hoverables[i].X) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if (closestCardinalDistance > dist) {
+                        closestCardinalCoordinate = hoverables[i];
+                        closestCardinalDistance = dist;
+                    } else if (closestCardinalDistance == dist) {
+                        if (isFirstCoordinateGreater(closestCardinalCoordinate, hoverables[i])) {
+                            closestCardinalCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            } else if (direction == 3) {
+                if (hoverables[i].Y < hoverable.Y) {
+                    let dist = getDistance(hoverable, hoverables[i])
+                    if (closestCardinalDistance > dist) {
+                        closestCardinalCoordinate = hoverables[i];
+                        closestCardinalDistance = dist;
+                    } else if (closestCardinalDistance == dist) {
+                        if (isFirstCoordinateGreater(closestCardinalCoordinate, hoverables[i])) {
+                            closestCardinalCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            }
+
+            if ((closestCardinalCoordinate == null) && (dist != 0)) {
+                let wrap_x = 0;
+                let wrap_y = 0;
+                if (direction == 0) {
+                    wrap_y = -200;
+                } else if (direction == 1) {
+                    wrap_x = 200;
+                } else if (direction == 2) {
+                    wrap_x = -200;
+                } else if (direction == 3) {
+                    wrap_y = 200;
+                }
+
+                let wrap = structuredClone(hoverable); // deep copy of coordinate
+                wrap.X = wrap.X + wrap_x;
+                wrap.Y = wrap.Y + wrap_y;
+
+                let wrapDist = getDistance(wrap, hoverables[i]);
+                if (closestWrapDistance > wrapDist) {
+                    closestWrapCoordinate = hoverables[i];
+                    closestWrapDistance = wrapDist;
+                } else if (closestWrapDistance == wrapDist) {
+                    if ((direction == 3) || (direction == 2)) {
+                        if (isFirstCoordinateGreater(closestWrapCoordinate, hoverables[i])) {
+                            closestWrapCoordinate = hoverables[i];
+                        }
+                    } else {
+                        if (isFirstCoordinateGreater(hoverables[i], closestWrapCoordinate)) {
+                            closestWrapCoordinate = hoverables[i];
+                        }
+                    }
+                }
+            }
+        }
+
+        if (nextSameCoordinate != null) {
+            hoverable = nextSameCoordinate;
+        } else if (closestCardinalCoordinate != null) {
+            hoverable = closestCardinalCoordinate;
+        } else if (closestWrapCoordinate != null) {
+            hoverable = closestWrapCoordinate;
+        }
+
+        if (hoverable != null) {
+            if (hoverable.Type == "camp") {
+                hoverable_coordinate = null;
+            } else if (hoverable.Type == "unit") {
+                hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
+            }
+        }
+
+    }
+
+    function isFirstCoordinateGreater(c1, c2) {
+        if ((c1.Type == "camp") && (c2.Type == "unit")) {
+            return true;
+        } else if ((c1.Type == "unit") && (c2.Type == "unit")) {
+            if (c2.I < c1.I) {
+                return true;
+            } else if (c1.I == c2.I) {
+                if (c2.J < c1.J) {
+                    return true;
+                } else if (c2.J == c1.J) {
+                    if (c2.K < c1.K) {
+                        return true;
+                    }
+                }
+            }
+        } else if ((c1.Type == "camp") && (c2.Type == "camp")) {
+            if (c2.I < c1.I) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    function findPath(unit) {
+
+        console.log(unit.Position)
+
+    }
+
+    function lineIntersectsBezier(P1, P2, B) {
+
+        var line = {p1: {x: P1.X, y: P1.Y}, p2: {x: P2.X, y: P2.Y}};
+
+        const curve = new Bezier(B.X1, B.Y1, B.X2, B.Y2, B.X3, B.Y3, B.X4, B.Y4);
+
+        const intersections = curve.intersects(line);
+
+        if (intersections.length > 0) {
+            return true
+        }
+        return false
+    }
+
+
+</script>
+
 
 </body>
 </html>

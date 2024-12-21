@@ -2257,4 +2257,10 @@ function drawComplexPath(path) {
     }
 }
 
+function findPath(unit) {
+
+    console.log(unit.Position)
+
+}
+
 

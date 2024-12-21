@@ -399,7 +399,10 @@ function main() {
             } else if (msg.Event == 'obstacles') {
                 const temp = msg.Message.split('\n')
                 for (let i = 0; i < temp.length; i++) {
-                    obstacles.push(JSON.parse(temp[i]));
+                    const temp = JSON.parse(temp[i]);
+                    const curve = new Bezier(temp.X1, temp.Y1, temp.X2, temp.Y2, temp.X3, temp.Y3, temp.X4, temp.Y4);
+                    console.log(i, curve)
+                    obstacles.push(temp);
                 }
             } else if (msg.Event == 'intersections') {
                 const temp = msg.Message.split('\n')

@@ -149,17 +149,10 @@
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
 
-<script>
-    function test123() {
-        console.log("bezier file loaded")
-        console.log("w1", window.Bezier)
-    }
-</script>
+<script defer type="module">
 
-<script src="https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/dist/bezier.min.js" onload="test123()"></script>
+    import { Bezier } from 'https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/src/bezier.min.js';
 
-
-<script defer>
 
     console.log("html script file loaded")
     console.log("window bezier", window.Bezier);

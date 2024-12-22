@@ -426,7 +426,6 @@
     function endCharSelect() {
         socket.send(JSON.stringify({"Event": 'endCharSel'}))
     }
-    window.endCharSelect = endCharSelect(); // make the endCharSelect function globally available
 
     function resign() {
         socket.send(JSON.stringify({"Event": 'resign'}))

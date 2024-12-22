@@ -148,11 +148,19 @@
 </script>
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/dist/bezier.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/dist/bezier.min.js" onload="test123()"></script>
 
+<script>
+    function test123() {
+        console.log("bezier file loaded")
+    }
+</script>
 
 <script defer>
 
+    console.log("html script file loaded")
+
+    console.log(window.Bezier);
     if (typeof Bezier === 'function') {
         const curve = new Bezier(0, 0, 1, 1, 2, 0);
         console.log('Bezier loaded successfully:', curve);

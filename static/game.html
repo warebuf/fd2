@@ -419,148 +419,6 @@
     }
 
 
-    function main() {
-
-        if (!window["WebSocket"]) {
-            alert("Error: Your browser does not support web sockets.")
-        } else {
-            socket = new WebSocket("ws://{{.host}}/msocket?matchid={{.mid}}");
-            socket.onclose = function () {
-                alert("Connection has been closed.");
-            }
-
-            socket.onmessage = function (e) {
-                var receive_time = Date.now()
-                var msg = eval('(' + e.data + ')');
-                //console.log("msg_init", msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn, msg.Spawns, msg.POAs);
-                console.log("msg received", msg.Event)
-
-                var msg_date = msg.When.substring(0, 10);
-                var msg_time = msg.When.substring(11, 19);
-
-                if (msg.Event == 'clockSyncRequest') {
-                    console.log("dif", Date.parse(msg.When) - receive_time)
-                    socket.send(JSON.stringify({"Event": 'clockSyncResponse', "Message": receive_time.toString()}))
-                } else if (msg.Event == 'entered') {
-                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
-                    if (event_log.length >= 25) {
-                        event_log.shift()
-                    }
-                } else if (msg.Event == 'left') {
-                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
-                    if (event_log.length >= 25) {
-                        event_log.shift()
-                    }
-                } else if (msg.Event == 'assignInt') {
-                    let temp_string = msg.Message.split(";")
-                    my_team = parseInt(temp_string[0])
-                    my_int = parseInt(temp_string[1])
-                } else if (msg.Event == 'ticker_start') {
-                    sent_time = Date.parse(msg.Message)
-                } else if (msg.Event == 'bench') {
-                    bench = JSON.parse(msg.Message)
-                } else if (msg.Event == 'update_phase') {
-                    if (phase == "null") {
-                        phase = msg.Phase
-                        if (phase == "CHARACTER SELECTION") {
-                            document.getElementById("sel_but").insertAdjacentHTML('beforeend', "<button id='a1' onclick=endCharSelect()>finished</button>");
-                        }
-                    } else if (phase == "CHARACTER SELECTION") {
-                        var menu2 = document.getElementById("sel_but");
-                        menu2.remove();
-                        phase = msg.Phase
-                    }
-                } else if (msg.Event == 'sel_finished') {
-                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' finished unit selection.')
-                    if (event_log.length >= 25) {
-                        event_log.shift()
-                    }
-                } else if (msg.Event == 'obstacles') {
-                    const temp = msg.Message.split('\n')
-                    for (let i = 0; i < temp.length; i++) {
-                        const obs = JSON.parse(temp[i]);
-                        const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
-                        obstacles.push(curve);
-                    }
-                } else if (msg.Event == 'intersections') {
-                    const temp = msg.Message.split('\n')
-                    for (let i = 0; i < temp.length; i++) {
-                        intersections.push(JSON.parse(temp[i]));
-                    }
-                } else if (msg.Event == 'game_state') {
-                    console.log("received game_state")
-
-                    if (phase == "CHARACTER SELECTION") {
-                        let temp = msg.TCH;
-                        let md = [];
-                        for (let i = 0; i < temp.length; i++) {
-                            md[i] = new Array();
-                            for (let j = 0; j < temp[i].length; j++) {
-                                md[i][j] = new Array();
-                                for (let k = 0; k < temp[i][j].length; k++) {
-                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
-                                }
-                            }
-                        }
-
-                        let cdata = [];
-                        for (let i = 0; i < msg.Camps.length; i++) {
-                            cdata.push(JSON.parse(msg.Camps[i]))
-                        }
-
-                        state = md
-                        camps = cdata
-
-                    } else {
-                        turn_queue.push(msg.Turn)
-                        time_queue.push(msg.UnitsOfTime)
-
-                        // turn the JSON into javascript objects
-                        let temp = msg.TCH;
-                        let md = [];
-                        for (let i = 0; i < temp.length; i++) {
-                            md[i] = new Array();
-                            for (let j = 0; j < temp[i].length; j++) {
-                                md[i][j] = new Array();
-                                for (let k = 0; k < temp[i][j].length; k++) {
-                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
-                                }
-                            }
-                        }
-
-                        let cdata = [];
-                        for (let i = 0; i < msg.Camps.length; i++) {
-                            cdata.push(JSON.parse(msg.Camps[i]))
-                        }
-
-
-                        // this triggers if they refreshed the page
-                        if (animating_state == -1) {
-                            let temp_string = msg.Message.split(";")
-                            my_team = parseInt(temp_string[0])
-                            my_int = parseInt(temp_string[1])
-                            state = md;
-                            animating_state = 0
-                            camps = cdata
-                            setupHoverable()
-                        }
-
-                        match_data.push(md)
-                        camp_data.push(cdata)
-
-                        if (msg.Atk == null) {
-                            atk_data.push([])
-                        } else {
-                            atk_data.push(msg.Atk)
-                        }
-                    }
-                } else if (msg.Event == 'game_over') {
-                    game_over = true
-                    document.getElementById("test").insertAdjacentHTML('beforeend', "<button id='b1' onclick=returntomatchmaking()>RETURN TO MATCHMAKING</button>");
-                }
-            }
-        }
-    }
 
 
     function returntomatchmaking() {
@@ -825,6 +683,150 @@
         return false;
     }
 
+
+
+    function main() {
+
+        if (!window["WebSocket"]) {
+            alert("Error: Your browser does not support web sockets.")
+        } else {
+            socket = new WebSocket("ws://{{.host}}/msocket?matchid={{.mid}}");
+            socket.onclose = function () {
+                alert("Connection has been closed.");
+            }
+
+            socket.onmessage = function (e) {
+                var receive_time = Date.now()
+                var msg = eval('(' + e.data + ')');
+                //console.log("msg_init", msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn, msg.Spawns, msg.POAs);
+                console.log("msg received", msg.Event)
+
+                var msg_date = msg.When.substring(0, 10);
+                var msg_time = msg.When.substring(11, 19);
+
+                if (msg.Event == 'clockSyncRequest') {
+                    console.log("dif", Date.parse(msg.When) - receive_time)
+                    socket.send(JSON.stringify({"Event": 'clockSyncResponse', "Message": receive_time.toString()}))
+                } else if (msg.Event == 'entered') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has entered the game')
+                    if (event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                } else if (msg.Event == 'left') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' has left the game')
+                    if (event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                } else if (msg.Event == 'assignInt') {
+                    let temp_string = msg.Message.split(";")
+                    my_team = parseInt(temp_string[0])
+                    my_int = parseInt(temp_string[1])
+                } else if (msg.Event == 'ticker_start') {
+                    sent_time = Date.parse(msg.Message)
+                } else if (msg.Event == 'bench') {
+                    bench = JSON.parse(msg.Message)
+                } else if (msg.Event == 'update_phase') {
+                    if (phase == "null") {
+                        phase = msg.Phase
+                        if (phase == "CHARACTER SELECTION") {
+                            document.getElementById("sel_but").insertAdjacentHTML('beforeend', "<button id='a1' onclick=endCharSelect()>finished</button>");
+                        }
+                    } else if (phase == "CHARACTER SELECTION") {
+                        var menu2 = document.getElementById("sel_but");
+                        menu2.remove();
+                        phase = msg.Phase
+                    }
+                } else if (msg.Event == 'sel_finished') {
+                    event_log.push(msg_date + ' ' + msg_time + ' ' + msg.Name + ' finished unit selection.')
+                    if (event_log.length >= 25) {
+                        event_log.shift()
+                    }
+                } else if (msg.Event == 'obstacles') {
+                    const temp = msg.Message.split('\n')
+                    for (let i = 0; i < temp.length; i++) {
+                        const obs = JSON.parse(temp[i]);
+                        const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
+                        obstacles.push(curve);
+                    }
+                } else if (msg.Event == 'intersections') {
+                    const temp = msg.Message.split('\n')
+                    for (let i = 0; i < temp.length; i++) {
+                        intersections.push(JSON.parse(temp[i]));
+                    }
+                } else if (msg.Event == 'game_state') {
+                    console.log("received game_state")
+
+                    if (phase == "CHARACTER SELECTION") {
+                        let temp = msg.TCH;
+                        let md = [];
+                        for (let i = 0; i < temp.length; i++) {
+                            md[i] = new Array();
+                            for (let j = 0; j < temp[i].length; j++) {
+                                md[i][j] = new Array();
+                                for (let k = 0; k < temp[i][j].length; k++) {
+                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
+                                }
+                            }
+                        }
+
+                        let cdata = [];
+                        for (let i = 0; i < msg.Camps.length; i++) {
+                            cdata.push(JSON.parse(msg.Camps[i]))
+                        }
+
+                        state = md
+                        camps = cdata
+
+                    } else {
+                        turn_queue.push(msg.Turn)
+                        time_queue.push(msg.UnitsOfTime)
+
+                        // turn the JSON into javascript objects
+                        let temp = msg.TCH;
+                        let md = [];
+                        for (let i = 0; i < temp.length; i++) {
+                            md[i] = new Array();
+                            for (let j = 0; j < temp[i].length; j++) {
+                                md[i][j] = new Array();
+                                for (let k = 0; k < temp[i][j].length; k++) {
+                                    md[i][j][k] = JSON.parse(temp[i][j][k]);
+                                }
+                            }
+                        }
+
+                        let cdata = [];
+                        for (let i = 0; i < msg.Camps.length; i++) {
+                            cdata.push(JSON.parse(msg.Camps[i]))
+                        }
+
+
+                        // this triggers if they refreshed the page
+                        if (animating_state == -1) {
+                            let temp_string = msg.Message.split(";")
+                            my_team = parseInt(temp_string[0])
+                            my_int = parseInt(temp_string[1])
+                            state = md;
+                            animating_state = 0
+                            camps = cdata
+                            setupHoverable()
+                        }
+
+                        match_data.push(md)
+                        camp_data.push(cdata)
+
+                        if (msg.Atk == null) {
+                            atk_data.push([])
+                        } else {
+                            atk_data.push(msg.Atk)
+                        }
+                    }
+                } else if (msg.Event == 'game_over') {
+                    game_over = true
+                    document.getElementById("test").insertAdjacentHTML('beforeend', "<button id='b1' onclick=returntomatchmaking()>RETURN TO MATCHMAKING</button>");
+                }
+            }
+        }
+    }
 
     main()
 

@@ -153,18 +153,6 @@
 
     import { Bezier } from 'https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/src/bezier.min.js';
 
-
-    console.log("html script file loaded")
-    console.log("window bezier", window.Bezier);
-
-
-    if (typeof Bezier === 'function') {
-        const curve = new Bezier(0, 0, 1, 1, 2, 0);
-        console.log('Bezier loaded successfully:', curve);
-    } else {
-        console.error('Bezier is not defined!');
-    }
-
     document.onkeydown = function (e) {
         switch (e.key) {
 
@@ -434,9 +422,10 @@
         window.location.href = 'http://{{.host}}/waitroom'
     }
 
-    function endCharSelect() {
+    export function endCharSelect() {
         socket.send(JSON.stringify({"Event": 'endCharSel'}))
     }
+    window.endCharSelect = endCharSelect;
 
     function resign() {
         socket.send(JSON.stringify({"Event": 'resign'}))

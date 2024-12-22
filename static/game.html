@@ -152,6 +152,7 @@
 <script>
     function test123() {
         console.log("bezier file loaded")
+        consolw.log("w1", window.Bezier)
     }
 </script>
 
@@ -160,13 +161,10 @@
 
 <script defer>
 
-    import { Bezier } from '.bezier.min.js';
-    window.Bezier = Bezier;
-
     console.log("html script file loaded")
     console.log("window bezier", window.Bezier);
 
-    console.log(window.Bezier);
+
     if (typeof Bezier === 'function') {
         const curve = new Bezier(0, 0, 1, 1, 2, 0);
         console.log('Bezier loaded successfully:', curve);

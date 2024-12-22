@@ -74,7 +74,7 @@
 </div>
 
 
-<script defer>
+<script>
     var a1 = 0;
     var a2 = 1;
 
@@ -147,14 +147,18 @@
     var path = [];
 </script>
 
-<script src="https://cdn.socket.io/socket.io-3.0.5.js" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/dist/bezier.min.js" defer></script>
+<script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/dist/bezier.min.js"></script>
 
 
 <script defer>
 
-    const abc = new Bezier(0,0,0,0,0,0);
-    console.log("test abc", typeof abc);
+    if (typeof Bezier === 'function') {
+        const curve = new Bezier(0, 0, 1, 1, 2, 0);
+        console.log('Bezier loaded successfully:', curve);
+    } else {
+        console.error('Bezier is not defined!');
+    }
 
     document.onkeydown = function (e) {
         switch (e.key) {

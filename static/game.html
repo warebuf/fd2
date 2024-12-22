@@ -418,18 +418,20 @@
         }
     }
 
-    function returntomatchmaking() {
+    export function returntomatchmaking() {
         window.location.href = 'http://{{.host}}/waitroom'
     }
+    window.returntomatchmaking = returntomatchmaking;
 
     export function endCharSelect() {
         socket.send(JSON.stringify({"Event": 'endCharSel'}))
     }
     window.endCharSelect = endCharSelect;
 
-    function resign() {
+    export function resign() {
         socket.send(JSON.stringify({"Event": 'resign'}))
     }
+    window.resign = resign;
 
     export function setupHoverable() {
 

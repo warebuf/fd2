@@ -431,7 +431,7 @@
         socket.send(JSON.stringify({"Event": 'resign'}))
     }
 
-    function setupHoverable() {
+    export function setupHoverable() {
 
         let mostNorthActive = null;
 
@@ -483,6 +483,7 @@
             }
         }
     }
+    window.setupHoverable = setupHoverable;
 
     export function followHoverable() {
         if (hoverable_coordinate != null) {

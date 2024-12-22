@@ -484,11 +484,13 @@
         }
     }
 
-    function followHoverable() {
+    export function followHoverable() {
         if (hoverable_coordinate != null) {
             hoverable = hoverable_coordinate.Position
         }
     }
+    window.followHoverable = followHoverable;
+
 
     function calculateNextHoverable(direction) {
         let hoverables = []

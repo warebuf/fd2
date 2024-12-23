@@ -2134,6 +2134,7 @@ function drawObstacles() {
 
     ctx.strokeStyle = "white";
     for(let i = 0; i < obstacles.length; i++ ){
+        console.log(obstacles[i])
         ctx.beginPath();
         ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
         ctx.bezierCurveTo(
@@ -2141,7 +2142,7 @@ function drawObstacles() {
             width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
             width+obstacles[i].points[3].y, height-obstacles[i].points[3].y
         );
-        ctx.stroke();   
+        ctx.stroke();
     }
 
     ctx.fillStyle = "red";

@@ -688,7 +688,7 @@
 
     function findPath(unit, destination) {
 
-        console.log(unit.Position);
+        console.log(unit, destination);
 
         for( let i = 0; i < obstacles.length; i++ ) {
             lineIntersectsBezier(unit.Position, destination, obstacles[i]);

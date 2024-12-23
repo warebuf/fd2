@@ -2132,22 +2132,16 @@ function drawObstacles() {
     // so we mirror the y-coordinate and shift it down by the board length
     const boardXY = 500;
 
+    ctx.strokeStyle = "white";
     for(let i = 0; i < obstacles.length; i++ ){
-
-        if(obstacles[i].Shape == "BEZIER") {
-            ctx.beginPath();
-            ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
-            ctx.bezierCurveTo(
-                width+obstacles[i].points[1].x, height-obstacles[i].points[1].y,
-                width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
-                width+obstacles[i].points[3].y, height-obstacles[i].points[3].y
-            );
-            ctx.strokeStyle = "white";
-            ctx.stroke();
-
-        } else if([i].Shape == "CIRCLE") {
-
-        }
+        ctx.beginPath();
+        ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
+        ctx.bezierCurveTo(
+            width+obstacles[i].points[1].x, height-obstacles[i].points[1].y,
+            width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
+            width+obstacles[i].points[3].y, height-obstacles[i].points[3].y
+        );
+        ctx.stroke();   
     }
 
     ctx.fillStyle = "red";

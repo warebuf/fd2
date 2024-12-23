@@ -695,7 +695,7 @@
         for(let i = 0; i < intersections.length; i++) {
 
             let available = true;
-            for(let j = 0; i < obstacles.length; j++) {
+            for(let j = 0; j < obstacles.length; j++) {
                 if( lineIntersectsBezier(unit.Position, intersections[i], obstacles[j]) == true) {
                     available = false;
                     break;

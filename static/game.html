@@ -699,6 +699,8 @@
 
     function lineIntersectsBezier(P1, P2, B) {
 
+        console.log(P1,P2)
+
         const line = { p1: { x: P1.X, y: P1.Y }, p2: { x: P2.X, y: P2.Y } };
         const intersections = B.intersects(line);
 

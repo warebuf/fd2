@@ -686,6 +686,37 @@
         return false;
     }
 
+    function findPath(unit, destination) {
+
+        console.log(unit.Position);
+
+        for( let i = 0; i < obstacles.length; i++ ) {
+
+
+            
+
+            console.log(i, obstacles[i], unit.Position);
+
+
+        }
+
+
+    }
+
+    function lineIntersectsBezier(P1, P2, B) {
+
+        var line = { p1: { x: P1.X, y: P1.Y }, p2: { x: P2.X, y: P2.Y } };
+
+        const curve = new Bezier(B.X1, B.Y1, B.X2, B.Y2, B.X3, B.Y3, B.X4, B.Y4);
+
+        const intersections = curve.intersects(line);
+
+        if (intersections.length > 0) {
+            return true
+        }
+        return false
+    }
+
 
 
     function main() {

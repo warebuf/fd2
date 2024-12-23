@@ -691,7 +691,7 @@
         console.log(unit.Position);
 
         for( let i = 0; i < obstacles.length; i++ ) {
-            lineIntersectsBezier(unit, destination, obstacles[i]);
+            lineIntersectsBezier(unit.Position, destination.Position, obstacles[i]);
         }
 
 

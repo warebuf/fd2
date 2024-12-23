@@ -691,13 +691,7 @@
         console.log(unit.Position);
 
         for( let i = 0; i < obstacles.length; i++ ) {
-
-
-            
-
-            console.log(i, obstacles[i], unit.Position);
-
-
+            lineIntersectsBezier(unit, destination, obstacles[i]);
         }
 
 
@@ -705,11 +699,11 @@
 
     function lineIntersectsBezier(P1, P2, B) {
 
-        var line = { p1: { x: P1.X, y: P1.Y }, p2: { x: P2.X, y: P2.Y } };
+        const line = { p1: { x: P1.X, y: P1.Y }, p2: { x: P2.X, y: P2.Y } };
+        const intersections = B.intersects(line);
 
-        const curve = new Bezier(B.X1, B.Y1, B.X2, B.Y2, B.X3, B.Y3, B.X4, B.Y4);
-
-        const intersections = curve.intersects(line);
+        console.log(line)
+        console.log(intersections)
 
         if (intersections.length > 0) {
             return true
@@ -780,6 +774,7 @@
                     for (let i = 0; i < temp.length; i++) {
                         const obs = JSON.parse(temp[i]);
                         const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
+                        console.log(i, temp[i], curve);
                         obstacles.push(curve);
                     }
                 } else if (msg.Event == 'intersections') {

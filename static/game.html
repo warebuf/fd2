@@ -686,6 +686,42 @@
         return false;
     }
 
+
+
+    function getMemorySizeOfArray(arr) {
+        let totalBytes = 0;
+
+        for (const item of arr) {
+            switch (typeof item) {
+                case 'string':
+                    // Approximate each character as 2 bytes (UTF-16)
+                    totalBytes += item.length * 2;
+                    break;
+                case 'number':
+                    // Numbers are typically 8 bytes in JavaScript
+                    totalBytes += 8;
+                    break;
+                case 'boolean':
+                    // Booleans are 4 bytes
+                    totalBytes += 4;
+                    break;
+                case 'object':
+                    // For objects, recursively calculate memory size
+                    if (item !== null) {
+                        totalBytes += getMemorySizeOfObject(item);
+                    }
+                    break;
+                default:
+                    // Undefined or functions are ignored
+                    break;
+            }
+        }
+
+        return `${totalBytes} bytes`;
+    }
+
+
+
     function findPath(unit) {
 
         console.log(unit);
@@ -726,39 +762,6 @@
         }
         return false
     }
-
-    function getMemorySizeOfArray(arr) {
-        let totalBytes = 0;
-
-        for (const item of arr) {
-            switch (typeof item) {
-                case 'string':
-                    // Approximate each character as 2 bytes (UTF-16)
-                    totalBytes += item.length * 2;
-                    break;
-                case 'number':
-                    // Numbers are typically 8 bytes in JavaScript
-                    totalBytes += 8;
-                    break;
-                case 'boolean':
-                    // Booleans are 4 bytes
-                    totalBytes += 4;
-                    break;
-                case 'object':
-                    // For objects, recursively calculate memory size
-                    if (item !== null) {
-                        totalBytes += getMemorySizeOfObject(item);
-                    }
-                    break;
-                default:
-                    // Undefined or functions are ignored
-                    break;
-            }
-        }
-
-        return `${totalBytes} bytes`;
-    }
-
 
 
     function main() {

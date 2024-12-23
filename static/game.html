@@ -228,8 +228,11 @@
                             )
                         ) {
 
+                            const start = performance.now()
                             findPath(state[my_team][my_int][hoverable.K]);
-
+                            const end = performance.now();
+                            console.log(`Function executed in ${end - start} ms`);
+                            
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();

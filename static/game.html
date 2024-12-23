@@ -722,6 +722,21 @@
 
 
 
+    function getMemorySizeOfObject(obj) {
+        let bytes = 0;
+
+        for (const key in obj) {
+            if (!Object.hasOwn(obj, key)) continue;
+            const value = obj[key];
+            bytes += key.length * 2; // Key size
+            bytes += getMemorySizeOfArray([value]); // Value size
+        }
+
+        return bytes;
+    }
+
+
+
     function findPath(unit) {
 
         console.log(unit);

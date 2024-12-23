@@ -777,7 +777,7 @@
                         const obs = JSON.parse(temp[i]);
                         if(obs.Shape == "BEZIER") {
                             const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
-                            console.log(i, obs, curve)
+                            console.log(i, obs, curve.points)
                             obstacles.push(curve);
                         }
                     }

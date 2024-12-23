@@ -2139,7 +2139,7 @@ function drawObstacles() {
         ctx.bezierCurveTo(
             width+obstacles[i].points[1].x, height-obstacles[i].points[1].y,
             width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
-            width+obstacles[i].points[3].y, height-obstacles[i].points[3].y
+            width+obstacles[i].points[3].x, height-obstacles[i].points[3].y
         );
         ctx.stroke();
     }

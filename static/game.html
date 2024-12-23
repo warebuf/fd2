@@ -228,7 +228,7 @@
                             )
                         ) {
 
-                            findPath(state[my_team][my_int][hoverable.K], intersections[0]);
+                            findPath(state[my_team][my_int][hoverable.K]);
 
                             selected_hoverable = hoverable;
                             state_machine = 1;
@@ -686,13 +686,30 @@
         return false;
     }
 
-    function findPath(unit, destination) {
+    function findPath(unit) {
 
-        console.log(unit, destination);
+        console.log(unit);
 
-        for( let i = 0; i < obstacles.length; i++ ) {
-            lineIntersectsBezier(unit.Position, destination, obstacles[i]);
+        let starting_paths = []
+
+        for(let i = 0; i < intersections.length; i++) {
+
+            let available = true;
+            for(let j = 0; i < obstacles.length; j++) {
+                if( lineIntersectsBezier(unit.Position, intersections[i], obstacles[j]) == true) {
+                    available = false;
+                    break;
+                }
+            }
+            if(available == true) {
+                starting_paths.push(intersections[i]);
+            }
         }
+
+        console.log(starting_paths)
+
+
+
 
 
     }
@@ -701,8 +718,6 @@
 
         const line = { p1: { x: P1.X, y: P1.Y }, p2: { x: P2.X, y: P2.Y } };
         const intersections = B.intersects(line);
-
-        console.log(intersections)
 
         if (intersections.length > 0) {
             return true

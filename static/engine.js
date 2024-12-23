@@ -2132,11 +2132,8 @@ function drawObstacles() {
     // so we mirror the y-coordinate and shift it down by the board length
     const boardXY = 500;
 
-    console.log(obstacles.length)
-
     ctx.strokeStyle = "white";
     for(let i = 0; i < obstacles.length; i++ ){
-        console.log(obstacles[i])
         ctx.beginPath();
         ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
         ctx.bezierCurveTo(

@@ -773,9 +773,10 @@
                     const temp = msg.Message.split('\n')
                     for (let i = 0; i < temp.length; i++) {
                         const obs = JSON.parse(temp[i]);
-                        const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
-                        console.log(i, temp[i], curve);
-                        obstacles.push(curve);
+                        if(obs.Shape == "BEZIER") {
+                            const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
+                            obstacles.push(curve);
+                        }
                     }
                 } else if (msg.Event == 'intersections') {
                     const temp = msg.Message.split('\n')

@@ -494,7 +494,6 @@
     }
     window.followHoverable = followHoverable;
 
-
     function calculateNextHoverable(direction) {
         let hoverables = []
 
@@ -686,59 +685,6 @@
         return false;
     }
 
-
-
-    function getMemorySizeOfArray(arr) {
-        let totalBytes = 0;
-
-        for (const item of arr) {
-            switch (typeof item) {
-                case 'string':
-                    // Approximate each character as 2 bytes (UTF-16)
-                    totalBytes += item.length * 2;
-                    break;
-                case 'number':
-                    // Numbers are typically 8 bytes in JavaScript
-                    totalBytes += 8;
-                    break;
-                case 'boolean':
-                    // Booleans are 4 bytes
-                    totalBytes += 4;
-                    break;
-                case 'object':
-                    // For objects, recursively calculate memory size
-                    if (item !== null) {
-                        totalBytes += getMemorySizeOfObject(item);
-                    }
-                    break;
-                default:
-                    // Undefined or functions are ignored
-                    break;
-            }
-        }
-
-        return totalBytes;
-    }
-
-
-
-    function getMemorySizeOfObject(obj) {
-        let bytes = 0;
-
-        for (const key in obj) {
-            if (!Object.hasOwn(obj, key)) continue;
-            const value = obj[key];
-            bytes += key.length * 2; // Key size
-            bytes += getMemorySizeOfArray([value]); // Value size
-        }
-
-        console.log("obj", bytes)
-
-        return bytes;
-    }
-
-
-
     function findPath(unit) {
 
         console.log(unit);
@@ -760,7 +706,6 @@
         }
 
         console.log( starting_paths )
-        console.log( getMemorySizeOfArray(starting_paths) )
 
 
 

@@ -148,7 +148,7 @@ function calcPos() {
                         all_status_correct = false;
                         if(state[i][j][k].Status == 0) {
                             state[i][j][k].Status = 1;
-                            state[i][j][k].Start = state[i][j][k].Position
+                            state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
                             state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
@@ -181,7 +181,7 @@ function calcPos() {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if(state[i][j][k].Status == 1) {
                         if(state[i][j][k].Destination != match_data[animating_state][i][j][k].Destination) {
-                            state[i][j][k].Start = state[i][j][k].Position
+                            state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Angle;
                             state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);

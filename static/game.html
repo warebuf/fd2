@@ -236,6 +236,12 @@
                         ) {
 
                             console.log("hoverable", hoverable, state[hoverable.I][hoverable.J][hoverable.K].Status)
+                            console.log(
+                                state[hoverable.I][hoverable.J][hoverable.K].Position,
+                                state[hoverable.I][hoverable.J][hoverable.K].Start,
+                                coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
+                            )
+
 
                             const start = performance.now()
                             findPath(state[my_team][my_int][hoverable.K]);

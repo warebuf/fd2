@@ -144,6 +144,9 @@
 
     var obstacles = [];
     var intersections = [];
+
+    var dynamics = [];
+
     var path = [];
 </script>
 
@@ -232,7 +235,7 @@
                             findPath(state[my_team][my_int][hoverable.K]);
                             const end = performance.now();
                             console.log(`Function executed in ${end - start} ms`);
-                            
+
                             selected_hoverable = hoverable;
                             state_machine = 1;
                             setupHoverable();
@@ -690,9 +693,8 @@
 
     function findPath(unit) {
 
-        console.log(unit);
-
-        let starting_paths = []
+        let starting_paths = [];
+        let starting_lengths = [];
 
         for(let i = 0; i < intersections.length; i++) {
 
@@ -704,11 +706,22 @@
                 }
             }
             if(available == true) {
-                starting_paths.push(intersections[i]);
+                starting_paths.push( 'i' + i.toString() );
+                starting_lengths.push( getDistance(unit.Position, intersections[i]) )
             }
         }
 
         console.log( starting_paths )
+
+        const start = new Object();
+        start.X = unit.Position.X;
+        start.Y = unit.Position.Y;
+        start.Edges = starting_paths;
+        start.EdgeLength = starting_lengths;
+        console.log("start", start);
+
+        let ans = aStar2(start, intersections[0]);
+        console.log("ans", ans);
 
 
 
@@ -719,6 +732,14 @@
         const intersections = B.intersects(line);
         if (intersections.length > 0) {return true}
         return false
+    }
+
+    function addToIntersections() {
+
+    }
+
+    function removeFromIntersections() {
+
     }
 
 

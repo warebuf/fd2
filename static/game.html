@@ -418,7 +418,6 @@
                         a2 = 1;
                     }
                 }
-                console.log(a1, a2, aStar(intersections[a1], intersections[a2]));
                 const startTime = performance.now();
                 path = aStar(intersections[a1], intersections[a2]);
                 const endTime = performance.now();
@@ -715,14 +714,12 @@
             }
         }
 
-        console.log( starting_paths )
 
         const start = new Object();
         start.X = unit.Position.X;
         start.Y = unit.Position.Y;
         start.Edges = starting_paths;
         start.EdgeLength = starting_lengths;
-        console.log("start", start);
 
         path2 = aStar2(start, intersections[0]);
         console.log("ans", path2);

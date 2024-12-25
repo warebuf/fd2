@@ -2242,7 +2242,6 @@ function aStar(s, g) {
     return [];
 }
 
-
 function aStar2(s, g) {
     const openList = []; // nodes to explore
     const closedList = new Set(); // nodes completely explored, prevents backtracking

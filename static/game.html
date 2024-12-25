@@ -148,6 +148,7 @@
     var dynamics = [];
 
     var path = [];
+    var path2 = [];
 </script>
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
@@ -720,10 +721,8 @@
         start.EdgeLength = starting_lengths;
         console.log("start", start);
 
-        let ans = aStar2(start, intersections[0]);
-        console.log("ans", ans);
-
-
+        let path2 = aStar2(start, intersections[0]);
+        console.log("ans", path2);
 
     }
 

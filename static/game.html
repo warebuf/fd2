@@ -227,6 +227,9 @@
                             )
                             ||
                             (
+                                (hoverable.Type == "unit") &&
+                                (hoverable.I == my_team) &&
+                                (hoverable.J == my_int) &&
                                 (state[hoverable.I][hoverable.J][hoverable.K].Status == 1) &&
                                 coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
                             )

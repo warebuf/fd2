@@ -2212,9 +2212,9 @@ function aStar(s, g) {
         for (let i = 0; i < currentNode.origin.Edges.length; i++) {
 
             let neighbor = null;
-            const firstChar = currentNode.origin.Edges[i][0]
+            const firstChar = currentNode.origin.Edges[i][0];
 
-            if( firstChar == 'c' ) {
+            if( firstChar == 'd' ) {
                 neighbor = dynamics[ parseInt(currentNode.origin.Edges[i].slice(1), 10) ];
             } else if ( firstChar == 'i' ) {
                 neighbor = intersections[ parseInt(currentNode.origin.Edges[i].slice(1), 10) ];

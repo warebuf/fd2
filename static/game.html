@@ -805,24 +805,12 @@
     }
 
     function removeFromIntersections() {
-
         for(let i = 0; i < dynamics.length; i++) {
             for(let j = 0; j < dynamics[i].Edges.length; j++) {
                 if(dynamics[i].Edges[j][0]=='i') {
                     let a = intersections[parseInt(dynamics[i].Edges[j].slice(1))].Edges.pop();
                     let b = intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLength.pop();
                     console.log('ab', a, b)
-                }
-            }
-        }
-
-        for(let i = 0; i < intersections.length; i++) {
-            for(let j = 0; j < intersections[i].Edges.length; ) {
-                if(intersections[i].Edges[j][0]=='d') {
-                    intersections[i].Edges.splice(j, 1);
-                    intersections[i].EdgeLength.splice(j, 1);
-                } else {
-                    j++;
                 }
             }
         }

@@ -712,9 +712,10 @@
         const end1 = performance.now();
         console.log(`Function1 executed in ${end1 - start1} ms`);
 
+        // create unit node
+        const start4 = performance.now()
         let starting_paths = [];
         let starting_lengths = [];
-
         for(let i = 0; i < intersections.length; i++) {
             let available = true;
             for(let j = 0; j < obstacles.length; j++) {
@@ -728,7 +729,6 @@
                 starting_lengths.push( getDistance(unit.Position, intersections[i]) )
             }
         }
-
         for(let i = 0; i < dynamics.length; i++) {
             let available = true;
             for(let j = 0; j < obstacles.length; j++) {
@@ -742,12 +742,13 @@
                 starting_lengths.push( getDistance(unit.Position, dynamics[i]) )
             }
         }
-
         const start = new Object();
         start.X = unit.Position.X;
         start.Y = unit.Position.Y;
         start.Edges = starting_paths;
         start.EdgeLength = starting_lengths;
+        const end4 = performance.now();
+        console.log(`Function4 executed in ${end4 - start4} ms`);
 
         // calculate distance from unit to dynamic location
         const start2 = performance.now();

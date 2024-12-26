@@ -752,8 +752,6 @@
 
         // calculate distance from unit to dynamic location
         const start2 = performance.now();
-        console.log(start, dynamics.length-1)
-        console.log("dynamics", dynamics)
         path3 = aStar(start, dynamics[dynamics.length-1]);
         const end2 = performance.now();
         console.log(`Function2 executed in ${end2 - start2} ms`);
@@ -807,6 +805,17 @@
     }
 
     function removeFromIntersections() {
+
+        for(let i = 0; i < dynamics.length; i++) {
+            for(let j = 0; j < dynamics[i].Edges.length; j++) {
+                if(dynamics[i].Edges[j][0]=='i') {
+                    let a = intersections[parseInt(dynamics[i].Edges[j].slice(1))].Edges.pop();
+                    let b = intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLength.pop();
+                    console.log('ab', a, b)
+                }
+            }
+        }
+
         for(let i = 0; i < intersections.length; i++) {
             for(let j = 0; j < intersections[i].Edges.length; ) {
                 if(intersections[i].Edges[j][0]=='d') {

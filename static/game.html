@@ -149,6 +149,7 @@
 
     var path = [];
     var path2 = [];
+    var path3 = [];
 </script>
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
@@ -730,8 +731,12 @@
         start.Edges = starting_paths;
         start.EdgeLength = starting_lengths;
 
-        path2 = aStar2(start, intersections[0]);
+        path2 = aStar(start, intersections[0]);
         console.log("ans", path2);
+
+        addToIntersections(camps[0]);
+        path3 = aStar(start, dynamics[dynamics.length-1]);
+        removeFromIntersections();
 
     }
 
@@ -742,12 +747,50 @@
         return false
     }
 
-    function addToIntersections() {
+    function addToIntersections( dest ) {
+
+        const newIntersection = new Object();
+        newIntersection.X = dest.XY.X;
+        newIntersection.Y = dest.XY.Y;
+
+        let starting_paths = [];
+        let starting_lengths = [];
+
+        for(let i = 0; i < intersections.length; i++) {
+
+            let available = true;
+            for(let j = 0; j < obstacles.length; j++) {
+                if( lineIntersectsBezier(newIntersection, intersections[i], obstacles[j]) == true) {
+                    available = false;
+                    break;
+                }
+            }
+            if(available == true) {
+                starting_paths.push( 'i' + i.toString() );
+                starting_lengths.push( getDistance(newIntersection, intersections[i]) )
+                intersections[i].Edges.push( 'd' + dynamics.length.toString() )
+                intersections[i].EdgeLength.push( getDistance(newIntersection, intersections[i]) );
+            }
+        }
+        newIntersection.Edges = starting_paths;
+        newIntersection.EdgeLength = starting_lengths;
+        dynamics.push(newIntersection);
+        console.log("newIntersection", newIntersection);
 
     }
 
     function removeFromIntersections() {
-
+        for(let i = 0; i < intersections.length; i++) {
+            for(let j = 0; j < intersections[i].Edges.length; ) {
+                if(intersections[i].Edges[j][0]=='d') {
+                    intersections[i].Edges.splice(j, 1);
+                    intersections[i].EdgeLength.splice(j, 1);
+                } else {
+                    j++;
+                }
+            }
+        }
+        dynamics = [];
     }
 
 

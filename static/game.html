@@ -706,6 +706,12 @@
 
     function findPath(unit) {
 
+        // add dynamic endpoint to intersections list
+        const start1 = performance.now()
+        addToIntersections(camps[0]);
+        const end1 = performance.now();
+        console.log(`Function1 executed in ${end1 - start1} ms`);
+
         let starting_paths = [];
         let starting_lengths = [];
 
@@ -723,19 +729,27 @@
             }
         }
 
+        for(let i = 0; i < dynamics.length; i++) {
+            let available = true;
+            for(let j = 0; j < obstacles.length; j++) {
+                if( lineIntersectsBezier(unit.Position, dynamics[i], obstacles[j]) == true) {
+                    available = false;
+                    break;
+                }
+            }
+            if(available == true) {
+                starting_paths.push( 'd' + i.toString() );
+                starting_lengths.push( getDistance(unit.Position, dynamics[i]) )
+            }
+        }
+
         const start = new Object();
         start.X = unit.Position.X;
         start.Y = unit.Position.Y;
         start.Edges = starting_paths;
         start.EdgeLength = starting_lengths;
 
-
-
-        const start1 = performance.now()
-        addToIntersections(camps[0]);
-        const end1 = performance.now();
-        console.log(`Function1 executed in ${end1 - start1} ms`);
-
+        // calculate distance from unit to dynamic location
         const start2 = performance.now();
         console.log(start, dynamics.length-1)
         console.log("dynamics", dynamics)
@@ -743,6 +757,7 @@
         const end2 = performance.now();
         console.log(`Function2 executed in ${end2 - start2} ms`);
 
+        // remove dynamic location
         const start3 = performance.now()
         removeFromIntersections();
         const end3 = performance.now();

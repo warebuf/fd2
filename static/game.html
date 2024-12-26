@@ -710,7 +710,6 @@
         let starting_lengths = [];
 
         for(let i = 0; i < intersections.length; i++) {
-
             let available = true;
             for(let j = 0; j < obstacles.length; j++) {
                 if( lineIntersectsBezier(unit.Position, intersections[i], obstacles[j]) == true) {
@@ -724,15 +723,12 @@
             }
         }
 
-
         const start = new Object();
         start.X = unit.Position.X;
         start.Y = unit.Position.Y;
         start.Edges = starting_paths;
         start.EdgeLength = starting_lengths;
 
-        path2 = aStar(start, intersections[0]);
-        console.log("ans", path2);
 
 
         const start1 = performance.now()

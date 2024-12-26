@@ -741,7 +741,8 @@
         console.log(`Function1 executed in ${end1 - start1} ms`);
 
         const start2 = performance.now();
-        console.log(start, dynamics.length-1, dynamics[dynamics.length-1] )
+        console.log(start, dynamics.length-1)
+        console.log("dynamics", dynamics)
         path3 = aStar(start, dynamics[dynamics.length-1]);
         const end2 = performance.now();
         console.log(`Function2 executed in ${end2 - start2} ms`);

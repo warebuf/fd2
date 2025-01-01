@@ -107,7 +107,7 @@ function anime() {
         drawPos()
         drawHoverable()
         drawCamps()
-        drawPotentialPaths()
+        //drawPotentialPaths()
         //drawPaths()
         //drawStats()
         drawDamageNumbers()

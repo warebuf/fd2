@@ -148,8 +148,7 @@
     var dynamics = [];
 
     var path = [];
-    var path2 = [];
-    var path3 = [];
+    var paths = [];
 </script>
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
@@ -244,11 +243,16 @@
                                 coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
                             )
 
+                            paths = [];
+                            for(let i = 0; i < camps.length; i++) {
+                                if(camps[i].HP > 0) {
+                                    const start = performance.now()
+                                    findPath(state[my_team][my_int][hoverable.K], camps[i]);
+                                    const end = performance.now();
+                                    console.log(`findPath executed in ${end - start} ms`);
+                                }
+                            }
 
-                            const start = performance.now()
-                            findPath(state[my_team][my_int][hoverable.K]);
-                            const end = performance.now();
-                            console.log(`Function executed in ${end - start} ms`);
 
                             selected_hoverable = hoverable;
                             state_machine = 1;
@@ -704,11 +708,10 @@
         return false;
     }
 
-    function findPath(unit) {
-
+    function findPath(unit, targetCamp) {
         // add dynamic endpoint to intersections list
         const start1 = performance.now()
-        addToIntersections(camps[0]);
+        addToIntersections( targetCamp );
         const end1 = performance.now();
         console.log(`Function1 executed in ${end1 - start1} ms`);
 
@@ -752,7 +755,7 @@
 
         // calculate distance from unit to dynamic location
         const start2 = performance.now();
-        path3 = aStar(start, dynamics[dynamics.length-1]);
+        paths.push( aStar(start, dynamics[dynamics.length-1]) );
         const end2 = performance.now();
         console.log(`Function2 executed in ${end2 - start2} ms`);
 

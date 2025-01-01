@@ -121,8 +121,7 @@ function anime() {
         }
         if(path != []) {
             drawComplexPath(path)
-            drawComplexPath(path2)
-            drawComplexPath(path3)
+            for(let i = 0; i < paths.length; i++) {drawComplexPath(path[i]);}
         }
     }
 

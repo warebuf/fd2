@@ -2253,13 +2253,15 @@ function aStar(s, g) {
 
 
 function drawComplexPath(path) {
+    ctx.strokeStyle = "grey";
+    for (let i = 0; i < path.length - 1; i++) {
     for (let i = 0; i < path.length - 1; i++) {
         ctx.beginPath();    // Begin a new path
-        ctx.strokeStyle = "blue";
         ctx.moveTo(width+path[i][0], height - path[i][1]); // Move to the starting point
         ctx.lineTo(width+path[i + 1][0], height - path[i + 1][1]); // Draw a line to the ending point
         ctx.stroke();       // Render the line
     }
+    ctx.strokeStyle = "white";
 }
 
 

@@ -245,7 +245,7 @@
 
                             paths = [];
                             let startingNode = createStartingNode(state[my_team][my_int][hoverable.K]);
-                            if(startingNode.Edges != []) {
+                            if( startingNode.Edges.length > 0 ) {
                                 for (let i = 0; i < camps.length; i++) {
                                     if (camps[i].HP > 0) {
                                         const start = performance.now()
@@ -807,7 +807,7 @@
         }
 
         console.log("starting_paths", starting_paths)
-        if (starting_paths == []) {
+        if (starting_paths.length == 0) {
             return false;
         }
         newIntersection.Edges = starting_paths;

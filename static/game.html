@@ -709,20 +709,20 @@
         const start1 = performance.now()
         const destPossible = addToIntersections(targetCamp);
         const end1 = performance.now();
-        console.log(`Function1 executed in ${end1 - start1} ms`);
+        console.log(`addToIntersections executed in ${end1 - start1} ms`);
 
         if (destPossible) {
             // calculate distance from unit to dynamic location
             const start2 = performance.now();
             paths.push(aStar(startingNode, dynamics[dynamics.length - 1]));
             const end2 = performance.now();
-            console.log(`Function2 executed in ${end2 - start2} ms`);
+            console.log(`aStar executed in ${end2 - start2} ms`);
 
             // remove dynamic location
             const start3 = performance.now()
             removeFromIntersections();
             const end3 = performance.now();
-            console.log(`Function3 executed in ${end3 - start3} ms`);
+            console.log(`Removing Destination executed in ${end3 - start3} ms`);
         }
 
 
@@ -766,7 +766,7 @@
         start.Edges = starting_paths;
         start.EdgeLength = starting_lengths;
         const end4 = performance.now();
-        console.log(`Function4 executed in ${end4 - start4} ms`);
+        console.log(`createStartingNode executed in ${end4 - start4} ms`);
 
         return start;
     }

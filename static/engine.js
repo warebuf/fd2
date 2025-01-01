@@ -119,9 +119,9 @@ function anime() {
             drawHeatMap()
             drawCampHP()
         }
-        if(path != []) {
-            drawComplexPath(path)
-            for(let i = 0; i < paths.length; i++) {drawComplexPath(path[i]);}
+        if(paths != []) {
+            drawComplexPath(testPath)
+            for(let i = 0; i < paths.length; i++) {drawComplexPath(paths[i]);}
         }
     }
 

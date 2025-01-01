@@ -147,7 +147,7 @@
 
     var dynamics = [];
 
-    var path = [];
+    var testPath = [];
     var paths = [];
 </script>
 
@@ -433,7 +433,7 @@
                     }
                 }
                 const startTime = performance.now();
-                path = aStar(intersections[a1], intersections[a2]);
+                testPath = aStar(intersections[a1], intersections[a2]);
                 const endTime = performance.now();
                 console.log(`Execution Time: ${endTime - startTime}ms`);
                 break;

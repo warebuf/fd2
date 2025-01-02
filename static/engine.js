@@ -125,7 +125,19 @@ function anime() {
         }
 
         if( paths.length > 0 ) {
-            for(let i = 0; i < paths.length; i++) {drawComplexPath(paths[i], "grey");}
+
+            for(let i = 0; i < paths.length; i++) {
+
+                if(
+                    (paths[i][path.length-1][0] == hoverable.X) &&
+                    (paths[i][path.length-1][1] == hoverable.Y)
+                ) {
+                    drawComplexPath(paths[i], "FFC107")
+                } else {
+                    drawComplexPath(paths[i], "grey")
+                }
+            }
+
         }
     }
 
@@ -2255,16 +2267,6 @@ function aStar(s, g) {
 }
 
 function drawComplexPath(path, color) {
-
-    if(
-        (path[path.length-1][0] == hoverable.X) &&
-        (path[path.length-1][1] == hoverable.Y)
-    ) {
-        ctx.strokeStyle = "#FFC107";
-    } else {
-        ctx.strokeStyle = color;
-    }
-
     for (let i = 0; i < path.length - 1; i++) {
         ctx.beginPath();    // Begin a new path
         ctx.moveTo(width+path[i][0], height - path[i][1]); // Move to the starting point

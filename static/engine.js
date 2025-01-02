@@ -2260,9 +2260,9 @@ function drawComplexPath(path, color) {
         (path[path.length-1][0] == hoverable.X) &&
         (path[path.length-1][1] == hoverable.Y)
     ) {
-        ctx.strokeStyle = "white";
-    } else {
         ctx.strokeStyle = "#FFC107";
+    } else {
+        ctx.strokeStyle = color;
     }
 
     for (let i = 0; i < path.length - 1; i++) {

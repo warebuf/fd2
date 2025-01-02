@@ -705,6 +705,20 @@
     }
 
     function findPath(startingNode, targetCamp) {
+
+        // check if direct path from starting node, if so, add that and return
+        let available = true;
+        for (let j = 0; j < obstacles.length; j++) {
+            if (lineIntersectsBezier(startingNode, targetCamp.XY, obstacles[j]) == true) {
+                available = false;
+                break;
+            }
+        }
+        if (available == true) {
+            console.log("returning")
+            return;
+        }
+
         // add a dynamic node to the global dynamic array
         const start1 = performance.now()
         const destPossible = addToIntersections(targetCamp);
@@ -712,9 +726,6 @@
         console.log(`addToIntersections executed in ${end1 - start1} ms`, destPossible);
 
         if (destPossible) {
-            // check if direct path from starting node, if so, add that and return
-            
-
             // calculate distance from unit to dynamic location
             const start2 = performance.now();
             paths.push(aStar(startingNode, dynamics[dynamics.length - 1]));

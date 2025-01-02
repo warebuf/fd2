@@ -119,7 +119,7 @@ function anime() {
             drawHeatMap()
             drawCampHP()
         }
-        if(paths != []) {
+        if( paths.length > 0 ) {
             drawComplexPath(testPath, "blue")
             for(let i = 0; i < paths.length; i++) {drawComplexPath(paths[i], "grey");}
         }
@@ -2251,8 +2251,6 @@ function aStar(s, g) {
 }
 
 function drawComplexPath(path, color) {
-
-    console.log(path.length, path )
 
     if(
         (path[path.length-1][0] == hoverable.X) &&

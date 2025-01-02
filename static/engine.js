@@ -2267,6 +2267,7 @@ function aStar(s, g) {
 }
 
 function drawComplexPath(path, color) {
+    ctx.strokeStyle = color;
     for (let i = 0; i < path.length - 1; i++) {
         ctx.beginPath();    // Begin a new path
         ctx.moveTo(width+path[i][0], height - path[i][1]); // Move to the starting point

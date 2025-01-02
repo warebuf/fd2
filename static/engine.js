@@ -2262,7 +2262,7 @@ function drawComplexPath(path, color) {
     ) {
         ctx.strokeStyle = "white";
     } else {
-        ctx.strokeStyle = color;
+        ctx.strokeStyle = "#FFC107";
     }
 
     for (let i = 0; i < path.length - 1; i++) {

@@ -712,6 +712,9 @@
         console.log(`addToIntersections executed in ${end1 - start1} ms`, destPossible);
 
         if (destPossible) {
+            // check if direct path from starting node, if so, add that and return
+            
+
             // calculate distance from unit to dynamic location
             const start2 = performance.now();
             paths.push(aStar(startingNode, dynamics[dynamics.length - 1]));

@@ -718,7 +718,8 @@
             let ans = [];
             ans.push([startingNode.X, startingNode.Y])
             ans.push([targetCamp.XY.X, targetCamp.XY.Y])
-            console.log("direct path found", ans)
+            paths.push(ans)
+            console.log("direct path found")
             return;
         }
 

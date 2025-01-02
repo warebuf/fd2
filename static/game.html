@@ -715,7 +715,10 @@
             }
         }
         if (available == true) {
-            console.log("returning")
+            let ans = [];
+            ans.push([startingNode.X, startingNode.Y])
+            ans.push([targetCamp.XY.X, targetCamp.XY.Y])
+            console.log("direct path found", ans)
             return;
         }
 

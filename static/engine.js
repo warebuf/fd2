@@ -2252,8 +2252,6 @@ function aStar(s, g) {
 
 function drawComplexPath(path, color) {
 
-    console.log(path.length, path )
-
     if(
         (path[path.length-1][0] == hoverable.X) &&
         (path[path.length-1][1] == hoverable.Y)

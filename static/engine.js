@@ -129,8 +129,8 @@ function anime() {
             for(let i = 0; i < paths.length; i++) {
 
                 if(
-                    (paths[i][path.length-1][0] == hoverable.X) &&
-                    (paths[i][path.length-1][1] == hoverable.Y)
+                    (paths[i][paths[i].length-1][0] == hoverable.X) &&
+                    (paths[i][paths[i].length-1][1] == hoverable.Y)
                 ) {
                     drawComplexPath(paths[i], "FFC107")
                 } else {

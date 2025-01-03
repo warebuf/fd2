@@ -136,7 +136,7 @@ function anime() {
                     drawComplexPath(paths[i], "grey");
                 }
             }
-            if(selected >= 0) {drawComplexPath(paths[selected], "red");}
+            if(selected >= 0) {drawComplexPath(paths[selected], "FFC107");}
         }
     }
 

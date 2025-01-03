@@ -180,6 +180,7 @@ type message struct {
 	Camps       []string
 
 	Route Coordinate
+	Path  [][]float64
 
 	// should add the user's TCH
 	Team_index   int

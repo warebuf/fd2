@@ -266,10 +266,10 @@
 
                             console.log(hoverable, paths[i][paths[i].length-1])
 
-                            if( (paths[i][paths[i].length-1].X == hoverable.X) &&
-                                (paths[i][paths[i].length-1].Y == hoverable.Y)
+                            if( (paths[i][paths[i].length-1][0] == hoverable.X) &&
+                                (paths[i][paths[i].length-1][1] == hoverable.Y)
                             ) {
-                                console.log("sent valid path")
+                                console.log("sent valid path", paths[i])
                                 socket.send(JSON.stringify({
                                     "Event": 'act',
                                     "Message": action_buffer,

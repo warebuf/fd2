@@ -263,6 +263,11 @@
                     } else if (state_machine == 1) {
                         // if the current hoverable is a POA, continue
 
+                        console.log("got here")
+                        console.log("hoverable", hoverable)
+                        console.log("selected_hoverable", selected_hoverable)
+                        console.log("action_buffer", action_buffer)
+
                         socket.send(JSON.stringify({
                             "Event": 'act',
                             "Message": action_buffer,

@@ -222,6 +222,10 @@ func m_read(m *match_socket) {
 			if m.m.ended == true {
 				continue
 			} else if msg.Event == "act" {
+
+				fmt.Println("msg", msg)
+				fmt.Println("msg.path", msg.Path)
+
 				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the hero is alive and at starting position

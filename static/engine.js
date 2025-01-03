@@ -125,19 +125,18 @@ function anime() {
         }
 
         if( paths.length > 0 ) {
-
+            let selected = -1;
             for(let i = 0; i < paths.length; i++) {
-
                 if(
                     (paths[i][paths[i].length-1][0] == hoverable.X) &&
                     (paths[i][paths[i].length-1][1] == hoverable.Y)
                 ) {
-                    drawComplexPath(paths[i], "FFC107")
+                    selected = i;
                 } else {
-                    drawComplexPath(paths[i], "grey")
+                    drawComplexPath(paths[i], "grey");
                 }
             }
-
+            if(selected >= 0) {drawComplexPath(paths[selected], "red");}
         }
     }
 

@@ -263,6 +263,9 @@
                     } else if (state_machine == 1) {
 
                         for(let i = 0; i < paths.length; i++) {
+
+                            console.log(hoverable, paths[i][paths[i].length-1])
+
                             if( (paths[i][paths[i].length-1].X == hoverable.X) &&
                                 (paths[i][paths[i].length-1].Y == hoverable.Y)
                             ) {

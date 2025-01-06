@@ -12,6 +12,8 @@ import (
 	"time"
 )
 
+import bl "github.com/warebuf/bezier-lib"
+
 type Camp struct {
 	HP    int
 	XY    Coordinate
@@ -223,9 +225,6 @@ func m_read(m *match_socket) {
 				continue
 			} else if msg.Event == "act" {
 
-				fmt.Println("msg", msg)
-				fmt.Println("msg.path", msg.Path)
-
 				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
 					// check if the hero is alive and at starting position
@@ -234,16 +233,15 @@ func m_read(m *match_socket) {
 							(sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start) &&
 								(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 1))) {
 
-						set_route := (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0)
+						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
-						if set_route { // possibly check if camp is still up here
+							ans := bl.IntersectBezierLine([]float64{0, 0, 1, 2, 2, 2, 3, 0}, []float64{1, 6, 0, 5})
+							fmt.Println("ans", ans)
+
+							fmt.Println("msg.path", msg.Path)
 							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route)
 							m.m.sharepos(nil, 0)
-						} else {
-							fmt.Printf("this route does not exist")
-						}
 
-						if set_route {
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
 							for i := 0; i < len(m.m.team_client_hero); i++ {
@@ -262,6 +260,9 @@ func m_read(m *match_socket) {
 								fmt.Println("simulate")
 								m.m.simulate <- true
 							}
+
+						} else {
+							fmt.Printf("this route does not exist")
 						}
 
 					}
@@ -462,7 +463,7 @@ func createMatch(pl *permission_list) *match {
 				temp_coordinate := Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:  j.bot_status,
-					Name: names[rand.Intn((len(names)))],
+					Name: names[rand.Intn(len(names))],
 
 					Start:       temp_coordinate,
 					Position:    temp_coordinate,

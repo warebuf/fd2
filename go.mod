@@ -1,6 +1,6 @@
 module fd
 
-go 1.20
+go 1.21.6
 
 require (
 	github.com/google/uuid v1.6.0
@@ -18,6 +18,7 @@ require (
 	github.com/kr/pretty v0.3.1 // indirect
 	github.com/kr/text v0.2.0 // indirect
 	github.com/rogpeppe/go-internal v1.9.0 // indirect
+	github.com/warebuf/bezier-lib v0.0.0-20250106000129-af8beb762519 // indirect
 	golang.org/x/net v0.17.0 // indirect
 	golang.org/x/oauth2 v0.0.0-20200902213428-5d25da1a8d43 // indirect
 	google.golang.org/appengine v1.6.6 // indirect

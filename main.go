@@ -177,6 +177,7 @@ func init() {
 func loadObstacles(fp string) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
+	defer file.Close()
 	content, _ := io.ReadAll(file)
 	str := string(content)
 	fmt.Println(str)

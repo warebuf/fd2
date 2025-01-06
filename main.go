@@ -128,8 +128,13 @@ type pbase struct {
 	mutex  sync.RWMutex
 }
 
-var obstacles []string
-var intersections []string
+type map_details struct {
+	obstacles     [][]float64
+	obstacle_type []string
+	intersections [][]float64
+}
+
+var mapList []map_details
 
 var uid_to_user userbase
 var rid_to_room roombase
@@ -157,7 +162,13 @@ var msid_to_sock msid_to_socket
 
 func init() {
 	fmt.Println("initializing...")
-	obstacles = make([]string, 0, 1)
+	mapList = make([]map_details, 0, 0)
+
+	sumrift := new(map_details)
+	sumrift.intersections = make([][]float64, 0, 0)
+	sumrift.obstacles = make([][]float64, 0, 0)
+	sumrift.obstacle_type = make([]string, 0, 0)
+
 	loadObstacles("lol-sumrift-obs.txt")
 	loadIntersections("lol-sumrift-int.txt")
 	fmt.Println("finished init \n")
@@ -168,7 +179,7 @@ func loadObstacles(fp string) {
 	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	obstacles = append(obstacles, str)
+	fmt.Println(str)
 }
 
 func loadIntersections(fp string) {
@@ -176,7 +187,8 @@ func loadIntersections(fp string) {
 	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	intersections = append(intersections, str)
+	fmt.Println(str)
+
 }
 
 func main() {

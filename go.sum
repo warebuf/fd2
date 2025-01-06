@@ -153,8 +153,8 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMTY=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/warebuf/bezier-lib v0.0.0-20250106000129-af8beb762519 h1:8RICvTktyKsDf/F2zFJ30+X1WvbkiYf/kkFsziRFsTw=
-github.com/warebuf/bezier-lib v0.0.0-20250106000129-af8beb762519/go.mod h1:S1NK1DZj47vitfuySglRcM0agHJoD59xOLNqvwwJxVI=
+github.com/warebuf/bezier-lib v0.0.0-20250106002525-742465a0f2a0 h1:SgP+J1ad6ZsEJ+qkMdgxJnZFlFvn6npOw9RhaSiHPbY=
+github.com/warebuf/bezier-lib v0.0.0-20250106002525-742465a0f2a0/go.mod h1:S1NK1DZj47vitfuySglRcM0agHJoD59xOLNqvwwJxVI=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

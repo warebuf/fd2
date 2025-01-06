@@ -12,7 +12,7 @@ import (
 	"time"
 )
 
-import bl "github.com/warebuf/bezier-lib"
+import "github.com/warebuf/bezier-lib/bezier"
 
 type Camp struct {
 	HP    int
@@ -235,7 +235,7 @@ func m_read(m *match_socket) {
 
 						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
-							ans := bl.IntersectBezierLine([]float64{0, 0, 1, 2, 2, 2, 3, 0}, []float64{1, 6, 0, 5})
+							ans := bezier.IntersectBezierLine([]float64{0, 0, 1, 2, 2, 2, 3, 0}, []float64{1, 6, 0, 5})
 							fmt.Println("ans", ans)
 
 							fmt.Println("msg.path", msg.Path)

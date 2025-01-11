@@ -182,6 +182,7 @@ func loadObstacles(fp string, m *map_details) {
 	str := string(content)
 	fmt.Println(str)
 	fmt.Println(m)
+
 }
 
 func loadIntersections(fp string) {
@@ -190,7 +191,6 @@ func loadIntersections(fp string) {
 	content, _ := io.ReadAll(file)
 	str := string(content)
 	fmt.Println(str)
-
 }
 
 func main() {

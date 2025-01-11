@@ -200,8 +200,14 @@ func loadObstacles(fp string, m *map_details) {
 			}
 			m.obstacles = append(m.obstacles, array)
 			m.obstacle_type = append(m.obstacle_type, "BEZIER")
-		} else {
-			fmt.Println("result", result)
+		} else if result["Shape"] == "CIRCLE" {
+			array := []float64{
+				result["EAngle"].(float64), result["SAngle"].(float64),
+				result["R"].(float64),
+				result["X"].(float64), result["Y"].(float64),
+			}
+			m.obstacles = append(m.obstacles, array)
+			m.obstacle_type = append(m.obstacle_type, "CIRCLE")
 		}
 
 	}

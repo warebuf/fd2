@@ -190,8 +190,7 @@ func loadObstacles(fp string, m *map_details) {
 			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
 			return
 		}
-		fmt.Println("result:", result)
-
+		
 		if result["Shape"] == "BEZIER" {
 
 			array := []float64{

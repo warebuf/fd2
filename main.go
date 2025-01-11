@@ -184,22 +184,21 @@ func loadObstacles(fp string, m *map_details) {
 	str := string(content)
 	lines := strings.Split(str, "\n")
 	for i := 0; i < len(lines); i++ {
-		result := make(map[string]string)
+		result := make(map[string]interface{})
 		err := json.Unmarshal([]byte(lines[i]), &result)
 		if err != nil {
 			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
 			return
 		}
 
-		fmt.Println(lines[i])
-		//array := []float64{
-		//	result["X1"].(float64), result["Y1"].(float64),
-		//	result["X2"].(float64), result["Y2"].(float64),
-		//	result["X3"].(float64), result["Y3"].(float64),
-		//	result["X4"].(float64), result["Y4"].(float64),
-		//}
-		//
-		//fmt.Println(array)
+		array := []float64{
+			result["X1"].(float64), result["Y1"].(float64),
+			result["X2"].(float64), result["Y2"].(float64),
+			result["X3"].(float64), result["Y3"].(float64),
+			result["X4"].(float64), result["Y4"].(float64),
+		}
+
+		fmt.Println(array)
 
 	}
 

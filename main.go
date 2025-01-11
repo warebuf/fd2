@@ -181,6 +181,10 @@ func loadObstacles(fp string, m *map_details) {
 	content, _ := io.ReadAll(file)
 	str := string(content)
 	lines := strings.Split(str, "\n")
+	for i := 0; i < len(lines); i++ {
+		fmt.Println(lines[i])
+	}
+
 	fmt.Println(len(lines))
 	fmt.Println(m)
 

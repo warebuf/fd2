@@ -13,17 +13,19 @@ import (
 	//"os"
 	"strings"
 
+	"encoding/json"
 	"fmt"
+	"html/template"
+	"path/filepath"
+	"sync"
+	"time"
+
 	"github.com/google/uuid" // https://github.com/google/uuid
 	"github.com/gorilla/sessions"
 	"github.com/gorilla/websocket"
 	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
 	"github.com/markbates/goth/providers/google"
-	"html/template"
-	"path/filepath"
-	"sync"
-	"time"
 )
 
 /*
@@ -182,7 +184,13 @@ func loadObstacles(fp string, m *map_details) {
 	str := string(content)
 	lines := strings.Split(str, "\n")
 	for i := 0; i < len(lines); i++ {
-		fmt.Println(lines[i])
+		var result map[string]interface{}
+		err := json.Unmarshal([]byte(lines[i]), &result)
+		if err != nil {
+			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
+			return
+		}
+		fmt.Println(result)
 	}
 
 	fmt.Println(len(lines))

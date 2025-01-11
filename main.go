@@ -134,9 +134,9 @@ type map_details struct {
 	obstacles     [][]float64 // [x1,y1,x2,y2,x3,y3,x4,y4]
 	obstacle_type []string    // [CIRCLE,BEZIER,...]
 
-	intersections             [][]float64 // [x,y]
-	intersections_edges       [][]float64 // [e1,e2, ...]
-	intersections_edgelengths [][]float64 // [el1, el2, ...]
+	intersections            [][]float64 // [x,y]
+	intersections_edges      [][]string  // [e1,e2, ...]
+	intersections_edgelength [][]float64 // [el1, el2, ...]
 }
 
 var mapList []map_details
@@ -170,9 +170,11 @@ func init() {
 	mapList = make([]map_details, 0, 0)
 
 	sumrift := new(map_details)
-	sumrift.intersections = make([][]float64, 0, 0)
 	sumrift.obstacles = make([][]float64, 0, 0)
 	sumrift.obstacle_type = make([]string, 0, 0)
+	sumrift.intersections = make([][]float64, 0, 0)
+	sumrift.intersections_edges = make([][]string, 0, 0)
+	sumrift.intersections_edgelengths = make([][]float64, 0, 0)
 	mapList = append(mapList, *sumrift)
 
 	loadObstacles("lol-sumrift-obs.txt", *sumrift)
@@ -231,6 +233,13 @@ func loadIntersections(fp string, m map_details) {
 			return
 		}
 		fmt.Println("result", result)
+
+		XY := []float64{result["X"].(float64), result["Y"].(float64)}
+		m.intersections = append(m.intersections, XY)
+		fmt.Println(result["Edges"].([]string))
+		//m.intersections_edges = append(m.intersections_edges, result["Edges"].([]string))
+		//m.intersections_edgelength = append(m.intersections_edgelength, result["EdgeLength"].([]float64))
+
 	}
 }
 

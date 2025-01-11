@@ -235,6 +235,7 @@ func m_read(m *match_socket) {
 
 						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
+							fmt.Println("xyz123")
 							for i := 0; i < len(mapList); i++ {
 								fmt.Println("maplist", mapList[i])
 							}

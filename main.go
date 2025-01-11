@@ -8,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"reflect"
 	"strconv"
 
 	//"os"
@@ -237,14 +236,14 @@ func loadIntersections(fp string, m map_details) {
 
 		XY := []float64{result["X"].(float64), result["Y"].(float64)}
 		m.intersections = append(m.intersections, XY)
-		fmt.Println("abcd", result["Edges"], reflect.TypeOf(result["Edges"]))
-		for index, val := range result["Edges"].([]interface{}) {
-			fmt.Println(index, "val", val)
+		E := []string{}
+		for _, val := range result["Edges"].([]interface{}) {
+			E = append(E, val.(string))
 		}
-
-		//m.intersections_edges = append(m.intersections_edges, result["Edges"].([]string))
-		//m.intersections_edgelength = append(m.intersections_edgelength, result["EdgeLength"].([]float64))
-
+		EL := []float64{}
+		for _, val := range result["EdgeLength"].([]interface{}) {
+			EL = append(EL, val.(float64))
+		}
 	}
 }
 

@@ -174,7 +174,7 @@ func init() {
 	sumrift.obstacle_type = make([]string, 0, 0)
 	sumrift.intersections = make([][]float64, 0, 0)
 	sumrift.intersections_edges = make([][]string, 0, 0)
-	sumrift.intersections_edgelengths = make([][]float64, 0, 0)
+	sumrift.intersections_edgelength = make([][]float64, 0, 0)
 	mapList = append(mapList, *sumrift)
 
 	loadObstacles("lol-sumrift-obs.txt", *sumrift)

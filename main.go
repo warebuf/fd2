@@ -131,9 +131,12 @@ type pbase struct {
 }
 
 type map_details struct {
-	obstacles     [][]float64
-	obstacle_type []string
-	intersections [][]float64
+	obstacles     [][]float64 // [x1,y1,x2,y2,x3,y3,x4,y4]
+	obstacle_type []string    // [CIRCLE,BEZIER,...]
+
+	intersections             [][]float64 // [x,y]
+	intersections_edges       [][]float64 // [e1,e2, ...]
+	intersections_edgelengths [][]float64 // [el1, el2, ...]
 }
 
 var mapList []map_details

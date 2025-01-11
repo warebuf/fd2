@@ -180,7 +180,7 @@ func loadObstacles(fp string, m *map_details) {
 	defer file.Close()
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	fmt.Println(str)
+	fmt.Println(len(str))
 	fmt.Println(m)
 
 }

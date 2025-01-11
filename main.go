@@ -236,7 +236,9 @@ func loadIntersections(fp string, m map_details) {
 
 		XY := []float64{result["X"].(float64), result["Y"].(float64)}
 		m.intersections = append(m.intersections, XY)
-		fmt.Println(result["Edges"].([]string))
+		for i := 0; i < len(result["Edges"]); i++ {
+			fmt.Println("abc", result["Edges"][i])
+		}
 		//m.intersections_edges = append(m.intersections_edges, result["Edges"].([]string))
 		//m.intersections_edgelength = append(m.intersections_edgelength, result["EdgeLength"].([]float64))
 

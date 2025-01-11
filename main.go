@@ -232,7 +232,6 @@ func loadIntersections(fp string, m map_details) {
 			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
 			return
 		}
-		fmt.Println("result", result)
 
 		XY := []float64{result["X"].(float64), result["Y"].(float64)}
 		m.intersections = append(m.intersections, XY)

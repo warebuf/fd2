@@ -190,7 +190,7 @@ func loadIntersections(fp string) {
 	file, _ := os.Open("./obstacles/" + fp)
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	fmt.Println(str)
+	//fmt.Println(str)
 }
 
 func main() {

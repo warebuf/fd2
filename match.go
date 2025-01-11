@@ -235,7 +235,9 @@ func m_read(m *match_socket) {
 
 						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
-							for(i:=0; i < )
+							for i := 0; i < len(mapList); i++ {
+								fmt.Println("maplist", mapList[i])
+							}
 
 							ans := bezier.IntersectBezierLine([]float64{0, 0, 1, 2, 2, 2, 3, 0}, []float64{1, 6, 0, 5})
 							fmt.Println("ans", ans)

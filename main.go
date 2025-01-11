@@ -170,9 +170,10 @@ func init() {
 	sumrift.intersections = make([][]float64, 0, 0)
 	sumrift.obstacles = make([][]float64, 0, 0)
 	sumrift.obstacle_type = make([]string, 0, 0)
+	mapList = append(mapList, *sumrift)
 
 	loadObstacles("lol-sumrift-obs.txt", *sumrift)
-	//loadIntersections("lol-sumrift-int.txt")
+	loadIntersections("lol-sumrift-int.txt", *sumrift)
 	fmt.Println("finished init \n")
 }
 
@@ -210,15 +211,24 @@ func loadObstacles(fp string, m map_details) {
 			m.obstacle_type = append(m.obstacle_type, "CIRCLE")
 		}
 	}
-	mapList = append(mapList, m)
 }
 
-func loadIntersections(fp string) {
+func loadIntersections(fp string, m map_details) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
+	defer file.Close()
 	content, _ := io.ReadAll(file)
 	str := string(content)
-	fmt.Println(str)
+	lines := strings.Split(str, "\n")
+	for i := 0; i < len(lines); i++ {
+		result := make(map[string]interface{})
+		err := json.Unmarshal([]byte(lines[i]), &result)
+		if err != nil {
+			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
+			return
+		}
+		fmt.Println("result", result)
+	}
 }
 
 func main() {

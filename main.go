@@ -190,18 +190,18 @@ func loadObstacles(fp string, m *map_details) {
 			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
 			return
 		}
-		
-		if result["Shape"] == "BEZIER" {
 
+		if result["Shape"] == "BEZIER" {
 			array := []float64{
 				result["X1"].(float64), result["Y1"].(float64),
 				result["X2"].(float64), result["Y2"].(float64),
 				result["X3"].(float64), result["Y3"].(float64),
 				result["X4"].(float64), result["Y4"].(float64),
 			}
-
-			fmt.Println(array)
-
+			m.obstacles = append(m.obstacles, array)
+			m.obstacle_type = append(m.obstacle_type, "BEZIER")
+		} else {
+			fmt.Println("result", result)
 		}
 
 	}

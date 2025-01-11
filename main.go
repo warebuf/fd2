@@ -171,12 +171,12 @@ func init() {
 	sumrift.obstacles = make([][]float64, 0, 0)
 	sumrift.obstacle_type = make([]string, 0, 0)
 
-	loadObstacles("lol-sumrift-obs.txt", sumrift)
+	loadObstacles("lol-sumrift-obs.txt", *sumrift)
 	//loadIntersections("lol-sumrift-int.txt")
 	fmt.Println("finished init \n")
 }
 
-func loadObstacles(fp string, m *map_details) {
+func loadObstacles(fp string, m map_details) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
 	defer file.Close()
@@ -209,12 +209,8 @@ func loadObstacles(fp string, m *map_details) {
 			m.obstacles = append(m.obstacles, array)
 			m.obstacle_type = append(m.obstacle_type, "CIRCLE")
 		}
-
 	}
-
-	fmt.Println(len(lines))
-	fmt.Println(m)
-
+	mapList = append(mapList, m)
 }
 
 func loadIntersections(fp string) {

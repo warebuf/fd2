@@ -924,7 +924,8 @@
                         newIntersect.EdgeLength = map["Intersections_edgelength"][i]
                         intersections.push(newIntersect)
                     }
-                    console.log(intersections)
+
+                    console.log(map)
 
                     // population obstacles global data structure
                     for(let i = 0; i < map["Obstacles"].length; i++) {
@@ -937,7 +938,7 @@
                         newObs.Y3 = map["Obstacles"][i][5];
                         newObs.X4 = map["Obstacles"][i][6];
                         newObs.Y4 = map["Obstacles"][i][7];
-                        newObs.Shape = map["Obstacles_type"][i];
+                        newObs.Shape = map["Obstacle_type"][i];
                         console.log(newObs)
                         obstacles.push(newObs)
                     }

@@ -937,11 +937,11 @@
                         newObs.Y3 = map["Obstacles"][i][5];
                         newObs.X4 = map["Obstacles"][i][6];
                         newObs.Y4 = map["Obstacles"][i][7];
-                        console.log(map["Obstacles"][i])
+                        newObs.Shape = map["Obstacles_type"][i];
                         console.log(newObs)
+                        obstacles.push(newObs)
                     }
 
-                    console.log(map)
 
 
                 } else if (msg.Event == 'obstacles') {

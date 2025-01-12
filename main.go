@@ -183,6 +183,7 @@ func init() {
 	sumriftString, err := json.Marshal(mapList[0])
 	fmt.Println("abc", len(mapList))
 	fmt.Printf("Type of num: %T\n", mapList[0])
+	fmt.Printf("Type of num2: %T\n", *mapList[0])
 	fmt.Println("xyz", string(sumriftString), err)
 	mapListJSON = append(mapListJSON, string(sumriftString))
 

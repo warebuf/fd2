@@ -928,7 +928,6 @@
 
                     // population obstacles global data structure
                     for(let i = 0; i < map["Obstacles"].length; i++) {
-                        console.log(map["Obstacles"][i]);
                         let newObs = new Object();
                         newObs.X1 = map["Obstacles"][i][0];
                         newObs.Y1 = map["Obstacles"][i][1];
@@ -938,6 +937,7 @@
                         newObs.Y3 = map["Obstacles"][i][5];
                         newObs.X4 = map["Obstacles"][i][6];
                         newObs.Y4 = map["Obstacles"][i][7];
+                        console.log(newObs)
                     }
 
 

@@ -180,7 +180,6 @@ func init() {
 	mapList = append(mapList, sumrift)
 	loadObstacles("lol-sumrift-obs.txt", sumrift)
 	loadIntersections("lol-sumrift-int.txt", sumrift)
-	fmt.Println(sumrift)
 	sumriftString, err := json.Marshal(*mapList[0])
 	str := fmt.Sprintf("%+v", *mapList[0]) // Dereference the pointer
 	fmt.Println("test123", str)

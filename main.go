@@ -137,9 +137,11 @@ type map_details struct {
 	intersections            [][]float64 // [x,y]
 	intersections_edges      [][]string  // [e1,e2, ...]
 	intersections_edgelength [][]float64 // [el1, el2, ...]
+
 }
 
 var mapList []map_details
+var mapListJSON []string
 
 var uid_to_user userbase
 var rid_to_room roombase
@@ -176,9 +178,11 @@ func init() {
 	sumrift.intersections_edges = make([][]string, 0, 0)
 	sumrift.intersections_edgelength = make([][]float64, 0, 0)
 	mapList = append(mapList, *sumrift)
-
 	loadObstacles("lol-sumrift-obs.txt", *sumrift)
 	loadIntersections("lol-sumrift-int.txt", *sumrift)
+	sumriftString, _ := json.Marshal(mapList[0])
+	mapListJSON = append(mapListJSON, string(sumriftString))
+
 	fmt.Println("finished init \n")
 }
 

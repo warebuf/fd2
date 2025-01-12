@@ -638,8 +638,8 @@ func (m *match) run() {
 			fmt.Println("joined the game")
 
 			// send the map to the new user
-			fmt.Println("MP", mapListJSON[0])
-			ws.incoming_message <- &message{Event: "obstacles", Message: mapListJSON[0]}
+			fmt.Println("sent map")
+			ws.incoming_message <- &message{Event: "map", Message: mapListJSON[0]}
 
 			// send message history to new user
 			for _, j := range m.message_logs {

@@ -911,6 +911,10 @@
                     if (event_log.length >= 25) {
                         event_log.shift()
                     }
+                } else if (msg.Event == 'map') {
+                    console.log("MADE IT TO MAP")
+
+
                 } else if (msg.Event == 'obstacles') {
                     const temp = msg.Message.split('\n')
                     for (let i = 0; i < temp.length; i++) {

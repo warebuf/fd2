@@ -140,7 +140,7 @@ type map_details struct {
 
 }
 
-var mapList []map_details
+var mapList []*map_details
 var mapListJSON []string
 
 var uid_to_user userbase
@@ -169,7 +169,7 @@ var msid_to_sock msid_to_socket
 
 func init() {
 	fmt.Println("initializing...")
-	mapList = make([]map_details, 0, 0)
+	mapList = make([]*map_details, 0, 0)
 
 	sumrift := new(map_details)
 	sumrift.obstacles = make([][]float64, 0, 0)
@@ -177,11 +177,10 @@ func init() {
 	sumrift.intersections = make([][]float64, 0, 0)
 	sumrift.intersections_edges = make([][]string, 0, 0)
 	sumrift.intersections_edgelength = make([][]float64, 0, 0)
-	mapList = append(mapList, *sumrift)
+	mapList = append(mapList, sumrift)
 	loadObstacles("lol-sumrift-obs.txt", sumrift)
 	loadIntersections("lol-sumrift-int.txt", sumrift)
 	sumriftString, err := json.Marshal(mapList[0])
-	fmt.Println("sumrift", sumrift)
 	fmt.Println("abc", len(mapList), mapList[0])
 	fmt.Println("xyz", string(sumriftString), err)
 	mapListJSON = append(mapListJSON, string(sumriftString))

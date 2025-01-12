@@ -180,7 +180,8 @@ func init() {
 	mapList = append(mapList, *sumrift)
 	loadObstacles("lol-sumrift-obs.txt", *sumrift)
 	loadIntersections("lol-sumrift-int.txt", *sumrift)
-	sumriftString, _ := json.Marshal(mapList[0])
+	sumriftString, err := json.Marshal(mapList[0])
+	fmt.Println("xyz", string(sumriftString), err)
 	mapListJSON = append(mapListJSON, string(sumriftString))
 
 	fmt.Println("finished init \n")

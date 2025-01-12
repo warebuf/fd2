@@ -131,12 +131,12 @@ type pbase struct {
 }
 
 type map_details struct {
-	obstacles     [][]float64 // [x1,y1,x2,y2,x3,y3,x4,y4]
-	obstacle_type []string    // [CIRCLE,BEZIER,...]
+	Obstacles     [][]float64 // [x1,y1,x2,y2,x3,y3,x4,y4]
+	Obstacle_type []string    // [CIRCLE,BEZIER,...]
 
-	intersections            [][]float64 // [x,y]
-	intersections_edges      [][]string  // [e1,e2, ...]
-	intersections_edgelength [][]float64 // [el1, el2, ...]
+	Intersections            [][]float64 // [x,y]
+	Intersections_edges      [][]string  // [e1,e2, ...]
+	Intersections_edgelength [][]float64 // [el1, el2, ...]
 
 }
 
@@ -172,11 +172,11 @@ func init() {
 	mapList = make([]*map_details, 0, 0)
 
 	sumrift := new(map_details)
-	sumrift.obstacles = make([][]float64, 0, 0)
-	sumrift.obstacle_type = make([]string, 0, 0)
-	sumrift.intersections = make([][]float64, 0, 0)
-	sumrift.intersections_edges = make([][]string, 0, 0)
-	sumrift.intersections_edgelength = make([][]float64, 0, 0)
+	sumrift.Obstacles = make([][]float64, 0, 0)
+	sumrift.Obstacle_type = make([]string, 0, 0)
+	sumrift.Intersections = make([][]float64, 0, 0)
+	sumrift.Intersections_edges = make([][]string, 0, 0)
+	sumrift.Intersections_edgelength = make([][]float64, 0, 0)
 	mapList = append(mapList, sumrift)
 	loadObstacles("lol-sumrift-obs.txt", sumrift)
 	loadIntersections("lol-sumrift-int.txt", sumrift)
@@ -209,16 +209,16 @@ func loadObstacles(fp string, m *map_details) {
 				result["X3"].(float64), result["Y3"].(float64),
 				result["X4"].(float64), result["Y4"].(float64),
 			}
-			m.obstacles = append(m.obstacles, array)
-			m.obstacle_type = append(m.obstacle_type, "BEZIER")
+			m.Obstacles = append(m.Obstacles, array)
+			m.Obstacle_type = append(m.Obstacle_type, "BEZIER")
 		} else if result["Shape"] == "CIRCLE" {
 			array := []float64{
 				result["EAngle"].(float64), result["SAngle"].(float64),
 				result["R"].(float64),
 				result["X"].(float64), result["Y"].(float64),
 			}
-			m.obstacles = append(m.obstacles, array)
-			m.obstacle_type = append(m.obstacle_type, "CIRCLE")
+			m.Obstacles = append(m.Obstacles, array)
+			m.Obstacle_type = append(m.Obstacle_type, "CIRCLE")
 		}
 	}
 }
@@ -239,15 +239,17 @@ func loadIntersections(fp string, m *map_details) {
 		}
 
 		XY := []float64{result["X"].(float64), result["Y"].(float64)}
-		m.intersections = append(m.intersections, XY)
+		m.Intersections = append(m.Intersections, XY)
 		E := []string{}
 		for _, val := range result["Edges"].([]interface{}) {
 			E = append(E, val.(string))
 		}
+		m.Intersections_edges = append(m.Intersections_edges, E)
 		EL := []float64{}
 		for _, val := range result["EdgeLength"].([]interface{}) {
 			EL = append(EL, val.(float64))
 		}
+		m.Intersections_edgelength = append(m.Intersections_edgelength, EL)
 	}
 }
 

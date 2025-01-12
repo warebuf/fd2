@@ -178,8 +178,8 @@ func init() {
 	sumrift.intersections_edges = make([][]string, 0, 0)
 	sumrift.intersections_edgelength = make([][]float64, 0, 0)
 	mapList = append(mapList, *sumrift)
-	loadObstacles("lol-sumrift-obs.txt", *sumrift)
-	loadIntersections("lol-sumrift-int.txt", *sumrift)
+	loadObstacles("lol-sumrift-obs.txt", sumrift)
+	loadIntersections("lol-sumrift-int.txt", sumrift)
 	sumriftString, err := json.Marshal(mapList[0])
 	fmt.Println("sumrift", sumrift)
 	fmt.Println("abc", len(mapList), mapList[0])
@@ -189,7 +189,7 @@ func init() {
 	fmt.Println("finished init \n")
 }
 
-func loadObstacles(fp string, m map_details) {
+func loadObstacles(fp string, m *map_details) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
 	defer file.Close()
@@ -225,7 +225,7 @@ func loadObstacles(fp string, m map_details) {
 	}
 }
 
-func loadIntersections(fp string, m map_details) {
+func loadIntersections(fp string, m *map_details) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
 	defer file.Close()

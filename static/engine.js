@@ -2150,14 +2150,16 @@ function drawObstacles() {
 
     ctx.strokeStyle = "white";
     for(let i = 0; i < obstacles.length; i++ ){
-        ctx.beginPath();
-        ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
-        ctx.bezierCurveTo(
-            width+obstacles[i].points[1].x, height-obstacles[i].points[1].y,
-            width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
-            width+obstacles[i].points[3].x, height-obstacles[i].points[3].y
-        );
-        ctx.stroke();
+        if(obstacles[i].Shape == "BEZIER") {
+            ctx.beginPath();
+            ctx.moveTo(width+obstacles[i].points[0].x, height-obstacles[i].points[0].y);
+            ctx.bezierCurveTo(
+                width+obstacles[i].points[1].x, height-obstacles[i].points[1].y,
+                width+obstacles[i].points[2].x, height-obstacles[i].points[2].y,
+                width+obstacles[i].points[3].x, height-obstacles[i].points[3].y
+            );
+            ctx.stroke();
+        }
     }
 
     ctx.fillStyle = "red";

@@ -718,9 +718,11 @@
         // check if direct path from starting node, if so, add that and return
         let available = true;
         for (let j = 0; j < obstacles.length; j++) {
-            if (lineIntersectsBezier(startingNode, targetCamp.XY, obstacles[j]) == true) {
-                available = false;
-                break;
+            if(obstacles[j].Shape=="BEZIER") {
+                if (lineIntersectsBezier(startingNode, targetCamp.XY, obstacles[j]) == true) {
+                    available = false;
+                    break;
+                }
             }
         }
         if (available == true) {
@@ -764,9 +766,11 @@
         for (let i = 0; i < intersections.length; i++) { // find all edges
             let available = true;
             for (let j = 0; j < obstacles.length; j++) {
-                if (lineIntersectsBezier(unit.Position, intersections[i], obstacles[j]) == true) {
-                    available = false;
-                    break;
+                if(obstacles[j].Shape =="BEZIER") {
+                    if (lineIntersectsBezier(unit.Position, intersections[i], obstacles[j]) == true) {
+                        available = false;
+                        break;
+                    }
                 }
             }
             if (available == true) {
@@ -777,9 +781,11 @@
         for (let i = 0; i < dynamics.length; i++) {
             let available = true;
             for (let j = 0; j < obstacles.length; j++) {
-                if (lineIntersectsBezier(unit.Position, dynamics[i], obstacles[j]) == true) {
-                    available = false;
-                    break;
+                if(obstacles[j].Shape=="BEZIER") {
+                    if (lineIntersectsBezier(unit.Position, dynamics[i], obstacles[j]) == true) {
+                        available = false;
+                        break;
+                    }
                 }
             }
             if (available == true) {
@@ -820,9 +826,11 @@
 
             let available = true;
             for (let j = 0; j < obstacles.length; j++) {
-                if (lineIntersectsBezier(newIntersection, intersections[i], obstacles[j]) == true) {
-                    available = false;
-                    break;
+                if(obstacles[j].Shape=="BEZIER") {
+                    if (lineIntersectsBezier(newIntersection, intersections[i], obstacles[j]) == true) {
+                        available = false;
+                        break;
+                    }
                 }
             }
             if (available == true) {
@@ -925,13 +933,9 @@
                         intersections.push(newIntersect)
                     }
 
-                    console.log(map)
-
                     // population obstacles global data structure
                     for(let i = 0; i < map["Obstacles"].length; i++) {
-
                         if(map["Obstacle_type"][i]=="BEZIER") {
-
                             let curve = new Bezier(
                                 map["Obstacles"][i][0], map["Obstacles"][i][1],
                                 map["Obstacles"][i][2], map["Obstacles"][i][3],
@@ -939,7 +943,6 @@
                                 map["Obstacles"][i][6], map["Obstacles"][i][7]
                             );
                             curve.Shape = map["Obstacle_type"][i];
-                            console.log(curve)
                             obstacles.push(curve)
                         } else if(map["Obstacle_type"][i]=="CIRCLE") {
                             let newObs = new Object();
@@ -954,17 +957,6 @@
                     }
                     console.log(obstacles)
 
-
-
-                } else if (msg.Event == 'obstacles') {
-                    const temp = msg.Message.split('\n')
-                    for (let i = 0; i < temp.length; i++) {
-                        const obs = JSON.parse(temp[i]);
-                        if (obs.Shape == "BEZIER") {
-                            const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
-                            obstacles.push(curve);
-                        }
-                    }
                 } else if (msg.Event == 'game_state') {
                     console.log("received game_state")
 

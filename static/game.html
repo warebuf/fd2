@@ -913,7 +913,8 @@
                     }
                 } else if (msg.Event == 'map') {
                     console.log("MADE IT TO MAP")
-                    console.log(msg.Message)
+                    let temp = JSON.parse(msg.Message)
+                    console.log(temp)
 
 
                 } else if (msg.Event == 'obstacles') {

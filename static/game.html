@@ -916,7 +916,10 @@
                     let map = JSON.parse(msg.Message)
                     console.log(map)
                     for(let i = 0; i < map["Intersections"].length; i++) {
-                        console.log(i, map["Intersections"][i])
+                        let newIntersect = new Object();
+                        newIntersect.X = map["Intersections"][i][0]
+                        newIntersect.Y = map["Intersections"][i][1]
+
                     }
 
 
@@ -928,11 +931,6 @@
                             const curve = new Bezier(obs.X1, obs.Y1, obs.X2, obs.Y2, obs.X3, obs.Y3, obs.X4, obs.Y4);
                             obstacles.push(curve);
                         }
-                    }
-                } else if (msg.Event == 'intersections') {
-                    const temp = msg.Message.split('\n')
-                    for (let i = 0; i < temp.length; i++) {
-                        intersections.push(JSON.parse(temp[i]));
                     }
                 } else if (msg.Event == 'game_state') {
                     console.log("received game_state")

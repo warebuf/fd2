@@ -912,17 +912,17 @@
                         event_log.shift()
                     }
                 } else if (msg.Event == 'map') {
-                    console.log("MADE IT TO MAP")
+                    console.log("recieved map wsmessage")
                     let map = JSON.parse(msg.Message)
-                    console.log(map)
                     for(let i = 0; i < map["Intersections"].length; i++) {
                         let newIntersect = new Object();
                         newIntersect.X = map["Intersections"][i][0]
                         newIntersect.Y = map["Intersections"][i][1]
                         newIntersect.Edges = map["Intersections_edges"][i]
                         newIntersect.EdgeLength = map["Intersections_edgelength"][i]
-                        console.log(newIntersect)
+                        intersections.push(newIntersect)
                     }
+                    console.log(intersections)
 
 
                 } else if (msg.Event == 'obstacles') {

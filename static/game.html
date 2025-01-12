@@ -846,8 +846,8 @@
         for (let i = 0; i < dynamics.length; i++) {
             for (let j = 0; j < dynamics[i].Edges.length; j++) {
                 if (dynamics[i].Edges[j][0] == 'i') {
-                    let a = intersections[parseInt(dynamics[i].Edges[j].slice(1))].Edges.pop();
-                    let b = intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLength.pop();
+                    intersections[parseInt(dynamics[i].Edges[j].slice(1))].Edges.pop();
+                    intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLength.pop();
                 }
             }
         }
@@ -919,7 +919,9 @@
                         let newIntersect = new Object();
                         newIntersect.X = map["Intersections"][i][0]
                         newIntersect.Y = map["Intersections"][i][1]
-
+                        newIntersect.Edges = map["Intersections_edges"][i]
+                        newIntersect.EdgeLength = map["Intersections_edgelength"][i]
+                        console.log(newIntersect)
                     }
 
 

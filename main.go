@@ -182,6 +182,8 @@ func init() {
 	loadIntersections("lol-sumrift-int.txt", sumrift)
 	fmt.Println(sumrift)
 	sumriftString, err := json.Marshal(*mapList[0])
+	str := fmt.Sprintf("%+v", *mapList[0]) // Dereference the pointer
+	fmt.Println("test123", str)
 	fmt.Println("abc", len(mapList))
 	fmt.Println("xyz", sumriftString, string(sumriftString), err)
 	mapListJSON = append(mapListJSON, string(sumriftString))

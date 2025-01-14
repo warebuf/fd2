@@ -233,7 +233,11 @@ func m_read(m *match_socket) {
 							(sameCoordinates(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Start) &&
 								(m.m.team_client_hero[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 1))) {
 
+						fmt.Println("madeithere1")
+
 						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
+
+							fmt.Println("madeithere2")
 
 							if confirmValidPath(m.m.team_client_hero, m.m.camps, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Path) {
 

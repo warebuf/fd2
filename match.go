@@ -239,7 +239,7 @@ func m_read(m *match_socket) {
 
 							fmt.Println("madeithere2")
 
-							if confirmValidPath(m.m.team_client_hero, m.m.camps, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Path) {
+							if confirmValidPath(m.m.team_client_hero, m.m.camps, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Path, msg.Route) {
 
 								fmt.Println("msg.path, msg.route", msg.Path, msg.Route)
 								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route)
@@ -1357,28 +1357,28 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate) {
 	state[i][j][k].Status = 1
 }
 
-func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64) bool {
+func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest Coordinate) bool {
 
 	// path of 1... wth???
 	if len(path) <= 1 {
+		fmt.Println("returned path of 1")
 		return false
 	}
 
 	// check if the start of the path is the same as the unit's coordinate
 	if (state[i][j][k].Position.X != path[0][0]) || (state[i][j][k].Position.Y == path[0][1]) {
+		fmt.Println("unit position is same as start position")
 		return false
 	}
 
 	// check if the end of the path is a valid destination
-	last := len(path) - 1
-	valid := false
-	for i := 0; i < len(camps); i++ {
-		if (camps[i].XY.X == path[last][0]) && (camps[i].XY.Y == path[last][1]) {
-			valid = true
-			break
+	if dest.I >= 0 && dest.I < len(camps) && dest.J < 0 && dest.K < 0 {
+		if (camps[dest.I].XY.X != path[len(path)-1][0]) || (camps[dest.I].XY.Y != path[len(path)-1][1]) {
+			fmt.Println("path destination does not match camp coordinate")
+			return false
 		}
-	}
-	if valid == false {
+	} else {
+		fmt.Println("camp index does not exit")
 		return false
 	}
 
@@ -1386,10 +1386,12 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	for i := 0; i < len(path)-1; i++ {
 		line_segment := []float64{path[i][0], path[i][1], path[i+1][0], path[i+1][1]}
 		if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
+			fmt.Println("line segment intersects obstacle")
 			return false
 		}
 	}
 
+	fmt.Println("isvalidpath")
 	return true
 }
 

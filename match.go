@@ -1366,7 +1366,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	}
 
 	// check if the start of the path is the same as the unit's coordinate
-	if (state[i][j][k].Position.X != path[0][0]) || (state[i][j][k].Position.Y == path[0][1]) {
+	if (state[i][j][k].Position.X == path[0][0]) || (state[i][j][k].Position.Y == path[0][1]) {
 		fmt.Println("unit position is same as start position")
 		return false
 	}

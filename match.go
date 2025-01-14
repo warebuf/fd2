@@ -1359,18 +1359,21 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate) {
 
 func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest Coordinate) bool {
 
+	fmt.Println("madeithere3")
 	// path of 1... wth???
 	if len(path) <= 1 {
 		fmt.Println("returned path of 1")
 		return false
 	}
 
+	fmt.Println("madeithere4")
 	// check if the start of the path is the same as the unit's coordinate
 	if (state[i][j][k].Position.X != path[0][0]) || (state[i][j][k].Position.Y != path[0][1]) {
 		fmt.Println("unit position is same as start position")
 		return false
 	}
 
+	fmt.Println("madeithere5")
 	// check if the end of the path is a valid destination
 	if dest.I >= 0 && dest.I < len(camps) && dest.J < 0 && dest.K < 0 {
 		if (camps[dest.I].XY.X != path[len(path)-1][0]) || (camps[dest.I].XY.Y != path[len(path)-1][1]) {
@@ -1382,6 +1385,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 		return false
 	}
 
+	fmt.Println("madeithere6")
 	// check if any of the line segments cross an obstacle
 	for i := 0; i < len(path)-1; i++ {
 		line_segment := []float64{path[i][0], path[i][1], path[i+1][0], path[i+1][1]}

@@ -1389,10 +1389,14 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	// check if any of the line segments cross an obstacle
 	for i := 0; i < len(path)-1; i++ {
 		line_segment := []float64{path[i][0], path[i][1], path[i+1][0], path[i+1][1]}
-		if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
-			fmt.Println("line segment intersects obstacle")
-			return false
+		for j := 0; j < len(mapList[0].Obstacles); j++ {
+			fmt.Println("madeithere7", mapList[0].Obstacles[j], line_segment)
+			if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_segment) {
+				fmt.Println("line segment intersects obstacle")
+				return false
+			}
 		}
+
 	}
 
 	fmt.Println("isvalidpath")

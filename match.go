@@ -235,33 +235,30 @@ func m_read(m *match_socket) {
 
 						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
-							//for i := 0; i < len(mapList); i++ {
-							//}
+							if confirmValidPath(m.m.team_client_hero, m.m.camps, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Path) {
 
-							ans := bezier.IntersectBezierLine([]float64{0, 0, 1, 2, 2, 2, 3, 0}, []float64{1, 6, 0, 5})
-							fmt.Println("ans", ans)
+								fmt.Println("msg.path, msg.route", msg.Path, msg.Route)
+								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route)
+								m.m.sharepos(nil, 0)
 
-							fmt.Println("msg.path", msg.Path)
-							setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route)
-							m.m.sharepos(nil, 0)
-
-							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
-							sim_check := true
-							for i := 0; i < len(m.m.team_client_hero); i++ {
-								for j := 0; j < len(m.m.team_client_hero[i]); j++ {
-									for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
-										if (m.m.team_client_hero[i][j][k].Bot == false) &&
-											(m.m.team_client_hero[i][j][k].Status == 0) &&
-											(m.m.team_client_hero[i][j][k].HP > 0) {
-											sim_check = false
-											break
+								// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
+								sim_check := true
+								for i := 0; i < len(m.m.team_client_hero); i++ {
+									for j := 0; j < len(m.m.team_client_hero[i]); j++ {
+										for k := 0; k < len(m.m.team_client_hero[i][j]); k++ {
+											if (m.m.team_client_hero[i][j][k].Bot == false) &&
+												(m.m.team_client_hero[i][j][k].Status == 0) &&
+												(m.m.team_client_hero[i][j][k].HP > 0) {
+												sim_check = false
+												break
+											}
 										}
 									}
 								}
-							}
-							if sim_check == true {
-								fmt.Println("simulate")
-								m.m.simulate <- true
+								if sim_check == true {
+									fmt.Println("simulate")
+									m.m.simulate <- true
+								}
 							}
 
 						} else {
@@ -1070,11 +1067,6 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
 						}
-
-						if m.team_client_hero[i][j][k].HP > 0 {
-							fmt.Println(i, j, k, m.team_client_hero[i][j][k].SPD, m.team_client_hero[i][j][k].Start, m.team_client_hero[i][j][k].Position, m.team_client_hero[i][j][k].Destination, m.team_client_hero[i][j][k].DistanceLeft, m.team_client_hero[i][j][k].TTD)
-						}
-
 					}
 				}
 			}
@@ -1353,12 +1345,50 @@ func sameCoordinates(a Coordinate, b Coordinate) bool {
 	return false
 }
 func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate) {
-
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
 
 	state[i][j][k].DistanceLeft = getDistanceTwoPoints(state[i][j][k].Start, state[i][j][k].Destination)
 	state[i][j][k].Angle = getTheta(state[i][j][k].Start, state[i][j][k].Destination)
 	state[i][j][k].Status = 1
+}
 
+func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64) bool {
+
+	// path of 1... wth???
+	if len(path) <= 1 {
+		return false
+	}
+
+	// check if the start of the path is the same as the unit's coordinate
+	if (state[i][j][k].Position.X != path[0][0]) || (state[i][j][k].Position.Y == path[0][1]) {
+		return false
+	}
+
+	// check if the end of the path is a valid destination
+	last := len(path) - 1
+	valid := false
+	for i := 0; i < len(camps); i++ {
+		if (camps[i].XY.X == path[last][0]) && (camps[i].XY.Y == path[last][1]) {
+			valid = true
+			break
+		}
+	}
+	if valid == false {
+		return false
+	}
+
+	// check if any of the line segments cross an obstacle
+	for i := 0; i < len(path)-1; i++ {
+		line_segment := []float64{path[i][0], path[i][1], path[i+1][0], path[i+1][1]}
+		if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func determineBothAction() bool {
+	return true
 }

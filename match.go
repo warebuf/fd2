@@ -1378,6 +1378,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 		return false
 	}
 
+	start := time.Now()
 	// check if any of the line segments cross an obstacle
 	for i := 0; i < len(path)-1; i++ {
 		line_segment := []float64{path[i][0], path[i][1], path[i+1][0], path[i+1][1]}
@@ -1390,11 +1391,12 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 			}
 		}
 	}
+	elapsed := time.Since(start)
 
-	fmt.Println("isvalidpath")
+	fmt.Println("isvalidpath", elapsed)
 	return true
 }
 
-func determineBothAction() bool {
+func determineBotAction() bool {
 	return true
 }

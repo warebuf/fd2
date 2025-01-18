@@ -153,10 +153,8 @@ github.com/stretchr/testify v1.6.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
 github.com/stretchr/testify v1.7.1 h1:5TQK59W5E3v0r2duFAb7P95B6hEeOyEnHRa8MjYSMTY=
 github.com/stretchr/testify v1.7.1/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
-github.com/warebuf/bezier-lib v0.0.0-20250114074747-e8f2c4837599 h1:0VcXK/SkOOB9o4PBGwQ4iAwWGTn9T38XPp+j5+0tF7Q=
-github.com/warebuf/bezier-lib v0.0.0-20250114074747-e8f2c4837599/go.mod h1:S1NK1DZj47vitfuySglRcM0agHJoD59xOLNqvwwJxVI=
-github.com/warebuf/bezier-lib v0.0.0-20250114081236-e0f34f1ef21f h1:1SpxTF1ZvwX+Sk06PlLQpBsvKFmCXZSMZ/EGpDsHMN0=
-github.com/warebuf/bezier-lib v0.0.0-20250114081236-e0f34f1ef21f/go.mod h1:S1NK1DZj47vitfuySglRcM0agHJoD59xOLNqvwwJxVI=
+github.com/warebuf/bezier-lib v0.0.0-20250118135336-9350150e3f4e h1:mbTPbf9LaUNgsUWjERN4sfF/gqW+dH0JEM4rR7Ph2Bk=
+github.com/warebuf/bezier-lib v0.0.0-20250118135336-9350150e3f4e/go.mod h1:S1NK1DZj47vitfuySglRcM0agHJoD59xOLNqvwwJxVI=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

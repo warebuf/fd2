@@ -7,6 +7,7 @@ import (
 	"github.com/gorilla/websocket"
 	"math"
 	"math/rand"
+	"reflect"
 	"strconv"
 	"sync"
 	"time"
@@ -37,6 +38,7 @@ type hero struct {
 	Start       Coordinate
 	Position    Coordinate
 	Destination Coordinate
+	Path        [][]float64
 
 	DistanceLeft float64
 	Angle        float64
@@ -238,7 +240,8 @@ func m_read(m *match_socket) {
 							if confirmValidPath(m.m.team_client_hero, m.m.camps, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Path, msg.Route) {
 
 								fmt.Println("msg.path, msg.route", msg.Path, msg.Route)
-								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route)
+								fmt.Println("Type of myInt:", reflect.TypeOf(msg.Path))
+								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route, msg.Path)
 								m.m.sharepos(nil, 0)
 
 								// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
@@ -468,6 +471,7 @@ func createMatch(pl *permission_list) *match {
 					Start:       temp_coordinate,
 					Position:    temp_coordinate,
 					Destination: temp_coordinate,
+					Path:        make([][]float64, 0),
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 					Angle:        getTheta(temp_coordinate, temp_coordinate),
@@ -1203,6 +1207,7 @@ func printAllMatchUserWS() {
 		}
 	}
 }
+
 func (m *match) sharepos(a []*attack, utime float64) {
 	fmt.Println("sharepos", a)
 
@@ -1285,6 +1290,7 @@ func game_over_check(state [][][]*hero) bool {
 
 	return true
 }
+
 func (m *match) sharebench() {
 
 	/*
@@ -1310,6 +1316,7 @@ func (m *match) sharebench() {
 	*/
 
 }
+
 func (m *match) shareint() {
 	fmt.Println("shareint")
 
@@ -1321,14 +1328,22 @@ func (m *match) shareint() {
 		}
 	}
 }
+
 func getDistanceTwoPoints(c1 Coordinate, c2 Coordinate) float64 {
 	y_dist := c2.Y - c1.Y
 	x_dist := c2.X - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
 }
+func getDistanceArray(c1 Coordinate, c2 []float64) float64 {
+	y_dist := c2[1] - c1.Y
+	x_dist := c2[0] - c1.X
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
+}
+
 func getXYComponent(theta float64, r float64) (float64, float64) {
 	return toFixed(r*math.Cos(theta), 3), toFixed(r*math.Sin(theta), 3)
 }
+
 func getTheta(c1 Coordinate, c2 Coordinate) float64 {
 	y := c2.Y - c1.Y
 	x := c2.X - c1.X
@@ -1338,18 +1353,35 @@ func getTheta(c1 Coordinate, c2 Coordinate) float64 {
 	}
 	return toFixed(theta, 3)
 }
+func getThetaArray(c1 Coordinate, c2 []float64) float64 {
+	y := c2[1] - c1.Y
+	x := c2[0] - c1.X
+	theta := math.Atan2(y, x)
+	if theta < 0 {
+		theta = theta + (2 * math.Pi)
+	}
+	return toFixed(theta, 3)
+}
+
 func sameCoordinates(a Coordinate, b Coordinate) bool {
 	if (a.X == b.X) && (a.Y == b.Y) {
 		return true
 	}
 	return false
 }
-func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate) {
+
+func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]float64) {
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
+	state[i][j][k].Path = p
 
-	state[i][j][k].DistanceLeft = getDistanceTwoPoints(state[i][j][k].Start, state[i][j][k].Destination)
-	state[i][j][k].Angle = getTheta(state[i][j][k].Start, state[i][j][k].Destination)
+	dist := 0.0
+	for i := 0; i < len(p); i++ {
+		dist += getDistanceArray(state[i][j][k].Start, p[i])
+	}
+
+	state[i][j][k].DistanceLeft = dist
+	state[i][j][k].Angle = getThetaArray(state[i][j][k].Start, p[1])
 	state[i][j][k].Status = 1
 }
 
@@ -1397,6 +1429,10 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	return true
 }
 
-func determineBotAction() bool {
-	return true
+func determineBotAction(camps []*Camp) {
+
+	// for now just pick a random camp, don't care about HP or pathfinding
+	// if this camp is inaccessible, pick another random one
+	// if all camps are inaccessible... maybe end the game?
+
 }

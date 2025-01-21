@@ -964,8 +964,8 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if (m.team_client_hero[i][j][k].Bot == true) && (m.team_client_hero[i][j][k].Status == 0) {
-							random_number := rand.Intn(len(m.camps))
-							setPath(m.team_client_hero, i, j, k, m.camps[random_number].XY)
+							//random_number := rand.Intn(len(m.camps))
+							//setPath(m.team_client_hero, i, j, k, m.camps[random_number].XY)
 							gave_bots_acts = true
 						}
 					}
@@ -1462,7 +1462,7 @@ func determineBotAction(camps []*Camp) {
 //  where if an edge is -1 there is no connection
 //  -1 means no connection
 
-func findPath() [][]float64 {
+func findPath() {
 
 	start := time.Now()
 
@@ -1480,11 +1480,12 @@ func findPath() [][]float64 {
 	milliseconds := elapsed.Milliseconds()
 	fmt.Printf("someFunction took %d ms\n", milliseconds)
 
+	return
 }
 
 func aStar() [][]float64 {
 	return make([][]float64, 0)
 
-	openList := make([]float64, 0)
-	closeList := make([]float64, 0)
+	//openList := make([]float64, 0)
+	//closeList := make([]float64, 0)
 }

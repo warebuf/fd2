@@ -137,7 +137,7 @@ type map_details struct {
 	Intersections            [][]float64 // [x,y]
 	Intersections_edges      [][]string  // [e1,e2, ...]
 	Intersections_edgelength [][]float64 // [el1, el2, ...]
-	Int_Edges                [][]float64
+	//Int_Edges                [][]float64
 }
 
 var mapList []*map_details
@@ -231,7 +231,7 @@ func loadIntersections(fp string, m *map_details) {
 	m.Intersections = make([][]float64, 0, len(lines))
 	m.Intersections_edges = make([][]string, 0, 0)
 	m.Intersections_edgelength = make([][]float64, 0, 0)
-	m.Int_Edges = make([][]float64, 0, len(lines))
+	//m.Int_Edges = make([][]float64, 0, len(lines))
 
 	for i := 0; i < len(lines); i++ {
 		result := make(map[string]interface{})
@@ -244,20 +244,20 @@ func loadIntersections(fp string, m *map_details) {
 		XY := []float64{result["X"].(float64), result["Y"].(float64)}
 		m.Intersections = append(m.Intersections, XY)
 
-		newLine := make([]float64, len(lines[i]), len(lines[i]))
-		for j := 0; j < len(lines[i]); j++ {
-			newLine[j] = -1
-		}
-		for index, val := range result["Edges"].([]interface{}) {
-			rest := val.(string)[1:]
-			actualIndex, _ := strconv.Atoi(rest)
-			if abc, ok := result["EdgeLength"].([]interface{}); ok {
-				if second, ok := abc[index].(float64); ok {
-					newLine[actualIndex] = second
-				}
-			}
-		}
-		m.Int_Edges = append(m.Int_Edges, newLine)
+		//newLine := make([]float64, len(lines[i]), len(lines[i]))
+		//for j := 0; j < len(lines[i]); j++ {
+		//	newLine[j] = -1
+		//}
+		//for index, val := range result["Edges"].([]interface{}) {
+		//	rest := val.(string)[1:]
+		//	actualIndex, _ := strconv.Atoi(rest)
+		//	if abc, ok := result["EdgeLength"].([]interface{}); ok {
+		//		if second, ok := abc[index].(float64); ok {
+		//			newLine[actualIndex] = second
+		//		}
+		//	}
+		//}
+		//m.Int_Edges = append(m.Int_Edges, newLine)
 
 		E := []string{}
 		for _, val := range result["Edges"].([]interface{}) {
@@ -271,10 +271,10 @@ func loadIntersections(fp string, m *map_details) {
 		m.Intersections_edgelength = append(m.Intersections_edgelength, EL)
 	}
 
-	fmt.Println("m")
-	for i := 0; i < len(m.Int_Edges); i++ {
-		fmt.Println(i, m.Int_Edges[i])
-	}
+	//fmt.Println("m")
+	//for i := 0; i < len(m.Int_Edges); i++ {
+	//	fmt.Println(i, m.Int_Edges[i])
+	//}
 }
 
 func main() {

@@ -1435,4 +1435,56 @@ func determineBotAction(camps []*Camp) {
 	// if this camp is inaccessible, pick another random one
 	// if all camps are inaccessible... maybe end the game?
 
+	checked := make([]int, len(camps))
+	count := 0
+
+	for count < len(camps) {
+		rng := rand.Intn(len(camps))
+		fmt.Println("rng", rng)
+		if checked[rng] == 0 {
+			checked[rng] = 1
+			count++
+			p := aStar()
+			if len(p) > 0 {
+				return
+			}
+		} else {
+			continue
+		}
+
+	}
+
+	return
+}
+
+// TODO:
+//  I would turn edges into a 2d graph
+//  where if an edge is -1 there is no connection
+//  -1 means no connection
+
+func findPath() [][]float64 {
+
+	start := time.Now()
+
+	// create destination node, if no edges exist, return empty
+
+	// create starting node
+
+	// check if direct path from starting node to target is available
+
+	// create all edges for starting node
+
+	// aStar
+
+	elapsed := time.Since(start)
+	milliseconds := elapsed.Milliseconds()
+	fmt.Printf("someFunction took %d ms\n", milliseconds)
+
+}
+
+func aStar() [][]float64 {
+	return make([][]float64, 0)
+
+	openList := make([]float64, 0)
+	closeList := make([]float64, 0)
 }

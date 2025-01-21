@@ -271,7 +271,7 @@ func loadIntersections(fp string, m *map_details) {
 		m.Intersections_edgelength = append(m.Intersections_edgelength, EL)
 	}
 
-	fmt.Println("m", m)
+	fmt.Println("m", m.Int_Edges)
 }
 
 func main() {

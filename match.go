@@ -1379,8 +1379,8 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 	state[i][j][k].Path = p
 
 	dist := 0.0
-	for i := 0; i < len(p); i++ {
-		dist += getDistanceArray(state[i][j][k].Start, p[i])
+	for x := 0; x < len(p); x++ {
+		dist += getDistanceArray(state[i][j][k].Start, p[x])
 	}
 
 	state[i][j][k].DistanceLeft = dist

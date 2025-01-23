@@ -1,13 +1,15 @@
 module fd
 
-go 1.21.6
+go 1.22
+
+toolchain go1.23.4
 
 require (
 	github.com/google/uuid v1.6.0
 	github.com/gorilla/sessions v1.2.2
 	github.com/gorilla/websocket v1.5.1
 	github.com/markbates/goth v1.78.0
-	github.com/warebuf/bezier-lib v0.0.0-20250118211012-6b759c3887ec
+	github.com/warebuf/bezier-lib v0.0.0-20250123232213-468a7f30a96d
 )
 
 require (

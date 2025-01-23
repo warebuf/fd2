@@ -1,18 +1,20 @@
 package bezier
 
-import "fmt"
-import "math"
+import (
+	"fmt"
+	"math"
+)
 
 func IntersectBezierLine(bezier []float64, line []float64) bool {
 
-	fmt.Println("v02", bezier, line)
+	fmt.Println("v06", bezier, line)
 
 	// Compute line coefficients A, B, C
 	A := line[1] - line[3]                         // Y1-Y2
 	B := line[2] - line[0]                         // X2-X1
 	C := (line[3] * line[0]) - (line[2] * line[1]) // Y2*X1 - X2*Y1
 
-	fmt.Println("A:", A, "B:", B, "C:", C)
+	//fmt.Println("A:", A, "B:", B, "C:", C)
 
 	// Compute Bézier coefficients
 	x0, y0 := bezier[0], bezier[1]
@@ -25,16 +27,25 @@ func IntersectBezierLine(bezier []float64, line []float64) bool {
 	c := A*(3*x1-3*x0) + B*(3*y1-3*y0)
 	d := C
 
-	fmt.Println("abcd", a, b, c, d)
+	//fmt.Println("abcd", a, b, c, d)
+
+	// if a == 0, corner case, checkQuadraticRoots
+	if a == 0 {
+		if b == 0 {
+			return checkLinearRoots(c, d)
+		}
+		return checkQuadraticRoots(b, c, d)
+	}
 
 	roots := cardano(a, b, c, d)
+
+	//fmt.Println(roots)
 
 	// Check if any root is valid and lies within the line segment
 	for _, t := range roots {
 		if t >= 0 && t <= 1 { // Root is within Bézier parameter range
 			XY := calcXY(bezier, t)
-			if XY[0] >= math.Min(line[0], line[2]) && XY[0] <= math.Max(line[0], line[2]) &&
-				XY[1] >= math.Min(line[1], line[3]) && XY[1] <= math.Max(line[1], line[3]) {
+			if onLineSegment(XY, line) {
 				return true // Intersection found
 			}
 		}
@@ -59,7 +70,7 @@ func calcXY(bezier []float64, t float64) []float64 {
 
 	Y := Y1 + Y2 + Y3 + Y4
 
-	fmt.Println("X:", X, "Y:", Y)
+	//fmt.Println("X:", X, "Y:", Y)
 
 	return []float64{X, Y}
 }
@@ -112,4 +123,62 @@ func cardano(a, b, c, d float64) []float64 {
 	}
 
 	return roots
+}
+
+// bt^2 + ct + d = 0
+func checkQuadraticRoots(b float64, c float64, d float64) bool {
+
+	t0 := d
+	t1 := b + c + d
+
+	if t0*t1 <= 0 {
+		//fmt.Println("quadratic root crosses 0 between [0,1]")
+		return true
+	}
+
+	// take derivative to find turning point
+	b2 := 2 * b
+	c2 := c
+	tp_x := -c2 / b2
+	tp_y := b*tp_x*tp_x + c*tp_x + d
+
+	if (tp_x >= 0) && (tp_x <= 1) { // there is a turning point between 0 and 1, otherwise it for sure doesn't cross the x-axis
+		// if turning point is different polarity, return true, it crosses the root
+		if tp_y*t0 <= 0 {
+			//fmt.Println("quadratic root check crosses 0")
+			return true
+		}
+	}
+	//fmt.Println("quadratic root does not cross 0")
+	return false
+
+}
+
+func checkLinearRoots(c float64, d float64) bool {
+	t0 := d
+	t1 := c + d
+
+	if t0*t1 <= 0 {
+		//fmt.Println("linear root check crosses 0")
+		return true
+	}
+	//fmt.Println("linear root does not cross 0")
+	return false
+}
+
+// if X is within 6 sig digs or greater
+func onLineSegment(point []float64, line []float64) bool {
+	if point[0] < math.Min(line[0], line[2])-0.000001 {
+		return false
+	}
+	if point[0] > math.Max(line[0], line[2])+0.000001 {
+		return false
+	}
+	if point[1] < math.Min(line[1], line[3])-0.000001 {
+		return false
+	}
+	if point[1] > math.Max(line[1], line[3])+0.000001 {
+		return false
+	}
+	return true
 }

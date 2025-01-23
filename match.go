@@ -1383,6 +1383,7 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 		dist += getDistanceArray(state[i][j][k].Start, p[x])
 	}
 
+	fmt.Println("p", len(p), p)
 	state[i][j][k].DistanceLeft = dist
 	state[i][j][k].Angle = getThetaArray(state[i][j][k].Start, p[1])
 	state[i][j][k].Status = 1

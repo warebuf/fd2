@@ -1,6 +1,7 @@
 package main
 
 import (
+	"container/heap"
 	"encoding/json"
 	"fmt"
 	"github.com/google/uuid"
@@ -964,9 +965,14 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if (m.team_client_hero[i][j][k].Bot == true) && (m.team_client_hero[i][j][k].Status == 0) {
-							//random_number := rand.Intn(len(m.camps))
-							//setPath(m.team_client_hero, i, j, k, m.camps[random_number].XY)
-							gave_bots_acts = true
+							p, pint := determineBotAction(m.team_client_hero[i][j][k], m.camps)
+							if len(p) > 0 {
+								// figure out how to end the game here
+							} else {
+								setPath(m.team_client_hero, i, j, k, pint, p)
+								gave_bots_acts = true
+							}
+
 						}
 					}
 				}
@@ -1105,10 +1111,8 @@ func (m *match) run() {
 
 			if game_over_check(m.team_client_hero) {
 				has_user_cmd = true
-
 				m.ended = true
 				m.ticker.Stop()
-
 				msg := &message{Event: "game_over"}
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
@@ -1126,7 +1130,6 @@ func (m *match) run() {
 						}
 					}
 				}
-
 			}
 
 			// determine if camp is dead, reset camps
@@ -1429,10 +1432,9 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	return true
 }
 
-func determineBotAction(camps []*Camp) {
+func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 
 	// for now just pick a random camp, don't care about HP or pathfinding
-	// if this camp is inaccessible, pick another random one
 	// if all camps are inaccessible... maybe end the game?
 
 	checked := make([]int, len(camps))
@@ -1444,48 +1446,294 @@ func determineBotAction(camps []*Camp) {
 		if checked[rng] == 0 {
 			checked[rng] = 1
 			count++
-			p := aStar()
-			if len(p) > 0 {
-				return
-			}
+			return findPath(b.Position, camps[rng].XY), camps[rng].XY
 		} else {
 			continue
 		}
-
 	}
 
-	return
+	return [][]float64{}, Coordinate{}
 }
 
-// TODO:
-//  I would turn edges into a 2d graph
-//  where if an edge is -1 there is no connection
-//  -1 means no connection
+func findPath(dest Coordinate, start Coordinate) [][]float64 {
 
-func findPath() {
-
-	start := time.Now()
-
-	// create destination node, if no edges exist, return empty
-
-	// create starting node
+	startTime := time.Now()
 
 	// check if direct path from starting node to target is available
+	direct_path := true
+	line_segment := []float64{dest.X, dest.Y, start.X, start.Y}
+	for i := 0; i < len(mapList[0].Obstacles); i++ {
+		if mapList[0].Obstacle_type[i] == "BEZIER" {
+			if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
+				fmt.Println("line segment intersects obstacle")
+				direct_path = false
+				break
+			}
+		}
+	}
+	if direct_path == true {
+		ans := [][]float64{{start.X, start.Y}, {dest.X, dest.Y}}
+		return ans
+	}
 
-	// create all edges for starting node
+	// create destination node, if no edges exist, return empty
+	dest_edges, dest_count := returnEdgesArray(dest)
+	if dest_count == 0 {
+		return [][]float64{}
+	}
+
+	// create all edges for starting node, if no edges exist, return empty
+	start_edges, start_dist := returnEdgesList(start)
+	if len(start_dist) == 0 {
+		return [][]float64{}
+	}
 
 	// aStar
+	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
 
-	elapsed := time.Since(start)
+	elapsed := time.Since(startTime)
 	milliseconds := elapsed.Milliseconds()
-	fmt.Printf("someFunction took %d ms\n", milliseconds)
+	fmt.Printf("findPath took %d ms\n", milliseconds)
 
-	return
+	return ans
 }
 
-func aStar() [][]float64 {
-	return make([][]float64, 0)
+func returnEdgesArray(c Coordinate) ([]float64, int) {
 
-	//openList := make([]float64, 0)
-	//closeList := make([]float64, 0)
+	edges := make([]float64, len(mapList[0].Intersections), len(mapList[0].Intersections))
+	count := 0
+	for i := 0; i < len(edges); i++ {
+		edges[i] = -1
+		line_seg := []float64{c.X, c.Y, mapList[0].Intersections[i][0], mapList[0].Intersections[i][1]}
+		blocked := false
+		for j := 0; j < len(mapList[0].Obstacles); j++ {
+			if mapList[0].Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
+					fmt.Println("line segment intersects obstacle")
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges[i] = getDistanceArray(c, mapList[0].Intersections[i])
+			count++
+		}
+	}
+	return edges, count
+}
+
+func returnEdgesList(c Coordinate) ([]int, []float64) {
+	edges := make([]int, 0)
+	dist := make([]float64, 0)
+	for i := 0; i < len(edges); i++ {
+		line_seg := []float64{c.X, c.Y, mapList[0].Intersections[i][0], mapList[0].Intersections[i][1]}
+		blocked := false
+		for j := 0; j < len(mapList[0].Obstacles); j++ {
+			if mapList[0].Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
+					fmt.Println("line segment intersects obstacle")
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges = append(edges, i)
+			dist = append(dist, getDistanceArray(c, mapList[0].Intersections[i]))
+		}
+	}
+	return edges, dist
+}
+
+type aStarNode struct {
+	XY         Coordinate
+	Edges      *[]int
+	EdgeLength *[]float64
+
+	EdgeIndex int
+
+	G      float64 // Cost from start to this node
+	H      float64
+	F      float64
+	Parent *aStarNode // Pointer to the parent node for path reconstruction
+	Index  int        // Index in the heap
+}
+
+type PriorityQueue []*aStarNode
+
+func (pq PriorityQueue) Len() int { return len(pq) }
+func (pq PriorityQueue) Less(i, j int) bool {
+	return pq[i].F < pq[j].F
+}
+func (pq PriorityQueue) Swap(i, j int) {
+	pq[i], pq[j] = pq[j], pq[i]
+	pq[i].Index = i
+	pq[j].Index = j
+}
+func (pq *PriorityQueue) Push(x interface{}) {
+	node := x.(*aStarNode)
+	node.Index = len(*pq)
+	*pq = append(*pq, node)
+}
+func (pq *PriorityQueue) Pop() interface{} {
+	old := *pq
+	n := len(old)
+	node := old[n-1]
+	node.Index = -1
+	*pq = old[0 : n-1]
+	return node
+}
+func (pq *PriorityQueue) update(node *aStarNode, gCost float64, fCost float64) {
+	node.G = gCost
+	node.F = fCost
+	heap.Fix(pq, node.Index)
+}
+
+// TODO: have to do some deep print testing
+func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []float64) [][]float64 {
+
+	fmt.Println(1, s, g)
+	fmt.Println(2, sEdges)
+	fmt.Println(3, sDist)
+	fmt.Println(4, eEdges)
+
+	open := &PriorityQueue{}
+	track := make(map[int]*aStarNode)
+	closed := make(map[Coordinate]bool)
+
+	heap.Init(open)
+
+	startNode := &aStarNode{XY: s, G: 0, F: 0, Parent: nil, Edges: &sEdges, EdgeLength: &sDist, EdgeIndex: -1}
+	startNode.F = euclideanDistance(s.X, s.Y, g.X, g.Y)
+	heap.Push(open, startNode)
+
+	fmt.Println(5, open)
+	fmt.Println(6, startNode)
+
+	for open.Len() > 0 {
+		current := heap.Pop(open).(*aStarNode)
+
+		fmt.Println(7, current)
+
+		if euclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {
+
+			fmt.Println("finished")
+
+			path := [][]float64{}
+			for node := current; node != nil; node = node.Parent {
+				path = append(path, []float64{node.XY.X, node.XY.Y})
+			}
+			// reverse the path
+			for i, j := 0, len(path)-1; i < j; i, j = i+1, j-1 {
+				path[i], path[j] = path[j], path[i]
+			}
+			return path
+		}
+
+		closed[current.XY] = true
+		fmt.Println(8, closed)
+
+		for i := 0; i < len(*current.Edges); i++ {
+			neighborXY := mapList[0].IntersectionsC[(*current.Edges)[i]]
+
+			fmt.Println(9, i, neighborXY)
+
+			_, found := closed[neighborXY]
+
+			fmt.Println(10, found)
+			if found {
+				continue
+			} else {
+				trackedNode, tracked := track[current.EdgeIndex]
+
+				fmt.Println(11, trackedNode, tracked)
+				if tracked {
+					tentativeG := current.G + (*current.EdgeLength)[i]
+
+					fmt.Println(12, tentativeG)
+
+					if tentativeG < trackedNode.G {
+						trackedNode.G = tentativeG
+						trackedNode.H = euclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
+						trackedNode.F = trackedNode.G + trackedNode.G
+						trackedNode.Parent = current
+
+						fmt.Println(13, trackedNode)
+					}
+				} else {
+					tempG := current.G + (*current.EdgeLength)[i]
+					tempF := euclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
+					newNode := &aStarNode{
+						XY:         neighborXY,
+						G:          tempG,
+						H:          tempF,
+						F:          tempG + tempF,
+						Parent:     current,
+						Edges:      &mapList[0].Intersections_edges_int[(*current.Edges)[i]],
+						EdgeLength: &mapList[0].Intersections_edgelength[(*current.Edges)[i]],
+						EdgeIndex:  (*current.Edges)[i],
+					}
+					track[newNode.EdgeIndex] = newNode
+					open.Push(newNode)
+
+					fmt.Println(14, newNode)
+					fmt.Println(15, track)
+					fmt.Println(16, open)
+
+				}
+			}
+		}
+		if (current.EdgeIndex >= 0) && (eEdges[current.EdgeIndex] > 0) {
+
+			fmt.Println(17, eEdges[current.EdgeIndex])
+
+			trackedNode, tracked := track[-2]
+
+			fmt.Println(18, trackedNode, tracked)
+
+			if tracked {
+				tentativeG := current.G + eEdges[current.EdgeIndex]
+				if tentativeG < trackedNode.G {
+					trackedNode.G = tentativeG
+					trackedNode.H = 0
+					trackedNode.F = trackedNode.G
+					trackedNode.Parent = current
+				}
+				fmt.Println(19, tentativeG, trackedNode, tracked)
+			} else {
+				tempG := current.G + eEdges[current.EdgeIndex]
+				newNode := &aStarNode{
+					XY:         g,
+					G:          tempG,
+					H:          0,
+					F:          tempG,
+					Parent:     current,
+					Edges:      nil,
+					EdgeLength: nil,
+					EdgeIndex:  -2,
+				}
+				track[newNode.EdgeIndex] = newNode
+				open.Push(newNode)
+
+				fmt.Println(20, newNode)
+				fmt.Println(21, track)
+				fmt.Println(22, open)
+
+			}
+		}
+
+		fmt.Println(23, open)
+		heap.Init(open)
+		fmt.Println(24, open)
+	}
+
+	return [][]float64{}
+
+}
+
+func euclideanDistance(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
+	dx := x2 - x1
+	dy := y2 - y1
+	return math.Sqrt(dx*dx + dy*dy)
 }

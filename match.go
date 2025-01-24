@@ -1468,7 +1468,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 	line_segment := []float64{start.X, start.Y, dest.X, dest.Y}
 	for i := 0; i < len(mapList[0].Obstacles); i++ {
 		if mapList[0].Obstacle_type[i] == "BEZIER" {
-			fmt.Println(i, "obstacle", line_segment, mapList[0].Obstacles[i])
+			fmt.Println("obstacle destination", i, mapList[0].Obstacle_type[i])
 			if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
 				fmt.Println("line segment intersects obstacle")
 				direct_path = false

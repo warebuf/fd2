@@ -1457,9 +1457,9 @@ func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 	return [][]float64{}, Coordinate{}
 }
 
-func findPath(dest Coordinate, start Coordinate) [][]float64 {
+func findPath(start Coordinate, dest Coordinate) [][]float64 {
 
-	fmt.Println("MADE IT TO FINDPATH")
+	fmt.Println("MADE IT TO FINDPATH", start, dest)
 
 	startTime := time.Now()
 

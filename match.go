@@ -1435,6 +1435,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 
 func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 
+	fmt.Println("MADE IT TO DETERMINEBOTACTION")
 	// for now just pick a random camp, don't care about HP or pathfinding
 	// if all camps are inaccessible... maybe end the game?
 

@@ -1,13 +1,12 @@
 package bezier
 
 import (
-	"fmt"
 	"math"
 )
 
 func IntersectBezierLine(bezier []float64, line []float64) bool {
 
-	fmt.Println("v06", bezier, line)
+	//fmt.Println("v08", bezier, line)
 
 	// Compute line coefficients A, B, C
 	A := line[1] - line[3]                         // Y1-Y2
@@ -38,7 +37,6 @@ func IntersectBezierLine(bezier []float64, line []float64) bool {
 	}
 
 	roots := cardano(a, b, c, d)
-
 	//fmt.Println(roots)
 
 	// Check if any root is valid and lies within the line segment

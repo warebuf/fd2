@@ -1475,10 +1475,13 @@ func findPath(dest Coordinate, start Coordinate) [][]float64 {
 			}
 		}
 	}
+
+	fmt.Println("MADE IT TO FINDPATH1")
 	if direct_path == true {
 		ans := [][]float64{{start.X, start.Y}, {dest.X, dest.Y}}
 		return ans
 	}
+	fmt.Println("MADE IT TO FINDPATH2")
 
 	// create destination node, if no edges exist, return empty
 	dest_edges, dest_count := returnEdgesArray(dest)
@@ -1486,15 +1489,17 @@ func findPath(dest Coordinate, start Coordinate) [][]float64 {
 		return [][]float64{}
 	}
 
+	fmt.Println("MADE IT TO FINDPATH3")
 	// create all edges for starting node, if no edges exist, return empty
 	start_edges, start_dist := returnEdgesList(start)
 	if len(start_dist) == 0 {
 		return [][]float64{}
 	}
 
+	fmt.Println("MADE IT TO FINDPATH4")
 	// aStar
 	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
-
+	fmt.Println("MADE IT TO FINDPATH5")
 	elapsed := time.Since(startTime)
 	milliseconds := elapsed.Milliseconds()
 	fmt.Printf("findPath took %d ms\n", milliseconds)

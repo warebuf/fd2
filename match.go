@@ -1465,7 +1465,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 
 	// check if direct path from starting node to target is available
 	direct_path := true
-	line_segment := []float64{dest.X, dest.Y, start.X, start.Y}
+	line_segment := []float64{start.X, start.Y, dest.X, dest.Y}
 	for i := 0; i < len(mapList[0].Obstacles); i++ {
 		if mapList[0].Obstacle_type[i] == "BEZIER" {
 			if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
@@ -1476,7 +1476,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 		}
 	}
 
-	fmt.Println("MADE IT TO FINDPATH1")
+	fmt.Println("MADE IT TO FINDPATH1", direct_path)
 	if direct_path == true {
 		ans := [][]float64{{start.X, start.Y}, {dest.X, dest.Y}}
 		return ans

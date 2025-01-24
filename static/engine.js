@@ -25,7 +25,7 @@ function getMousePosition(event) {
     const rect = c.getBoundingClientRect();
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
-    console.log(`mouse pos x ${x}, y ${y}`)
+    //console.log(`mouse pos x ${x}, y ${y}`)
     console.log(`coord pos x ${x-401}, y ${732-y}`)
 
 }
@@ -2180,7 +2180,6 @@ function drawObstacles() {
     }
     ctx.fillStyle = "white";
 
-    console.log('ABC', width, height, width+boardXY, height-boardXY)
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(width, height);

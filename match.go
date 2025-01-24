@@ -1444,7 +1444,7 @@ func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 
 	for count < len(camps) {
 		rng := rand.Intn(len(camps))
-		fmt.Println("rng", rng)
+		fmt.Println("rng", rng, checked)
 		if checked[rng] == 0 {
 			checked[rng] = 1
 			count++

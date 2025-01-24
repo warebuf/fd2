@@ -2179,6 +2179,7 @@ function drawObstacles() {
     }
     ctx.fillStyle = "white";
 
+    console.log('ABC', width, height, width+boardXY, height-boardXY)
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(width, height);

@@ -1459,6 +1459,8 @@ func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 
 func findPath(dest Coordinate, start Coordinate) [][]float64 {
 
+	fmt.Println("MADE IT TO FINDPATH")
+
 	startTime := time.Now()
 
 	// check if direct path from starting node to target is available

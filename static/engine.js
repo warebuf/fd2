@@ -26,6 +26,7 @@ function getMousePosition(event) {
     const x = event.clientX - rect.left;
     const y = event.clientY - rect.top;
     console.log(`mouse pos x ${x}, y ${y}`)
+    console.log(`coord pos x ${x-401}, y ${732-y}`)
 
 }
 c.addEventListener("mousemove", getMousePosition);

@@ -1481,10 +1481,10 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 		ans := [][]float64{{start.X, start.Y}, {dest.X, dest.Y}}
 		return ans
 	}
-	fmt.Println("MADE IT TO FINDPATH2")
 
 	// create destination node, if no edges exist, return empty
 	dest_edges, dest_count := returnEdgesArray(dest)
+	fmt.Println("MADE IT TO FINDPATH2", dest_edges, dest_count)
 	if dest_count == 0 {
 		return [][]float64{}
 	}

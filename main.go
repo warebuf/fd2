@@ -185,7 +185,8 @@ func init() {
 	fmt.Println("finished init \n")
 
 	startTime := time.Now()
-	fmt.Println("print timing\n")
+	//fmt.Println("print timing\n")
+	mapListJSON = []string{}
 	elapsed := time.Since(startTime)
 	nano := elapsed.Nanoseconds()
 	fmt.Printf("print took %d ns\n", nano)

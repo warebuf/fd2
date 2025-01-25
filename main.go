@@ -183,14 +183,6 @@ func init() {
 	mapListJSON = append(mapListJSON, string(sumriftString))
 
 	fmt.Println("finished init \n")
-
-	startTime := time.Now()
-	//fmt.Println("print timing\n")
-	mapListJSON = []string{}
-	elapsed := time.Since(startTime)
-	nano := elapsed.Nanoseconds()
-	fmt.Printf("assignment took %d ns\n", nano)
-
 }
 
 func loadObstacles(fp string, m *map_details) {

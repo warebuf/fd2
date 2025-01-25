@@ -189,7 +189,7 @@ func init() {
 	mapListJSON = []string{}
 	elapsed := time.Since(startTime)
 	nano := elapsed.Nanoseconds()
-	fmt.Printf("print took %d ns\n", nano)
+	fmt.Printf("assignment took %d ns\n", nano)
 
 }
 

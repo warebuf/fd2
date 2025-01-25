@@ -1537,11 +1537,8 @@ func returnEdgesList(c Coordinate) ([]int, []float64) {
 	fmt.Println("MADE IT TO returnEdgesList")
 	edges := make([]int, 0)
 	dist := make([]float64, 0)
-	for i := 0; i < len(edges); i++ {
-		fmt.Println("dowegethere")
-		fmt.Println("intersects", mapList[0].Intersections[i])
+	for i := 0; i < len(mapList[0].Intersections); i++ {
 		line_seg := []float64{c.X, c.Y, mapList[0].Intersections[i][0], mapList[0].Intersections[i][1]}
-		fmt.Println("line_seg", line_seg)
 		blocked := false
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {

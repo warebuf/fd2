@@ -967,6 +967,7 @@ func (m *match) run() {
 						if (m.team_client_hero[i][j][k].Bot == true) && (m.team_client_hero[i][j][k].Status == 0) {
 							fmt.Println("bot action", i, j, k)
 							p, pint := determineBotAction(m.team_client_hero[i][j][k], m.camps)
+							fmt.Println("FINISHED DETERMINE BOT ACTION", p, pint)
 							if len(p) > 0 {
 								// figure out how to end the game here
 							} else {

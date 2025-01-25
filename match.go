@@ -1542,7 +1542,6 @@ func returnEdgesArray(c Coordinate) ([]float64, int) {
 }
 
 func returnEdgesList(c Coordinate) ([]int, []float64) {
-	fmt.Println("MADE IT TO returnEdgesList")
 	edges := make([]int, 0)
 	dist := make([]float64, 0)
 	for i := 0; i < len(mapList[0].Intersections); i++ {
@@ -1609,7 +1608,6 @@ func (pq *PriorityQueue) update(node *aStarNode, gCost float64, fCost float64) {
 	heap.Fix(pq, node.Index)
 }
 
-// TODO: have to do some deep print testing
 func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []float64) [][]float64 {
 
 	fmt.Println(1, s, g)
@@ -1664,7 +1662,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 			if found {
 				continue
 			} else {
-				trackedNode, tracked := track[current.EdgeIndex]
+				trackedNode, tracked := track[(*current.Edges)[i]]
 
 				fmt.Println(11, trackedNode, tracked)
 				if tracked {
@@ -1682,12 +1680,12 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 					}
 				} else {
 					tempG := current.G + (*current.EdgeLength)[i]
-					tempF := euclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
+					tempH := euclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
 					newNode := &aStarNode{
 						XY:         neighborXY,
 						G:          tempG,
-						H:          tempF,
-						F:          tempG + tempF,
+						H:          tempH,
+						F:          tempG + tempH,
 						Parent:     current,
 						Edges:      &mapList[0].Intersections_edges_int[(*current.Edges)[i]],
 						EdgeLength: &mapList[0].Intersections_edgelength[(*current.Edges)[i]],
@@ -1696,7 +1694,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 					track[newNode.EdgeIndex] = newNode
 					open.Push(newNode)
 
-					fmt.Println(14, newNode)
+					fmt.Println(14, newNode.G, newNode.H, newNode.F, newNode)
 					fmt.Println(15, track)
 					fmt.Println(16, open)
 
@@ -1742,9 +1740,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 			}
 		}
 
-		fmt.Println(23, open)
 		heap.Init(open)
-		fmt.Println(24, open)
 	}
 
 	return [][]float64{}

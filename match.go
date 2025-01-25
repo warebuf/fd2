@@ -1508,7 +1508,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 	fmt.Println("MADE IT TO FINDPATH4")
 	// aStar
 	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
-	fmt.Println("MADE IT TO FINDPATH5")
+	fmt.Println("MADE IT TO FINDPATH5", ans)
 	elapsed := time.Since(startTime)
 	milliseconds := elapsed.Milliseconds()
 	fmt.Printf("findPath took %d ms\n", milliseconds)

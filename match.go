@@ -1449,7 +1449,14 @@ func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 		if checked[rng] == 0 {
 			checked[rng] = 1
 			count++
-			return findPath(b.Position, camps[rng].XY), camps[rng].XY
+
+			ans := findPath(b.Position, camps[rng].XY)
+
+			if len(ans) > 0 {
+				return ans, camps[rng].XY
+			} else {
+				continue
+			}
 		} else {
 			continue
 		}

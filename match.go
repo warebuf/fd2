@@ -1469,7 +1469,6 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 	line_segment := []float64{start.X, start.Y, dest.X, dest.Y}
 	for i := 0; i < len(mapList[0].Obstacles); i++ {
 		if mapList[0].Obstacle_type[i] == "BEZIER" {
-			fmt.Println("obs", i, mapList[0].Obstacles[i])
 			if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
 				fmt.Println("line segment intersects obstacle2")
 				direct_path = false
@@ -1539,6 +1538,7 @@ func returnEdgesList(c Coordinate) ([]int, []float64) {
 	dist := make([]float64, 0)
 	for i := 0; i < len(edges); i++ {
 		line_seg := []float64{c.X, c.Y, mapList[0].Intersections[i][0], mapList[0].Intersections[i][1]}
+		fmt.Println("line_seg", line_seg)
 		blocked := false
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {

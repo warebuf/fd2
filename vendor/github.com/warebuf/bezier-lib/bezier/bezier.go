@@ -1,13 +1,12 @@
 package bezier
 
 import (
-	"fmt"
 	"math"
 )
 
 func IntersectBezierLine(bezier []float64, line []float64) bool {
 
-	fmt.Println("v12", bezier, line)
+	//fmt.Println("v12", bezier, line)
 
 	// Compute line coefficients A, B, C
 	A := line[1] - line[3]                         // Y1-Y2(X)

@@ -1375,6 +1375,7 @@ func sameCoordinates(a Coordinate, b Coordinate) bool {
 }
 
 func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]float64) {
+	fmt.Println("WEARESETTINGTHEPATH")
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
 	state[i][j][k].Path = p

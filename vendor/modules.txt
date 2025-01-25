@@ -27,7 +27,7 @@ github.com/gorilla/websocket
 github.com/markbates/goth
 github.com/markbates/goth/gothic
 github.com/markbates/goth/providers/google
-# github.com/warebuf/bezier-lib v0.0.0-20250124020721-3180d8502788
+# github.com/warebuf/bezier-lib v0.0.0-20250125100126-be576cf7b952
 ## explicit; go 1.22
 github.com/warebuf/bezier-lib/bezier
 # golang.org/x/net v0.17.0

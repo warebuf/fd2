@@ -1421,7 +1421,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_segment) {
-					fmt.Println("line segment intersects obstacle")
+					fmt.Println("line segment intersects obstacle1")
 					return false
 				}
 			}
@@ -1470,7 +1470,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 		if mapList[0].Obstacle_type[i] == "BEZIER" {
 			fmt.Println("obs", i, mapList[0].Obstacles[i])
 			if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
-				fmt.Println("line segment intersects obstacle")
+				fmt.Println("line segment intersects obstacle2")
 				direct_path = false
 				break
 			}
@@ -1519,7 +1519,7 @@ func returnEdgesArray(c Coordinate) ([]float64, int) {
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					fmt.Println("line segment intersects obstacle")
+					fmt.Println("line segment intersects obstacle3")
 					blocked = true
 					break
 				}
@@ -1542,7 +1542,7 @@ func returnEdgesList(c Coordinate) ([]int, []float64) {
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					fmt.Println("line segment intersects obstacle")
+					fmt.Println("line segment intersects obstacle4")
 					blocked = true
 					break
 				}

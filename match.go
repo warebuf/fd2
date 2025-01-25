@@ -1436,7 +1436,6 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 
 func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 
-	fmt.Println("MADE IT TO DETERMINEBOTACTION")
 	// for now just pick a random camp, don't care about HP or pathfinding
 	// if all camps are inaccessible... maybe end the game?
 
@@ -1694,9 +1693,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 					track[newNode.EdgeIndex] = newNode
 					open.Push(newNode)
 
-					fmt.Println(14, newNode.G, newNode.H, newNode.F, newNode)
-					fmt.Println(15, track)
-					fmt.Println(16, open)
+					fmt.Println(14, newNode.G, newNode.H, newNode.F)
 
 				}
 			}
@@ -1733,10 +1730,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 				track[newNode.EdgeIndex] = newNode
 				open.Push(newNode)
 
-				fmt.Println(20, newNode)
-				fmt.Println(21, track)
-				fmt.Println(22, open)
-
+				fmt.Println(20, newNode.G, newNode.H, newNode.F)
 			}
 		}
 

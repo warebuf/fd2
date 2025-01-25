@@ -159,6 +159,8 @@ github.com/warebuf/bezier-lib v0.0.0-20250124020721-3180d8502788 h1:zdfyjCnv51Kk
 github.com/warebuf/bezier-lib v0.0.0-20250124020721-3180d8502788/go.mod h1:y1tQAKdxlslsBTzVcV/3c/2mvkVG44wFMTQcmeGsFzY=
 github.com/warebuf/bezier-lib v0.0.0-20250125100126-be576cf7b952 h1:8cDKLHKmdrBnsSQMNVnBGOnhe14CCNGQRt3SjCLXXzg=
 github.com/warebuf/bezier-lib v0.0.0-20250125100126-be576cf7b952/go.mod h1:y1tQAKdxlslsBTzVcV/3c/2mvkVG44wFMTQcmeGsFzY=
+github.com/warebuf/bezier-lib v0.0.0-20250125111837-0969fc7b9a30 h1:FZzvZosP2LTqJqXIciGsSYh6wQIAa/VCOfUMTJkFvKk=
+github.com/warebuf/bezier-lib v0.0.0-20250125111837-0969fc7b9a30/go.mod h1:y1tQAKdxlslsBTzVcV/3c/2mvkVG44wFMTQcmeGsFzY=
 github.com/yuin/goldmark v1.1.25/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.27/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=
 github.com/yuin/goldmark v1.1.32/go.mod h1:3hX8gzYuyVAZsxl0MRgGTJEmQBFcNTphYh9decYSb74=

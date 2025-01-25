@@ -9,7 +9,7 @@ require (
 	github.com/gorilla/sessions v1.2.2
 	github.com/gorilla/websocket v1.5.1
 	github.com/markbates/goth v1.78.0
-	github.com/warebuf/bezier-lib v0.0.0-20250125100126-be576cf7b952
+	github.com/warebuf/bezier-lib v0.0.0-20250125111837-0969fc7b9a30
 )
 
 require (

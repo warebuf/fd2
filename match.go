@@ -1368,9 +1368,14 @@ func getDistanceTwoPoints(c1 Coordinate, c2 Coordinate) float64 {
 	x_dist := c2.X - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
 }
-func getDistanceArray(c1 Coordinate, c2 []float64) float64 {
+func getDistancePointArray(c1 Coordinate, c2 []float64) float64 {
 	y_dist := c2[1] - c1.Y
 	x_dist := c2[0] - c1.X
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
+}
+func getDistanceArray(c1 []float64, c2 []float64) float64 {
+	y_dist := c2[1] - c1[1]
+	x_dist := c2[0] - c1[0]
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
 }
 
@@ -1429,8 +1434,8 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 	state[i][j][k].Path_Segment = 0
 
 	dist := 0.0
-	for x := 0; x < len(p); x++ {
-		dist += getDistanceArray(state[i][j][k].Start, p[x])
+	for x := 0; x+1 < len(p); x++ {
+		dist += getDistanceArray(p[x], p[x+1])
 	}
 
 	fmt.Println("p", len(p), p)
@@ -1579,7 +1584,7 @@ func returnEdgesArray(c Coordinate) ([]float64, int) {
 			}
 		}
 		if !blocked {
-			edges[i] = getDistanceArray(c, mapList[0].Intersections[i])
+			edges[i] = getDistancePointArray(c, mapList[0].Intersections[i])
 			count++
 		}
 	}
@@ -1603,7 +1608,7 @@ func returnEdgesList(c Coordinate) ([]int, []float64) {
 		}
 		if !blocked {
 			edges = append(edges, i)
-			dist = append(dist, getDistanceArray(c, mapList[0].Intersections[i]))
+			dist = append(dist, getDistancePointArray(c, mapList[0].Intersections[i]))
 		}
 	}
 	return edges, dist

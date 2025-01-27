@@ -1384,8 +1384,6 @@ func getXYComponent(theta float64, r float64) (float64, float64) {
 }
 
 func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanceTravelled float64) (float64, float64) {
-
-	fmt.Println("getLineSegmentTravelled before", refX, refY, dest, distanceTravelled)
 	if distanceTravelled == 0 {
 		return refX, refY
 	}
@@ -1393,8 +1391,6 @@ func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanc
 	lineY := dest[1] - refY
 	lineDist := math.Sqrt((lineX * lineX) + (lineY * lineY)) // calculate remaining segment distance
 	percent := (lineDist + distanceTravelled) / lineDist
-
-	fmt.Println("getLineSegmentTravelled after", lineX, lineY, lineDist, distanceTravelled, percent)
 	fmt.Println("getLineSegmentTravelled ans", refX+(percent*lineX), refY+(percent*lineY))
 
 	return refX + (percent * lineX), refY + (percent * lineY)

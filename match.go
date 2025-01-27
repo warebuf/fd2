@@ -1216,7 +1216,7 @@ func (m *match) run() {
 
 			m.state_count += 1
 
-			if false {
+			if false && (has_user_cmd == false) {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
 			}

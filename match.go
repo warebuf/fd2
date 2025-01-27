@@ -1366,17 +1366,17 @@ func (m *match) shareint() {
 func getDistanceTwoPoints(c1 Coordinate, c2 Coordinate) float64 {
 	y_dist := c2.Y - c1.Y
 	x_dist := c2.X - c1.X
-	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 }
 func getDistancePointArray(c1 Coordinate, c2 []float64) float64 {
 	y_dist := c2[1] - c1.Y
 	x_dist := c2[0] - c1.X
-	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 }
 func getDistanceArray(c1 []float64, c2 []float64) float64 {
 	y_dist := c2[1] - c1[1]
 	x_dist := c2[0] - c1[0]
-	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 3)
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 }
 
 func getXYComponent(theta float64, r float64) (float64, float64) {

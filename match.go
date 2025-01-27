@@ -1059,13 +1059,11 @@ func (m *match) run() {
 							for toMove > 0 {
 								fmt.Println("before", i, j, k, toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
 								if m.team_client_hero[i][j][k].Path_Segment+1 >= len(m.team_client_hero[i][j][k].Path) {
-									fmt.Println("somehow we have too much toMove", toMove)
 									toMove = 0
 								} else {
 									seg_x := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0] - pos_x
 									seg_y := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][1] - pos_y
 									segment_distance := math.Sqrt((seg_x * seg_x) + (seg_y * seg_y)) // calculate remaining segment distance
-									fmt.Println("segment_distance", segment_distance, m.team_client_hero[i][j][k].Path_Segment)
 									toMove -= segment_distance
 									if toMove >= 0 {
 										pos_x = m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0]
@@ -1073,14 +1071,12 @@ func (m *match) run() {
 										m.team_client_hero[i][j][k].Path_Segment++
 									}
 								}
-								fmt.Println("after", toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment)
 							}
 
 							// move the unit
 							m.team_client_hero[i][j][k].DistanceLeft -= min_units * float64(m.team_client_hero[i][j][k].SPD)
 
 							if m.team_client_hero[i][j][k].DistanceLeft-0.01 <= 0 {
-								fmt.Println("MADEITTOEND")
 								madeEnd = true
 								m.team_client_hero[i][j][k].DistanceLeft = 0
 								if m.camps[m.team_client_hero[i][j][k].Destination.I].HP > 0 {
@@ -1101,8 +1097,8 @@ func (m *match) run() {
 
 							} else {
 								travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1], toMove)
-								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
-								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
+								fmt.Println("FINAL POS", i, j, k, travelX, travelY)
+								m.team_client_hero[i][j][k].Position.X, m.team_client_hero[i][j][k].Position.Y = travelX, travelY
 							}
 						}
 					}
@@ -1397,7 +1393,7 @@ func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanc
 	lineY := dest[1] - refY
 	lineDist := math.Sqrt((lineX * lineX) + (lineY * lineY)) // calculate remaining segment distance
 	percent := (lineDist + distanceTravelled) / lineDist
-	fmt.Println("getLineSegmentTravelled ans", refX+(percent*lineX), refY+(percent*lineY))
+	fmt.Println("FINAL POS", refX+(percent*lineX), refY+(percent*lineY))
 
 	return refX + (percent * lineX), refY + (percent * lineY)
 }

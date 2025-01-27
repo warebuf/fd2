@@ -1215,10 +1215,16 @@ func (m *match) run() {
 			}
 
 			m.state_count += 1
-			if (has_user_cmd == false) && (m.state_count < 1000) {
+
+			if false {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
 			}
+
+			//if (has_user_cmd == false) && (m.state_count < 1000) {
+			//	fmt.Println("concurrent SIMULATE called", m.state_count)
+			//	go func() { m.simulate <- true }()
+			//}
 
 		}
 	}

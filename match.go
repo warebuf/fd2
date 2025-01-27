@@ -36,13 +36,13 @@ type hero struct {
 	Bot  bool
 	Name string
 
-	Start       Coordinate
-	Position    Coordinate
-	Destination Coordinate
-	Path        [][]float64
+	Start        Coordinate
+	Position     Coordinate
+	Destination  Coordinate
+	Path         [][]float64
+	Path_Segment int // is the last node we've visited
 
 	DistanceLeft float64
-	Angle        float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
 
 	H part
@@ -475,7 +475,6 @@ func createMatch(pl *permission_list) *match {
 					Path:        make([][]float64, 0),
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
-					Angle:        getTheta(temp_coordinate, temp_coordinate),
 
 					Status: 0,
 
@@ -1050,16 +1049,40 @@ func (m *match) run() {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if (m.team_client_hero[i][j][k].HP > 0) && (m.team_client_hero[i][j][k].Status == 1) {
 
-							distanceTravelled := min_units * float64(m.team_client_hero[i][j][k].SPD)
-							newDistanceLeft := m.team_client_hero[i][j][k].DistanceLeft - distanceTravelled
+							toMove := min_units * float64(m.team_client_hero[i][j][k].SPD)
+							pos_x := m.team_client_hero[i][j][k].Position.X
+							pos_y := m.team_client_hero[i][j][k].Position.Y
 
-							if newDistanceLeft <= 0.1 {
+							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
+							// when toMove is negative, it indicates how much distance we have left in that line segment
+							for toMove > 0 {
+								fmt.Println("before", toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment)
+								if m.team_client_hero[i][j][k].Path_Segment+1 >= len(m.team_client_hero[i][j][k].Path) {
+									toMove = 0
+									fmt.Println("somehow we have too much toMove", m.team_client_hero[i][j][k].Path_Segment)
+								} else {
+									seg_x := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0] - pos_x
+									seg_y := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][1] - pos_y
+									segment_distance := math.Sqrt((seg_x * seg_x) + (seg_y * seg_y)) // calculate remaining segment distance
+									toMove -= segment_distance
+									if toMove >= 0 {
+										pos_x = m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0]
+										pos_y = m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][1]
+										m.team_client_hero[i][j][k].Path_Segment++
+									}
+								}
+								fmt.Println("after", toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment)
+							}
+
+							// move the unit
+							m.team_client_hero[i][j][k].DistanceLeft -= min_units * float64(m.team_client_hero[i][j][k].SPD)
+
+							if m.team_client_hero[i][j][k].DistanceLeft-0.01 <= 0 {
 								m.team_client_hero[i][j][k].DistanceLeft = 0
 								if m.camps[m.team_client_hero[i][j][k].Destination.I].HP > 0 {
 									m.team_client_hero[i][j][k].Status = 2
 									m.team_client_hero[i][j][k].Battle = m.camps[m.team_client_hero[i][j][k].Destination.I]
-									appending := []int{i, j, k}
-									m.team_client_hero[i][j][k].Battle.Units = append(m.team_client_hero[i][j][k].Battle.Units, appending)
+									m.team_client_hero[i][j][k].Battle.Units = append(m.team_client_hero[i][j][k].Battle.Units, []int{i, j, k})
 								} else {
 									m.team_client_hero[i][j][k].Status = 0
 									if m.team_client_hero[i][j][k].Bot == false {
@@ -1073,8 +1096,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.K = k
 
 							} else {
-								m.team_client_hero[i][j][k].DistanceLeft = newDistanceLeft
-								travelX, travelY := getXYComponent(m.team_client_hero[i][j][k].Angle, distanceTravelled)
+								travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1], toMove)
 								m.team_client_hero[i][j][k].Position.X = travelX + m.team_client_hero[i][j][k].Position.X
 								m.team_client_hero[i][j][k].Position.Y = travelY + m.team_client_hero[i][j][k].Position.Y
 							}
@@ -1349,6 +1371,23 @@ func getXYComponent(theta float64, r float64) (float64, float64) {
 	return toFixed(r*math.Cos(theta), 3), toFixed(r*math.Sin(theta), 3)
 }
 
+func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanceTravelled float64) (float64, float64) {
+
+	fmt.Println("getLineSegmentTravelled before", refX, refY, dest, distanceTravelled)
+	if distanceTravelled == 0 {
+		return refX, refY
+	}
+	lineX := dest[0] - refX
+	lineY := dest[1] - refY
+	lineDist := math.Sqrt((lineX * lineX) + (lineY * lineY)) // calculate remaining segment distance
+	percent := (lineDist + distanceTravelled) / lineDist
+
+	fmt.Println("getLineSegmentTravelled after", lineX, lineY, lineDist, distanceTravelled, percent)
+	fmt.Println("getLineSegmentTravelled ans", refX+(percent*lineX), refY+(percent*lineY))
+
+	return refX + (percent * lineX), refY + (percent * lineY)
+}
+
 func getTheta(c1 Coordinate, c2 Coordinate) float64 {
 	y := c2.Y - c1.Y
 	x := c2.X - c1.X
@@ -1380,6 +1419,7 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
 	state[i][j][k].Path = p
+	state[i][j][k].Path_Segment = 0
 
 	dist := 0.0
 	for x := 0; x < len(p); x++ {
@@ -1388,7 +1428,6 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 
 	fmt.Println("p", len(p), p)
 	state[i][j][k].DistanceLeft = dist
-	state[i][j][k].Angle = getThetaArray(state[i][j][k].Start, p[1])
 	state[i][j][k].Status = 1
 }
 

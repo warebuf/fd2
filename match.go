@@ -1056,7 +1056,7 @@ func (m *match) run() {
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
 							for toMove > 0 {
-								fmt.Println("before", toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
+								fmt.Println("before", i, j, k, toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
 								if m.team_client_hero[i][j][k].Path_Segment+1 >= len(m.team_client_hero[i][j][k].Path) {
 									toMove = 0
 									fmt.Println("somehow we have too much toMove", m.team_client_hero[i][j][k].Path_Segment)
@@ -1064,6 +1064,7 @@ func (m *match) run() {
 									seg_x := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0] - pos_x
 									seg_y := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][1] - pos_y
 									segment_distance := math.Sqrt((seg_x * seg_x) + (seg_y * seg_y)) // calculate remaining segment distance
+									fmt.Println("segment_distance", segment_distance, m.team_client_hero[i][j][k].Path_Segment)
 									toMove -= segment_distance
 									if toMove >= 0 {
 										pos_x = m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0]

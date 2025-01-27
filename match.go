@@ -1079,6 +1079,7 @@ func (m *match) run() {
 							m.team_client_hero[i][j][k].DistanceLeft -= min_units * float64(m.team_client_hero[i][j][k].SPD)
 
 							if m.team_client_hero[i][j][k].DistanceLeft-0.01 <= 0 {
+								fmt.Println("MADEIT", i, j, k)
 								madeEnd = true
 								m.team_client_hero[i][j][k].DistanceLeft = 0
 								if m.camps[m.team_client_hero[i][j][k].Destination.I].HP > 0 {

@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-import "github.com/warebuf/bezier-lib/bezier"
+import "fd/bezier"
 
 type Camp struct {
 	HP    int

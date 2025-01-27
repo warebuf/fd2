@@ -1395,7 +1395,6 @@ func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanc
 	lineY := dest[1] - refY
 	lineDist := math.Sqrt((lineX * lineX) + (lineY * lineY)) // calculate remaining segment distance
 	percent := (lineDist + distanceTravelled) / lineDist
-	fmt.Println("FINAL POS", refX+(percent*lineX), refY+(percent*lineY))
 
 	return refX + (percent * lineX), refY + (percent * lineY)
 }

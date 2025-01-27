@@ -1056,7 +1056,7 @@ func (m *match) run() {
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
 							for toMove > 0 {
-								fmt.Println("before", toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment)
+								fmt.Println("before", toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
 								if m.team_client_hero[i][j][k].Path_Segment+1 >= len(m.team_client_hero[i][j][k].Path) {
 									toMove = 0
 									fmt.Println("somehow we have too much toMove", m.team_client_hero[i][j][k].Path_Segment)
@@ -1572,7 +1572,6 @@ func returnEdgesArray(c Coordinate) ([]float64, int) {
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					fmt.Println("line segment intersects obstacle3")
 					blocked = true
 					break
 				}

@@ -988,7 +988,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
 					for k := 0; k < len(m.team_client_hero[i][j]); k++ {
 						if (m.team_client_hero[i][j][k].HP > 0) && (m.team_client_hero[i][j][k].Status == 1) && (m.team_client_hero[i][j][k].SPD != 0) {
-							units_of_time := toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].SPD), 3)
+							units_of_time := toFixed(m.team_client_hero[i][j][k].DistanceLeft/float64(m.team_client_hero[i][j][k].SPD), 10)
 							if units_of_time < min_units {
 								min_units = units_of_time
 							}
@@ -1058,8 +1058,8 @@ func (m *match) run() {
 							for toMove > 0 {
 								fmt.Println("before", i, j, k, toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
 								if m.team_client_hero[i][j][k].Path_Segment+1 >= len(m.team_client_hero[i][j][k].Path) {
+									fmt.Println("somehow we have too much toMove", toMove)
 									toMove = 0
-									fmt.Println("somehow we have too much toMove", m.team_client_hero[i][j][k].Path_Segment)
 								} else {
 									seg_x := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][0] - pos_x
 									seg_y := m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1][1] - pos_y

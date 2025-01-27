@@ -1054,10 +1054,12 @@ func (m *match) run() {
 							pos_x := m.team_client_hero[i][j][k].Position.X
 							pos_y := m.team_client_hero[i][j][k].Position.Y
 
+							fmt.Println("toMove", i, j, k, toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
+
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
 							for toMove > 0 {
-								fmt.Println("before", i, j, k, toMove, pos_x, pos_y, m.team_client_hero[i][j][k].Path_Segment, m.team_client_hero[i][j][k].Path)
+
 								if m.team_client_hero[i][j][k].Path_Segment+1 >= len(m.team_client_hero[i][j][k].Path) {
 									toMove = 0
 								} else {

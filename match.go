@@ -40,6 +40,7 @@ type hero struct {
 	Position     Coordinate
 	Destination  Coordinate
 	Path         [][]float64
+	Thetas       []float64
 	Path_Segment int // is the last node we've visited
 
 	DistanceLeft float64
@@ -1426,16 +1427,24 @@ func sameCoordinates(a Coordinate, b Coordinate) bool {
 	return false
 }
 
+// TODO: MIGHT AS WELL SET THETAS HERE
 func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]float64) {
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
 	state[i][j][k].Path = p
 	state[i][j][k].Path_Segment = 0
 
+	thetas := make([]float64, len(p), len(p))
 	dist := 0.0
 	for x := 0; x+1 < len(p); x++ {
 		dist += getDistanceArray(p[x], p[x+1])
+		thetas[x] = math.Atan((p[x+1][1] - p[x][1]) / (p[x+1][0] - p[x][0]))
+		if x+1 == len(p)-1 {
+			thetas[x+1] = thetas[x]
+		}
 	}
+	fmt.Println("thetas", thetas)
+	state[i][j][k].Thetas = thetas
 
 	fmt.Println("setPath", len(p), p)
 	state[i][j][k].DistanceLeft = dist

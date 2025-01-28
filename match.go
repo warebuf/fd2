@@ -1401,25 +1401,6 @@ func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanc
 	return refX + (percent * lineX), refY + (percent * lineY)
 }
 
-func getTheta(c1 Coordinate, c2 Coordinate) float64 {
-	y := c2.Y - c1.Y
-	x := c2.X - c1.X
-	theta := math.Atan2(y, x)
-	if theta < 0 {
-		theta = theta + (2 * math.Pi)
-	}
-	return toFixed(theta, 3)
-}
-func getThetaArray(c1 Coordinate, c2 []float64) float64 {
-	y := c2[1] - c1.Y
-	x := c2[0] - c1.X
-	theta := math.Atan2(y, x)
-	if theta < 0 {
-		theta = theta + (2 * math.Pi)
-	}
-	return toFixed(theta, 3)
-}
-
 func sameCoordinates(a Coordinate, b Coordinate) bool {
 	if (a.X == b.X) && (a.Y == b.Y) {
 		return true
@@ -1438,7 +1419,7 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 	dist := 0.0
 	for x := 0; x+1 < len(p); x++ {
 		dist += getDistanceArray(p[x], p[x+1])
-		thetas[x] = math.Atan((p[x+1][1] - p[x][1]) / (p[x+1][0] - p[x][0]))
+		thetas[x] = getTheta(p[x], p[x+1])
 		if x+1 == len(p)-1 {
 			thetas[x+1] = thetas[x]
 		}
@@ -1620,6 +1601,16 @@ func returnEdgesList(c Coordinate) ([]int, []float64) {
 		}
 	}
 	return edges, dist
+}
+
+func getTheta(c1 []float64, c2 []float64) float64 {
+	y := c2[1] - c1[1]
+	x := c2[0] - c1[0]
+	theta := math.Atan2(y, x)
+	if theta < 0 {
+		theta = theta + (2 * math.Pi)
+	}
+	return toFixed(theta, 3)
 }
 
 type aStarNode struct {

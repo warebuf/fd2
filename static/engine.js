@@ -216,7 +216,7 @@ function calcPos() {
                             
                             let toMove = state[i][j][k].SPD * 0.015;
                             while (toMove > 0) {
-                                if(state[i][j][k].Path_Segment + 1 >= len(state[i][j][k].Path)) {
+                                if(state[i][j][k].Path_Segment + 1 >= state[i][j][k].Path.length) {
                                     toMove = 0;
                                     state[i][j][k].DistanceLeft = 0;
                                 } else {
@@ -236,7 +236,7 @@ function calcPos() {
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }
-                            
+
                         }
                     } else if(state[i][j][k].Status == 2) {
                         if(state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD) {

@@ -159,8 +159,6 @@ function anime() {
         else {even=0}
     }
 
-
-
 }
 anime()
 
@@ -215,6 +213,16 @@ function calcPos() {
                         }
                         if(state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;
+
+                            // distanceToTravel = state[i][j][k].SPD * 0.015
+                            // while state[i][j][k].Path_Segment + 1< state[i][j][k].Paths.len
+                            // distanceLeftInSegment -= distance(state[i][j][k].Position, state[i][j][k].Paths[state[i][j][k].Path_Segment++])
+                            // if(distanceLeftInSegment > 0) {
+                            //      state[i][j][k].Path_Segment++
+                            // }
+                            //
+                            // pos = state[i][j][k].Path_Segment[state[i][j][k]
+
                             let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
                             state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
                             state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]

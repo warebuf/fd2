@@ -234,8 +234,8 @@ function calcPos() {
                             if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                                console.log("state", state[i][i][k].Path_Segment)
-                                console.log("match", match_data[animating_state][i][j][k].Path_Segment)
+                                console.log("state", state[i][i][k].Path_Segment, animating_state)
+                                console.log("match", match_data[animating_state][i][j][k].Path_Segment, animating_state)
                                 state[i][i][k].Path_Segment = match_data[animating_state][i][j][k].Path_Segment
 
                             }

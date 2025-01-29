@@ -228,13 +228,13 @@ function calcPos() {
                                         state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1]
                                         state[i][j][k].Path_Segment++
                                     }
-
                                 }
                             }
                             
                             if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
+                                state[i][i][k].Path_Segment = match_data[animating_state][i][j][k].Path_Segment
                             }
 
                         }

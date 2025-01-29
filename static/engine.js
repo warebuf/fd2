@@ -213,24 +213,30 @@ function calcPos() {
                         }
                         if(state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;
+                            
+                            let toMove = state[i][j][k].SPD * 0.015;
+                            while (toMove > 0) {
+                                if(state[i][j][k].Path_Segment + 1 >= len(state[i][j][k].Path)) {
+                                    toMove = 0;
+                                    state[i][j][k].DistanceLeft = 0;
+                                } else {
+                                    seg_x = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0] - state[i][j][k].Position.X
+                                    seg_y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1] - state[i][j][k].Position.y
+                                    segment_distance = Math.sqrt((seg_x*seg_x) + (seg_y*seg_y))
+                                    if (toMove >= 0) {
+                                        state[i][j][k].Position.X = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0]
+                                        state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1]
+                                        state[i][j][k].Path_Segment++
+                                    }
 
-                            // distanceToTravel = state[i][j][k].SPD * 0.015
-                            // while state[i][j][k].Path_Segment + 1< state[i][j][k].Paths.len
-                            // distanceLeftInSegment -= distance(state[i][j][k].Position, state[i][j][k].Paths[state[i][j][k].Path_Segment++])
-                            // if(distanceLeftInSegment > 0) {
-                            //      state[i][j][k].Path_Segment++
-                            // }
-                            //
-                            // pos = state[i][j][k].Path_Segment[state[i][j][k]
-
-                            let increment = getXY(state[i][j][k].Angle, state[i][j][k].SPD * 0.015)
-                            state[i][j][k].Position.X = state[i][j][k].Position.X + increment[0]
-                            state[i][j][k].Position.Y = state[i][j][k].Position.Y + increment[1]
-                            state[i][j][k].DistanceLeft = state[i][j][k].DistanceLeft - (state[i][j][k].SPD * 0.015)
+                                }
+                            }
+                            
                             if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                             }
+                            
                         }
                     } else if(state[i][j][k].Status == 2) {
                         if(state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD) {

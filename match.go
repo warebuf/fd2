@@ -3,18 +3,18 @@ package main
 import (
 	"container/heap"
 	"encoding/json"
+	"fd/bezier"
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"math"
 	"math/rand"
 	"reflect"
 	"strconv"
 	"sync"
 	"time"
-)
 
-import "fd/bezier"
+	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
+)
 
 type Camp struct {
 	HP    int
@@ -470,10 +470,11 @@ func createMatch(pl *permission_list) *match {
 					Bot:  j.bot_status,
 					Name: names[rand.Intn(len(names))],
 
-					Start:       temp_coordinate,
-					Position:    temp_coordinate,
-					Destination: temp_coordinate,
-					Path:        make([][]float64, 0),
+					Start:        temp_coordinate,
+					Position:     temp_coordinate,
+					Destination:  temp_coordinate,
+					Path:         make([][]float64, 0),
+					Path_Segment: 0,
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 

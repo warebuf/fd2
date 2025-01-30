@@ -220,9 +220,10 @@ function calcPos() {
                                     toMove = 0;
                                     state[i][j][k].DistanceLeft = 0;
                                 } else {
-                                    seg_x = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0] - state[i][j][k].Position.X
-                                    seg_y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1] - state[i][j][k].Position.y
-                                    segment_distance = Math.sqrt((seg_x*seg_x) + (seg_y*seg_y))
+                                    let seg_x = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0] - state[i][j][k].Position.X
+                                    let seg_y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1] - state[i][j][k].Position.y
+                                    let segment_distance = Math.sqrt((seg_x*seg_x) + (seg_y*seg_y))
+                                    toMove -= segment_distance
                                     if (toMove >= 0) {
                                         state[i][j][k].Position.X = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0]
                                         state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1]

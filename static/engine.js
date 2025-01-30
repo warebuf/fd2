@@ -239,9 +239,9 @@ function calcPos() {
                                 console.log("match_data1", match_data[animating_state][i][j][k].DistanceLeft)
 
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
-                                console.log("animating_state", animating_state)
+                                console.log("animating_state", animating_state, ";", i,j,k)
                                 console.log(i,j,k,"state2", state[i][i][k].Path_Segment)
-                                console.log(i,j,k,"match2", match_data[animating_state][i][j][k].Path_Segment, animating_state)
+                                console.log(i,j,k,"match2", match_data[animating_state][i][j][k].Path_Segment)
                                 state[i][i][k].Path_Segment = match_data[animating_state][i][j][k].Path_Segment
 
                             }

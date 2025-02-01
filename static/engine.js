@@ -176,7 +176,7 @@ function calcPos() {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Thetas[match_data[animating_state][i][j][k].Path_Segment];
-                            state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
+                            state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
                         } else if(state[i][j][k].Status == 1) {
                             if(state[i][j][k].DistanceLeft <= 0) {
                                 if(camps[state[i][j][k].Destination.I].HP > 0) {

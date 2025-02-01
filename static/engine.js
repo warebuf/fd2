@@ -232,15 +232,18 @@ function calcPos() {
                                         state[i][j][k].Position.X = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0]
                                         state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1]
                                         state[i][j][k].Path_Segment++
+                                    } else { // the negative toMove distance left is the distance left in the segment
+                                        let percentLeft = -toMove / segment_distance
+                                        state[i][j][k].Position.X = state[i][j][k].Path[state[i][j][k].Path_Segment+1][0] - (seg_x*percentLeft)
+                                        state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment+1][1] - (seg_y*percentLeft)
                                     }
                                 }
                             }
                             
-                            if( state[i][j][k].DistanceLeft <= match_data[animating_state][i][j][k].DistanceLeft ){
+                            if( state[i][j][k].DistanceLeft - 0.01 <= match_data[animating_state][i][j][k].DistanceLeft ){
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                 state[i][j][k].Path_Segment = match_data[animating_state][i][j][k].Path_Segment
-
                             }
 
                         }

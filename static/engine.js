@@ -209,7 +209,7 @@ function calcPos() {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Thetas[match_data[animating_state][i][j][k].Path_Segment];
-                            state[i][j][k].DistanceLeft = getDistance(state[i][j][k].Position, state[i][j][k].Destination);
+                            state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
                         }
                         if(state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;

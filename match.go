@@ -1099,6 +1099,7 @@ func (m *match) run() {
 								m.team_client_hero[i][j][k].Position.I = i
 								m.team_client_hero[i][j][k].Position.J = j
 								m.team_client_hero[i][j][k].Position.K = k
+								m.team_client_hero[i][j][k].Path_Segment = len(m.team_client_hero[i][j][k].Path) - 1
 
 							} else {
 								travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.team_client_hero[i][j][k].Path[m.team_client_hero[i][j][k].Path_Segment+1], toMove)

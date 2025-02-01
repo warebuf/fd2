@@ -205,7 +205,7 @@ function calcPos() {
             for(let j = 0; j < state[i].length; j++) {
                 for(let k = 0; k < state[i][j].length; k++) {
                     if(state[i][j][k].Status == 1) {
-                        if(state[i][j][k].Destination != match_data[animating_state][i][j][k].Destination) {
+                        if(campEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false) {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].Angle = match_data[animating_state][i][j][k].Thetas[match_data[animating_state][i][j][k].Path_Segment];
@@ -2306,6 +2306,19 @@ function drawComplexPath(path, color) {
     ctx.strokeStyle = "white";
 }
 
+function campEqual(c1,c2) {
+    if(
+        (c1.Type == c2.Type) &&
+        (c1.I == c2.I) &&
+        (c1.J == c2.J) &&
+        (c1.K == c2.K) &&
+        (c1.X == c2.X) &&
+        (c1.Y == c2.Y)
+    ) {
+        return true
+    }
 
+    return false
+}
 
 

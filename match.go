@@ -483,7 +483,7 @@ func createMatch(pl *permission_list) *match {
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,
 					AS:  rand.Intn(100) + 1,
-					SPD: rand.Intn(100) + 1,
+					SPD: 50,
 
 					Battle: nil,
 					TTD:    100.0,

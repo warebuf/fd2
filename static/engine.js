@@ -175,12 +175,10 @@ function calcPos() {
                             state[i][j][k].Status = 1;
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
-                            state[i][j][k].Angle = match_data[animating_state][i][j][k].Thetas[match_data[animating_state][i][j][k].Path_Segment];
                             state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
                             state[i][j][k].Path = match_data[animating_state][i][j][k].Path;
                             state[i][j][k].Path_Segment = 0;
                             state[i][j][k].Thetas = match_data[animating_state][i][j][k].Path;
-                            state[i][j][k].Angle = state[i][j][k].Thetas[0];
                         } else if(state[i][j][k].Status == 1) {
                             if(state[i][j][k].DistanceLeft <= 0) {
                                 if(camps[state[i][j][k].Destination.I].HP > 0) {
@@ -212,7 +210,6 @@ function calcPos() {
                         if(campEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false) {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
-                            state[i][j][k].Angle = match_data[animating_state][i][j][k].Thetas[match_data[animating_state][i][j][k].Path_Segment];
                             state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
                             state[i][j][k].Path = match_data[animating_state][i][j][k].Path;
                             state[i][j][k].Path_Segment = 0;
@@ -323,7 +320,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].HP > 0) {
-                    drawRotated('>',width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y,state[i][j][k].Angle, "11", 3, "white")
+                    drawRotated('>',width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y,state[i][j][k].Thetas, state[i][j][k].Path_Segment,"11", 3, "white")
                 }
             }
         }
@@ -414,52 +411,6 @@ function drawHoverable() {
         ctx.fillRect(width+hoverable.X+10,height-hoverable.Y-10,1,20);
         ctx.fillStyle = 'white'
     }
-}
-
-function drawPotentialPaths() {
-
-    if(state_machine==0) {
-
-    }
-    else if(state_machine==1) {
-
-        if((selected_hoverable!=null) && (selected_hoverable.Type == "unit") && (selected_hoverable.I == my_team) && (selected_hoverable.J == my_int)) {
-            for(let i = 0; i < camps.length; i++) {
-                if(camps[i].HP > 0) {
-                    let colour = ""
-                    ctx.beginPath();
-                    if(coordinateEqual(camps[i].XY,hoverable)) {
-                        colour = "white";
-                    }
-                    else {
-                        colour = "grey";
-                    }
-                    ctx.strokeStyle = colour;
-                    ctx.moveTo(width+selected_hoverable.X, height-selected_hoverable.Y);
-                    ctx.lineTo(width+camps[i].XY.X, height-camps[i].XY.Y);
-                    ctx.stroke();
-
-                    // write distance
-                    let dist = getDistance(selected_hoverable, camps[i].XY).toFixed(1);
-                    let mid = getCenter(selected_hoverable, camps[i].XY);
-                    let radians = 0;
-                    if(selected_hoverable.X<=camps[i].XY.X) {
-                        radians = getAngle(selected_hoverable, camps[i].XY)
-                    } else {
-                        radians = getAngle(camps[i].XY, selected_hoverable)
-                    }
-
-                    drawRotated(dist,width+mid[0],height-mid[1],radians, "8", 10, colour);
-
-                    // write TTL, may not do this, not sure
-
-                }
-
-
-            }
-        }
-    }
-
 }
 
 function drawPaths() {
@@ -2057,7 +2008,14 @@ function getXY(theta, r) {
     return [r*Math.cos(theta), r*Math.sin(theta)]
 }
 
-function drawRotated(s,x,y,radians, size, y_shift, colour) {
+function drawRotated(s,x,y, thetas, path_segment, size, y_shift, colour) {
+
+    let radians = 0;
+
+    if(thetas.length > 0) {
+        radians = thetas[path_segment];
+    }
+
     ctx.save();
     ctx.fillStyle = colour;
     ctx.textAlign = "center";

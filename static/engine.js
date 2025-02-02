@@ -217,8 +217,9 @@ function calcPos() {
                         }
                         if(state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;
-                            
+
                             let toMove = state[i][j][k].SPD * 0.015;
+                            state[i][j][k].DistanceLeft -= toMove;
                             while (toMove > 0) {
                                 if(state[i][j][k].Path_Segment + 1 >= state[i][j][k].Path.length) {
                                     toMove = 0;

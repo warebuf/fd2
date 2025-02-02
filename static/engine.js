@@ -2012,7 +2012,7 @@ function drawRotated(s,x,y, thetas, path_segment, size, y_shift, colour) {
 
     let radians = 0;
 
-    if(thetas.length > 0) {
+    if ((thetas != null) && (thetas.length > 0)) {
         radians = thetas[path_segment];
     }
 

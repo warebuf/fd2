@@ -1045,7 +1045,6 @@ func (m *match) run() {
 				}
 			}
 
-			madeEnd := false
 			// move all unit positions
 			for i := 0; i < len(m.team_client_hero); i++ {
 				for j := 0; j < len(m.team_client_hero[i]); j++ {
@@ -1082,7 +1081,6 @@ func (m *match) run() {
 
 							if m.team_client_hero[i][j][k].DistanceLeft-0.01 <= 0 {
 								fmt.Println("MADEIT", i, j, k)
-								madeEnd = true
 								m.team_client_hero[i][j][k].DistanceLeft = 0
 								if m.camps[m.team_client_hero[i][j][k].Destination.I].HP > 0 {
 									m.team_client_hero[i][j][k].Status = 2

@@ -1110,9 +1110,6 @@ func (m *match) run() {
 					}
 				}
 			}
-			if !madeEnd {
-				fmt.Println("WTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTFWTF")
-			}
 
 			// simulate all attacks
 			for i := 0; i < len(atk_list); i++ {

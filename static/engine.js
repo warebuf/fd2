@@ -2312,23 +2312,21 @@ function getHeatMapColor(t) {
 
 function drawHPBoxes(hp, maxHP, x, y) {
 
-    console.log("ABC")
+    const borderWidth = 1;
+    const barWidth = 5;
+    const barHeight = 5;
+    const percentage = hp / maxHP;
 
-    let borderWidth = 1;
-    let barWidth = 5;
-    let barHeight = 5;
-    let percentage = hp / maxHP;
+    const boxes = Math.round(maxHP / 10);
+    const boxWidth = boxes*barWidth;
+    const boxShift = boxWidth/2;
 
-    let boxes = Math.round(maxHP / 10);
-    console.log(boxes)
-
-    let ans = getHeatMapColor(percentage);
-
-    ctx.fillStyle = ans;
+    ctx.fillStyle = getHeatMapColor(percentage);
     ctx.strokeStyle = "black";
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x, y + 15, barWidth * boxes * percentage, barHeight);
     for (let i = 0; i < boxes; i++) {
-        ctx.strokeRect(x + (i * barWidth), y + 15, barWidth, barHeight);
+        ctx.strokeRect(x + (i * barWidth)-boxShift, y - 15, barWidth, barHeight);
     }
+
 }

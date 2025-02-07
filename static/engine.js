@@ -2326,7 +2326,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x, y + 15, barWidth * boxes * percentage, barHeight);
     for (let i = 0; i < boxes; i++) {
-        ctx.strokeRect(x + (i * barWidth)-boxShift, y - 15, barWidth, barHeight);
+        ctx.strokeRect(x + (i * barWidth), y - 15, barWidth, barHeight);
     }
 
 }

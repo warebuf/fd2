@@ -320,6 +320,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].HP > 0) {
+                    drawHPBoxes(state[i][j][k].HP,state[i][j][k].HP,width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y)
                     drawRotated('>',width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y,state[i][j][k].Thetas, state[i][j][k].Path_Segment,"11", 3, "white")
                 }
             }
@@ -2289,4 +2290,45 @@ function campEqual(c1,c2) {
     return false
 }
 
+function getHeatMapColor(t) {
+    t = 1 - t;
+    // Clamp t between 0 and 1
+    t = Math.max(0, Math.min(1, t));
 
+    let r = 0, g = 0, b = 0;
+
+    if (t <= 0.5) {
+        // Green to Yellow (0 <= t <= 0.5)
+        r = Math.floor(2 * t * 255); // Increase red
+        g = 255; // Green stays at max
+    } else {
+        // Yellow to Red (0.5 < t <= 1)
+        r = 255; // Red stays at max
+        g = Math.floor((1 - (t - 0.5) * 2) * 255); // Decrease green
+    }
+
+    return `rgb(${r}, ${g}, ${b})`;
+}
+
+function drawHPBoxes(hp, maxHP, x, y) {
+
+    console.log("ABC")
+
+    let borderWidth = 1;
+    let barWidth = 5;
+    let barHeight = 5;
+    let percentage = hp / maxHP;
+
+    let boxes = Math.round(maxHP / 10);
+    console.log(boxes)
+
+    let ans = getHeatMapColor(percentage);
+
+    ctx.fillStyle = ans;
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = borderWidth;
+    ctx.fillRect(x, y + 15, barWidth * boxes * percentage, barHeight);
+    for (let i = 0; i < boxes; i++) {
+        ctx.strokeRect(x + (i * barWidth), y + 15, barWidth, barHeight);
+    }
+}

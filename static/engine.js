@@ -2317,7 +2317,10 @@ function drawHPBoxes(hp, maxHP, x, y) {
     const barHeight = 5;
     const percentage = hp / maxHP;
 
-    const boxes = Math.round(maxHP / 10);
+    let boxes = Math.round(maxHP / 10);
+    if(boxes < 1) {
+        boxes = 1;
+    }
     const boxWidth = boxes*barWidth;
     const boxShift = boxWidth/2;
 

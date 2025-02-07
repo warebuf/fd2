@@ -17,6 +17,7 @@ import (
 )
 
 type Camp struct {
+	MaxHP int
 	HP    int
 	XY    Coordinate
 	Units [][]int // second array is of the form i, j, k for a *hero object in TCH
@@ -433,7 +434,8 @@ func createMatch(pl *permission_list) *match {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
 			c := Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
-			ans.camps = append(ans.camps, &Camp{HP: rand.Intn(10)*100 + 100, XY: c, Units: make([][]int, 0)})
+			HP := rand.Intn(10)*100 + 100
+			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client

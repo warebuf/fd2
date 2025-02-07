@@ -383,6 +383,11 @@ function drawCamps() {
                 ctx.stroke();
             }
         }
+
+        // draw HP
+        if(camps[i].HP > 0) {
+            drawHPBoxes(camps[i].HP,camps[i].MaxHP,width+camps[i].Position.X,height-camps[i].Position.Y)
+        }
     }
 
     ctx.fillStyle = "white";

@@ -386,8 +386,8 @@ function drawCamps() {
 
         // draw HP
         if(camps[i].HP > 0) {
-            console.log("madeit", i)
-            drawHPBoxes(camps[i].HP,camps[i].MaxHP,width+camps[i].Position.X,height-camps[i].Position.Y)
+            console.log("madeit", i, camps[i])
+            //drawHPBoxes(camps[i].HP,camps[i].MaxHP,width+camps[i].Position.X,height-camps[i].Position.Y)
         }
     }
 

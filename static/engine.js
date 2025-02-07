@@ -29,7 +29,7 @@ function getMousePosition(event) {
     console.log(`coord pos x ${x-401}, y ${732-y}`)
 
 }
-c.addEventListener("mousemove", getMousePosition);
+//c.addEventListener("mousemove", getMousePosition);
 
 c.width = document.body.clientWidth;
 c.height = document.body.clientHeight;
@@ -386,6 +386,7 @@ function drawCamps() {
 
         // draw HP
         if(camps[i].HP > 0) {
+            console.log("madeit", i)
             drawHPBoxes(camps[i].HP,camps[i].MaxHP,width+camps[i].Position.X,height-camps[i].Position.Y)
         }
     }

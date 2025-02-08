@@ -386,7 +386,6 @@ function drawCamps() {
 
         // draw HP
         if(camps[i].HP > 0) {
-            console.log("madeit", i, camps[i])
             drawHPBoxes(camps[i].HP,camps[i].MaxHP,width+camps[i].XY.X,height-camps[i].XY.Y)
         }
     }
@@ -2318,10 +2317,19 @@ function getHeatMapColor(t) {
 
 function drawHPBoxes(hp, maxHP, x, y) {
 
+    let multiple = 0;
+    let firstBarHP = hp;
+    let firstBarMax = maxHP;
+    if(maxHP>100){
+        multiple = hp / 100;
+        firstBarHP = hp % 100;
+        firstBarMax = 100;
+    }
+
     const borderWidth = 1;
     const barWidth = 5;
     const barHeight = 5;
-    const percentage = hp / maxHP;
+    const percentage = firstBarHP / firstBarMax;
 
     let boxes = Math.round(maxHP / 10);
     if(boxes < 1) {
@@ -2331,11 +2339,15 @@ function drawHPBoxes(hp, maxHP, x, y) {
     const boxShift = boxWidth/2;
 
     ctx.fillStyle = getHeatMapColor(percentage);
-    ctx.strokeStyle = "black";
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x - boxShift, y - 25, barWidth * boxes * percentage, barHeight);
+    ctx.strokeStyle = "black";
     for (let i = 0; i < boxes; i++) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
+        if(i < multiple) {
+            ctx.strokeStyle = "orange";
+            ctx.strokeRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
+        }
     }
 
 }

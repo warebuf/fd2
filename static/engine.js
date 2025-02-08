@@ -2324,6 +2324,10 @@ function drawHPBoxes(hp, maxHP, x, y) {
         multiple = hp / 100;
         firstBarHP = hp % 100;
         firstBarMax = 100;
+        if(firstBarHP == 0) {
+            multiple -= 1
+            firstBarHP = 100
+        }
     }
 
     const borderWidth = 1;

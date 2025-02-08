@@ -2330,6 +2330,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     const barWidth = 5;
     const barHeight = 5;
     const percentage = firstBarHP / firstBarMax;
+    const truePercentage = hp / maxHP;
 
     let boxes = Math.round(maxHP / 10);
     if(boxes < 1) {
@@ -2338,7 +2339,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     const boxWidth = boxes*barWidth;
     const boxShift = boxWidth/2;
 
-    ctx.fillStyle = getHeatMapColor(percentage);
+    ctx.fillStyle = getHeatMapColor(truePercentage);
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x - boxShift, y - 25, barWidth * boxes * percentage, barHeight);
     ctx.strokeStyle = "black";

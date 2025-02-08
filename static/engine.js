@@ -2346,7 +2346,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
         if(i < multiple) {
             ctx.strokeStyle = "orange";
-            ctx.strokeRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
+            ctx.fillRect(x + (i * barWidth) - boxShift, y - 20, 3, 3);
         }
     }
 

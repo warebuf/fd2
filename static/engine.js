@@ -2351,8 +2351,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     for (let i = 0; i < boxes; i++) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
         if(i < multiple) {
-            ctx.fillRect(x + (i * barWidth) - boxShift, y - 20, 3, 3);
+            ctx.fillRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
         }
     }
-
 }

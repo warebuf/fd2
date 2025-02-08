@@ -2332,7 +2332,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     const percentage = firstBarHP / firstBarMax;
     const truePercentage = hp / maxHP;
 
-    let boxes = Math.round(maxHP / 10);
+    let boxes = Math.round(firstBarMax / 10);
     if(boxes < 1) {
         boxes = 1;
     }

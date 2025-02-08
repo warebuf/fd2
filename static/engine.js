@@ -2352,6 +2352,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
         if(i < multiple) {
             ctx.fillRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
+            ctx.strokeRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
         }
     }
 }

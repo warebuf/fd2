@@ -2346,7 +2346,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     ctx.fillStyle = getHeatMapColor(truePercentage);
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x - boxShift, y - 25, barWidth * boxes * percentage, barHeight);
-    ctx.fillStyle = "orange";
+    ctx.fillStyle = "blue";
     ctx.strokeStyle = "black";
     for (let i = 0; i < boxes; i++) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);

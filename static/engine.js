@@ -1249,6 +1249,8 @@ function drawHPBoxes(hp, maxHP, x, y) {
 function drawSprite() {
 
     let row = 0;
+
+    console.log(state[0][0][0].Status)
     if(state[0][0][0].Status == 0) {
 
         let radians = 0;
@@ -1273,7 +1275,10 @@ function drawSprite() {
         } else if(radians < 8*Math.PI/4) {
             row = 7;
         }
+
+        console.log(radians, row)
     }
+
 
     ctx.drawImage(
         sprite,

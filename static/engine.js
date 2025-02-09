@@ -1248,7 +1248,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
 
 function drawSprite() {
 
-    console.log(sprite)
+    console.log("madeit", sprite)
 
     ctx.drawImage(
         sprite,

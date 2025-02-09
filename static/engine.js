@@ -1319,13 +1319,15 @@ function drawSelected() {
         const x_offset = Math.round(c.width/2)
         const y_offset = Math.round(c.height/2) - 375
 
-        const width = 400;
+        const width = 500;
         const height = 100;
 
         ctx.strokeStyle = "pink";
         ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
 
         let unit = state[hoverable.I][hoverable.J][hoverable.K]
+
+        console.log(unit)
 
         ctx.fillText(unit, x_offset-(width/2), y_offset)
 

@@ -2343,6 +2343,11 @@ function drawHPBoxes(hp, maxHP, x, y) {
     const boxWidth = boxes*barWidth;
     const boxShift = boxWidth/2;
 
+    ctx.font = "`12px Arial";
+    ctx.textAlign = "right";
+    ctx.fillStyle = "white"; // Fill color
+    ctx.fillText(hp, x, y);
+
     ctx.fillStyle = getHeatMapColor(truePercentage);
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x - boxShift, y - 25, barWidth * boxes * percentage, barHeight);

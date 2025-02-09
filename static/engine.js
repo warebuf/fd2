@@ -1250,34 +1250,31 @@ function drawSprite() {
 
     let row = 0;
 
-    console.log(state[0][0][0].Status)
-    if(state[0][0][0].Status == 0) {
-
-        let radians = 0;
-        if ( (state[0][0][0].Thetas != null) && (state[0][0][0].Thetas > 0) ) {
-            radians = state[0][0][0].Thetas[state[0][0][0].Path_Segment];
-        }
-
-        if(radians < Math.PI/4) {
-            row = 0;
-        } else if(radians < 2*Math.PI/4) {
-            row = 1;
-        } else if(radians < 3*Math.PI/4) {
-            row = 2;
-        } else if(radians < 4*Math.PI/4) {
-            row = 3;
-        } else if(radians < 5*Math.PI/4) {
-            row = 4;
-        } else if(radians < 6*Math.PI/4) {
-            row = 5;
-        } else if(radians < 7*Math.PI/4) {
-            row = 6;
-        } else if(radians < 8*Math.PI/4) {
-            row = 7;
-        }
-
-        console.log(radians, row)
+    let radians = 0;
+    if ( (state[0][0][0].Thetas != null) && (state[0][0][0].Thetas > 0) ) {
+        radians = state[0][0][0].Thetas[state[0][0][0].Path_Segment];
     }
+
+    if(radians < Math.PI/4) {
+        row = 0;
+    } else if(radians < 2*Math.PI/4) {
+        row = 1;
+    } else if(radians < 3*Math.PI/4) {
+        row = 2;
+    } else if(radians < 4*Math.PI/4) {
+        row = 3;
+    } else if(radians < 5*Math.PI/4) {
+        row = 4;
+    } else if(radians < 6*Math.PI/4) {
+        row = 5;
+    } else if(radians < 7*Math.PI/4) {
+        row = 6;
+    } else if(radians < 8*Math.PI/4) {
+        row = 7;
+    }
+
+    console.log(radians, row)
+
 
 
     ctx.drawImage(

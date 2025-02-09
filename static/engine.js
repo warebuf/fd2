@@ -1314,13 +1314,22 @@ function drawSprite() {
 
 function drawSelected() {
 
-    const x_offset = Math.round(c.width/2)
-    const y_offset = Math.round(c.height/2) - 375
+    if(hoverable != null) {
 
-    const width = 100;
-    const height = 100;
+        const x_offset = Math.round(c.width/2)
+        const y_offset = Math.round(c.height/2) - 375
 
-    ctx.strokeStyle = "pink";
-    ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
-    ctx.fillText(hoverable, x_offset-(width/2), y_offset)
+        const width = 400;
+        const height = 100;
+
+        ctx.strokeStyle = "pink";
+        ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
+
+        let unit = state[hoverable.I][hoverable.J][hoverable.K]
+
+        ctx.fillText(unit, x_offset-(width/2), y_offset)
+
+    }
+
+
 }

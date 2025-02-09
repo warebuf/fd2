@@ -1315,7 +1315,7 @@ function drawSprite() {
 function drawSelected() {
 
     const x_offset = Math.round(c.width/2)
-    const y_offset = Math.round(c.height/2) - 400
+    const y_offset = Math.round(c.height/2) - 300
 
     const width = 100;
     const height = 100;

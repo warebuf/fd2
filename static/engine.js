@@ -1279,8 +1279,15 @@ function drawSprite() {
         row = 2;
     }
 
+    let s;
+    if(state[0][0][0].Status == 1) {
+        s = sprites[1];
+    } else {
+        s = sprites[0];
+    }
+
     ctx.drawImage(
-        sprite,
+        s,
         ( 32 * (frameIndex % 4) ), ( 32 * row ),
         32, 32,
         x_offset - 20, y_offset,

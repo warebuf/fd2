@@ -150,8 +150,17 @@
     var testPath = [];
     var paths = [];
 
-    var sprite = new Image();
-    sprite.src = "/sprite/venusaur-idle.png"
+    var sprites = []
+
+    let sprite1 = new Image();
+    sprite1.src = "/sprite/venusaur-idle.png"
+    sprites.push(sprite1)
+
+    let sprite2 = new Image();
+    sprite2.src = "/sprite/venusaur-walk.png"
+    sprites.push(sprite2)
+
+
     const totalFrames = 4;
     var frameIndex = 0;
     var frameCount = 0;

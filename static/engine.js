@@ -130,7 +130,7 @@ function anime() {
         if(view==0){
             drawHeatMap()
         }
-        drawSprite();
+        //drawSprite(); // I think it's too distracting right now
 
         if( testPath.length > 0 ) {
             drawComplexPath(testPath, "blue");

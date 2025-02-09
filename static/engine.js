@@ -2317,8 +2317,8 @@ function getHeatMapColor(t) {
 
 function drawHPBoxes(hp, maxHP, x, y) {
 
-    let maxMultiple = 0;
-    let multiple = 0;
+    let maxMultiple = 1;
+    let multiple = 1;
     let firstBarHP = hp;
     let firstBarMax = maxHP;
     if(maxHP>100){

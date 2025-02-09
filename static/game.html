@@ -152,16 +152,10 @@
 
     var sprite = new Image();
     sprite.src = "/sprite/venasaur-walk.png"
-    const totalFrames = 32;
+    const totalFrames = 4;
     var frameIndex = 0;
-
-    sprite.onload = function () {
-        console.log("loaded")
-    };
-
-    sprite.onerror = function () {
-        console.error("Image failed to load: ", sprite.src);
-    };
+    var frameCount = 0;
+    var frameCountMax = 4;
 
 </script>
 

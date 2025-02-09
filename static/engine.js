@@ -1256,6 +1256,10 @@ function drawSprite() {
         32, 32
     ); // (image, extract_x, extract_y, extract_w, extract_h, dest_x, dest_y, dest_w, dest_h)
 
-    frameIndex = (frameIndex + 1) % totalFrames;
+    frameCount++;
+    if(frameCount > frameCountMax) {
+        frameCount = 0;
+        frameIndex = (frameIndex + 1) % totalFrames;
+    }
 
 }

@@ -1337,10 +1337,10 @@ function drawSelected() {
         let iteratorX = 5;
         console.log(textHeight)
         ctx.fillStyle = 'red';
-        ctx.fillText(botString, x_offset-(width/2)+iteratorX, y_offset+textHeight+iteratorY)
+        ctx.fillText(botString, x_offset-(width/2)+iteratorX, y_offset+iteratorY)
         ctx.fillStyle = 'white';
         let botStringWidth = ctx.measureText(botString).width
-        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+textHeight+iteratorY)
+        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
 
     }
 

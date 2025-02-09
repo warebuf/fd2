@@ -2348,7 +2348,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
     ctx.font = "`12px Arial";
     ctx.textAlign = "right";
     ctx.fillStyle = "white"; // Fill color
-    ctx.fillText(hp, x - boxShift - 5 , y - 20);
+    //ctx.fillText(hp, x - boxShift - 5 , y - 20);
 
     const color = getHeatMapColor(truePercentage);
 

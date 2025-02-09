@@ -1255,22 +1255,24 @@ function drawSprite() {
         radians = state[0][0][0].Thetas[state[0][0][0].Path_Segment];
     }
 
-    if(radians < Math.PI/4) {
-        row = 0;
-    } else if(radians < 2*Math.PI/4) {
-        row = 1;
-    } else if(radians < 3*Math.PI/4) {
+    if(radians < Math.PI/8) {
         row = 2;
-    } else if(radians < 4*Math.PI/4) {
+    } else if(radians < 3*Math.PI/8) {
         row = 3;
-    } else if(radians < 5*Math.PI/4) {
+    } else if(radians < 5*Math.PI/8) {
         row = 4;
-    } else if(radians < 6*Math.PI/4) {
+    } else if(radians < 7*Math.PI/8) {
         row = 5;
-    } else if(radians < 7*Math.PI/4) {
+    } else if(radians < 9*Math.PI/8) {
         row = 6;
-    } else if(radians < 8*Math.PI/4) {
+    } else if(radians < 11*Math.PI/8) {
         row = 7;
+    } else if(radians < 13*Math.PI/8) {
+        row = 0;
+    } else if(radians < 15*Math.PI/8) {
+        row = 1;
+    } else {
+        row = 2;
     }
 
     console.log(radians, row)

@@ -1334,6 +1334,7 @@ function drawSelected() {
             botString = "[Bot] "
         }
         const textHeight = ctx.measureText("a").height;
+        console.log(textHeight)
         ctx.fillStyle = 'red';
         ctx.fillText(botString, x_offset-(width/2), y_offset+textHeight)
         ctx.fillStyle = 'white';

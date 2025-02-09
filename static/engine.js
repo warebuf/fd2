@@ -130,7 +130,7 @@ function anime() {
         if(view==0){
             drawHeatMap()
         }
-        sprite.onload = drawSprite;
+        drawSprite();
 
         if( testPath.length > 0 ) {
             drawComplexPath(testPath, "blue");

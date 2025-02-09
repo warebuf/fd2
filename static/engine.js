@@ -1251,7 +1251,7 @@ function drawSprite() {
     let row = 0;
 
     let radians = 0;
-    if ( (state[0][0][0].Thetas != null) && (state[0][0][0].Thetas > 0) ) {
+    if ( (state[0][0][0].Thetas != null) && (state[0][0][0].Thetas.length > 0) ) {
         radians = state[0][0][0].Thetas[state[0][0][0].Path_Segment];
     }
 

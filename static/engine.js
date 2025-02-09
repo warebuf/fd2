@@ -1313,6 +1313,13 @@ function drawSprite() {
 }
 
 function drawSelected() {
+
+    const x_offset = Math.round(c.width/2) - 400
+    const y_offset = Math.round(c.height/2) - 250
+
+    const width = 100;
+    const height = 100;
+
     ctx.strokeStyle = "yellow";
-    ctx.strokeRect(100, 100, 100, 100)
+    ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
 }

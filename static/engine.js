@@ -2350,13 +2350,20 @@ function drawHPBoxes(hp, maxHP, x, y) {
     ctx.fillStyle = "white"; // Fill color
     ctx.fillText(hp, x - boxShift - 5 , y - 20);
 
-    ctx.fillStyle = getHeatMapColor(truePercentage);
+    const color = getHeatMapColor(truePercentage);
+
+    ctx.fillStyle = color;
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x - boxShift, y - 25, barWidth * boxes * percentage, barHeight);
     ctx.strokeStyle = "black";
     for (let i = 0; i < boxes; i++) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
         if(i < maxMultiple) {
+            if(i < multiple) {
+                ctx.fillStyle = color;
+            } else {
+                ctx.fillStyle = "white";
+            }
             ctx.fillRect(x + (i * barWidth) - boxShift + 2, y - 20 + 2, 1, 1);
         }
     }

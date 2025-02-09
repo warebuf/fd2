@@ -1248,9 +1248,36 @@ function drawHPBoxes(hp, maxHP, x, y) {
 
 function drawSprite() {
 
+    let row = 0;
+    if(state[0][0][0].Status == 0) {
+
+        let radians = 0;
+        if ( (state[0][0][0].Thetas != null) && (state[0][0][0].Thetas > 0) ) {
+            radians = state[0][0][0].Thetas[state[0][0][0].Path_Segment];
+        }
+
+        if(radians < Math.PI/4) {
+            row = 0;
+        } else if(radians < 2*Math.PI/4) {
+            row = 1;
+        } else if(radians < 3*Math.PI/4) {
+            row = 2;
+        } else if(radians < 4*Math.PI/4) {
+            row = 3;
+        } else if(radians < 5*Math.PI/4) {
+            row = 4;
+        } else if(radians < 6*Math.PI/4) {
+            row = 5;
+        } else if(radians < 7*Math.PI/4) {
+            row = 6;
+        } else if(radians < 8*Math.PI/4) {
+            row = 7;
+        }
+    }
+
     ctx.drawImage(
         sprite,
-        ( 32 * (frameIndex % 4) ), ( 32 * Math.floor(frameIndex / 4) ),
+        ( 32 * (frameIndex % 4) ), ( 32 * row ),
         32, 32,
         100, 100,
         32, 32

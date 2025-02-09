@@ -1283,7 +1283,7 @@ function drawSprite() {
         sprite,
         ( 32 * (frameIndex % 4) ), ( 32 * row ),
         32, 32,
-        x_offset, y_offset,
+        x_offset - 20, y_offset,
         32, 32
     ); // (image, extract_x, extract_y, extract_w, extract_h, dest_x, dest_y, dest_w, dest_h)
 

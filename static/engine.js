@@ -2317,10 +2317,12 @@ function getHeatMapColor(t) {
 
 function drawHPBoxes(hp, maxHP, x, y) {
 
+    let maxMultiple = 0;
     let multiple = 0;
     let firstBarHP = hp;
     let firstBarMax = maxHP;
     if(maxHP>100){
+        maxMultiple = maxHP / 100;
         multiple = hp / 100;
         firstBarHP = hp % 100;
         firstBarMax = 100;
@@ -2354,9 +2356,8 @@ function drawHPBoxes(hp, maxHP, x, y) {
     ctx.strokeStyle = "black";
     for (let i = 0; i < boxes; i++) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
-        if(i < multiple) {
+        if(i < maxMultiple) {
             ctx.fillRect(x + (i * barWidth) - boxShift + 2, y - 20 + 2, 1, 1);
-            ctx.strokeRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
         }
     }
 }

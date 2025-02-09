@@ -130,6 +130,7 @@ function anime() {
         if(view==0){
             drawHeatMap()
         }
+        drawSprite()
 
         if( testPath.length > 0 ) {
             drawComplexPath(testPath, "blue");
@@ -1243,4 +1244,16 @@ function drawHPBoxes(hp, maxHP, x, y) {
             ctx.fillRect(x + (i * barWidth) - boxShift + 2, y - 20 + 2, 1, 1);
         }
     }
+}
+
+function drawSprite() {
+    ctx.drawImage(
+        sprite,
+        ( 32 * (frameIndex % 4) ), ( 32 * Math.floor(frameIndex / 4) ),
+        32, 32,
+        100, 100,
+        32, 32
+    ); // (image, extract_x, extract_y, extract_w, extract_h, dest_x, dest_y, dest_w, dest_h)
+
+    frameIndex = (frameIndex + 1) % totalFrames;
 }

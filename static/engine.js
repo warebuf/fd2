@@ -1254,6 +1254,9 @@ function drawSprite() {
 
     let row = 0;
 
+    let sourceWidth = 32;
+    let sourceHeight = 32;
+
     let radians = 0;
     if ( (state[0][0][0].Thetas != null) && (state[0][0][0].Thetas.length > 0) ) {
         radians = state[0][0][0].Thetas[state[0][0][0].Path_Segment];
@@ -1284,14 +1287,16 @@ function drawSprite() {
         s = sprites[1];
     } else if(state[0][0][0].Status == 2) {
         s = sprites[2];
+        sourceWidth = 32;
+        sourceHeight = 40;
     } else {
         s = sprites[0];
     }
 
     ctx.drawImage(
         s,
-        ( 32 * (frameIndex % 4) ), ( 32 * row ),
-        32, 32,
+        ( sourceWidth * (frameIndex % 4) ), ( sourceHeight * row ),
+        sourceWidth, sourceHeight,
         x_offset - 20, y_offset,
         32, 32
     ); // (image, extract_x, extract_y, extract_w, extract_h, dest_x, dest_y, dest_w, dest_h)

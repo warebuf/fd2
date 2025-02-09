@@ -1335,7 +1335,6 @@ function drawSelected() {
         }
         let iteratorY = ctx.measureText("M").width + 5; // trick to get height
         let iteratorX = 5;
-        console.log(textHeight)
         ctx.fillStyle = 'red';
         ctx.fillText(botString, x_offset-(width/2)+iteratorX, y_offset+iteratorY)
         ctx.fillStyle = 'white';

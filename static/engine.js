@@ -113,7 +113,7 @@ function anime() {
     } else if (match_data.length > 0) {
 
         drawObstacles()
-        drawCampSelect()
+        drawCampCrosshair()
         calcPos()
         drawAttack()
         drawPos()
@@ -127,10 +127,13 @@ function anime() {
         drawTurn()
         drawUnitsOfTime()
         drawLog()
+        //drawSprite(); // I think it's too distracting right now
+        drawSelected();
+
         if(view==0){
             drawHeatMap()
         }
-        //drawSprite(); // I think it's too distracting right now
+
 
         if( testPath.length > 0 ) {
             drawComplexPath(testPath, "blue");
@@ -239,7 +242,7 @@ function calcPos() {
                                     }
                                 }
                             }
-                            
+
                             if( state[i][j][k].DistanceLeft - 0.01 <= match_data[animating_state][i][j][k].DistanceLeft ){
                                 state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
@@ -393,7 +396,7 @@ function drawCamps() {
     ctx.fillStyle = "white";
 }
 
-function drawCampSelect() {
+function drawCampCrosshair() {
     if(state_machine == 1) {
         if(even) {
 
@@ -1307,4 +1310,9 @@ function drawSprite() {
         frameIndex = (frameIndex + 1) % totalFrames;
     }
 
+}
+
+function drawSelected() {
+    ctx.strokeStyle = "yellow";
+    ctx.strokeRect(100, 100, 100, 100)
 }

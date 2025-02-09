@@ -1248,8 +1248,6 @@ function drawHPBoxes(hp, maxHP, x, y) {
 
 function drawSprite() {
 
-    console.log("madeit", sprite)
-
     ctx.drawImage(
         sprite,
         ( 32 * (frameIndex % 4) ), ( 32 * Math.floor(frameIndex / 4) ),
@@ -1259,4 +1257,5 @@ function drawSprite() {
     ); // (image, extract_x, extract_y, extract_w, extract_h, dest_x, dest_y, dest_w, dest_h)
 
     frameIndex = (frameIndex + 1) % totalFrames;
+
 }

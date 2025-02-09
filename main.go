@@ -332,6 +332,9 @@ func main() {
 	fs3 := http.FileServer(http.Dir("./images"))
 	mux.Handle("/images/", http.StripPrefix("/images/", fs3))
 
+	fs4 := http.FileServer(http.Dir("./sprite"))
+	mux.Handle("/sprite/", http.StripPrefix("/sprite/", fs4))
+
 	mux.HandleFunc("/waitroom", waitroomHandler)
 	mux.HandleFunc("/psocket", psocketSetupHandler)
 

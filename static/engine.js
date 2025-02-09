@@ -1249,7 +1249,7 @@ function drawHPBoxes(hp, maxHP, x, y) {
 function drawSprite() {
 
     console.log(sprite)
-    
+
     ctx.drawImage(
         sprite,
         ( 32 * (frameIndex % 4) ), ( 32 * Math.floor(frameIndex / 4) ),

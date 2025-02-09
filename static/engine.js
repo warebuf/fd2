@@ -129,7 +129,6 @@ function anime() {
         drawLog()
         if(view==0){
             drawHeatMap()
-            drawCampHP()
         }
 
         if( testPath.length > 0 ) {
@@ -881,22 +880,6 @@ function drawHeatMap(){
         t_shift = t_shift + 700;
     }
 
-}
-
-function drawCampHP() {
-    let x = 100
-    let y = 700
-    ctx.font = '11px monospace';
-
-    for(let i = 0; i < camps.length; i++) {
-        ctx.fillStyle = 'white';
-        if(hoverable != null) {
-            if((hoverable.Type=='camp') && (hoverable.I==i)) {
-                ctx.fillStyle = 'red';
-            }
-        }
-        ctx.fillText(i+": " + camps[i].HP, x, y+(i*10))
-    }
 }
 
 function calcColour(n){

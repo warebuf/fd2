@@ -2351,12 +2351,11 @@ function drawHPBoxes(hp, maxHP, x, y) {
     ctx.fillStyle = getHeatMapColor(truePercentage);
     ctx.lineWidth = borderWidth;
     ctx.fillRect(x - boxShift, y - 25, barWidth * boxes * percentage, barHeight);
-    ctx.fillStyle = "blue";
     ctx.strokeStyle = "black";
     for (let i = 0; i < boxes; i++) {
         ctx.strokeRect(x + (i * barWidth) - boxShift, y - 25, barWidth, barHeight);
         if(i < multiple) {
-            ctx.fillRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
+            ctx.fillRect(x + (i * barWidth) - boxShift, y - 20, 1, 1);
             ctx.strokeRect(x + (i * barWidth) - boxShift, y - 20, barWidth, barHeight);
         }
     }

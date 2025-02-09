@@ -1248,6 +1248,10 @@ function drawHPBoxes(hp, maxHP, x, y) {
 
 function drawSprite() {
 
+
+    let x_offset = Math.round(c.width/2) - 400
+    let y_offset = Math.round(c.height/2) - 250
+
     let row = 0;
 
     let radians = 0;
@@ -1275,15 +1279,11 @@ function drawSprite() {
         row = 2;
     }
 
-    console.log(radians, row)
-
-
-
     ctx.drawImage(
         sprite,
         ( 32 * (frameIndex % 4) ), ( 32 * row ),
         32, 32,
-        100, 100,
+        x_offset, y_offset,
         32, 32
     ); // (image, extract_x, extract_y, extract_w, extract_h, dest_x, dest_y, dest_w, dest_h)
 

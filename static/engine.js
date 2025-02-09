@@ -1282,6 +1282,8 @@ function drawSprite() {
     let s;
     if(state[0][0][0].Status == 1) {
         s = sprites[1];
+    } else if(state[0][0][0].Status == 2) {
+        s = sprites[2];
     } else {
         s = sprites[0];
     }

@@ -320,7 +320,7 @@ function drawPos(){
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 if(state[i][j][k].HP > 0) {
-                    //drawHPBoxes(state[i][j][k].HP,state[i][j][k].HP,width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y)
+                    drawHPBoxes(state[i][j][k].HP,state[i][j][k].HP,width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y)
                     drawRotated('>',width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y,state[i][j][k].Thetas, state[i][j][k].Path_Segment,"11", 3, "white")
                 }
             }

@@ -1328,8 +1328,16 @@ function drawSelected() {
         let unit = state[hoverable.I][hoverable.J][hoverable.K]
 
         console.log(unit)
+        ctx.font = '11px monospace';
+        ctx.fillStyle = 'white';
 
-        ctx.fillText(unit, x_offset-(width/2), y_offset)
+        let botString = ""
+        if(unit.Bot == true) {
+            botString = "[Bot]"
+        }
+        ctx.fillText(botString, x_offset-(width/2), y_offset)
+        let botStringWidth = ctx.measureText(botString).width
+        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth, y_offset)
 
     }
 

@@ -1329,16 +1329,16 @@ function drawSelected() {
 
         ctx.font = '11px monospace';
 
-
         let botString = ""
         if(unit.Bot == true) {
             botString = "[Bot] "
         }
+        const textHeight = ctx.measureText(botString).width;
         ctx.fillStyle = 'red';
-        ctx.fillText(botString, x_offset-(width/2), y_offset)
+        ctx.fillText(botString, x_offset-(width/2), y_offset+textHeight)
         ctx.fillStyle = 'white';
         let botStringWidth = ctx.measureText(botString).width
-        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth, y_offset)
+        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth, y_offset+textHeight)
 
     }
 

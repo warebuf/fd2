@@ -1320,6 +1320,7 @@ function drawSelected() {
     const width = 100;
     const height = 100;
 
-    ctx.strokeStyle = "yellow";
+    ctx.strokeStyle = "pink";
     ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
+    ctx.fillText(hoverable, x_offset-(width/2), y_offset)
 }

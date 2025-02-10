@@ -1322,7 +1322,7 @@ function drawSelected() {
         const width = 500;
         const height = 100;
 
-        ctx.strokeStyle = "pink";
+        ctx.strokeStyle = "white";
         ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
 
         let unit = state[hoverable.I][hoverable.J][hoverable.K]
@@ -1331,7 +1331,7 @@ function drawSelected() {
 
         let botString = ""
         if(unit.Bot == true) {
-            botString = "[Bot] "
+            botString = "[BOT] "
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
         let iteratorX = 5;

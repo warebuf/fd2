@@ -1334,7 +1334,7 @@ function drawSelected() {
         let camper = camps[hoverable.I]
         console.log(camper)
         let campString = "";
-        if(camper.Type=="camp") {
+        if(hoverable.Type=="camp") {
             campString = "[CAMP]";
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height

@@ -1314,6 +1314,9 @@ function drawSprite() {
 
 function drawSelected() {
 
+    console.log(hoverable, selected_hoverable, selected_hoverable.I, selected_hoverable.J, selected_hoverable.K)
+    console.log(hoverable != null && selected_hoverable != null && selected_hoverable.I >= 0 && selected_hoverable.J >= 0 && selected_hoverable >= 0)
+
     if( hoverable != null && selected_hoverable != null && selected_hoverable.I >= 0 && selected_hoverable.J >= 0 && selected_hoverable >= 0 ) {
 
         const x_offset = Math.round(c.width/2)

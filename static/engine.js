@@ -1319,12 +1319,13 @@ function drawSelected() {
         const x_offset = Math.round(c.width/2)
         const y_offset = Math.round(c.height/2) - 375
 
-        const width = 245;
+        const gap = 5;
+        const width = 250-gap;
         const height = 100;
 
         ctx.strokeStyle = "white";
         ctx.strokeRect(x_offset-(500/2), y_offset, width, height)
-        ctx.strokeRect(x_offset, y_offset, width, height)
+        ctx.strokeRect(x_offset+gap, y_offset, width, height)
 
     }
     else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {

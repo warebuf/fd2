@@ -1323,9 +1323,23 @@ function drawSelected() {
         const width = 250-gap;
         const height = 100;
 
+        ctx.font = '11px monospace';
         ctx.strokeStyle = "white";
+
+        // draw unit (LS)
         ctx.strokeRect(x_offset-(500/2), y_offset, width, height)
+
+        // draw camp (RS)
         ctx.strokeRect(x_offset+gap, y_offset, width, height)
+        let camper = camps[hoverable.I]
+        let campString = "";
+        if(camper.Type=="camp") {
+            campString = "[CAMP]";
+        }
+        let iteratorY = ctx.measureText("M").width + 10; // trick to get height
+        let iteratorX = 5;
+        ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
+
 
     }
     else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {

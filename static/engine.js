@@ -1332,7 +1332,6 @@ function drawSelected() {
         // draw camp (RS)
         ctx.strokeRect(x_offset+gap, y_offset, width, height)
         let camper = camps[hoverable.I]
-        console.log(camper)
         let campString = "";
         if(hoverable.Type=="camp") {
             campString = "[CAMP]";
@@ -1340,6 +1339,9 @@ function drawSelected() {
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
         let iteratorX = 5;
         ctx.fillStyle = '#89CFF0';
+        ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
+        iteratorY += ctx.measureText("M").width;
+        ctx.fillStyle = 'white';
         ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
 
 

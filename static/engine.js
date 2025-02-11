@@ -1332,6 +1332,7 @@ function drawSelected() {
         // draw camp (RS)
         ctx.strokeRect(x_offset+gap, y_offset, width, height)
         let camper = camps[hoverable.I]
+        console.log(camper)
         let campString = "";
         if(camper.Type=="camp") {
             campString = "[CAMP]";

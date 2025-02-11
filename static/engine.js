@@ -1324,7 +1324,7 @@ function drawSelected() {
 
         ctx.strokeStyle = "white";
         ctx.strokeRect(x_offset-(500/2), y_offset, width, height)
-        ctx.strokeRect(x_offset+(500/2), y_offset, width, height)
+        ctx.strokeRect(x_offset, y_offset, width, height)
 
     }
     else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {

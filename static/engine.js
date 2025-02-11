@@ -1314,9 +1314,6 @@ function drawSprite() {
 
 function drawSelected() {
 
-    console.log(hoverable, selected_hoverable)
-    console.log(hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0)
-
     if( hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0 ) {
 
         const x_offset = Math.round(c.width/2)
@@ -1326,7 +1323,7 @@ function drawSelected() {
         const height = 100;
 
         ctx.strokeStyle = "white";
-        ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
+        ctx.strokeRect(x_offset-(500/2), y_offset, width, height)
 
     }
     else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {

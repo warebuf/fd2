@@ -1340,7 +1340,7 @@ function drawSelected() {
         let iteratorX = 5;
         ctx.fillStyle = '#89CFF0';
         ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
-        iteratorY += ctx.measureText("M").width;
+        iteratorY += ctx.measureText("M").width + 10;
         ctx.fillStyle = 'white';
         ctx.fillText("HP", x_offset+gap+iteratorX, y_offset+iteratorY)
 

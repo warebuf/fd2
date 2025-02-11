@@ -1343,7 +1343,7 @@ function drawSelected() {
         iteratorX += 5;
         iteratorY += ctx.measureText("M").width + 10;
         ctx.fillStyle = 'white';
-        ctx.fillText("HP" + camper.HP + " / " + camper.MaxHP, x_offset+gap+iteratorX, y_offset+iteratorY)
+        ctx.fillText("HP " + camper.HP + " / " + camper.MaxHP, x_offset+gap+iteratorX, y_offset+iteratorY)
 
 
     }

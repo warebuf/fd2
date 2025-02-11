@@ -1314,7 +1314,19 @@ function drawSprite() {
 
 function drawSelected() {
 
-    if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {
+    if( hoverable != null && selected_hoverable != null && selected_hoverable.I >= 0 && selected_hoverable.J >= 0 && selected_hoverable >= 0 ) {
+
+        const x_offset = Math.round(c.width/2)
+        const y_offset = Math.round(c.height/2) - 375
+
+        const width = 245;
+        const height = 100;
+
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
+
+    }
+    else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {
 
         const x_offset = Math.round(c.width/2)
         const y_offset = Math.round(c.height/2) - 375

@@ -1338,6 +1338,7 @@ function drawSelected() {
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
         let iteratorX = 5;
+        ctx.fillStyle = 'blue';
         ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
 
 

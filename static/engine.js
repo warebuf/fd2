@@ -1389,6 +1389,15 @@ function drawSelected() {
         iteratorY += ctx.measureText("M").width + 10;
         ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
 
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("AS " + unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("ATK " + unit.ATK, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("DPS " + unit.ATK*unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
 
     }
 

@@ -461,7 +461,7 @@ func createMatch(pl *permission_list) *match {
 			ans.team_client_hero[team_int] = append(ans.team_client_hero[team_int], make([]*hero, 0, 5))
 
 			names := []string{
-				"EYE OF GOD", "BLUE EYES W.", "PIKACHU", "MEGAN FOX", "MUMEN RIDER",
+				"EYE OF GOD", "BLUE EYES WHITE DRAGON", "PIKACHU", "MEGAN FOX", "MUMEN RIDER",
 				"RAINMAN", "CARMACK", "CAGED", "JINZO", "LOADED GUN CONJECT.",
 				"TERRACOTTA", "DEATH BEAM", "ONE EDGE BLADE", "DEATHBLADE", "GUINSOO",
 				"SOUND OF THE RAIN", "CAT TAIL", "HOG WILD", "YEAR ZERO",

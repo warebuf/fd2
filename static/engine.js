@@ -1376,10 +1376,10 @@ function drawSelected() {
         const levelString = "LV. " + (unit.EXP/100).toString();
 
         ctx.fillText(levelString, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
-        const levelStringWidth = ctx.measureText(levelString)
+        const levelStringWidth = ctx.measureText(levelString).width;
 
         //ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
-        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
+        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + levelStringWidth + iteratorX, y_offset+iteratorY)
         const nameStringWidth = ctx.measureText(unit.Name).width
         //ctx.fillText("LV. " + (Math.floor(unit.EXP/100)), x_offset-(width/2) + botStringWidth + nameStringWidth + iteratorX, y_offset+iteratorY)
         

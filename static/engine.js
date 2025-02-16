@@ -1386,6 +1386,7 @@ function drawSelected() {
             
         }
 
+        iteratorY += ctx.measureText("M").width + 10;
         ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
 
 

@@ -169,6 +169,8 @@
     var frameCount = 0;
     var frameCountMax = 4;
 
+    var uiTest = 0;
+
 </script>
 
 <script src="https://cdn.socket.io/socket.io-3.0.5.js"></script>
@@ -317,6 +319,13 @@
                     view = 0
                 }
                 break;
+
+            case 'X':
+            case 'x':
+                uiTest++;
+                if(uiTest==2) {
+                    uiTest = 0;
+                }
 
             case 'A':
             case 'a':

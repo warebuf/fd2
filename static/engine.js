@@ -1373,31 +1373,25 @@ function drawSelected() {
         ctx.fillStyle = 'white';
         const botStringWidth = ctx.measureText(botString).width;
 
+        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
+        const nameStringWidth = ctx.measureText(unit.Name).width
+        ctx.fillText(" LV. " + (unit.EXP/100), x_offset-(width/2) + botStringWidth + nameStringWidth + iteratorX, y_offset+iteratorY)
+            
         if(uiTest == 0) {
-            const levelString = "LV. " + (unit.EXP/100).toString();
-            ctx.fillText(levelString, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
-            const levelStringWidth = ctx.measureText(levelString).width;
-            ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + levelStringWidth + 5 + iteratorX, y_offset+iteratorY)
-            
-        } else if(uiTest == 1) {
-            ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
-            const nameStringWidth = ctx.measureText(unit.Name).width
-            ctx.fillText(" LV. " + (unit.EXP/100), x_offset-(width/2) + botStringWidth + nameStringWidth + iteratorX, y_offset+iteratorY)
-            
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("AS " + unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("ATK " + unit.ATK, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("DPS " + unit.ATK*unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
         }
 
-        iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-        iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("AS " + unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-        iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("ATK " + unit.ATK, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-        iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("DPS " + unit.ATK*unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
+        
 
     }
 

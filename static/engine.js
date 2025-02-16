@@ -1373,9 +1373,10 @@ function drawSelected() {
         ctx.fillStyle = 'white';
         const botStringWidth = ctx.measureText(botString).width
 
-        
-        ctx.fillText("LV. " + (unit.EXP/100), x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
-        const levelStringWidth = ctx.measureText("LV. " + (unit.EXP/100))
+        const levelString = "LV. " + (unit.EXP/100).toString();
+
+        ctx.fillText(levelString, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
+        const levelStringWidth = ctx.measureText(levelString)
 
         //ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
         ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + levelStringWidth + iteratorX, y_offset+iteratorY)

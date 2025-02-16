@@ -52,10 +52,11 @@ type hero struct {
 	R part
 	B part
 
-	HP  int
-	ATK int
-	AS  int
-	SPD int
+	MaxHP int
+	HP    int
+	ATK   int
+	AS    int
+	SPD   int
 
 	EXP int
 
@@ -490,6 +491,7 @@ func createMatch(pl *permission_list) *match {
 					Battle: nil,
 					TTD:    100.0,
 				}
+				temp.MaxHP = temp.HP
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 

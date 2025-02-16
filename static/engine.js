@@ -1366,7 +1366,7 @@ function drawSelected() {
         if(unit.Bot == true) {
             botString = "[BOT] "
         }
-        let iteratorY = ctx.measureText("M").width + 10; // trick to get height
+        let iteratorY = ctx.measureText("M").width + 5; // trick to get height
         let iteratorX = 5;
         ctx.fillStyle = 'red';
         ctx.fillText(botString, x_offset-(width/2)+iteratorX, y_offset+iteratorY)

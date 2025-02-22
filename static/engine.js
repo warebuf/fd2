@@ -1353,7 +1353,7 @@ function drawSelected() {
         const y_offset = Math.round(c.height/2) - 375
 
         const width = 500;
-        const height = 100;
+        const height = 125;
 
         ctx.strokeStyle = "white";
         ctx.strokeRect(x_offset-(width/2), y_offset, width, height)

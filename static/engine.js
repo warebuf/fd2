@@ -1389,6 +1389,9 @@ function drawSelected() {
 
             iteratorY += ctx.measureText("M").width + 10;
             ctx.fillText("DPS " + unit.ATK*unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("SPD " + unit.SPD, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
         }
 
         

@@ -1314,6 +1314,61 @@ function drawSprite() {
 
 function drawSelected() {
 
+    const screen1 = (hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0);
+    const screen2 = (hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0);
+
+    if(screen1 || screen2) {
+        const x_offset = Math.round(c.width/2)
+        const y_offset = Math.round(c.height/2) - 400
+
+        const width = 500;
+        const height = 125;
+
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
+
+        let unit = state[hoverable.I][hoverable.J][hoverable.K]
+
+        ctx.font = '11px monospace';
+
+        let botString = ""
+        if(unit.Bot == true) {
+            botString = "[BOT] "
+        }
+        let iteratorY = ctx.measureText("M").width + 10; // trick to get height
+        let iteratorX = 5;
+        ctx.fillStyle = 'red';
+        ctx.fillText(botString, x_offset-(width/2)+iteratorX, y_offset+iteratorY)
+        ctx.fillStyle = 'white';
+        const botStringWidth = ctx.measureText(botString).width;
+
+        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
+        const nameStringWidth = ctx.measureText(unit.Name).width
+        ctx.fillText(" LV. " + (unit.EXP/100), x_offset-(width/2) + botStringWidth + nameStringWidth + iteratorX, y_offset+iteratorY)
+
+        if(uiTest == 0) {
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("AS " + unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("ATK " + unit.ATK, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("DPS " + unit.ATK*unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("SPD " + unit.SPD, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
+        }
+    }
+
+    if(screen2) {
+
+    }
+
+
     if( hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0 ) {
 
         const x_offset = Math.round(c.width/2)
@@ -1349,50 +1404,7 @@ function drawSelected() {
     }
     else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {
 
-        const x_offset = Math.round(c.width/2)
-        const y_offset = Math.round(c.height/2) - 400
 
-        const width = 500;
-        const height = 125;
-
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
-
-        let unit = state[hoverable.I][hoverable.J][hoverable.K]
-
-        ctx.font = '11px monospace';
-
-        let botString = ""
-        if(unit.Bot == true) {
-            botString = "[BOT] "
-        }
-        let iteratorY = ctx.measureText("M").width + 10; // trick to get height
-        let iteratorX = 5;
-        ctx.fillStyle = 'red';
-        ctx.fillText(botString, x_offset-(width/2)+iteratorX, y_offset+iteratorY)
-        ctx.fillStyle = 'white';
-        const botStringWidth = ctx.measureText(botString).width;
-
-        ctx.fillText(unit.Name, x_offset-(width/2) + botStringWidth + iteratorX, y_offset+iteratorY)
-        const nameStringWidth = ctx.measureText(unit.Name).width
-        ctx.fillText(" LV. " + (unit.EXP/100), x_offset-(width/2) + botStringWidth + nameStringWidth + iteratorX, y_offset+iteratorY)
-            
-        if(uiTest == 0) {
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("AS " + unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("ATK " + unit.ATK, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("DPS " + unit.ATK*unit.AS, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("SPD " + unit.SPD, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
-        }
 
         
 

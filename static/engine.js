@@ -1350,7 +1350,7 @@ function drawSelected() {
     else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {
 
         const x_offset = Math.round(c.width/2)
-        const y_offset = Math.round(c.height/2) - 375
+        const y_offset = Math.round(c.height/2) - 400
 
         const width = 500;
         const height = 125;

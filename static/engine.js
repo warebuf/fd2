@@ -1332,6 +1332,7 @@ function drawSelected() {
 
         let unit;
 
+        // drawing the square
         if (unitDraw) {
             ctx.strokeRect(x_offset - (width / 2), y_offset, width, height)
             
@@ -1373,6 +1374,17 @@ function drawSelected() {
             iteratorY += ctx.measureText("M").width + 10;
             ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
         }
+
+        if (unitDraw) {
+
+            iteratorY += ctx.measureText("M").width + 10;
+            ctx.fillText("ETA " + unit.DistanceLeft / unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+
+        } else if (opponentDraw) {
+
+        }
+
+
 
     }
 

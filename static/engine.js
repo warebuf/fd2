@@ -1378,7 +1378,13 @@ function drawSelected() {
         if (unitDraw) {
 
             iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("ETA " + unit.DistanceLeft / unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+            let ETA;
+            if(unit.SPD === 0) {
+                ETA = "NAN";
+            } else {
+                ETA = (unit.DistanceLeft / unit.SPD).toFixed(2);
+            }
+            ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
         } else if (opponentDraw) {
 

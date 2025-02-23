@@ -1314,40 +1314,13 @@ function drawSprite() {
 
 function drawSelected() {
 
-    if( hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0 ) {
-
-        const x_offset = Math.round(c.width/2)
-        const y_offset = Math.round(c.height/2) - 400
-
-        const gap = 5;
-        const width = 250-gap;
-        const height = 125;
-
-        ctx.font = '11px monospace';
-        ctx.strokeStyle = "white";
-
-        // draw unit (LS)
-        ctx.strokeRect(x_offset-(500/2), y_offset, width, height)
-
-        // draw camp (RS)
-        ctx.strokeRect(x_offset+gap, y_offset, width, height)
-        let camper = camps[hoverable.I]
-        let campString = "";
-        if(hoverable.Type=="camp") {
-            campString = "[CAMP]";
-        }
-        let iteratorY = ctx.measureText("M").width + 10; // trick to get height
-        let iteratorX = 5;
-        ctx.fillStyle = '#89CFF0';
-        ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
-        iteratorX += 5;
-        iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillStyle = 'white';
-        ctx.fillText("HP " + camper.HP + " / " + camper.MaxHP, x_offset+gap+iteratorX, y_offset+iteratorY)
+    let unitDraw = (hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0);
+    let opponentDraw = ( hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0 );
 
 
-    }
-    else if(hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0) {
+
+
+    if(unitDraw || opponentDraw) {
 
         const x_offset = Math.round(c.width/2)
         const y_offset = Math.round(c.height/2) - 400
@@ -1358,7 +1331,13 @@ function drawSelected() {
         ctx.strokeStyle = "white";
         ctx.strokeRect(x_offset-(width/2), y_offset, width, height)
 
-        let unit = state[hoverable.I][hoverable.J][hoverable.K]
+        let unit;
+        
+        if(unitDraw) {
+            unit = state[hoverable.I][hoverable.J][hoverable.K];
+        } else if (opponentDraw) {
+            unit = state[selected_hoverable.I][selected_hoverable.J][selected_hoverable.K]
+        }
 
         ctx.font = '11px monospace';
 
@@ -1393,10 +1372,45 @@ function drawSelected() {
             iteratorY += ctx.measureText("M").width + 10;
             ctx.fillText("SPD " + unit.SPD, x_offset-(width/2) + iteratorX, y_offset+iteratorY)
         }
-
         
+    }
+
+
+
+    if (opponentDraw) {
+
+        const x_offset = Math.round(c.width/2)
+        const y_offset = Math.round(c.height/2) - 400
+
+        const gap = 5;
+        const width = 250-gap;
+        const height = 125;
+
+        ctx.font = '11px monospace';
+        ctx.strokeStyle = "white";
+
+        // draw unit (LS)
+        ctx.strokeRect(x_offset-(500/2), y_offset, width, height)
+
+        // draw camp (RS)
+        ctx.strokeRect(x_offset+gap, y_offset, width, height)
+        let camper = camps[hoverable.I]
+        let campString = "";
+        if(hoverable.Type=="camp") {
+            campString = "[CAMP]";
+        }
+        let iteratorY = ctx.measureText("M").width + 10; // trick to get height
+        let iteratorX = 5;
+        ctx.fillStyle = '#89CFF0';
+        ctx.fillText(campString, x_offset+gap+iteratorX, y_offset+iteratorY)
+        iteratorX += 5;
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillStyle = 'white';
+        ctx.fillText("HP " + camper.HP + " / " + camper.MaxHP, x_offset+gap+iteratorX, y_offset+iteratorY)
+
 
     }
+    
 
 
 }

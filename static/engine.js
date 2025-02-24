@@ -1387,7 +1387,8 @@ function drawSelected() {
             ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
         } else if (opponentDraw) {
-
+            iteratorY += ctx.measureText("M").width + 10;
+            let ETA;
         }
 
 

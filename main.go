@@ -289,11 +289,10 @@ func main() {
 	sid_to_sock.mutex = sync.RWMutex{}
 	msid_to_sock.msid_to_sock = make(map[uuid.UUID]*match_socket)
 
-	// IF HEROKU BUILD
 	//goth.UseProviders(google.New(
 	//	"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
 	//	"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",
-	//	"https://testfdfdfd-504b74ad04fd.herokuapp.com/callback",
+	//	"http://localhost:3000/callback",
 	//))
 
 	goth.UseProviders(google.New(
@@ -304,14 +303,6 @@ func main() {
 
 	//port = os.Getenv("PORT")
 	port = "3000"
-	// ALSO TURN :WS TO :WSS IN CHAT.HTML
-
-	/*
-		// IF LOCAL BUILD
-		goth.UseProviders(google.New("676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com", "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", "http://localhost:3000/callback"))
-		port = "3000"
-		// REMEMBER TO CHANGE TO WS IN CHAT.HTML
-	*/
 
 	// init
 	secret_key := []byte("secret-password") // used to encrypt cookies, have to use a stronger password, but used a simple one for illustration purposes

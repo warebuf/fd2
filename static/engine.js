@@ -1319,7 +1319,6 @@ function drawSelected() {
 
 
 
-
     if (unitDraw || opponentDraw) {
 
         const x_offset = Math.round(c.width / 2)

@@ -149,6 +149,7 @@
 
     var testPath = [];
     var paths = [];
+    var pathLengths = [];
 
     var sprites = []
 
@@ -266,12 +267,16 @@
                             )
 
                             paths = [];
+                            pathLengths = [];
                             let startingNode = createStartingNode(state[my_team][my_int][hoverable.K]);
                             if( startingNode.Edges.length > 0 ) {
                                 for (let i = 0; i < camps.length; i++) {
                                     if (camps[i].HP > 0) {
                                         const start = performance.now()
-                                        findPath(startingNode, camps[i]);
+                                        const foundPath = findPath(startingNode, camps[i]);
+                                        if(foundPath) {
+                                            pathLengths.push( getPathLength(paths[paths.length - 1]) );
+                                        }
                                         const end = performance.now();
                                         console.log(`findPath executed in ${end - start} ms`);
                                     }
@@ -305,6 +310,7 @@
                         selected_hoverable = null;
                         state_machine = 0;
                         paths = [];
+                        pathLengths = [];
                         setupHoverable();
                     }
 
@@ -456,6 +462,7 @@
                     state_machine = 0;
                     selected_hoverable = null;
                     paths = [];
+                    pathLengths = [];
                     setupHoverable();
                 }
                 break;
@@ -761,7 +768,7 @@
             ans.push([targetCamp.XY.X, targetCamp.XY.Y])
             paths.push(ans)
             console.log("direct path found")
-            return;
+            return true;
         }
 
         // add a dynamic node to the global dynamic array
@@ -782,8 +789,10 @@
             removeFromIntersections();
             const end3 = performance.now();
             console.log(`Removing Destination executed in ${end3 - start3} ms`);
+            return true;
         }
 
+        return false;
 
     }
 
@@ -890,6 +899,16 @@
             }
         }
         dynamics = [];
+    }
+
+    function getPathLength(p) {
+        let total = 0;
+        for(let i = 0; i + 1 < p.length; i++) {
+            const lenX = p[i+1][0] - p[i][0];
+            const lenY = p[i+1][1] - p[i][1];
+            total += math.sqrt( (lenX * lenX) + (lenY * lenY) );
+        }
+        return total;
     }
 
 

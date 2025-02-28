@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"encoding/json"
 	"fd/bezier"
+	"fd/libs/mtdl"
 	"fmt"
 	"math"
 	"math/rand"
@@ -1550,6 +1551,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 	// aStar
 	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
 	fmt.Println("MADE IT TO FINDPATH5", ans)
+	dStar()
 	elapsed := time.Since(startTime)
 	milliseconds := elapsed.Milliseconds()
 	fmt.Printf("findPath took %d ms\n", milliseconds)
@@ -1796,4 +1798,8 @@ func euclideanDistance(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
 	dx := x2 - x1
 	dy := y2 - y1
 	return math.Sqrt(dx*dx + dy*dy)
+}
+
+func dStar() {
+	mtdl.Test()
 }

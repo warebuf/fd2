@@ -1389,9 +1389,8 @@ function drawSelected() {
             iteratorY += ctx.measureText("M").width + 10;
             let ETA;
             if(unit.SPD === 0) {
-                ETA = "NAN";
-            } else {
 
+            } else {
                 let pathIndex = -1;
                 for(let i = 0; i < paths.length; i++) {
                     if( (paths[i][paths[i].length - 1][0] == hoverable.X) &&
@@ -1400,14 +1399,10 @@ function drawSelected() {
                         break;
                     }
                 }
-
                 if(pathIndex >= 0) {
                     ETA = (pathLengths[pathIndex] / unit.SPD).toFixed(2);
                     ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
-
-
                 }
-
             }
 
         }

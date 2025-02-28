@@ -1662,11 +1662,6 @@ func (pq *PriorityQueue) update(node *aStarNode, gCost float64, fCost float64) {
 
 func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []float64) [][]float64 {
 
-	fmt.Println(1, s, g)
-	fmt.Println(2, sEdges)
-	fmt.Println(3, sDist)
-	fmt.Println(4, eEdges)
-
 	open := &PriorityQueue{}
 	track := make(map[int]*aStarNode)
 	closed := make(map[Coordinate]bool)
@@ -1677,17 +1672,10 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 	startNode.F = euclideanDistance(s.X, s.Y, g.X, g.Y)
 	heap.Push(open, startNode)
 
-	fmt.Println(5, open)
-	fmt.Println(6, startNode)
-
 	for open.Len() > 0 {
 		current := heap.Pop(open).(*aStarNode)
 
-		fmt.Println(7, current)
-
 		if euclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {
-
-			fmt.Println("finished")
 
 			path := [][]float64{}
 			for node := current; node != nil; node = node.Parent {
@@ -1701,26 +1689,19 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 		}
 
 		closed[current.XY] = true
-		fmt.Println(8, closed)
 
 		for i := 0; i < len(*current.Edges); i++ {
 			neighborXY := mapList[0].IntersectionsC[(*current.Edges)[i]]
 
-			fmt.Println(9, i, neighborXY)
-
 			_, found := closed[neighborXY]
 
-			fmt.Println(10, found)
 			if found {
 				continue
 			} else {
 				trackedNode, tracked := track[(*current.Edges)[i]]
 
-				fmt.Println(11, trackedNode, tracked)
 				if tracked {
 					tentativeG := current.G + (*current.EdgeLength)[i]
-
-					fmt.Println(12, tentativeG)
 
 					if tentativeG < trackedNode.G {
 						trackedNode.G = tentativeG
@@ -1728,7 +1709,6 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 						trackedNode.F = trackedNode.G + trackedNode.G
 						trackedNode.Parent = current
 
-						fmt.Println(13, trackedNode)
 					}
 				} else {
 					tempG := current.G + (*current.EdgeLength)[i]
@@ -1746,18 +1726,12 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 					track[newNode.EdgeIndex] = newNode
 					open.Push(newNode)
 
-					fmt.Println(14, newNode.G, newNode.H, newNode.F)
-
 				}
 			}
 		}
 		if (current.EdgeIndex >= 0) && (eEdges[current.EdgeIndex] > 0) {
 
-			fmt.Println(17, eEdges[current.EdgeIndex])
-
 			trackedNode, tracked := track[-2]
-
-			fmt.Println(18, trackedNode, tracked)
 
 			if tracked {
 				tentativeG := current.G + eEdges[current.EdgeIndex]
@@ -1767,7 +1741,6 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 					trackedNode.F = trackedNode.G
 					trackedNode.Parent = current
 				}
-				fmt.Println(19, tentativeG, trackedNode, tracked)
 			} else {
 				tempG := current.G + eEdges[current.EdgeIndex]
 				newNode := &aStarNode{
@@ -1783,7 +1756,6 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 				track[newNode.EdgeIndex] = newNode
 				open.Push(newNode)
 
-				fmt.Println(20, newNode.G, newNode.H, newNode.F)
 			}
 		}
 

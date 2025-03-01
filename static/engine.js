@@ -1459,7 +1459,7 @@ function drawUnitSelect() {
 
                 }
 
-                ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 10, 10)
+                ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 5, 5)
                 increment += 15;
             }
         }

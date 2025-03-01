@@ -127,9 +127,10 @@ function anime() {
         drawTurn()
         drawUnitsOfTime()
         drawLog()
-        drawSprite(); // I think it's too distracting right now
         drawSelected();
         drawUnitSelect();
+        drawSprite(); // I think it's too distracting right now
+
 
         if (view == 0) {
             drawHeatMap()

@@ -1454,7 +1454,7 @@ function drawSelected() {
 
 function drawUnitSelect() {
     const x_offset = Math.round(c.width / 2)
-    const y_offset = Math.round(c.height / 2) - 125
+    const y_offset = Math.round(c.height / 2) - 400
 
     const width = 500;
     const height = 125;

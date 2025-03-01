@@ -459,6 +459,19 @@
             case ',':
             case '<':
                 console.log("<")
+
+                if(hoverable != null) {
+
+                    if(hoverable.Type == "camp") {
+                        console.log("< camp")
+                    }
+                    else if(hoverable.Type == "unit") {
+                        console.log("< unit")
+                    }
+
+
+                }
+
                 break;
 
             case '.':

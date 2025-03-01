@@ -1460,13 +1460,13 @@ function drawUnitSelect() {
             for(let k = 0; k < state[i][j].length; k++) {
 
                 if( (hoverable != null) && (hoverable.I == i) && (hoverable.J == j) && (hoverable.K == k) ) {
-                    ctx.strokeStyle = "green";
+                    ctx.strokeStyle = "red";
                 }
                 else if ( (selected_hoverable != null) && (selected_hoverable.I == i) && (selected_hoverable.J == j) && (selected_hoverable.K == k) ) {
-                    ctx.strokeStyle = "green";
+                    ctx.strokeStyle = "red";
                 }
-                else if ( state[i][j][k].Status === 0 ) {
-                    ctx.strokeStyle = "yellow";
+                else if ( state[i][j][k].Status == 0 ) {
+                    ctx.strokeStyle = "green";
                 }
                 else {
                     ctx.strokeStyle = "white";

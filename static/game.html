@@ -75,8 +75,6 @@
 
 
 <script>
-    var a1 = 0;
-    var a2 = 1;
 
     // important data
     var socket = null; // socket object for this tab
@@ -458,25 +456,14 @@
                 }
                 break;
 
-            case 'b':
-            case 'B':
-                a2++;
-                if (a2 == a1) {
-                    a2++;
-                }
+            case ',':
+            case '<':
+                console.log("<")
+                break;
 
-                if (a2 > intersections.length - 1) {
-                    a2 = 0;
-                    a1++;
-                    if (a1 > intersections.length - 1) {
-                        a1 = 0;
-                        a2 = 1;
-                    }
-                }
-                const startTime = performance.now();
-
-                const endTime = performance.now();
-                console.log(`Execution Time: ${endTime - startTime}ms`);
+            case '.':
+            case '>':
+                console.log(">")
                 break;
 
         }

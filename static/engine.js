@@ -1465,7 +1465,7 @@ function drawUnitSelect() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
                 ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 10, 10)
-                increment += 10;
+                increment += 15;
             }
         }
     }

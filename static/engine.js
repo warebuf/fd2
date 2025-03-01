@@ -1454,12 +1454,12 @@ function drawSelected() {
 
 function drawUnitSelect() {
     const x_offset = Math.round(c.width / 2)
-    const y_offset = Math.round(c.height / 2) - 400
+    const y_offset = Math.round(c.height / 2)
 
-    const width = 500;
-    const height = 125;
+    const width = 10;
+    const height = 10;
 
-    ctx.strokeRect(x_offset - (width / 2), y_offset, 100, 100)
+    ctx.strokeRect(x_offset - (width / 2), y_offset, width, height)
 
 
 }

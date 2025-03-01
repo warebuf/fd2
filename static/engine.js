@@ -1353,6 +1353,22 @@ function drawSelected() {
         const nameStringWidth = ctx.measureText(unit.Name).width
         ctx.fillText(" LV. " + (unit.EXP / 100), x_offset - (width / 2) + botStringWidth + nameStringWidth + iteratorX, y_offset + iteratorY)
 
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("AS " + unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("ATK " + unit.ATK, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("DPS " + unit.ATK * unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+
+        iteratorY += ctx.measureText("M").width + 10;
+        ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+    
+
         if (unitDraw) {
 
             iteratorY += ctx.measureText("M").width + 10;

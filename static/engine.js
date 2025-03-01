@@ -1367,7 +1367,7 @@ function drawSelected() {
 
         iteratorY += ctx.measureText("M").width + 10;
         ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
-    
+
 
         if (unitDraw) {
 
@@ -1464,6 +1464,9 @@ function drawUnitSelect() {
                 }
                 else if ( (selected_hoverable != null) && (selected_hoverable.I == i) && (selected_hoverable.J == j) && (selected_hoverable.K == k) ) {
                     ctx.strokeStyle = "green";
+                }
+                else if ( state[i][j][k].Status === 0 ) {
+                    ctx.strokeStyle = "yellow";
                 }
                 else {
                     ctx.strokeStyle = "white";

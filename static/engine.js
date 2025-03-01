@@ -1443,9 +1443,13 @@ function drawUnitSelect() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
-                if( (hoverable.I == i) && (hoverable.J == j) && (hoverable.K == k) ) {
+                if( (hoverable != null) && (hoverable.I == i) && (hoverable.J == j) && (hoverable.K == k) ) {
                     ctx.strokeStyle = "green";
-                } else {
+                }
+                else if ( (selected_hoverable != null) && (selected_hoverable.I == i) && (selected_hoverable.J == j) && (selected_hoverable.K == k) ) {
+                    ctx.strokeStyle = "green";
+                }
+                else {
                     ctx.strokeStyle = "white";
                 }
 

@@ -489,7 +489,6 @@
 
                     }
                     else if(hoverable.Type == "unit") {
-                        console.log("> unit")
 
                         let notFound = true;
 
@@ -497,8 +496,8 @@
                         let j = hoverable.J;
                         let k = hoverable.K + 1;
 
-                        for(; notFound && (i < state.length); i++) {
-                            for(; notFound && (j < state[i].length); j++) {
+                        for(; notFound && (i < state.length); i++, j = 0) {
+                            for(; notFound && (j < state[i].length); j++, k = 0) {
                                 for(; notFound && (k < state[i][j].length); k++) {
                                     if(state[i][j][k].HP > 0) {
                                         hoverable = state[i][j][k].Position;
@@ -506,18 +505,12 @@
                                         notFound = false;
                                     }
                                 }
-                                k = 0;
                             }
-                            j = 0;
                         }
 
-                        i = 0;
-                        j = 0;
-                        k = 0;
-
                         let keepGoing = true;
-                        for(;keepGoing && notFound && (i < state.length); i++) {
-                            for(;keepGoing && notFound && (j < state[i].length); j++) {
+                        for(i=0,j=0,k=0;keepGoing && notFound && (i < state.length); i++,j=0) {
+                            for(;keepGoing && notFound && (j < state[i].length); j++, k=0) {
                                 for(;keepGoing && notFound && (k < state[i][j].length); k++) {
                                     if(state[i][j][k].HP > 0) {
                                         hoverable = state[i][j][k].Position;
@@ -528,9 +521,7 @@
                                         keepGoing = false;
                                     }
                                 }
-                                k = 0;
                             }
-                            j = 0;
                         }
 
 

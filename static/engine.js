@@ -1459,7 +1459,17 @@ function drawUnitSelect() {
     const width = 500;
     const height = 125;
 
-    ctx.strokeRect(x_offset - (width / 2), y_offset, 10, 10)
+    let increment = 0;
+
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 10, 10)
+                increment += 10;
+            }
+        }
+    }
+
 
 
 }

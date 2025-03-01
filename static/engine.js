@@ -129,7 +129,7 @@ function anime() {
         drawLog()
         //drawSprite(); // I think it's too distracting right now
         drawSelected();
-        drawUnitSelect()
+        drawUnitSelect();
 
         if (view == 0) {
             drawHeatMap()
@@ -1459,7 +1459,7 @@ function drawUnitSelect() {
     const width = 500;
     const height = 125;
 
-    ctx.strokeRect(x_offset - (width / 2), y_offset, width, height)
+    ctx.strokeRect(x_offset - (width / 2), y_offset, 100, 100)
 
 
 }

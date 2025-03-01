@@ -520,9 +520,7 @@
                             for(;keepGoing && notFound && (j < state[i].length); j++) {
                                 for(;keepGoing && notFound && (k < state[i][j].length); k++) {
                                     if(state[i][j][k].HP > 0) {
-                                        hoverable.I = i;
-                                        hoverable.J = j;
-                                        hoverable.K = k;
+                                        hoverable = state[i][j][k].Position;
                                         selected_hoverable = state[i][j][k];
                                         notFound = false;
                                     }

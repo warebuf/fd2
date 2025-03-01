@@ -129,12 +129,14 @@ function anime() {
         drawLog()
         drawSelected();
         drawUnitSelect();
-        drawSprite(); // I think it's too distracting right now
 
 
         if (view == 0) {
             drawHeatMap()
         }
+
+        drawSprite(); // I think it's too distracting right now
+
 
         if (paths.length > 0) {
             let selected = -1;

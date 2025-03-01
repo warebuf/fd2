@@ -147,7 +147,6 @@
 
     var dynamics = [];
 
-    var testPath = [];
     var paths = [];
     var pathLengths = [];
 
@@ -170,7 +169,7 @@
     var frameCount = 0;
     var frameCountMax = 4;
 
-    var uiTest = 0;
+
 
 </script>
 
@@ -326,14 +325,6 @@
                 }
                 break;
 
-            case 'X':
-            case 'x':
-                uiTest++;
-                if(uiTest==2) {
-                    uiTest = 0;
-                }
-                break;
-
             case 'A':
             case 'a':
             case "ArrowLeft":
@@ -483,7 +474,7 @@
                     }
                 }
                 const startTime = performance.now();
-                testPath = aStar(intersections[a1], intersections[a2]);
+
                 const endTime = performance.now();
                 console.log(`Execution Time: ${endTime - startTime}ms`);
                 break;

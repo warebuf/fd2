@@ -135,11 +135,6 @@ function anime() {
             drawHeatMap()
         }
 
-
-        if (testPath.length > 0) {
-            drawComplexPath(testPath, "blue");
-        }
-
         if (paths.length > 0) {
             let selected = -1;
             for (let i = 0; i < paths.length; i++) {
@@ -1358,23 +1353,6 @@ function drawSelected() {
         const nameStringWidth = ctx.measureText(unit.Name).width
         ctx.fillText(" LV. " + (unit.EXP / 100), x_offset - (width / 2) + botStringWidth + nameStringWidth + iteratorX, y_offset + iteratorY)
 
-        if (uiTest == 0) {
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("AS " + unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("ATK " + unit.ATK, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("DPS " + unit.ATK * unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
-
-            iteratorY += ctx.measureText("M").width + 10;
-            ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
-        }
-
         if (unitDraw) {
 
             iteratorY += ctx.measureText("M").width + 10;
@@ -1464,6 +1442,19 @@ function drawUnitSelect() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
+
+                if( (hoverable.I == i) && (hoverable.J == j) && (hoverable.K == k) ) {
+                    ctx.strokeStyle = "green";
+                } else {
+                    ctx.strokeStyle = "white";
+                }
+
+                if( (i == my_int) && (j == my_team) ) {
+
+                } else {
+
+                }
+
                 ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 10, 10)
                 increment += 15;
             }

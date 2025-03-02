@@ -391,7 +391,7 @@ function drawCamps() {
         ctx.textAlign = "center";
         if (camps[i].HP > 0) {
             //drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].XY.X, height - camps[i].XY.Y)
-            ctx.fillText(camp[i].HP, width + camp[i].X + 11, height - camp[i].Y + 17);
+            ctx.fillText(camps[i].HP, width + camps[i].XY.X + 11, height - camps[i].XY.Y + 17);
         }
     }
 

@@ -1387,6 +1387,9 @@ function drawSelected() {
         ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
 
 
+        let iteratorX2 = 50;
+        let iteratorY2 = ctx.measureText("M").width + 10;
+
         if (unitDraw) {
 
             iteratorY += ctx.measureText("M").width + 10;
@@ -1396,7 +1399,7 @@ function drawSelected() {
             } else {
                 ETA = (unit.DistanceLeft / unit.SPD).toFixed(2);
             }
-            ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
+            ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
 
         } else if (opponentDraw) {
             iteratorY += ctx.measureText("M").width + 10;
@@ -1414,7 +1417,7 @@ function drawSelected() {
                 }
                 if(pathIndex >= 0) {
                     ETA = (pathLengths[pathIndex] / unit.SPD).toFixed(2);
-                    ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
+                    ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
                 }
             }
 

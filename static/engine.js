@@ -1417,6 +1417,9 @@ function drawSelected() {
                     ETA = (pathLengths[pathIndex] / unit.SPD).toFixed(2);
                     ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
                     iteratorY2 += ctx.measureText("M").width + 10;
+                } else {
+                    ETA.fillText("ETA -", x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
+                    iteratorY2 += ctx.measureText("M").width + 10;
                 }
             }
         }

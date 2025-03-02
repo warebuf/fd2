@@ -113,7 +113,6 @@ function anime() {
     } else if (match_data.length > 0) {
 
         drawObstacles()
-        //drawCampCrosshair()
         calcPos()
         drawAttack()
         drawPos()
@@ -194,7 +193,7 @@ function calcPos() {
                         } else if (state[i][j][k].Status == 2) {
                             if ((state[i][j][k].Battle != null) && (state[i][j][k].Battle.HP <= 0)) {
                                 state[i][j][k].Status = 0;
-                                state[i][j][k].TTD = 100;
+                                state[i][j][k].TTD = state[i][j][k].AS;
                                 state[i][j][k].Battle.Units = []
                                 state[i][j][k].Battle = null;
                             }
@@ -399,21 +398,6 @@ function drawCamps() {
     }
 
     ctx.fillStyle = "white";
-}
-
-function drawCampCrosshair() {
-    if (state_machine == 1) {
-        if (even) {
-
-            ctx.fillStyle = "white";
-            for (let i = 0; i < camps.length; i++) {
-                ctx.fillRect(width + camps[i].XY.X - 5, height - camps[i].XY.Y + 5, 1, 1);
-                ctx.fillRect(width + camps[i].XY.X - 5, height - camps[i].XY.Y - 5, 1, 1);
-                ctx.fillRect(width + camps[i].XY.X + 5, height - camps[i].XY.Y + 5, 1, 1);
-                ctx.fillRect(width + camps[i].XY.X + 5, height - camps[i].XY.Y - 5, 1, 1);
-            }
-        }
-    }
 }
 
 function drawHoverable() {

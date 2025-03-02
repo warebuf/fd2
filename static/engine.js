@@ -1476,7 +1476,7 @@ function drawUnitSelect() {
                     ctx.strokeStyle = "white";
                 }
 
-                if( (i == my_int) && (j == my_team) ) {
+                if( (i == my_team) && (j == my_int) ) {
 
                     ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 5, 5)
                     increment += 15;

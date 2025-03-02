@@ -416,9 +416,9 @@ function drawHoverable() {
         ctx.font = '7px monospace';
         ctx.textAlign = "left";
         if(hoverable.Type == "unit") {
-            ctx.fillText(1, width + hoverable.X + 11, height - hoverable.Y + 17);
+            ctx.fillText(hoverable.K, width + hoverable.X + 11, height - hoverable.Y + 17);
         } else if(hoverable.Type == "camp") {
-            ctx.fillText(2, width + hoverable.X + 11, height - hoverable.Y + 17);
+            ctx.fillText(hoverable.I, width + hoverable.X + 11, height - hoverable.Y + 17);
         }
 
         ctx.fillStyle = 'pink'

@@ -1387,8 +1387,8 @@ function drawSelected() {
         ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
 
 
-        let iteratorX2 = 50;
-        let iteratorY2 = ctx.measureText("M").width + 10;
+        let iteratorX2 = 70;
+        let iteratorY2 = (ctx.measureText("M").width + 10) * 2;
 
         if (unitDraw) {
 

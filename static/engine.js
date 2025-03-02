@@ -387,8 +387,11 @@ function drawCamps() {
         }
 
         // draw HP
+        ctx.font = '7px monospace';
+        ctx.textAlign = "center";
         if (camps[i].HP > 0) {
-            drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].XY.X, height - camps[i].XY.Y)
+            //drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].XY.X, height - camps[i].XY.Y)
+            ctx.fillText(camp[i].HP, width + camp[i].X + 11, height - camp[i].Y + 17);
         }
     }
 

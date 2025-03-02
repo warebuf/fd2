@@ -1391,8 +1391,6 @@ function drawSelected() {
         let iteratorY2 = (ctx.measureText("M").width + 10) * 3;
 
         if (unitDraw) {
-
-            iteratorY += ctx.measureText("M").width + 10;
             let ETA;
             if(unit.SPD === 0) {
                 ETA = "NAN";
@@ -1400,12 +1398,12 @@ function drawSelected() {
                 ETA = (unit.DistanceLeft / unit.SPD).toFixed(2);
             }
             ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
+            iteratorY2 += ctx.measureText("M").width + 10;
 
         } else if (opponentDraw) {
-            iteratorY += ctx.measureText("M").width + 10;
             let ETA;
             if(unit.SPD === 0) {
-
+                ETA = "NAN";
             } else {
                 let pathIndex = -1;
                 for(let i = 0; i < paths.length; i++) {
@@ -1418,10 +1416,15 @@ function drawSelected() {
                 if(pathIndex >= 0) {
                     ETA = (pathLengths[pathIndex] / unit.SPD).toFixed(2);
                     ctx.fillText("ETA " + ETA, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
+                    iteratorY2 += ctx.measureText("M").width + 10;
                 }
             }
-
         }
+
+        ctx.fillText("TTD " + unit.TTD, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
+
+
+
 
 
 

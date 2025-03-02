@@ -392,7 +392,7 @@ function drawCamps() {
         ctx.fillStyle = 'white'
         if (camps[i].HP > 0) {
             //drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].XY.X, height - camps[i].XY.Y)
-            ctx.fillText(camps[i].HP, width + camps[i].XY.X + 11, height - camps[i].XY.Y + 17);
+            ctx.fillText(camps[i].HP, width + camps[i].XY.X, height - camps[i].XY.Y - 10);
         }
     }
 

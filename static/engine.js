@@ -414,10 +414,11 @@ function drawHoverable() {
     if (hoverable != null) {
 
         ctx.font = '6px monospace';
+        ctx.textAlign = "right";
         if(hoverable.Type == "unit") {
-            ctx.fillText(1, width + hoverable.X + 9, height - hoverable.Y - 11);
+            ctx.fillText(1, width + hoverable.X + 10, height - hoverable.Y - 11);
         } else if(hoverable.Type == "camp") {
-            ctx.fillText(2, width + hoverable.X + 9, height - hoverable.Y - 11);
+            ctx.fillText(2, width + hoverable.X + 10, height - hoverable.Y - 11);
         }
 
         ctx.fillStyle = 'pink'

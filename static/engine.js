@@ -387,7 +387,7 @@ function drawCamps() {
         }
 
         // draw HP
-        ctx.font = '9px monospace';
+        ctx.font = '9px Consolas';
         ctx.textAlign = "center";
         //ctx.fillStyle = '#E0E0E0'
         ctx.fillStyle = '#F5F5F5'

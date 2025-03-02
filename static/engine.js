@@ -412,6 +412,13 @@ function drawCampCrosshair() {
 
 function drawHoverable() {
     if (hoverable != null) {
+
+        if(hoverable.Type == "unit") {
+            ctx.fillText(1, width + hoverable.X - 10, height - hoverable.Y + 10);
+        } else if(hoverable.Type == "camp") {
+            ctx.fillText(2, width + hoverable.X - 10, height - hoverable.Y + 10);
+        }
+
         ctx.fillStyle = 'pink'
         ctx.fillRect(width + hoverable.X - 10, height - hoverable.Y + 10, 20, 1);
         ctx.fillRect(width + hoverable.X - 10, height - hoverable.Y - 10, 20, 1);

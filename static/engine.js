@@ -1388,7 +1388,7 @@ function drawSelected() {
 
 
         let iteratorX2 = 125;
-        let iteratorY2 = (ctx.measureText("M").width + 10) * 2;
+        let iteratorY2 = (ctx.measureText("M").width + 10) * 3;
 
         if (unitDraw) {
 

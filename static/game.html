@@ -462,10 +462,43 @@
 
                 if(hoverable != null) {
                     if(hoverable.Type == "camp") {
-                        console.log("< camp")
+                        console.log("> camp")
                     }
                     else if(hoverable.Type == "unit") {
-                        console.log("< unit")
+                        let notFound = true;
+                        let i = hoverable.I;
+                        let j = hoverable.J;
+                        let k = hoverable.K - 1;
+
+                        for(; notFound && (i >= 0); i--) {
+                            if(i != hoverable.I) { j = state[i].length - 1; }
+                            for(; notFound && (j >= 0); j--) {
+                                if(i != hoverable.I || j != hoverable.J) { k = state[i][j].length - 1; }
+                                for(; notFound && (k >= 0); k--) {
+                                    if(state[i][j][k].HP > 0) {
+                                        hoverable = state[i][j][k].Position;
+                                        hoverable_coordinate = state[i][j][k];
+                                        notFound = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        let keepGoing = true;
+                        for(i=state.length-1; keepGoing && notFound && (i >= 0); i--) {
+                            for(j=state[i].length-1; keepGoing && notFound && (j >= 0); j--) {
+                                for(k=state[i][j].length-1; keepGoing && notFound && (k >= 0); k--) {
+                                    if(state[i][j][k].HP > 0) {
+                                        hoverable = state[i][j][k].Position;
+                                        hoverable_coordinate = state[i][j][k];
+                                        notFound = false;
+                                    }
+                                    if( (i == hoverable.I) && (j == hoverable.J) && (k == hoverable.K) ) {
+                                        keepGoing = false;
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -478,20 +511,9 @@
                 if(hoverable != null) {
                     if(hoverable.Type == "camp") {
                         console.log("> camp")
-
-
-
-
-
-
-
-
-
                     }
                     else if(hoverable.Type == "unit") {
-
                         let notFound = true;
-
                         let i = hoverable.I;
                         let j = hoverable.J;
                         let k = hoverable.K + 1;
@@ -523,9 +545,6 @@
                                 }
                             }
                         }
-
-
-
                     }
                 }
 

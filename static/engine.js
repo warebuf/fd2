@@ -1457,6 +1457,7 @@ function drawUnitSelect() {
     const height = 125;
 
     let increment = 0;
+    let oppIncrement = 0;
 
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
@@ -1477,12 +1478,16 @@ function drawUnitSelect() {
 
                 if( (i == my_int) && (j == my_team) ) {
 
+                    ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 5, 5)
+                    increment += 15;
+
                 } else {
+
+                    ctx.strokeRect(x_offset - (width / 2) - increment + width, y_offset, 5, 5)
+                    increment += 15;
 
                 }
 
-                ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 5, 5)
-                increment += 15;
             }
         }
     }

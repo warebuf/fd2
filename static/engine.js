@@ -413,7 +413,7 @@ function drawCampCrosshair() {
 function drawHoverable() {
     if (hoverable != null) {
 
-        ctx.font = '6px monospace';
+        ctx.font = '7px monospace';
         ctx.textAlign = "right";
         if(hoverable.Type == "unit") {
             ctx.fillText(1, width + hoverable.X + 10, height - hoverable.Y - 11);

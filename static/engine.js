@@ -389,7 +389,9 @@ function drawCamps() {
         // draw HP
         ctx.font = '9px monospace';
         ctx.textAlign = "center";
-        ctx.fillStyle = '#E0E0E0'
+        //ctx.fillStyle = '#E0E0E0'
+        ctx.fillStyle = '#AAAAAA'
+
         if (camps[i].HP > 0) {
             //drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].XY.X, height - camps[i].XY.Y)
             ctx.fillText(camps[i].HP, width + camps[i].XY.X, height - camps[i].XY.Y - 10);

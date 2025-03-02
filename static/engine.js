@@ -1483,8 +1483,8 @@ function drawUnitSelect() {
 
                 } else {
 
-                    ctx.strokeRect(x_offset - (width / 2) - increment + width, y_offset, 5, 5)
-                    increment += 15;
+                    ctx.strokeRect(x_offset - (width / 2) - oppIncrement + width, y_offset, 5, 5)
+                    oppIncrement += 15;
 
                 }
 

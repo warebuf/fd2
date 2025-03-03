@@ -1409,6 +1409,8 @@ function drawSelected() {
         }
 
         ctx.fillText("TTD " + (unit.TTD/unit.AS).toFixed(2), x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
+        iteratorY2 += ctx.measureText("M").width + 10;
+        ctx.fillText("EXP " + unit.EXP, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
 
     }
 

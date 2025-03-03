@@ -1408,12 +1408,7 @@ function drawSelected() {
             }
         }
 
-        ctx.fillText("TTD " + unit.TTD, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
-
-
-
-
-
+        ctx.fillText("TTD " + unit.TTD/unit.AS, x_offset - (width / 2) + iteratorX2, y_offset + iteratorY2);
 
     }
 

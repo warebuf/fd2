@@ -493,7 +493,6 @@ func createMatch(pl *permission_list) *match {
 					TTD:    100.0,
 				}
 				temp.MaxHP = temp.HP
-				temp.TTD = float64(temp.AS)
 				ans.team_client_hero[team_int][client_int] = append(ans.team_client_hero[team_int][client_int], temp)
 			}
 
@@ -1175,7 +1174,7 @@ func (m *match) run() {
 				} else if campOfInterest.HP <= 0 {
 					for j := 0; j < len(campOfInterest.Units); j++ {
 						unitOfInterest2 := m.team_client_hero[campOfInterest.Units[j][0]][campOfInterest.Units[j][1]][campOfInterest.Units[j][2]]
-						unitOfInterest2.TTD = float64(unitOfInterest2.AS)
+						unitOfInterest2.TTD = 100
 						unitOfInterest2.Status = 0
 						unitOfInterest2.Battle = nil
 						if unitOfInterest2.Bot == false {
@@ -1184,7 +1183,7 @@ func (m *match) run() {
 					}
 					campOfInterest.Units = make([][]int, 0)
 				} else if unitOfInterest.TTD <= 0 {
-					unitOfInterest.TTD = float64(unitOfInterest.AS)
+					unitOfInterest.TTD = 100
 				}
 			}
 			if len(atk_list) > 0 {

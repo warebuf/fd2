@@ -1416,7 +1416,6 @@ func sameCoordinates(a Coordinate, b Coordinate) bool {
 	return false
 }
 
-// TODO: MIGHT AS WELL SET THETAS HERE
 func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]float64) {
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
@@ -1549,12 +1548,12 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 	fmt.Println("MADE IT TO FINDPATH3")
 	// create all edges for starting node, if no edges exist, return empty
 	start_edges, start_dist := returnEdgesList(start)
+	fmt.Println("start_edges", start_edges)
 	if len(start_dist) == 0 {
 		return [][]float64{}
 	}
 
 	fmt.Println("MADE IT TO FINDPATH4")
-	// aStar
 	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
 	fmt.Println("MADE IT TO FINDPATH5", ans)
 	dStar()
@@ -1681,6 +1680,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 	for open.Len() > 0 {
 		current := heap.Pop(open).(*aStarNode)
 
+		// found the answer path
 		if euclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {
 
 			path := [][]float64{}
@@ -1695,6 +1695,9 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 		}
 
 		closed[current.XY] = true
+
+		fmt.Println("aStar edges", current.Edges)
+		fmt.Println("aStar edges*", *current.Edges)
 
 		for i := 0; i < len(*current.Edges); i++ {
 			neighborXY := mapList[0].IntersectionsC[(*current.Edges)[i]]

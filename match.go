@@ -1119,12 +1119,18 @@ func (m *match) run() {
 				unitOfInterest := m.team_client_hero[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 				campOfInterest := unitOfInterest.Battle
 				if campOfInterest.HP > 0 {
+					calculatedEXP := 0
+					if unitOfInterest.ATK > campOfInterest.HP {
+						calculatedEXP = unitOfInterest.ATK
+					} else {
+						calculatedEXP = campOfInterest.HP
+					}
 					campOfInterest.HP -= unitOfInterest.ATK
 					if campOfInterest.HP <= 0 {
 						campOfInterest.HP = 0
-						unitOfInterest.EXP += 25
+						unitOfInterest.EXP += calculatedEXP + 100
 					} else {
-						unitOfInterest.EXP += 10
+						unitOfInterest.EXP += calculatedEXP
 					}
 				}
 

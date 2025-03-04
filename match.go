@@ -1540,7 +1540,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 
 	// create destination node, if no edges exist, return empty
 	dest_edges, dest_count := returnEdgesArray(dest)
-	fmt.Println("MADE IT TO FINDPATH2", dest_edges, dest_count, dest_count == 0)
+	fmt.Println("MADE IT TO FINDPATH2", dest_count, dest_count == 0)
 	if dest_count == 0 {
 		return [][]float64{}
 	}
@@ -1682,6 +1682,7 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 
 	for open.Len() > 0 {
 		current := heap.Pop(open).(*aStarNode)
+		fmt.Println("current", current.XY)
 
 		// found the answer path
 		if euclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {

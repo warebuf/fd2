@@ -1582,6 +1582,7 @@ func returnEdgesArray(c Coordinate) ([]float64, int) {
 		}
 		if !blocked {
 			edges[i] = getDistancePointArray(c, mapList[0].Intersections[i])
+			fmt.Println("edge exists", edges[i])
 			count++
 		}
 	}

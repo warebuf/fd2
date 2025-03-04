@@ -1675,6 +1675,9 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 
 	startNode := &aStarNode{XY: s, G: 0, F: 0, Parent: nil, Edges: &sEdges, EdgeLength: &sDist, EdgeIndex: -1}
 	startNode.F = euclideanDistance(s.X, s.Y, g.X, g.Y)
+
+	fmt.Println("startNode XY", startNode.XY)
+
 	heap.Push(open, startNode)
 
 	for open.Len() > 0 {
@@ -1696,11 +1699,12 @@ func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []f
 
 		closed[current.XY] = true
 
-		fmt.Println("aStar edges", current.Edges)
 		fmt.Println("aStar edges*", *current.Edges)
 
 		for i := 0; i < len(*current.Edges); i++ {
 			neighborXY := mapList[0].IntersectionsC[(*current.Edges)[i]]
+
+			fmt.Println("neighborXY:", i, neighborXY)
 
 			_, found := closed[neighborXY]
 

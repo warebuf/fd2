@@ -1447,10 +1447,7 @@ function drawSelected() {
         ctx.fillStyle = 'white';
         ctx.fillText("HP " + camper.HP + " / " + camper.MaxHP, x_offset + gap + iteratorX, y_offset + iteratorY)
 
-
     }
-
-
 
 }
 
@@ -1482,21 +1479,14 @@ function drawUnitSelect() {
                 }
 
                 if( (i == my_team) && (j == my_int) ) {
-
                     ctx.strokeRect(x_offset - (width / 2) + increment, y_offset, 5, 5)
                     increment += 15;
-
                 } else {
-
                     ctx.strokeRect(x_offset - (width / 2) - oppIncrement + width - 5, y_offset, 5, 5)
                     oppIncrement += 15;
-
                 }
-
             }
         }
     }
-
-
 
 }

@@ -1491,15 +1491,3 @@ function drawUnitSelect() {
 
 }
 
-
-document.addEventListener("click", function(event) {
-    console.log("viewport", event.clientX, event.clientY);
-    console.log("page-relative", event.pageX, event.pageY);
-
-    const rect = canvas.getBoundingClientRect(); // Get canvas position
-    const rectX = event.clientX - rect.left; // Adjust for canvas offset
-    const rectY = event.clientY - rect.top;
-    console.log("canvas", rectX, rectY);
-
-
-})

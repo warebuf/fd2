@@ -21,16 +21,6 @@ const ctx = c.getContext("2d");
 //c.width = window.innerWidth;
 //c.height = window.innerHeight;
 
-function getMousePosition(event) {
-    const rect = c.getBoundingClientRect();
-    const x = event.clientX - rect.left;
-    const y = event.clientY - rect.top;
-    //console.log(`mouse pos x ${x}, y ${y}`)
-    console.log(`coord pos x ${x - 401}, y ${732 - y}`)
-
-}
-//c.addEventListener("mousemove", getMousePosition);
-
 c.width = document.body.clientWidth;
 c.height = document.body.clientHeight;
 

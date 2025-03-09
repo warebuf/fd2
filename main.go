@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/markbates/goth"
+	"github.com/markbates/goth/providers/google"
 	"io"
 	"log"
 	"math"
@@ -25,9 +27,7 @@ import (
 	"github.com/google/uuid" // https://github.com/google/uuid
 	"github.com/gorilla/sessions"
 	"github.com/gorilla/websocket"
-	"github.com/markbates/goth"
 	"github.com/markbates/goth/gothic"
-	"github.com/markbates/goth/providers/google"
 )
 
 /*
@@ -280,17 +280,17 @@ func main() {
 	sid_to_sock.mutex = sync.RWMutex{}
 	msid_to_sock.msid_to_sock = make(map[uuid.UUID]*match_socket)
 
-	//goth.UseProviders(google.New(
-	//	"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
-	//	"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",
-	//	"http://localhost:3000/callback",
-	//))
-
 	goth.UseProviders(google.New(
 		"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
 		"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",
-		"http://ec2-3-21-28-93.us-east-2.compute.amazonaws.com:3000/callback",
+		"http://localhost:3000/callback",
 	))
+
+	//goth.UseProviders(google.New(
+	//	"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
+	//	"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",
+	//	"http://ec2-3-21-28-93.us-east-2.compute.amazonaws.com:3000/callback",
+	//))
 
 	//port = os.Getenv("PORT")
 	port = "3000"

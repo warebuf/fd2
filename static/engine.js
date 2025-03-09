@@ -124,7 +124,7 @@ function anime() {
             drawHeatMap()
         }
 
-        drawSprite(); // I think it's too distracting right now
+        //drawSprite(); // I think it's too distracting right now
 
 
         if (paths.length > 0) {

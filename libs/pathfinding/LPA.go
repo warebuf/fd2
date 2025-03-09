@@ -3,6 +3,8 @@ package pathfinding
 import (
 	"fmt"
 	"math"
+
+	"fd/libs/maps"
 )
 
 type lpaNode struct {
@@ -42,10 +44,17 @@ func calcLPAKey(s *lpaNode, goal *lpaNode) (float64, float64) {
 	return newG, newRHS
 }
 
-func initLPA(start *lpaNode) {
+func initLPA(m *maps.MapDetails) {
+
+	fmt.Println("len(m.Intersections)", len(m.Intersections))
+	fmt.Println("len(m.Intersections_edges)", len(m.Intersections_edges))
+	fmt.Println("len(m.Intersections_edges_int)", len(m.Intersections_edges_int))
+	fmt.Println("len(m.Intersections_edgelength)", len(m.Intersections_edgelength))
 
 }
 
-func LPA() {
+func LPA(m *maps.MapDetails) {
 	fmt.Println("calling LPA*")
+	initLPA(m)
+
 }

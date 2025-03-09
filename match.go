@@ -1784,5 +1784,5 @@ func euclideanDistance(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
 }
 
 func dStar() {
-	pathfinding.LPA()
+	pathfinding.LPA(mapList[0])
 }

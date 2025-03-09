@@ -50,6 +50,10 @@ func initLPA(m *maps.MapDetails) {
 	fmt.Println("len(m.Intersections_edges)", len(m.Intersections_edges))
 	fmt.Println("len(m.Intersections_edges_int)", len(m.Intersections_edges_int))
 	fmt.Println("len(m.Intersections_edgelength)", len(m.Intersections_edgelength))
+	fmt.Println("m.Intersections", m.Intersections)
+	fmt.Println("m.Intersections_edges", m.Intersections_edges)
+	fmt.Println("m.Intersections_edges_int", m.Intersections_edges_int)
+	fmt.Println("m.Intersections_edgelength", m.Intersections_edgelength)
 
 }
 

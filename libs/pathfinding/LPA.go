@@ -19,6 +19,12 @@ type lpaNode struct {
 	Pred *[]lpaNode
 }
 
+type LPAUnitMemory struct {
+
+	// PQ
+	LPANodes []*lpaNode
+}
+
 func euclideanDistance(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
 	dx := x2 - x1
 	dy := y2 - y1
@@ -47,13 +53,16 @@ func calcLPAKey(s *lpaNode, goal *lpaNode) (float64, float64) {
 func initLPA(m *maps.MapDetails) {
 
 	fmt.Println("len(m.Intersections)", len(m.Intersections))
-	fmt.Println("len(m.Intersections_edges)", len(m.Intersections_edges))
 	fmt.Println("len(m.Intersections_edges_int)", len(m.Intersections_edges_int))
 	fmt.Println("len(m.Intersections_edgelength)", len(m.Intersections_edgelength))
-	fmt.Println("m.Intersections", m.Intersections)
-	fmt.Println("m.Intersections_edges", m.Intersections_edges)
-	fmt.Println("m.Intersections_edges_int", m.Intersections_edges_int)
-	fmt.Println("m.Intersections_edgelength", m.Intersections_edgelength)
+
+	for i := 0; i < len(m.Intersections); i++ {
+
+		fmt.Println(m.Intersections[i])
+		fmt.Println(m.Intersections_edges_int[i])
+		fmt.Println(m.Intersections_edgelength[i])
+		
+	}
 
 }
 

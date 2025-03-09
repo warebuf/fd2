@@ -20,6 +20,8 @@ import (
 	"sync"
 	"time"
 
+	"fd/libs/maps"
+
 	"github.com/google/uuid" // https://github.com/google/uuid
 	"github.com/gorilla/sessions"
 	"github.com/gorilla/websocket"
@@ -130,18 +132,7 @@ type pbase struct {
 	mutex  sync.RWMutex
 }
 
-type map_details struct {
-	Obstacles     [][]float64 // [x1,y1,x2,y2,x3,y3,x4,y4]
-	Obstacle_type []string    // [CIRCLE,BEZIER,...]
-
-	IntersectionsC           []Coordinate
-	Intersections            [][]float64 // [x,y]
-	Intersections_edges      [][]string  // [e1,e2, ...]
-	Intersections_edges_int  [][]int
-	Intersections_edgelength [][]float64 // [el1, el2, ...]
-}
-
-var mapList []*map_details
+var mapList []*maps.MapDetails
 var mapListJSON []string
 
 var uid_to_user userbase
@@ -170,9 +161,9 @@ var msid_to_sock msid_to_socket
 
 func init() {
 	fmt.Println("initializing...")
-	mapList = make([]*map_details, 0, 0)
+	mapList = make([]*maps.MapDetails, 0, 0)
 
-	sumrift := new(map_details)
+	sumrift := new(maps.MapDetails)
 	sumrift.Obstacles = make([][]float64, 0, 0)
 	sumrift.Obstacle_type = make([]string, 0, 0)
 
@@ -185,7 +176,7 @@ func init() {
 	fmt.Println("finished init \n")
 }
 
-func loadObstacles(fp string, m *map_details) {
+func loadObstacles(fp string, m *maps.MapDetails) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
 	defer file.Close()
@@ -221,7 +212,7 @@ func loadObstacles(fp string, m *map_details) {
 	}
 }
 
-func loadIntersections(fp string, m *map_details) {
+func loadIntersections(fp string, m *maps.MapDetails) {
 	fmt.Println("./obstacles/" + fp)
 	file, _ := os.Open("./obstacles/" + fp)
 	defer file.Close()
@@ -229,7 +220,7 @@ func loadIntersections(fp string, m *map_details) {
 	str := string(content)
 	lines := strings.Split(str, "\n")
 
-	m.IntersectionsC = make([]Coordinate, 0, len(lines))
+	m.IntersectionsC = make([]maps.Coordinate, 0, len(lines))
 	m.Intersections = make([][]float64, 0, len(lines))
 	m.Intersections_edges = make([][]string, 0, 0)
 	m.Intersections_edgelength = make([][]float64, 0, 0)
@@ -243,7 +234,7 @@ func loadIntersections(fp string, m *map_details) {
 		}
 
 		XY := []float64{result["X"].(float64), result["Y"].(float64)}
-		XYC := Coordinate{X: result["X"].(float64), Y: result["Y"].(float64)}
+		XYC := maps.Coordinate{X: result["X"].(float64), Y: result["Y"].(float64)}
 
 		m.Intersections = append(m.Intersections, XY)
 		m.IntersectionsC = append(m.IntersectionsC, XYC)

@@ -3,8 +3,6 @@ package main
 import (
 	"container/heap"
 	"encoding/json"
-	"fd/bezier"
-	"fd/libs/mtdl"
 	"fmt"
 	"math"
 	"math/rand"
@@ -13,6 +11,10 @@ import (
 	"sync"
 	"time"
 
+	"fd/bezier"
+	"fd/libs/maps"
+	"fd/libs/pathfinding"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -20,7 +22,7 @@ import (
 type Camp struct {
 	MaxHP int
 	HP    int
-	XY    Coordinate
+	XY    maps.Coordinate
 	Units [][]int // second array is of the form i, j, k for a *hero object in TCH
 
 }
@@ -38,9 +40,9 @@ type hero struct {
 	Bot  bool
 	Name string
 
-	Start        Coordinate
-	Position     Coordinate
-	Destination  Coordinate
+	Start        maps.Coordinate
+	Position     maps.Coordinate
+	Destination  maps.Coordinate
 	Path         [][]float64
 	Thetas       []float64
 	Path_Segment int // is the last node we've visited
@@ -93,16 +95,6 @@ type attack struct {
 	Defender [][]int    //list of i,j,k
 	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
 	Type     string     //miss,
-}
-
-type Coordinate struct {
-	X float64
-	Y float64
-
-	Type string // only types rn: camp, unit
-	I    int
-	J    int
-	K    int
 }
 
 type match struct {
@@ -188,7 +180,7 @@ type message struct {
 	UnitsOfTime string
 	Camps       []string
 
-	Route Coordinate
+	Route maps.Coordinate
 	Path  [][]float64
 
 	// should add the user's TCH
@@ -435,7 +427,7 @@ func createMatch(pl *permission_list) *match {
 		for i := 0; i < random_count; i++ {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
-			c := Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
+			c := maps.Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
@@ -469,7 +461,7 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			for y := 0; y < 3; y++ {
-				temp_coordinate := Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
+				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:  j.bot_status,
 					Name: names[rand.Intn(len(names))],
@@ -1377,12 +1369,12 @@ func (m *match) shareint() {
 	}
 }
 
-func getDistanceTwoPoints(c1 Coordinate, c2 Coordinate) float64 {
+func getDistanceTwoPoints(c1 maps.Coordinate, c2 maps.Coordinate) float64 {
 	y_dist := c2.Y - c1.Y
 	x_dist := c2.X - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 }
-func getDistancePointArray(c1 Coordinate, c2 []float64) float64 {
+func getDistancePointArray(c1 maps.Coordinate, c2 []float64) float64 {
 	y_dist := c2[1] - c1.Y
 	x_dist := c2[0] - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
@@ -1409,14 +1401,14 @@ func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanc
 	return refX + (percent * lineX), refY + (percent * lineY)
 }
 
-func sameCoordinates(a Coordinate, b Coordinate) bool {
+func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
 	if (a.X == b.X) && (a.Y == b.Y) {
 		return true
 	}
 	return false
 }
 
-func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]float64) {
+func setPath(state [][][]*hero, i int, j int, k int, dest maps.Coordinate, p [][]float64) {
 	state[i][j][k].Start = state[i][j][k].Position
 	state[i][j][k].Destination = dest
 	state[i][j][k].Path = p
@@ -1439,7 +1431,7 @@ func setPath(state [][][]*hero, i int, j int, k int, dest Coordinate, p [][]floa
 	state[i][j][k].Status = 1
 }
 
-func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest Coordinate) bool {
+func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate) bool {
 
 	// path of 1... wth???
 	if len(path) <= 1 {
@@ -1483,7 +1475,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	return true
 }
 
-func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
+func determineBotAction(b *hero, camps []*Camp) ([][]float64, maps.Coordinate) {
 
 	// for now just pick a random camp, don't care about HP or pathfinding
 	// if all camps are inaccessible... maybe end the game?
@@ -1514,10 +1506,10 @@ func determineBotAction(b *hero, camps []*Camp) ([][]float64, Coordinate) {
 		}
 	}
 
-	return [][]float64{}, Coordinate{}
+	return [][]float64{}, maps.Coordinate{}
 }
 
-func findPath(start Coordinate, dest Coordinate) [][]float64 {
+func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 
 	fmt.Println("MADE IT TO FINDPATH", start, dest)
 
@@ -1568,7 +1560,7 @@ func findPath(start Coordinate, dest Coordinate) [][]float64 {
 	return ans
 }
 
-func returnEdgesArray(c Coordinate) ([]float64, int) {
+func returnEdgesArray(c maps.Coordinate) ([]float64, int) {
 
 	edges := make([]float64, len(mapList[0].Intersections), len(mapList[0].Intersections))
 	count := 0
@@ -1593,7 +1585,7 @@ func returnEdgesArray(c Coordinate) ([]float64, int) {
 	return edges, count
 }
 
-func returnEdgesList(c Coordinate) ([]int, []float64) {
+func returnEdgesList(c maps.Coordinate) ([]int, []float64) {
 	edges := make([]int, 0)
 	dist := make([]float64, 0)
 	for i := 0; i < len(mapList[0].Intersections); i++ {
@@ -1627,7 +1619,7 @@ func getTheta(c1 []float64, c2 []float64) float64 {
 }
 
 type aStarNode struct {
-	XY         Coordinate
+	XY         maps.Coordinate
 	Edges      *[]int
 	EdgeLength *[]float64
 
@@ -1670,11 +1662,11 @@ func (pq *PriorityQueue) update(node *aStarNode, gCost float64, fCost float64) {
 	heap.Fix(pq, node.Index)
 }
 
-func aStar(s Coordinate, g Coordinate, sEdges []int, sDist []float64, eEdges []float64) [][]float64 {
+func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, eEdges []float64) [][]float64 {
 
 	open := &PriorityQueue{}
 	track := make(map[int]*aStarNode)
-	closed := make(map[Coordinate]bool)
+	closed := make(map[maps.Coordinate]bool)
 
 	heap.Init(open)
 
@@ -1792,5 +1784,5 @@ func euclideanDistance(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
 }
 
 func dStar() {
-	mtdl.Test()
+	pathfinding.LPA()
 }

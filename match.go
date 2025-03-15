@@ -3,6 +3,7 @@ package main
 import (
 	"container/heap"
 	"encoding/json"
+	"fd/libs/pathfinding"
 	"fmt"
 	"math"
 	"math/rand"
@@ -13,7 +14,6 @@ import (
 
 	"fd/bezier"
 	"fd/libs/maps"
-	"fd/libs/pathfinding"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
@@ -238,6 +238,18 @@ func m_read(m *match_socket) {
 
 								fmt.Println("msg.path, msg.route", msg.Path, msg.Route)
 								fmt.Println("Type of myInt:", reflect.TypeOf(msg.Path))
+
+								startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
+								endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
+								LPA(startLoc, endLoc)
+
+								sum := 0.0
+
+								for i := 0; i < len(msg.Path)-1; i++ {
+									sum += maps.EuclideanDistance(msg.Path[i][0], msg.Path[i][1], msg.Path[i+1][0], msg.Path[i+1][1])
+								}
+								fmt.Println("USERSHORTESTPATH:", msg.Path)
+								fmt.Println("sum:", sum)
 								setPath(m.m.team_client_hero, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route, msg.Path)
 								m.m.sharepos(nil, 0)
 
@@ -431,6 +443,8 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
+		//c := maps.Coordinate{X: 290, Y: 80, Type: "camp", I: random_count, J: -1, K: -1}
+		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -1385,6 +1399,12 @@ func getDistanceArray(c1 []float64, c2 []float64) float64 {
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 }
 
+func getDistanceLocation(c1 pathfinding.Location, c2 pathfinding.Location) float64 {
+	y_dist := c2.Y - c1.Y
+	x_dist := c2.X - c1.X
+	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
+}
+
 func getXYComponent(theta float64, r float64) (float64, float64) {
 	return toFixed(r*math.Cos(theta), 3), toFixed(r*math.Sin(theta), 3)
 }
@@ -1536,23 +1556,27 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 
 	// create destination node, if no edges exist, return empty
 	dest_edges, dest_count := returnEdgesArray(dest)
-	fmt.Println("MADE IT TO FINDPATH2", dest_count, dest_count == 0)
 	if dest_count == 0 {
 		return [][]float64{}
 	}
 
-	fmt.Println("MADE IT TO FINDPATH3")
 	// create all edges for starting node, if no edges exist, return empty
 	start_edges, start_dist := returnEdgesList(start)
-	fmt.Println("start_edges", start_edges)
 	if len(start_dist) == 0 {
 		return [][]float64{}
 	}
 
-	fmt.Println("MADE IT TO FINDPATH4")
 	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
-	fmt.Println("MADE IT TO FINDPATH5", ans)
-	dStar()
+	s := pathfinding.Location{X: start.X, Y: start.Y}
+	e := pathfinding.Location{X: dest.X, Y: dest.Y}
+	LPA(s, e)
+	sum := 0.0
+	for i := 0; i < len(ans)-1; i++ {
+		sum += maps.EuclideanDistance(ans[i][0], ans[i][1], ans[i+1][0], ans[i+1][1])
+	}
+	fmt.Println(ans)
+	fmt.Println("sum", sum)
+
 	elapsed := time.Since(startTime)
 	milliseconds := elapsed.Milliseconds()
 	fmt.Printf("findPath took %d ms\n", milliseconds)
@@ -1594,7 +1618,6 @@ func returnEdgesList(c maps.Coordinate) ([]int, []float64) {
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					fmt.Println("line segment intersects obstacle4")
 					blocked = true
 					break
 				}
@@ -1605,6 +1628,30 @@ func returnEdgesList(c maps.Coordinate) ([]int, []float64) {
 			dist = append(dist, getDistancePointArray(c, mapList[0].Intersections[i]))
 		}
 	}
+	return edges, dist
+}
+
+func getEdges(c1 pathfinding.Location, LPA *pathfinding.LPAGraph) ([]pathfinding.Location, []float64) {
+	edges := make([]pathfinding.Location, 0)
+	dist := make([]float64, 0)
+
+	for key, _ := range LPA.Nodes {
+		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+		blocked := false
+		for j := 0; j < len(mapList[0].Obstacles); j++ {
+			if mapList[0].Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges = append(edges, key)
+			dist = append(dist, getDistanceLocation(c1, key))
+		}
+	}
+
 	return edges, dist
 }
 
@@ -1671,18 +1718,15 @@ func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, 
 	heap.Init(open)
 
 	startNode := &aStarNode{XY: s, G: 0, F: 0, Parent: nil, Edges: &sEdges, EdgeLength: &sDist, EdgeIndex: -1}
-	startNode.F = euclideanDistance(s.X, s.Y, g.X, g.Y)
-
-	fmt.Println("startNode XY", startNode.XY)
+	startNode.F = maps.EuclideanDistance(s.X, s.Y, g.X, g.Y)
 
 	heap.Push(open, startNode)
 
 	for open.Len() > 0 {
 		current := heap.Pop(open).(*aStarNode)
-		fmt.Println("current", current.XY)
 
 		// found the answer path
-		if euclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {
+		if maps.EuclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {
 
 			path := [][]float64{}
 			for node := current; node != nil; node = node.Parent {
@@ -1697,12 +1741,8 @@ func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, 
 
 		closed[current.XY] = true
 
-		fmt.Println("aStar edges*", *current.Edges)
-
 		for i := 0; i < len(*current.Edges); i++ {
 			neighborXY := mapList[0].IntersectionsC[(*current.Edges)[i]]
-
-			fmt.Println("neighborXY:", i, neighborXY)
 
 			_, found := closed[neighborXY]
 
@@ -1716,14 +1756,14 @@ func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, 
 
 					if tentativeG < trackedNode.G {
 						trackedNode.G = tentativeG
-						trackedNode.H = euclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
-						trackedNode.F = trackedNode.G + trackedNode.G
+						trackedNode.H = maps.EuclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
+						trackedNode.F = trackedNode.G + trackedNode.H
 						trackedNode.Parent = current
 
 					}
 				} else {
 					tempG := current.G + (*current.EdgeLength)[i]
-					tempH := euclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
+					tempH := maps.EuclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
 					newNode := &aStarNode{
 						XY:         neighborXY,
 						G:          tempG,
@@ -1735,7 +1775,7 @@ func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, 
 						EdgeIndex:  (*current.Edges)[i],
 					}
 					track[newNode.EdgeIndex] = newNode
-					open.Push(newNode)
+					heap.Push(open, newNode)
 
 				}
 			}
@@ -1765,24 +1805,46 @@ func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, 
 					EdgeIndex:  -2,
 				}
 				track[newNode.EdgeIndex] = newNode
-				open.Push(newNode)
+				heap.Push(open, newNode)
 
 			}
 		}
 
-		heap.Init(open)
 	}
 
 	return [][]float64{}
 
 }
 
-func euclideanDistance(x1 float64, y1 float64, x2 float64, y2 float64) float64 {
-	dx := x2 - x1
-	dy := y2 - y1
-	return math.Sqrt(dx*dx + dy*dy)
-}
+func LPA(start pathfinding.Location, end pathfinding.Location) {
+	fmt.Println("ENTERED LPA* -------------------------------------------------------------------------------------")
 
-func dStar() {
-	pathfinding.LPA(mapList[0])
+	LPA := pathfinding.LPAInit(mapList[0], start, end)
+
+	if _, exists := LPA.Nodes[start]; !exists {
+		fmt.Println("LPA start node not found", start)
+		edgeIndex, edgeCost := getEdges(start, LPA)
+		LPA.AddNode(start)
+		for i := 0; i < len(edgeIndex); i++ {
+			LPA.AddEdge(start, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	if _, exists := LPA.Nodes[end]; !exists {
+		fmt.Println("LPA end node not found", end)
+		edgeIndex, edgeCost := getEdges(end, LPA)
+		LPA.AddNode(end)
+		for i := 0; i < len(edgeIndex); i++ {
+			LPA.AddEdge(end, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	LPA.Nodes[start][1] = 0
+	heap.Push(LPA.PriorityQueue, LPA.CalculateKey(start))
+
+	LPA.ComputeShortestPath()
+	LPA.ReturnShortestPath()
+
+	// remove start and end nodes
+
 }

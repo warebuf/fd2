@@ -558,10 +558,12 @@
 
     document.addEventListener("click", function(event) {
 
-        console.log("viewport", event.clientX, event.clientY); // just use viewport now and pray
+        //console.log("viewport", event.clientX, event.clientY); // just use viewport now and pray
 
-
-
+        const d = 500;
+        const wid = Math.round(window.innerWidth / 2) - (dimension / 2);
+        const hei = Math.round(window.innerHeight / 2) + (dimension / 2);
+        console.log("viewport2", event.clientX-wid, -(event.clientY-hei) ); // just use viewport now and pray
 
 
     })

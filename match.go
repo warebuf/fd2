@@ -241,7 +241,10 @@ func m_read(m *match_socket) {
 
 								startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
 								endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
+
 								LPA(startLoc, endLoc)
+								AStarInit(startLoc, endLoc)
+								DStarLiteInit(startLoc, endLoc)
 
 								sum := 0.0
 
@@ -443,8 +446,8 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		//c := maps.Coordinate{X: 290, Y: 80, Type: "camp", I: random_count, J: -1, K: -1}
-		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
+		c := maps.Coordinate{X: 330, Y: 160, Type: "camp", I: random_count, J: -1, K: -1}
+		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -1570,6 +1573,9 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 	s := pathfinding.Location{X: start.X, Y: start.Y}
 	e := pathfinding.Location{X: dest.X, Y: dest.Y}
 	LPA(s, e)
+	AStarInit(s, e)
+	DStarLiteInit(s, e)
+
 	sum := 0.0
 	for i := 0; i < len(ans)-1; i++ {
 		sum += maps.EuclideanDistance(ans[i][0], ans[i][1], ans[i+1][0], ans[i+1][1])
@@ -1636,6 +1642,54 @@ func getEdges(c1 pathfinding.Location, LPA *pathfinding.LPAGraph) ([]pathfinding
 	dist := make([]float64, 0)
 
 	for key, _ := range LPA.Nodes {
+		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+		blocked := false
+		for j := 0; j < len(mapList[0].Obstacles); j++ {
+			if mapList[0].Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges = append(edges, key)
+			dist = append(dist, getDistanceLocation(c1, key))
+		}
+	}
+
+	return edges, dist
+}
+
+func getEdgesDL(c1 pathfinding.Location, DL *pathfinding.DLiteGraph) ([]pathfinding.Location, []float64) {
+	edges := make([]pathfinding.Location, 0)
+	dist := make([]float64, 0)
+
+	for key, _ := range DL.Nodes {
+		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+		blocked := false
+		for j := 0; j < len(mapList[0].Obstacles); j++ {
+			if mapList[0].Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges = append(edges, key)
+			dist = append(dist, getDistanceLocation(c1, key))
+		}
+	}
+
+	return edges, dist
+}
+
+func getEdgesA(c1 pathfinding.Location, A *pathfinding.AStarGraph) ([]pathfinding.Location, []float64) {
+	edges := make([]pathfinding.Location, 0)
+	dist := make([]float64, 0)
+
+	for key, _ := range A.Nodes {
 		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
 		blocked := false
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
@@ -1847,4 +1901,64 @@ func LPA(start pathfinding.Location, end pathfinding.Location) {
 
 	// remove start and end nodes
 
+}
+
+func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) {
+
+	DStar := pathfinding.DLiteInit(mapList[0], start, end)
+
+	if _, exists := DStar.Nodes[start]; !exists {
+		fmt.Println("Dstar start node not found", start)
+		edgeIndex, edgeCost := getEdgesDL(start, DStar)
+		DStar.AddNode(start)
+		for i := 0; i < len(edgeIndex); i++ {
+			DStar.AddEdge(start, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	if _, exists := DStar.Nodes[end]; !exists {
+		fmt.Println("Dstar end node not found", end)
+		edgeIndex, edgeCost := getEdgesDL(end, DStar)
+		DStar.AddNode(end)
+		for i := 0; i < len(edgeIndex); i++ {
+			DStar.AddEdge(end, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	DStar.Nodes[end][1] = 0
+	heap.Push(DStar.PriorityQueue, DStar.CalculateKey(end))
+	DStar.ComputeShortestPath()
+	DStar.ReturnShortestPath()
+}
+
+func DStarLiteFollowup() {
+
+}
+
+func AStarInit(start pathfinding.Location, end pathfinding.Location) {
+
+	AStarMap := pathfinding.AStarInit(mapList[0], start, end)
+
+	if _, exists := AStarMap.Nodes[start]; !exists {
+		fmt.Println("AStar start node not found", start)
+		edgeIndex, edgeCost := getEdgesA(start, AStarMap)
+		AStarMap.AddNode(start)
+		for i := 0; i < len(edgeIndex); i++ {
+			AStarMap.AddEdge(start, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	if _, exists := AStarMap.Nodes[end]; !exists {
+		fmt.Println("AStar end node not found", end)
+		edgeIndex, edgeCost := getEdgesA(end, AStarMap)
+		AStarMap.AddNode(end)
+		for i := 0; i < len(edgeIndex); i++ {
+			AStarMap.AddEdge(end, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	AStarMap.Nodes[start] = 0
+	heap.Push(AStarMap.PriorityQueue, AStarMap.CalculateKey(start))
+
+	AStarMap.ComputeShortestPath()
 }

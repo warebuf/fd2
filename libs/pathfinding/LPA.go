@@ -162,6 +162,7 @@ func (graph *LPAGraph) updateVertex(location Location) {
 	}
 	if graph.Nodes[location][0] != graph.Nodes[location][1] {
 		key := graph.CalculateKey(location)
+		//fmt.Println("n", key)
 		graph.PriorityQueue.Update(location, key.H, key.RHS)
 	} else {
 		graph.PriorityQueue.Remove(location)
@@ -198,6 +199,29 @@ func (graph *LPAGraph) AddEdge(from Location, to Location, cost float64) {
 	graph.Edges[from][to] = cost
 	graph.Edges[to][from] = cost
 
+}
+
+func (graph *LPAGraph) UpdateEdgeCost(from Location, to Location, cost float64) {
+
+	if _, exists := graph.Nodes[from]; !exists {
+		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
+	}
+
+	if _, exists := graph.Nodes[to]; !exists {
+		graph.Nodes[to] = []float64{math.Inf(1), math.Inf(1)}
+	}
+
+	if _, exists := graph.Edges[from]; !exists {
+		graph.Edges[from] = make(map[Location]float64)
+	}
+
+	if _, exists := graph.Edges[to]; !exists {
+		graph.Edges[to] = make(map[Location]float64)
+	}
+
+	graph.Edges[from][to] = cost
+	graph.Edges[to][from] = cost
+
 	graph.updateVertex(from)
 	graph.updateVertex(to)
 
@@ -213,6 +237,7 @@ func (graph *LPAGraph) ComputeShortestPath() {
 		}
 
 		current := heap.Pop(graph.PriorityQueue).(LPAKey)
+		//fmt.Println("current", current.Location, current.H, current.RHS, len(graph.PriorityQueue.queue), len(graph.Visited))
 
 		if graph.Nodes[current.Location][0] > graph.Nodes[current.Location][1] {
 			graph.Nodes[current.Location][0] = graph.Nodes[current.Location][1]
@@ -225,11 +250,16 @@ func (graph *LPAGraph) ComputeShortestPath() {
 		for neighborLocation, _ := range graph.Edges[current.Location] {
 			_, exists := graph.Visited[neighborLocation]
 			if exists == false {
+				// TODO: I feel that this call is inefficient
+				// in this instance, we should iterate through the neighbors, and update their RHS value/H value IF
+				// our newly found confirmed g-value + edge cost is better
+				// instead of iterating through all the neighbors
+				// I believe this property holds for all instances where we call update Vertex
+				// if it doesn't we can just make two versions of updateVertex
 				graph.updateVertex(neighborLocation)
 			}
 		}
 	}
-
 }
 
 func (graph *LPAGraph) ReturnShortestPath() []Location {
@@ -266,12 +296,12 @@ func (graph *LPAGraph) ReturnShortestPath() []Location {
 	for i := len(ans) - 1; i >= 0; i-- {
 		ans2 = append(ans2, ans[i])
 	}
-	fmt.Println("final shortest path answer:", ans2)
+	fmt.Println(ans2)
 	sum := 0.0
 	for i := 0; i < len(ans)-1; i++ {
 		sum += maps.EuclideanDistance(ans[i].X, ans[i].Y, ans[i+1].X, ans[i+1].Y)
 	}
-	fmt.Println("sum1", sum)
+	fmt.Println("sum", sum)
 
 	return ans2
 

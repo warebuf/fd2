@@ -2,6 +2,7 @@ package pathfinding
 
 import (
 	"container/heap"
+	"fd/libs/bezier"
 	"fd/libs/maps"
 	"fmt"
 	"math"
@@ -25,6 +26,8 @@ type DLiteGraph struct {
 	Visited       map[Location]bool
 
 	Km float64
+
+	TemporaryLocations map[Location]bool
 }
 
 type DLitePQ struct {
@@ -123,8 +126,9 @@ func DLiteInit(mp *maps.MapDetails, start Location, goal Location) *DLiteGraph {
 			queue:    make([]DLiteKey, 0),
 			indexMap: make(map[Location]int),
 		},
-		Visited: make(map[Location]bool),
-		Km:      0.0,
+		Visited:            make(map[Location]bool),
+		Km:                 0.0,
+		TemporaryLocations: make(map[Location]bool),
 	}
 
 	for i := 0; i < len(mp.Intersections); i++ {
@@ -173,6 +177,8 @@ func (graph *DLiteGraph) AddNode(location Location) {
 	if _, exists := graph.Nodes[location]; !exists {
 		graph.Nodes[location] = []float64{math.Inf(1), math.Inf(1)}
 		graph.Edges[location] = make(map[Location]float64)
+
+		graph.TemporaryLocations[location] = true
 	}
 
 }
@@ -274,7 +280,7 @@ func (graph *DLiteGraph) ReturnShortestPath() []Location {
 		return ans
 	}
 
-	current := graph.Start
+	current := graph.Last
 
 	for current != graph.Goal {
 		ans = append(ans, current)
@@ -310,5 +316,51 @@ func (graph *DLiteGraph) ReturnShortestPath() []Location {
 	fmt.Println("sum", sum)
 
 	return ans2
+
+}
+
+func (graph *DLiteGraph) GetEdges(mp *maps.MapDetails, c1 Location) ([]Location, []float64) {
+	edges := make([]Location, 0)
+	dist := make([]float64, 0)
+
+	for key, _ := range graph.Nodes {
+		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+		blocked := false
+		for j := 0; j < len(mp.Obstacles); j++ {
+			if mp.Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mp.Obstacles[j], line_seg) {
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges = append(edges, key)
+			dist = append(dist, maps.EuclideanDistance(c1.X, c1.Y, key.X, key.Y))
+		}
+	}
+
+	return edges, dist
+}
+
+func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation Location) {
+
+	graph.Km += maps.EuclideanDistance(graph.Start.X, graph.Start.Y, newLocation.X, newLocation.Y) // not sure if this is completely right
+
+	_, exists := graph.TemporaryLocations[newLocation]
+	if !exists {
+		graph.AddNode(newLocation)
+		newEdges, newEdgesCost := graph.GetEdges(mp, newLocation)
+		for i := 0; i < len(newEdges); i++ {
+			graph.AddEdge(newLocation, newEdges[i], newEdgesCost[i])
+		}
+		graph.updateVertex(newLocation)
+		graph.ComputeShortestPath()
+		graph.ReturnShortestPath()
+	}
+
+	// if the old last is in temporary, remove it
+
+	graph.Last = newLocation
 
 }

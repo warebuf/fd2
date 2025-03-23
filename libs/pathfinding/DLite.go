@@ -159,6 +159,7 @@ func (graph *DLiteGraph) updateVertex(location Location) {
 	if location != graph.Goal {
 		minRHS := math.Inf(1)
 		for neighborNode, edgeCost := range graph.Edges[location] {
+			fmt.Println(neighborNode, graph.Nodes[neighborNode][0], edgeCost)
 			minRHS = math.Min(minRHS, graph.Nodes[neighborNode][0]+edgeCost)
 		}
 		graph.Nodes[location][1] = minRHS
@@ -243,7 +244,7 @@ func (graph *DLiteGraph) ComputeShortestPath() {
 
 		oldKey := heap.Pop(graph.PriorityQueue).(DLiteKey)
 		newKey := graph.CalculateKey(oldKey.Location)
-		//fmt.Println("current", newKey, len(graph.PriorityQueue.queue), len(graph.Visited))
+		fmt.Println("current", newKey, graph.Nodes[newKey.Location], len(graph.PriorityQueue.queue), len(graph.Visited))
 
 		if isDLiteKeyLess(oldKey, newKey) {
 			graph.PriorityQueue.Update(newKey.Location, newKey.H, newKey.RHS)
@@ -252,6 +253,7 @@ func (graph *DLiteGraph) ComputeShortestPath() {
 			graph.Visited[oldKey.Location] = true
 			for neighborLocation, _ := range graph.Edges[oldKey.Location] {
 				_, exists := graph.Visited[neighborLocation]
+				fmt.Println("neighbor", neighborLocation, graph.Nodes[neighborLocation])
 				if exists == false {
 					graph.updateVertex(neighborLocation)
 				}
@@ -345,7 +347,10 @@ func (graph *DLiteGraph) GetEdges(mp *maps.MapDetails, c1 Location) ([]Location,
 
 func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation Location) {
 
-	graph.Km += maps.EuclideanDistance(graph.Start.X, graph.Start.Y, newLocation.X, newLocation.Y) // not sure if this is completely right
+	graph.Visited = make(map[Location]bool)
+
+	graph.Km += maps.EuclideanDistance(graph.Start.X, graph.Start.Y, newLocation.X, newLocation.Y)
+	graph.Last = newLocation
 
 	_, exists := graph.TemporaryLocations[newLocation]
 	if !exists {
@@ -360,7 +365,5 @@ func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation Loca
 	}
 
 	// if the old last is in temporary, remove it
-
-	graph.Last = newLocation
 
 }

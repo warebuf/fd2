@@ -1890,7 +1890,6 @@ func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfi
 	DStar := pathfinding.DLiteInit(mapList[0], start, end)
 
 	if _, exists := DStar.Nodes[start]; !exists {
-		fmt.Println("Dstar start node not found", start)
 		edgeIndex, edgeCost := DStar.GetEdges(mapList[0], start)
 		DStar.AddNode(start)
 		for i := 0; i < len(edgeIndex); i++ {
@@ -1899,7 +1898,6 @@ func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfi
 	}
 
 	if _, exists := DStar.Nodes[end]; !exists {
-		fmt.Println("Dstar end node not found", end)
 		edgeIndex, edgeCost := DStar.GetEdges(mapList[0], end)
 		DStar.AddNode(end)
 		for i := 0; i < len(edgeIndex); i++ {
@@ -1920,7 +1918,6 @@ func AStarInit(start pathfinding.Location, end pathfinding.Location) {
 	AStarMap := pathfinding.AStarInit(mapList[0], start, end)
 
 	if _, exists := AStarMap.Nodes[start]; !exists {
-		fmt.Println("AStar start node not found", start)
 		edgeIndex, edgeCost := getEdgesA(start, AStarMap)
 		AStarMap.AddNode(start)
 		for i := 0; i < len(edgeIndex); i++ {
@@ -1929,7 +1926,6 @@ func AStarInit(start pathfinding.Location, end pathfinding.Location) {
 	}
 
 	if _, exists := AStarMap.Nodes[end]; !exists {
-		fmt.Println("AStar end node not found", end)
 		edgeIndex, edgeCost := getEdgesA(end, AStarMap)
 		AStarMap.AddNode(end)
 		for i := 0; i < len(edgeIndex); i++ {

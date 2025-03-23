@@ -118,7 +118,6 @@
     var match_data = [];
     var atk_data = [];
     var camp_data = [];
-    var cumu_data = [];
 
     var time_queue = []
     var turn_queue = []
@@ -284,7 +283,8 @@
                             state_machine = 1;
                             setupHoverable();
                         }
-                    } else if (state_machine == 1) {
+                    }
+                    else if (state_machine == 1) {
 
                         for(let i = 0; i < paths.length; i++) {
                             if( (paths[i][paths[i].length-1][0] == hoverable.X) &&
@@ -653,12 +653,10 @@
     function calculateNextHoverable(direction) {
         let hoverables = [];
 
-        if (state_machine == 0) {
-            for (let i = 0; i < state.length; i++) {
-                for (let j = 0; j < state[i].length; j++) {
-                    for (let k = 0; k < state[i][j].length; k++) {
-                        hoverables.push(state[i][j][k].Position)
-                    }
+        for (let i = 0; i < state.length; i++) {
+            for (let j = 0; j < state[i].length; j++) {
+                for (let k = 0; k < state[i][j].length; k++) {
+                    hoverables.push(state[i][j][k].Position)
                 }
             }
         }

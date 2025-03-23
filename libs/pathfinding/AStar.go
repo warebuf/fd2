@@ -5,6 +5,7 @@ import (
 	"fd/libs/maps"
 	"fmt"
 	"math"
+	"time"
 )
 
 type AStarKey struct {
@@ -166,12 +167,20 @@ func (graph *AStarGraph) AddEdge(from Location, to Location, cost float64) {
 
 func (graph *AStarGraph) ComputeShortestPath() {
 
+	count := 0
+
+	start := time.Now()
+
 	for graph.PriorityQueue.Len() > 0 {
 
 		current := heap.Pop(graph.PriorityQueue).(AStarKey)
 		//fmt.Println("current", current.Location, current.F)
 
 		if current.Location == graph.Goal {
+
+			elapsed := time.Since(start)
+			fmt.Println("A* Runtime", elapsed)
+			fmt.Println("A* count", count)
 
 			ans := []Location{}
 
@@ -201,6 +210,7 @@ func (graph *AStarGraph) ComputeShortestPath() {
 		}
 
 		graph.Visited[current.Location] = true
+		count += 1
 
 		for neighbor, cost := range graph.Edges[current.Location] {
 

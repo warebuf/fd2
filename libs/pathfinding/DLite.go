@@ -6,6 +6,7 @@ import (
 	"fd/libs/maps"
 	"fmt"
 	"math"
+	"time"
 )
 
 type DLiteKey struct {
@@ -159,7 +160,7 @@ func (graph *DLiteGraph) updateVertex(location Location) {
 	if location != graph.Goal {
 		minRHS := math.Inf(1)
 		for neighborNode, edgeCost := range graph.Edges[location] {
-			fmt.Println(neighborNode, graph.Nodes[neighborNode][0], edgeCost)
+			//fmt.Println(neighborNode, graph.Nodes[neighborNode][0], edgeCost)
 			minRHS = math.Min(minRHS, graph.Nodes[neighborNode][0]+edgeCost)
 		}
 		graph.Nodes[location][1] = minRHS
@@ -236,6 +237,9 @@ func (graph *DLiteGraph) UpdateEdgeCost(from Location, to Location, cost float64
 
 func (graph *DLiteGraph) ComputeShortestPath() {
 
+	count := 0
+	count2 := 0
+
 	for isDLiteKeyLess(graph.PriorityQueue.topKey(), graph.CalculateKey(graph.Start)) || graph.Nodes[graph.Start][0] != graph.Nodes[graph.Start][1] {
 
 		if len(graph.PriorityQueue.queue) == 0 {
@@ -244,21 +248,27 @@ func (graph *DLiteGraph) ComputeShortestPath() {
 
 		oldKey := heap.Pop(graph.PriorityQueue).(DLiteKey)
 		newKey := graph.CalculateKey(oldKey.Location)
-		fmt.Println("current", newKey, graph.Nodes[newKey.Location], len(graph.PriorityQueue.queue), len(graph.Visited))
+		//fmt.Println("current", newKey, graph.Nodes[newKey.Location], len(graph.PriorityQueue.queue), len(graph.Visited))
+
+		count2 += 1
 
 		if isDLiteKeyLess(oldKey, newKey) {
 			graph.PriorityQueue.Update(newKey.Location, newKey.H, newKey.RHS)
 		} else if graph.Nodes[oldKey.Location][0] > graph.Nodes[oldKey.Location][1] {
+			count += 1
+
 			graph.Nodes[oldKey.Location][0] = graph.Nodes[oldKey.Location][1]
 			graph.Visited[oldKey.Location] = true
 			for neighborLocation, _ := range graph.Edges[oldKey.Location] {
 				_, exists := graph.Visited[neighborLocation]
-				fmt.Println("neighbor", neighborLocation, graph.Nodes[neighborLocation])
+				//fmt.Println("neighbor", neighborLocation, graph.Nodes[neighborLocation])
 				if exists == false {
 					graph.updateVertex(neighborLocation)
 				}
 			}
 		} else {
+			count += 1
+
 			graph.Nodes[oldKey.Location][0] = math.Inf(1)
 			graph.updateVertex(oldKey.Location)
 			for neighborLocation, _ := range graph.Edges[oldKey.Location] {
@@ -270,22 +280,24 @@ func (graph *DLiteGraph) ComputeShortestPath() {
 		}
 	}
 
+	fmt.Println("D* count", count2, count)
+
 }
 
 func (graph *DLiteGraph) ReturnShortestPath() []Location {
 
-	var ans []Location
+	var path []Location
 	visited := make(map[Location]bool)
 
 	if graph.Nodes[graph.Goal][0] == math.Inf(1) {
 		fmt.Println("the path does not exist")
-		return ans
+		return path
 	}
 
 	current := graph.Last
 
 	for current != graph.Goal {
-		ans = append(ans, current)
+		path = append(path, current)
 		visited[current] = true
 
 		var smallestNeighbor *Location
@@ -305,19 +317,15 @@ func (graph *DLiteGraph) ReturnShortestPath() []Location {
 		}
 		current = *smallestNeighbor
 	}
-	ans = append(ans, current)
-	var ans2 []Location
-	for i := len(ans) - 1; i >= 0; i-- {
-		ans2 = append(ans2, ans[i])
-	}
-	fmt.Println(ans2)
+	path = append(path, current)
 	sum := 0.0
-	for i := 0; i < len(ans)-1; i++ {
-		sum += maps.EuclideanDistance(ans[i].X, ans[i].Y, ans[i+1].X, ans[i+1].Y)
+	for i := 0; i < len(path)-1; i++ {
+		sum += maps.EuclideanDistance(path[i].X, path[i].Y, path[i+1].X, path[i+1].Y)
 	}
-	fmt.Println("sum", sum)
+	fmt.Println("D* LITE path", path)
+	fmt.Println("D* LITE sum", sum)
 
-	return ans2
+	return path
 
 }
 
@@ -349,7 +357,7 @@ func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation Loca
 
 	graph.Visited = make(map[Location]bool)
 
-	graph.Km += maps.EuclideanDistance(graph.Start.X, graph.Start.Y, newLocation.X, newLocation.Y)
+	graph.Km += maps.EuclideanDistance(graph.Last.X, graph.Last.Y, newLocation.X, newLocation.Y)
 	graph.Last = newLocation
 
 	_, exists := graph.TemporaryLocations[newLocation]
@@ -359,8 +367,11 @@ func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation Loca
 		for i := 0; i < len(newEdges); i++ {
 			graph.AddEdge(newLocation, newEdges[i], newEdgesCost[i])
 		}
+		start := time.Now()
 		graph.updateVertex(newLocation)
 		graph.ComputeShortestPath()
+		elapsed := time.Since(start)
+		fmt.Println("D* runtime", elapsed)
 		graph.ReturnShortestPath()
 	}
 

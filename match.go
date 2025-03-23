@@ -1115,10 +1115,9 @@ func (m *match) run() {
 								fmt.Println(i, j, k, "posX", travelX, "posY", travelY)
 								fmt.Println(i, j, k, "path", m.heroes[i][j][k].Path)
 								fmt.Println(i, j, k, "seg#", m.heroes[i][j][k].Path_Segment)
-								fmt.Println(i, j, k, "seg", m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment])
 
 								m.heroGraph[i][j][k].UpdatePathfinding(mapList[0], pathfinding.Location{X: travelX, Y: travelY})
-								s := pathfinding.Location{X: travelY, Y: travelY}
+								s := pathfinding.Location{X: travelX, Y: travelY}
 								e := pathfinding.Location{X: m.heroes[i][j][k].Destination.X, Y: m.heroes[i][j][k].Destination.Y}
 								AStarInit(s, e)
 
@@ -1451,7 +1450,6 @@ func setPath(state [][][]*hero, i int, j int, k int, dest maps.Coordinate, p [][
 			thetas[x+1] = thetas[x]
 		}
 	}
-	fmt.Println("thetas", thetas)
 	state[i][j][k].Thetas = thetas
 
 	fmt.Println("setPath", len(p), p)
@@ -1907,7 +1905,10 @@ func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfi
 
 	DStar.Nodes[end][1] = 0
 	heap.Push(DStar.PriorityQueue, DStar.CalculateKey(end))
+	s := time.Now()
 	DStar.ComputeShortestPath()
+	elapsed := time.Since(s)
+	fmt.Println("D* runtime", elapsed)
 	DStar.ReturnShortestPath()
 
 	return DStar

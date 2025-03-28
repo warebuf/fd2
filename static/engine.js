@@ -108,8 +108,8 @@ function anime() {
         drawPos()
         drawHoverable()
         drawCamps()
-        //drawPotentialPaths()
-        //drawPaths()
+        drawPotentialPaths()
+        drawPaths()
         //drawStats()
         drawDamageNumbers()
         updateDamageNumbers()
@@ -127,20 +127,6 @@ function anime() {
         //drawSprite(); // I think it's too distracting right now
 
 
-        if (paths.length > 0) {
-            let selected = -1;
-            for (let i = 0; i < paths.length; i++) {
-                if (
-                    (paths[i][paths[i].length - 1][0] == hoverable.X) &&
-                    (paths[i][paths[i].length - 1][1] == hoverable.Y)
-                ) {
-                    selected = i;
-                } else {
-                    drawComplexPath(paths[i], "grey");
-                }
-            }
-            if (selected >= 0) { drawComplexPath(paths[selected], "#FFC107"); }
-        }
     }
 
     frame_count += 1
@@ -1481,3 +1467,32 @@ function drawUnitSelect() {
 
 }
 
+function drawPotentialPaths() {
+    if (paths.length > 0) {
+        for (let i = 0; i < paths.length; i++) {
+            if (
+                (paths[i][paths[i].length - 1][0] == hoverable.X) &&
+                (paths[i][paths[i].length - 1][1] == hoverable.Y)
+            ) {
+
+                if(pathType[i] == 1) { drawComplexPath(paths[i], "rgba(255, 0, 0, 1)"); }
+                else { drawComplexPath(paths[i], "#FFC107"); }
+
+            } else {
+                drawComplexPath(paths[i], "rgba(255, 255, 255, 0.3)");
+            }
+        }
+    }
+}
+
+function drawPaths() {
+
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                drawComplexPath(state[i][j][k].Path, "rgba(255, 255, 255, 0.3)");
+            }
+        }
+    }
+
+}

@@ -30,11 +30,12 @@ func IntersectBezierLine(bezier []float64, line []float64) bool {
 	//fmt.Println("abcd", a, b, c, d)
 
 	// if a == 0, corner case, checkQuadraticRoots
-	if a == 0 {
-		if b == 0 {
-			return checkLinearRoots(c, d)
+	EPSILON := 0.0000000001
+	if math.Abs(a) < EPSILON {
+		if math.Abs(b) < EPSILON {
+			return checkLinearRoots(c, d, bezier, line)
 		}
-		return checkQuadraticRoots(b, c, d)
+		return checkQuadraticRoots(b, c, d, bezier, line)
 	}
 
 	// CARDANOS IS CORRECT, VERIFY BY ONLINE CUBIC EQUATION SOLVER
@@ -128,43 +129,52 @@ func cardano(a, b, c, d float64) []float64 {
 }
 
 // bt^2 + ct + d = 0
-func checkQuadraticRoots(b float64, c float64, d float64) bool {
+func checkQuadraticRoots(a float64, b float64, c float64, bezier []float64, line []float64) bool {
 
-	t0 := d
-	t1 := b + c + d
-
-	if t0*t1 <= 0 {
-		//fmt.Println("quadratic root crosses 0 between [0,1]")
-		return true
+	discriminant := (b * b) - (4 * a * c)
+	if discriminant < 0 {
+		return false
 	}
 
-	// take derivative to find turning point
-	b2 := 2 * b
-	c2 := c
-	tp_x := -c2 / b2
-	tp_y := b*tp_x*tp_x + c*tp_x + d
+	sqrtDisc := math.Sqrt(discriminant)
+	t1 := (-b + sqrtDisc) / (2 * a)
+	t2 := (-b - sqrtDisc) / (2 * a)
 
-	if (tp_x >= 0) && (tp_x <= 1) { // there is a turning point between 0 and 1, otherwise it for sure doesn't cross the x-axis
-		// if turning point is different polarity, return true, it crosses the root
-		if tp_y*t0 <= 0 {
-			//fmt.Println("quadratic root check crosses 0")
-			return true
+	if t1 >= 0 && t1 <= 1 {
+		XY := calcXY(bezier, t1)
+		if onLineSegment(XY, line) {
+			return true // Intersection found
 		}
 	}
-	//fmt.Println("quadratic root does not cross 0")
-	return false
 
+	if t2 >= 0 && t2 <= 1 {
+		XY := calcXY(bezier, t2)
+		if onLineSegment(XY, line) {
+			return true // Intersection found
+		}
+	}
+
+	return false
 }
 
-func checkLinearRoots(c float64, d float64) bool {
-	t0 := d
-	t1 := c + d
+func checkLinearRoots(a float64, b float64, bezier []float64, line []float64) bool {
 
-	if t0*t1 <= 0 {
-		//fmt.Println("linear root check crosses 0")
-		return true
+	if a == 0 {
+		if b == 0 {
+			return true
+		}
+		return false
 	}
-	//fmt.Println("linear root does not cross 0")
+
+	root := -b / a
+
+	if root >= 0 && root <= 1 {
+		XY := calcXY(bezier, root)
+		if onLineSegment(XY, line) {
+			return true // Intersection found
+		}
+	}
+
 	return false
 }
 

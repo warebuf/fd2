@@ -165,7 +165,7 @@ func (graph *AStarGraph) AddEdge(from Location, to Location, cost float64) {
 
 }
 
-func (graph *AStarGraph) ComputeShortestPath() {
+func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 	count := 0
 
@@ -182,18 +182,18 @@ func (graph *AStarGraph) ComputeShortestPath() {
 			fmt.Println("A* Runtime", elapsed)
 			fmt.Println("A* count", count)
 
-			ans := []Location{}
+			ans := [][]float64{}
 
 			currentPath := &graph.Goal
 
 			for currentPath != nil {
 
-				ans = append(ans, *currentPath)
+				ans = append(ans, []float64{currentPath.X, currentPath.Y})
 				currentPath = graph.Parent[*currentPath]
 
 			}
 
-			ans2 := []Location{}
+			ans2 := [][]float64{}
 			for i := len(ans) - 1; i >= 0; i-- {
 				ans2 = append(ans2, ans[i])
 			}
@@ -202,11 +202,11 @@ func (graph *AStarGraph) ComputeShortestPath() {
 
 			sum := 0.0
 			for i := 0; i < len(ans)-1; i++ {
-				sum += maps.EuclideanDistance(ans[i].X, ans[i].Y, ans[i+1].X, ans[i+1].Y)
+				sum += maps.EuclideanDistance(ans[i][0], ans[i][1], ans[i+1][0], ans[i+1][1])
 			}
 			fmt.Println("sum", sum)
 
-			return
+			return ans2
 		}
 
 		graph.Visited[current.Location] = true
@@ -234,5 +234,7 @@ func (graph *AStarGraph) ComputeShortestPath() {
 		}
 
 	}
+
+	return [][]float64{}
 
 }

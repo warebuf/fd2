@@ -134,6 +134,11 @@
     var hoverable_coordinate = null;
     var selected_hoverable = null;
 
+    var paths = [];
+    var pathLengths = [];
+    var pathType = [];
+    var selected_hoverable_path = null;
+
     var total_units_of_time = 0;
 
     var view = 0;
@@ -144,8 +149,6 @@
 
     var dynamics = [];
 
-    var paths = [];
-    var pathLengths = [];
 
     var sprites = []
 
@@ -232,7 +235,8 @@
 
                         second_index = false
                     }
-                } else {
+                }
+                else {
                     console.log("enter")
 
                     if (state_machine == 0) {
@@ -264,6 +268,7 @@
 
                             paths = [];
                             pathLengths = [];
+                            pathType = [];
                             let startingNode = createStartingNode(state[my_team][my_int][hoverable.K]);
                             if( startingNode.Edges.length > 0 ) {
                                 for (let i = 0; i < camps.length; i++) {
@@ -272,11 +277,30 @@
                                         const foundPath = findPath(startingNode, camps[i]);
                                         if(foundPath) {
                                             pathLengths.push( getPathLength(paths[paths.length - 1]) );
+                                            pathType.push(0);
                                         }
                                         const end = performance.now();
                                         console.log(`findPath executed in ${end - start} ms`);
                                     }
                                 }
+                                for(let i = 0; i < state.length; i++) {
+                                    if(i != my_team) {
+                                        for(let j = 0; j < state[i].length; j++) {
+                                            for(let k = 0; k < state[i][j].length; k++) {
+
+                                                if(state[i][j][k].HP > 0) {
+                                                    const foundPath = findPath(startingNode, state[i][j][k]);
+                                                    if(foundPath) {
+                                                        pathLengths.push( getPathLength(paths[paths.length - 1]) );
+                                                        pathType.push(1);
+                                                    }
+                                                }
+
+                                            }
+                                        }
+                                    }
+                                }
+
                             }
 
                             selected_hoverable = hoverable;
@@ -294,9 +318,9 @@
                                 socket.send(JSON.stringify({
                                     "Event": 'act',
                                     "Message": action_buffer,
-                                    "Team_index": my_team,
-                                    "Client_index": my_int,
-                                    "Hero_index": selected_hoverable.K,
+                                    "IndexI": my_team,
+                                    "IndexJ": my_int,
+                                    "IndexK": selected_hoverable.K,
                                     "Route": hoverable,
                                     "Path": paths[i],
                                 }))
@@ -305,9 +329,11 @@
                         }
 
                         selected_hoverable = null;
+                        selected_hoverable_path = null;
                         state_machine = 0;
                         paths = [];
                         pathLengths = [];
+                        pathType = [];
                         setupHoverable();
                     }
 
@@ -450,6 +476,7 @@
                 if (state_machine == 1) {
                     state_machine = 0;
                     selected_hoverable = null;
+                    selected_hoverable_path = null;
                     paths = [];
                     pathLengths = [];
                     setupHoverable();
@@ -550,24 +577,15 @@
 
 
 
-
-
         }
     }
 
-
     document.addEventListener("click", function(event) {
-
-        //console.log("viewport", event.clientX, event.clientY); // just use viewport now and pray
-
         const d = 500;
         const wid = Math.round(window.innerWidth / 2) - (dimension / 2);
         const hei = Math.round(window.innerHeight / 2) + (dimension / 2);
         console.log("viewport2", event.clientX-wid, -(event.clientY-hei) ); // just use viewport now and pray
-
-
     })
-
 
     export function returntomatchmaking() {
         window.location.href = 'http://{{.host}}/waitroom'
@@ -604,7 +622,8 @@
                     }
                 }
             }
-        } else if (state_machine == 1) {
+        }
+        else if (state_machine == 1) {
             for (let i = 0; i < camps.length; i++) {
                 if (camps[i].HP > 0) {
                     let dist = getDistance(camps[i].XY, hoverable);
@@ -826,13 +845,18 @@
         return false;
     }
 
-    function findPath(startingNode, targetCamp) {
+    function findPath(startingNode, target) {
+
+        let targetCoordinate;
+
+        if(target.hasOwnProperty("XY")) { targetCoordinate = target.XY; }
+        else if(target.hasOwnProperty("Position")) { targetCoordinate = target.Position; }
 
         // check if direct path from starting node, if so, add that and return
         let available = true;
         for (let j = 0; j < obstacles.length; j++) {
             if(obstacles[j].Shape=="BEZIER") {
-                if (lineIntersectsBezier(startingNode, targetCamp.XY, obstacles[j]) == true) {
+                if (lineIntersectsBezier(startingNode, targetCoordinate, obstacles[j]) == true) {
                     available = false;
                     break;
                 }
@@ -841,7 +865,7 @@
         if (available == true) {
             let ans = [];
             ans.push([startingNode.X, startingNode.Y])
-            ans.push([targetCamp.XY.X, targetCamp.XY.Y])
+            ans.push([targetCoordinate.X, targetCoordinate.Y])
             paths.push(ans)
             console.log("direct path found")
             return true;
@@ -849,7 +873,7 @@
 
         // add a dynamic node to the global dynamic array
         const start1 = performance.now()
-        const destPossible = addToIntersections(targetCamp);
+        const destPossible = addToIntersections(targetCoordinate);
         const end1 = performance.now();
         console.log(`addToIntersections executed in ${end1 - start1} ms`, destPossible);
 
@@ -931,8 +955,8 @@
     function addToIntersections(dest) {
 
         const newIntersection = {};
-        newIntersection.X = dest.XY.X;
-        newIntersection.Y = dest.XY.Y;
+        newIntersection.X = dest.X;
+        newIntersection.Y = dest.Y;
 
         let starting_paths = [];
         let starting_lengths = [];

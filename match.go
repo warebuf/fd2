@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"math"
 	"math/rand"
-	"reflect"
 	"strconv"
 	"sync"
 	"time"
@@ -37,6 +36,8 @@ type hero struct {
 	Path         [][]float64
 	Thetas       []float64
 	Path_Segment int // is the last node we've visited
+
+	DynamicDestination []int // either {i,j,k} or {}
 
 	DistanceLeft float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
@@ -175,10 +176,9 @@ type message struct {
 	Route maps.Coordinate
 	Path  [][]float64
 
-	// should add the user's TCH
-	Team_index   int
-	Client_index int
-	Hero_index   int
+	IndexI int
+	IndexJ int
+	IndexK int
 }
 
 func m_write(m *match_socket) {
@@ -217,58 +217,75 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "act" {
 
 				// check if the match has started and the action is to a user's own hero
-				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.Team_index && m.m.uuid_to_team_int[m.u.uid].b == msg.Client_index {
+				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.IndexI && m.m.uuid_to_team_int[m.u.uid].b == msg.IndexJ {
 					// check if the hero is alive and at starting position
-					if (m.m.heroes[msg.Team_index][msg.Client_index][msg.Hero_index].HP > 0) &&
-						((m.m.heroes[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 0) ||
-							(sameCoordinates(m.m.heroes[msg.Team_index][msg.Client_index][msg.Hero_index].Position, m.m.heroes[msg.Team_index][msg.Client_index][msg.Hero_index].Start) &&
-								(m.m.heroes[msg.Team_index][msg.Client_index][msg.Hero_index].Status == 1))) {
+					if (m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].HP > 0) &&
+						((m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 0) ||
+							(sameCoordinates(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Position, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Start) &&
+								(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1))) {
 
-						if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
+						canSetPath := false
 
-							if confirmValidPath(m.m.heroes, m.m.camps, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Path, msg.Route) {
+						if msg.Route.I >= 0 &&
+							msg.Route.I < len(m.m.heroes) &&
+							msg.Route.J >= 0 &&
+							msg.Route.J < len(m.m.heroes[msg.Route.I]) &&
+							msg.Route.K >= 0 &&
+							msg.Route.K < len(m.m.heroes[msg.Route.I][msg.Route.J]) &&
+							m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].HP > 0 {
 
-								fmt.Println("msg.path, msg.route", msg.Path, msg.Route)
-								fmt.Println("Type of myInt:", reflect.TypeOf(msg.Path))
+							fmt.Println("received dynamic destination request")
 
-								startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
-								endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
+							if confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 1) {
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{msg.Route.I, msg.Route.J, msg.Route.K}
+								canSetPath = true
+							}
 
-								AStarInit(startLoc, endLoc)
-								m.m.heroGraph[msg.Team_index][msg.Client_index][msg.Hero_index] = DStarLiteInit(startLoc, endLoc)
+						} else if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
-								sum := 0.0
-
-								for i := 0; i < len(msg.Path)-1; i++ {
-									sum += maps.EuclideanDistance(msg.Path[i][0], msg.Path[i][1], msg.Path[i+1][0], msg.Path[i+1][1])
-								}
-								fmt.Println("USERSHORTESTPATH:", msg.Path)
-								fmt.Println("sum:", sum)
-								setPath(m.m.heroes, msg.Team_index, msg.Client_index, msg.Hero_index, msg.Route, msg.Path)
-								m.m.sharepos(nil, 0)
-
-								// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
-								sim_check := true
-								for i := 0; i < len(m.m.heroes); i++ {
-									for j := 0; j < len(m.m.heroes[i]); j++ {
-										for k := 0; k < len(m.m.heroes[i][j]); k++ {
-											if (m.m.heroes[i][j][k].Bot == false) &&
-												(m.m.heroes[i][j][k].Status == 0) &&
-												(m.m.heroes[i][j][k].HP > 0) {
-												sim_check = false
-												break
-											}
-										}
-									}
-								}
-								if sim_check == true {
-									fmt.Println("simulate")
-									m.m.simulate <- true
-								}
+							if confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 0) {
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{}
+								canSetPath = true
 							}
 
 						} else {
 							fmt.Printf("this route does not exist")
+						}
+
+						if canSetPath {
+
+							startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
+							endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
+							AStarInit(startLoc, endLoc)
+							m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
+							sum := 0.0
+							for i := 0; i < len(msg.Path)-1; i++ {
+								sum += maps.EuclideanDistance(msg.Path[i][0], msg.Path[i][1], msg.Path[i+1][0], msg.Path[i+1][1])
+							}
+							fmt.Println("USERSHORTESTPATH:", msg.Path)
+							fmt.Println("sum:", sum)
+
+							setPath(m.m.heroes, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Route, msg.Path)
+							m.m.sharepos(nil, 0)
+
+							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
+							sim_check := true
+							for i := 0; i < len(m.m.heroes); i++ {
+								for j := 0; j < len(m.m.heroes[i]); j++ {
+									for k := 0; k < len(m.m.heroes[i][j]); k++ {
+										if (m.m.heroes[i][j][k].Bot == false) &&
+											(m.m.heroes[i][j][k].Status == 0) &&
+											(m.m.heroes[i][j][k].HP > 0) {
+											sim_check = false
+											break
+										}
+									}
+								}
+							}
+							if sim_check == true {
+								fmt.Println("simulate")
+								m.m.simulate <- true
+							}
 						}
 
 					}
@@ -432,6 +449,7 @@ func createMatch(pl *permission_list) *match {
 
 		// creating camps
 		random_count := 5 + rand.Intn(5)
+
 		for i := 0; i < random_count; i++ {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
@@ -439,8 +457,8 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		c := maps.Coordinate{X: 330, Y: 160, Type: "camp", I: random_count, J: -1, K: -1}
-		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
+		//c := maps.Coordinate{X: 280, Y: 190, Type: "camp", I: random_count, J: -1, K: -1}
+		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -484,9 +502,10 @@ func createMatch(pl *permission_list) *match {
 					Path:         make([][]float64, 0),
 					Path_Segment: 0,
 
-					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
+					DynamicDestination: []int{},
 
-					Status: 0,
+					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
+					Status:       0,
 
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,
@@ -976,9 +995,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if (m.heroes[i][j][k].Bot == true) && (m.heroes[i][j][k].Status == 0) {
-							fmt.Println("bot action", i, j, k)
 							p, pint, dGraph := determineBotAction(m.heroes[i][j][k], m.camps)
-							fmt.Println("FINISHED DETERMINE BOT ACTION", p, pint)
 							if len(p) == 0 {
 								// figure out how to end the game here
 							} else {
@@ -1112,14 +1129,14 @@ func (m *match) run() {
 								m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y = travelX, travelY
 
 								// i want to recalculate DLite graphs here
-								fmt.Println(i, j, k, "posX", travelX, "posY", travelY)
-								fmt.Println(i, j, k, "path", m.heroes[i][j][k].Path)
-								fmt.Println(i, j, k, "seg#", m.heroes[i][j][k].Path_Segment)
-
-								m.heroGraph[i][j][k].UpdatePathfinding(mapList[0], pathfinding.Location{X: travelX, Y: travelY})
-								s := pathfinding.Location{X: travelX, Y: travelY}
-								e := pathfinding.Location{X: m.heroes[i][j][k].Destination.X, Y: m.heroes[i][j][k].Destination.Y}
-								AStarInit(s, e)
+								//fmt.Println(i, j, k, "posX", travelX, "posY", travelY)
+								//fmt.Println(i, j, k, "path", m.heroes[i][j][k].Path)
+								//fmt.Println(i, j, k, "seg#", m.heroes[i][j][k].Path_Segment)
+								//
+								//m.heroGraph[i][j][k].UpdatePathfinding(mapList[0], pathfinding.Location{X: travelX, Y: travelY})
+								//s := pathfinding.Location{X: travelX, Y: travelY}
+								//e := pathfinding.Location{X: m.heroes[i][j][k].Destination.X, Y: m.heroes[i][j][k].Destination.Y}
+								//AStarInit(s, e)
 
 							}
 						}
@@ -1457,7 +1474,8 @@ func setPath(state [][][]*hero, i int, j int, k int, dest maps.Coordinate, p [][
 	state[i][j][k].Status = 1
 }
 
-func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate) bool {
+// pathType can be 0 (camp) or 1 (unit),
+func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate, pathType int) bool {
 
 	// path of 1... wth???
 	if len(path) <= 1 {
@@ -1472,14 +1490,27 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	}
 
 	// check if the end of the path is a valid destination
-	if dest.I >= 0 && dest.I < len(camps) && dest.J < 0 && dest.K < 0 {
-		if (camps[dest.I].XY.X != path[len(path)-1][0]) || (camps[dest.I].XY.Y != path[len(path)-1][1]) {
-			fmt.Println("path destination does not match camp coordinate")
+
+	if pathType == 0 {
+		if dest.I >= 0 && dest.I < len(camps) && dest.J < 0 && dest.K < 0 {
+			if (camps[dest.I].XY.X != path[len(path)-1][0]) || (camps[dest.I].XY.Y != path[len(path)-1][1]) {
+				fmt.Println("path destination does not match camp coordinate")
+				return false
+			}
+		} else {
+			fmt.Println("camp index does not exit")
 			return false
 		}
-	} else {
-		fmt.Println("camp index does not exit")
-		return false
+	} else if pathType == 1 {
+		if dest.I >= 0 && dest.I < len(state) && dest.J >= 0 && dest.J < len(state[dest.I]) && dest.K >= 0 && dest.K < len(state[dest.I][dest.J]) {
+			if (state[dest.I][dest.J][dest.K].Position.X != path[len(path)-1][0]) || (state[dest.I][dest.J][dest.K].Position.Y != path[len(path)-1][1]) {
+				fmt.Println("path destination does not match unit coordinate")
+				return false
+			}
+		} else {
+			fmt.Println("unit index does not exit")
+			return false
+		}
 	}
 
 	start := time.Now()
@@ -1489,7 +1520,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_segment) {
-					fmt.Println("line segment intersects obstacle1")
+					fmt.Println("line segment intersects obstacle", mapList[0].Obstacles[j], line_segment)
 					return false
 				}
 			}
@@ -1612,7 +1643,7 @@ func returnEdgesArray(c maps.Coordinate) ([]float64, int) {
 		}
 		if !blocked {
 			edges[i] = getDistancePointArray(c, mapList[0].Intersections[i])
-			fmt.Println("edge exists", edges[i])
+			fmt.Println("edge exists", c, mapList[0].Intersections[i], edges[i])
 			count++
 		}
 	}
@@ -1914,7 +1945,7 @@ func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfi
 	return DStar
 }
 
-func AStarInit(start pathfinding.Location, end pathfinding.Location) {
+func AStarInit(start pathfinding.Location, end pathfinding.Location) [][]float64 {
 
 	AStarMap := pathfinding.AStarInit(mapList[0], start, end)
 
@@ -1937,5 +1968,5 @@ func AStarInit(start pathfinding.Location, end pathfinding.Location) {
 	AStarMap.Nodes[start] = 0
 	heap.Push(AStarMap.PriorityQueue, AStarMap.CalculateKey(start))
 
-	AStarMap.ComputeShortestPath()
+	return AStarMap.ComputeShortestPath()
 }

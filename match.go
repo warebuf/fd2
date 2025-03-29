@@ -1044,6 +1044,12 @@ func (m *match) run() {
 
 			fmt.Println("min", min_units)
 
+			recalculateDynamicDestination := false
+			if min_units > 0.1 {
+				min_units = 0.1
+				recalculateDynamicDestination = true
+			}
+
 			has_user_cmd := false
 
 			// calculate TTD for each unit, save the units that are going to attack next
@@ -1106,6 +1112,7 @@ func (m *match) run() {
 							m.heroes[i][j][k].DistanceLeft -= min_units * float64(m.heroes[i][j][k].SPD)
 
 							if m.heroes[i][j][k].DistanceLeft-0.01 <= 0 {
+
 								m.heroes[i][j][k].DistanceLeft = 0
 								if m.camps[m.heroes[i][j][k].Destination.I].HP > 0 {
 									m.heroes[i][j][k].Status = 2
@@ -1224,6 +1231,29 @@ func (m *match) run() {
 			}
 			if len(atk_list) > 0 {
 				m.sharepos(nil, 0)
+			}
+
+			// recalculate dynamic destinations
+			if recalculateDynamicDestination {
+
+				for i := 0; i < len(m.heroes); i++ {
+					for j := 0; j < len(m.heroes[i]); j++ {
+						for k := 0; k < len(m.heroes[i][j]); k++ {
+							if len(m.heroes[i][j][k].DynamicDestination) > 0 {
+
+								MT := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
+
+								fmt.Println("DISTLEFT", i, j, k, m.heroes[i][j][k].DistanceLeft, MT.DistanceLeft)
+
+								s := pathfinding.Location{X: m.heroes[i][j][k].Position.X, Y: m.heroes[i][j][k].Position.Y}
+								e := pathfinding.Location{X: MT.Position.X, Y: MT.Position.Y}
+								path := AStarInit(s, e)
+								setPath(m.heroes, i, j, k, MT.Position, path)
+							}
+						}
+					}
+				}
+
 			}
 
 			// send new timer to everyone
@@ -1520,6 +1550,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
 				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_segment) {
+
 					fmt.Println("line segment intersects obstacle", mapList[0].Obstacles[j], line_segment)
 					return false
 				}

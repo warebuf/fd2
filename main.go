@@ -163,69 +163,29 @@ func init() {
 	fmt.Println("initializing...")
 	mapList = make([]*maps.MapDetails, 0, 0)
 
-	sumrift := new(maps.MapDetails)
-	sumrift.Obstacles = make([][]float64, 0, 0)
-	sumrift.Obstacle_type = make([]string, 0, 0)
-
-	mapList = append(mapList, sumrift)
-	loadObstacles("lol-sumrift-obs.txt", sumrift)
-	loadIntersections("lol-sumrift-int.txt", sumrift)
-	sumriftString, _ := json.Marshal(mapList[0])
-	mapListJSON = append(mapListJSON, string(sumriftString))
+	loadMapDetails("sumrift.txt")
 
 	fmt.Println("finished init \n")
 }
 
-func loadObstacles(fp string, m *maps.MapDetails) {
-	fmt.Println("./obstacles/" + fp)
-	file, _ := os.Open("./obstacles/" + fp)
-	defer file.Close()
-	content, _ := io.ReadAll(file)
-	str := string(content)
-	lines := strings.Split(str, "\n")
-	for i := 0; i < len(lines); i++ {
-		result := make(map[string]interface{})
-		err := json.Unmarshal([]byte(lines[i]), &result)
-		if err != nil {
-			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
-			return
-		}
-
-		if result["Shape"] == "BEZIER" {
-			array := []float64{
-				result["X1"].(float64), result["Y1"].(float64),
-				result["X2"].(float64), result["Y2"].(float64),
-				result["X3"].(float64), result["Y3"].(float64),
-				result["X4"].(float64), result["Y4"].(float64),
-			}
-			m.Obstacles = append(m.Obstacles, array)
-			m.Obstacle_type = append(m.Obstacle_type, "BEZIER")
-		} else if result["Shape"] == "CIRCLE" {
-			array := []float64{
-				result["EAngle"].(float64), result["SAngle"].(float64),
-				result["R"].(float64),
-				result["X"].(float64), result["Y"].(float64),
-			}
-			m.Obstacles = append(m.Obstacles, array)
-			m.Obstacle_type = append(m.Obstacle_type, "CIRCLE")
-		}
-	}
-}
-
-func loadIntersections(fp string, m *maps.MapDetails) {
-	fmt.Println("./obstacles/" + fp)
-	file, _ := os.Open("./obstacles/" + fp)
+func loadMapDetails(fp string) {
+	fmt.Println("./mapFiles/" + fp)
+	file, _ := os.Open("./mapFiles/" + fp)
 	defer file.Close()
 	content, _ := io.ReadAll(file)
 	str := string(content)
 	lines := strings.Split(str, "\n")
 
+	m := new(maps.MapDetails)
+	m.Obstacles = make([][]float64, 0, 0)
+	m.Obstacle_type = make([]string, 0, 0)
 	m.IntersectionsC = make([]maps.Coordinate, 0, len(lines))
 	m.Intersections = make([][]float64, 0, len(lines))
 	m.Intersections_edges = make([][]string, 0, 0)
 	m.Intersections_edgelength = make([][]float64, 0, 0)
 
 	for i := 0; i < len(lines); i++ {
+		fmt.Println(lines[i])
 		result := make(map[string]interface{})
 		err := json.Unmarshal([]byte(lines[i]), &result)
 		if err != nil {
@@ -233,30 +193,59 @@ func loadIntersections(fp string, m *maps.MapDetails) {
 			return
 		}
 
-		XY := []float64{result["X"].(float64), result["Y"].(float64)}
-		XYC := maps.Coordinate{X: result["X"].(float64), Y: result["Y"].(float64)}
+		if result["Type"] == "INT" {
 
-		m.Intersections = append(m.Intersections, XY)
-		m.IntersectionsC = append(m.IntersectionsC, XYC)
+			XY := []float64{result["X"].(float64), result["Y"].(float64)}
+			XYC := maps.Coordinate{X: result["X"].(float64), Y: result["Y"].(float64)}
 
-		E := []string{}
-		EINT := []int{}
-		for _, val := range result["Edges"].([]interface{}) {
-			E = append(E, val.(string))
-			rest := val.(string)[1:]
-			numbers, _ := strconv.Atoi(rest)
-			EINT = append(EINT, numbers)
+			m.Intersections = append(m.Intersections, XY)
+			m.IntersectionsC = append(m.IntersectionsC, XYC)
+
+			E := []string{}
+			EINT := []int{}
+			for _, val := range result["Edges"].([]interface{}) {
+				E = append(E, val.(string))
+				rest := val.(string)[1:]
+				numbers, _ := strconv.Atoi(rest)
+				EINT = append(EINT, numbers)
+			}
+			m.Intersections_edges = append(m.Intersections_edges, E)
+			m.Intersections_edges_int = append(m.Intersections_edges_int, EINT)
+
+			EL := []float64{}
+			for _, val := range result["EdgeLength"].([]interface{}) {
+				EL = append(EL, val.(float64))
+			}
+			m.Intersections_edgelength = append(m.Intersections_edgelength, EL)
+
+		} else if result["Type"] == "OBS" {
+
+			if result["Shape"] == "BEZIER" {
+				array := []float64{
+					result["X1"].(float64), result["Y1"].(float64),
+					result["X2"].(float64), result["Y2"].(float64),
+					result["X3"].(float64), result["Y3"].(float64),
+					result["X4"].(float64), result["Y4"].(float64),
+				}
+				m.Obstacles = append(m.Obstacles, array)
+				m.Obstacle_type = append(m.Obstacle_type, "BEZIER")
+			} else if result["Shape"] == "CIRCLE" {
+				array := []float64{
+					result["EAngle"].(float64), result["SAngle"].(float64),
+					result["R"].(float64),
+					result["X"].(float64), result["Y"].(float64),
+				}
+				m.Obstacles = append(m.Obstacles, array)
+				m.Obstacle_type = append(m.Obstacle_type, "CIRCLE")
+			}
+
 		}
-		m.Intersections_edges = append(m.Intersections_edges, E)
-		m.Intersections_edges_int = append(m.Intersections_edges_int, EINT)
 
-		EL := []float64{}
-		for _, val := range result["EdgeLength"].([]interface{}) {
-			EL = append(EL, val.(float64))
-		}
-		m.Intersections_edgelength = append(m.Intersections_edgelength, EL)
 	}
 
+	mapList = append(mapList, m)
+	mapListString, _ := json.Marshal(m)
+	mapListJSON = append(mapListJSON, string(mapListString))
 }
 
 func main() {
@@ -322,6 +311,8 @@ func main() {
 
 	mux.HandleFunc("/game/", gameHandler)
 	mux.HandleFunc("/msocket", msocketHandler)
+
+	mux.HandleFunc("/editor", editorHandler)
 
 	mux.HandleFunc("/chat/", chatHandler)
 	mux.HandleFunc("/lobby", lobbyHandler)
@@ -511,6 +502,26 @@ func successHandler(res http.ResponseWriter, req *http.Request) {
 		res.Write([]byte("hi " + session.Values["Email"].(string)))
 	} else {
 		//fmt.Println("User is not authenticated, redirecting to home page")
+		http.Redirect(res, req, "/", http.StatusSeeOther)
+	}
+}
+
+func editorHandler(res http.ResponseWriter, req *http.Request) {
+
+	fmt.Println("/editor")
+
+	// Check if user is already authenticated
+	session, err := store.Get(req, "session-name")
+
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	if auth, ok := session.Values["authenticated"].(bool); ok && auth {
+
+		http.ServeFile(res, req, "static/editor/editor.html")
+
+	} else {
 		http.Redirect(res, req, "/", http.StatusSeeOther)
 	}
 }

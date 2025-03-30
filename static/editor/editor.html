@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Map Editor</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            font-family: sans-serif;
+        }
+        #container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 10;
+        }
+        button, input[type="file"] {
+            padding: 8px 12px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        input[type="file"] {
+            display: none;
+        }
+        label[for="fileUpload"] {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <canvas id="gameCanvas"></canvas>
+    <div id="controls">
+        <label for="fileUpload">Upload File</label>
+        <input type="file" id="fileUpload">
+        <button id="downloadBtn">Download</button>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        draw();
+    }
+
+    function draw() {
+        ctx.fillStyle = "#1e1e1e";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        drawMap()
+    }
+
+    function drawMap(){
+
+        const squareSize = 500;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        ctx.strokeStyle = "white";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(centerX-(squareSize/2), centerY-(squareSize/2), squareSize, squareSize);
+
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+
+    // Handle file upload
+    const fileInput = document.getElementById('fileUpload');
+    fileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                alert("File content loaded:\n" + e.target.result.substring(0, 100));
+            };
+            reader.readAsText(file);
+        }
+    });
+
+
+    document.getElementById('downloadBtn').addEventListener('click', () => {
+        const data = "Example data to save in a file.";
+        const blob = new Blob([data], { type: "text/plain" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "example.txt";
+        a.click();
+
+        URL.revokeObjectURL(url);
+    });
+</script>
+</body>
+</html>

@@ -185,7 +185,6 @@ func loadMapDetails(fp string) {
 	m.Intersections_edgelength = make([][]float64, 0, 0)
 
 	for i := 0; i < len(lines); i++ {
-		fmt.Println(lines[i])
 		result := make(map[string]interface{})
 		err := json.Unmarshal([]byte(lines[i]), &result)
 		if err != nil {

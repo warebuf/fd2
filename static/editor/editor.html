@@ -32,20 +32,36 @@
             gap: 10px;
             z-index: 10;
         }
+        #options {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        #options button {
+            padding: 4px 8px;
+            font-size: 12px;
+            line-height: 1;
+        }
+
         button, input[type="file"] {
-            padding: 8px 12px;
-            font-size: 14px;
-            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 12px;
+            line-height: 1;
         }
         input[type="file"] {
             display: none;
         }
         label[for="fileUpload"] {
             background: #4CAF50;
-            color: white;
+            color: black;
             border: none;
-            padding: 8px 12px;
-            cursor: pointer;
+            padding: 4px 8px;
+            font-size: 12px;
         }
     </style>
 </head>
@@ -57,11 +73,38 @@
         <input type="file" id="fileUpload">
         <button id="downloadBtn">Download</button>
     </div>
+    <div id="options">
+        <button id="b1">Delete All Intersections</button>
+        <button id="b2">Generate Intersections</button>
+        <button id="b3">Check For Overlaps</button>
+    </div>
 </div>
 
-<script>
+
+<script type="module">
+
+    import { Bezier } from "https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/src/bezier.min.js";
+
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+
+    var Obstacles = [];
+    var ObstacleTypes = [];
+    var Intersections = [];
+    var Edges = [];
+    var EdgeLengths = [];
+
+    var Overlaps = new Map();
+
+    var POI = new Map(); // can replace with a map linked list data structure later
+    var POI2 = new Map();
+
+    var bigToSmall1 = new Map();
+    var bigToSmall2 = new Map();
+
+    var selected = '';
+    var selected2 = '';
+    var selected3 = '';
 
     function resizeCanvas() {
         canvas.width = window.innerWidth;
@@ -73,6 +116,8 @@
         ctx.fillStyle = "#1e1e1e";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
         drawMap()
+        drawObstacles()
+        drawIntersections()
     }
 
     function drawMap(){
@@ -87,21 +132,321 @@
 
     }
 
+    function init() {
+
+        for (let i = 0; i < Obstacles.length; i++) {
+            if (ObstacleTypes[i] == "BEZIER") {
+
+                const curve = new Bezier(Obstacles[i][0], Obstacles[i][1], Obstacles[i][2], Obstacles[i][3], Obstacles[i][4], Obstacles[i][5], Obstacles[i][6], Obstacles[i][7]);
+                const extrema = curve.extrema()
+                for(let j = 0; j < extrema.values.length; j++) {
+
+                    const bluePoint = curve.get(extrema.values[j])
+                    const key0 = [bluePoint.x, bluePoint.y, 'e'].join(',')
+                    POI2.set(key0, true)
+
+                    const redPoint = curve.offset(extrema.values[j], 5);
+                    const key1 = [redPoint.x, redPoint.y, 'e1'].join(',')
+                    POI.set(key1, true)
+
+                    const greenPoint = curve.offset(extrema.values[j], -5);
+                    const key2 = [greenPoint.x, greenPoint.y, 'e2'].join(',')
+                    POI.set(key2, true)
+
+                    bigToSmall1.set(key0, key1);
+                    bigToSmall2.set(key0, key2);
+                }
+            }
+        }
+    }
+
+    function drawObstacles(){
+
+        const squareSize = 500;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        ctx.strokeStyle = "white";
+        for (let i = 0; i < Obstacles.length; i++) {
+            if (ObstacleTypes[i] == "BEZIER") {
+
+                ctx.beginPath();
+                ctx.moveTo(centerX - (squareSize/2) + Obstacles[i][0], centerY + (squareSize/2) - Obstacles[i][1]);
+                ctx.bezierCurveTo(
+                    centerX - (squareSize/2) + Obstacles[i][2], centerY + (squareSize/2) - Obstacles[i][3],
+                    centerX - (squareSize/2) + Obstacles[i][4], centerY + (squareSize/2) - Obstacles[i][5],
+                    centerX - (squareSize/2) + Obstacles[i][6], centerY + (squareSize/2) - Obstacles[i][7]
+                );
+                ctx.stroke();
+
+                // const curve = new Bezier(Obstacles[i][0], Obstacles[i][1], Obstacles[i][2], Obstacles[i][3], Obstacles[i][4], Obstacles[i][5], Obstacles[i][6], Obstacles[i][7]);
+                //
+                // const extrema = curve.extrema()
+
+                // for(let j = 0; j < extrema.values.length; j++) {
+                //     ctx.fillStyle = "blue";
+                //     const bluePoint = curve.get(extrema.values[j])
+                //     ctx.fillRect(centerX - (squareSize/2) + bluePoint.x-1, centerY + (squareSize/2) - bluePoint.y-1, 3, 3);
+                //
+                //     ctx.fillStyle = "red";
+                //     const redPoint = curve.offset(extrema.values[j], 5);
+                //     ctx.fillRect(centerX - (squareSize/2) + redPoint.x, centerY + (squareSize/2) - redPoint.y, 1, 1);
+                //
+                //     ctx.fillStyle = "green";
+                //     const greenPoint = curve.offset(extrema.values[j], -5);
+                //     ctx.fillRect(centerX - (squareSize/2) + greenPoint.x, centerY + (squareSize/2) - greenPoint.y, 1, 1);
+                //
+                // }
+
+                // let curveMinT = 0
+                // let curveMaxT = 0
+                // let curveMinVal = 1
+                // let curveMaxVal = -1;
+                //
+                // for(let j = 0; j <= 100; j++) {
+                //     const curvature = curve.curvature(j*0.01)
+                //     if(curvature.k < curveMinVal) {
+                //         curveMinVal = curvature.k
+                //         curveMinT = j*0.01
+                //     }
+                //     if(curvature.k > curveMaxVal) {
+                //         curveMaxVal = curvature.k
+                //         curveMaxT = j*0.01
+                //     }
+                // }
+                //
+                // const startPoint = curve.get(0);
+                // const endPoint = curve.get(1);
+                //
+                // const minPoint = curve.get(curveMinT)
+                // const maxPoint = curve.get(curveMaxT)
+                //
+                // const startKey = `${startPoint.x},${startPoint.y}`;
+                // const endKey = `${endPoint.x},${endPoint.y}`;
+                //
+                // if (Overlaps.has(startKey)) {
+                //     Overlaps.set(startKey, Overlaps.get(startKey) + 1);
+                // } else {
+                //     Overlaps.set(startKey, 1);
+                // }
+                //
+                // if (Overlaps.has(endKey)) {
+                //     Overlaps.set(endKey, Overlaps.get(endKey) + 1);
+                // } else {
+                //     Overlaps.set(endKey, 1);
+                // }
+
+
+                // ctx.fillStyle = "yellow";
+                // ctx.fillRect(centerX - (squareSize/2) + startPoint.x-1, centerY + (squareSize/2) - startPoint.y-1, 3, 3);
+
+                // ctx.fillStyle = "orange";
+                // let orangePoint = curve.offset(0, 5);
+                // ctx.fillRect(centerX - (squareSize/2) + orangePoint.x-1, centerY + (squareSize/2) - orangePoint.y-1, 3, 3);
+
+                // ctx.fillStyle = "purple";
+                // let purplePoint = curve.offset(0, -5);
+                // ctx.fillRect(centerX - (squareSize/2) + purplePoint.x-1, centerY + (squareSize/2) - purplePoint.y-1, 3, 3);
+
+                // ctx.fillStyle = "yellow";
+                // ctx.fillRect(centerX - (squareSize/2) + endPoint.x-1, centerY + (squareSize/2) - endPoint.y-1, 3, 3);
+
+                // ctx.fillStyle = "orange";
+                // orangePoint = curve.offset(1, 5);
+                // ctx.fillRect(centerX - (squareSize/2) + orangePoint.x-1, centerY + (squareSize/2) - orangePoint.y-1, 3, 3);
+
+                // ctx.fillStyle = "purple";
+                // purplePoint = curve.offset(1, -5);
+                // ctx.fillRect(centerX - (squareSize/2) + purplePoint.x-1, centerY + (squareSize/2) - purplePoint.y-1, 3, 3);
+
+                // ctx.fillStyle = "purple";
+                // ctx.fillRect(centerX - (squareSize/2) + minPoint.x-1, centerY + (squareSize/2) - minPoint.y-1, 3, 3);
+                // ctx.fillRect(centerX - (squareSize/2) + maxPoint.x-1, centerY + (squareSize/2) - maxPoint.y-1, 3, 3);
+
+
+            }
+        }
+
+        for (const key of POI2.keys()) {
+            let keyString = key.split(',')
+            keyString[0] = parseFloat(keyString[0])
+            keyString[1] = parseFloat(keyString[1])
+
+            if(keyString==selected) {
+                ctx.fillStyle = "yellow";
+                ctx.fillRect(centerX - (squareSize/2) + keyString[0]-1, centerY + (squareSize/2) - keyString[1]-1, 3, 3);
+            } else {
+                ctx.fillStyle = "blue";
+                ctx.fillRect(centerX - (squareSize/2) + keyString[0]-1, centerY + (squareSize/2) - keyString[1]-1, 3, 3);
+            }
+
+        }
+
+        for (const key of POI.keys()) {
+            let keyString = key.split(',')
+            keyString[0] = parseFloat(keyString[0])
+            keyString[1] = parseFloat(keyString[1])
+            if(keyString==selected2) {
+                ctx.fillStyle = "yellow";
+                ctx.fillRect(centerX - (squareSize/2) + keyString[0], centerY + (squareSize/2) - keyString[1], 1, 1);
+            }
+            else if(keyString==selected3) {
+                ctx.fillStyle = "yellow";
+                ctx.fillRect(centerX - (squareSize/2) + keyString[0], centerY + (squareSize/2) - keyString[1], 1, 1);
+            } else if(keyString[2] == 'e1') {
+                ctx.fillStyle = "red";
+                ctx.fillRect(centerX - (squareSize/2) + keyString[0], centerY + (squareSize/2) - keyString[1], 1, 1);
+            }
+            else if(keyString[2] == 'e2') {
+                ctx.fillStyle = "green";
+                ctx.fillRect(centerX - (squareSize/2) + keyString[0], centerY + (squareSize/2) - keyString[1], 1, 1);
+            }
+        }
+
+    }
+
+    function drawIntersections(){
+
+        const squareSize = 500;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        ctx.fillStyle = "red";
+        for (let i = 0; i < Intersections.length; i++) {
+            ctx.fillRect(centerX - (squareSize/2) + Intersections[i][0], centerY + (squareSize/2) - Intersections[i][1], 1, 1);
+        }
+
+    }
+
+    function deleteAllIntersections(){
+        Intersections = [];
+        Edges = [];
+        EdgeLengths = [];
+        draw();
+    }
+
+    function checkForOverlaps() {
+        for (const [key, val] of Overlaps) {
+            if(val <= 1) {
+                console.log(key, val)
+            }
+        }
+    }
+
+    function euclideanDistance(x1,y1,x2,y2) {
+        const x = x2 - x1
+        const y = y2 - y1
+        return Math.sqrt(x*x + y*y)
+    }
+
+
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
-    // Handle file upload
+
+
     const fileInput = document.getElementById('fileUpload');
     fileInput.addEventListener('change', (event) => {
-        const file = event.target.files[0];
+        const file = event.target.files[0]; // grab the first file the user uploaded
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                alert("File content loaded:\n" + e.target.result.substring(0, 100));
+                let lines = e.target.result.replace(/\r\n/g, '\n').split('\n');
+                for (let i = 0; i < lines.length; i++) {
+                    let jsonObject = JSON.parse(lines[i])
+
+                    if(jsonObject.Type == "INT") {
+                        let coordinates = [jsonObject.X,jsonObject.Y]
+                        Intersections.push(coordinates);
+
+                        let edges = [];
+                        let edgeLengths = [];
+                        for(let i = 0; i < jsonObject.EdgeLength.length; i++) {
+                            edges.push( parseInt(jsonObject.Edges[i].slice(1)) );
+                            edgeLengths.push(jsonObject.EdgeLength[i]);
+                        }
+                        Edges.push(edges);
+                        EdgeLengths.push(edgeLengths);
+                    }
+                    else if(jsonObject.Type == "OBS") {
+                        if(jsonObject.Shape=="BEZIER") {
+                            let array = [jsonObject.X1,jsonObject.Y1,jsonObject.X2,jsonObject.Y2,jsonObject.X3,jsonObject.Y3,jsonObject.X4,jsonObject.Y4];
+                            Obstacles.push(array);
+                            ObstacleTypes.push("BEZIER");
+                        }
+                        else if(jsonObject.Shape=="CIRCLE") {
+                        }
+                    }
+                }
+
+                init();
+                drawObstacles();
+                drawIntersections();
+
             };
             reader.readAsText(file);
         }
     });
+
+    document.addEventListener("click", function(event) {
+        const squareSize = 500;
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        const clickX = event.clientX-centerX+(squareSize/2);
+        const clickY = -(event.clientY-centerY-(squareSize/2));
+
+
+        console.log("click location", clickX, clickY );
+
+        selected = "";
+        selected2 = "";
+        selected3 = "";
+        let smallest = Infinity;
+        let KS = "";
+
+        for (const key of POI2.keys()) {
+            let keyString = key.split(',')
+            keyString[0] = parseFloat(keyString[0])
+            keyString[1] = parseFloat(keyString[1])
+
+            let euclid = euclideanDistance(clickX, clickY, keyString[0], keyString[1])
+            if(euclid < smallest) {
+                KS = key;
+                smallest = euclid;
+            }
+        }
+
+        if(smallest < 5) {
+            selected = KS;
+            selected2 = bigToSmall1.get(KS);
+            selected3 = bigToSmall2.get(KS);
+        }
+
+        draw();
+
+    })
+
+    document.addEventListener("contextmenu", function(event) {
+        event.preventDefault();
+
+        if(selected != "") {
+
+            POI2.delete(selected);
+            POI.delete(selected2)
+            POI.delete(selected3)
+
+            bigToSmall1.delete(selected);
+            bigToSmall2.delete(selected);
+            selected = "";
+            selected2 = "";
+            selected3 = "";
+
+            draw()
+        }
+
+
+    })
 
 
     document.getElementById('downloadBtn').addEventListener('click', () => {
@@ -116,6 +461,18 @@
 
         URL.revokeObjectURL(url);
     });
+
+    document.getElementById('b1').addEventListener('click', () => {
+        deleteAllIntersections()
+    })
+
+    document.getElementById('b3').addEventListener('click', () => {
+        checkForOverlaps()
+    })
+
+
+
+
 </script>
 </body>
 </html>

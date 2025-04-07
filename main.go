@@ -163,7 +163,7 @@ func init() {
 	fmt.Println("initializing...")
 	mapList = make([]*maps.MapDetails, 0, 0)
 
-	loadMapDetails("sumrift.txt")
+	loadMapDetails("sumrift20250406.txt")
 
 	fmt.Println("finished init \n")
 }
@@ -181,7 +181,7 @@ func loadMapDetails(fp string) {
 	m.Obstacle_type = make([]string, 0, 0)
 	m.IntersectionsC = make([]maps.Coordinate, 0, len(lines))
 	m.Intersections = make([][]float64, 0, len(lines))
-	m.Intersections_edges = make([][]string, 0, 0)
+	m.Intersections_edges_int = make([][]int, 0, 0)
 	m.Intersections_edgelength = make([][]float64, 0, 0)
 
 	for i := 0; i < len(lines); i++ {
@@ -191,6 +191,7 @@ func loadMapDetails(fp string) {
 			fmt.Println("Error unmarshaling JSON in loadObstacles:", err)
 			return
 		}
+		fmt.Println(result)
 
 		if result["Type"] == "INT" {
 
@@ -200,16 +201,11 @@ func loadMapDetails(fp string) {
 			m.Intersections = append(m.Intersections, XY)
 			m.IntersectionsC = append(m.IntersectionsC, XYC)
 
-			E := []string{}
-			EINT := []int{}
+			E := []int{}
 			for _, val := range result["Edges"].([]interface{}) {
-				E = append(E, val.(string))
-				rest := val.(string)[1:]
-				numbers, _ := strconv.Atoi(rest)
-				EINT = append(EINT, numbers)
+				E = append(E, int(val.(float64)))
 			}
-			m.Intersections_edges = append(m.Intersections_edges, E)
-			m.Intersections_edges_int = append(m.Intersections_edges_int, EINT)
+			m.Intersections_edges_int = append(m.Intersections_edges_int, E)
 
 			EL := []float64{}
 			for _, val := range result["EdgeLength"].([]interface{}) {

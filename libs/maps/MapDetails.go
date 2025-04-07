@@ -6,7 +6,6 @@ type MapDetails struct {
 
 	IntersectionsC           []Coordinate
 	Intersections            [][]float64 // [x,y]
-	Intersections_edges      [][]string  // [e1,e2, ...]
 	Intersections_edges_int  [][]int
 	Intersections_edgelength [][]float64 // [el1, el2, ...]
 }

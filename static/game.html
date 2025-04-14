@@ -146,6 +146,7 @@
 
     var obstacles = [];
     var intersections = [];
+    var obstaclesOn = true;
 
     var dynamics = [];
 
@@ -178,6 +179,8 @@
 <script defer type="module">
 
     import {Bezier} from 'https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/src/bezier.min.js';
+    import { aStar } from '/static/game/algosNStructs/aStar.mjs';
+
 
     document.onkeydown = function (e) {
         switch (e.key) {
@@ -266,41 +269,47 @@
                                 coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
                             )
 
+                            const myAStar = new aStar(intersections);
+
                             paths = [];
                             pathLengths = [];
                             pathType = [];
-                            let startingNode = createStartingNode(state[my_team][my_int][hoverable.K]);
-                            if( startingNode.Edges.length > 0 ) {
-                                for (let i = 0; i < camps.length; i++) {
-                                    if (camps[i].HP > 0) {
-                                        const start = performance.now()
-                                        const foundPath = findPath(startingNode, camps[i]);
-                                        if(foundPath) {
-                                            pathLengths.push( getPathLength(paths[paths.length - 1]) );
-                                            pathType.push(0);
-                                        }
-                                        const end = performance.now();
-                                        console.log(`findPath executed in ${end - start} ms`);
+                            const startX = state[my_team][my_int][hoverable.K].Position.X;
+                            const startY = state[my_team][my_int][hoverable.K].Position.Y;
+                            myAStar.addNode(startX, startY);
+                            for(let i = 0; i < camps.length; i++) {
+                                if(camps[i].HP > 0) {
+                                    myAStar.addNode(camps[i].XY.X, camps[i].XY.Y);
+                                    const foundPath = myAStar.computePath(startX, startY, camps[i].XY.X, camps[i].XY.Y);
+                                    console.log(foundPath);
+                                    if(foundPath.length > 0) {
+                                        paths.push(foundPath);
+                                        pathLengths.push( getPathLength(foundPath) );
+                                        pathType.push(0);
                                     }
+                                    myAStar.removeNode(camps[i].XY.X, camps[i].XY.Y);
+                                    myAStar.clear();
                                 }
-                                for(let i = 0; i < state.length; i++) {
-                                    if(i != my_team) {
-                                        for(let j = 0; j < state[i].length; j++) {
-                                            for(let k = 0; k < state[i][j].length; k++) {
+                            }
 
-                                                if(state[i][j][k].HP > 0) {
-                                                    const foundPath = findPath(startingNode, state[i][j][k]);
-                                                    if(foundPath) {
-                                                        pathLengths.push( getPathLength(paths[paths.length - 1]) );
-                                                        pathType.push(1);
-                                                    }
+                            for(let i = 0; i < state.length; i++) {
+                                if(i != my_team) {
+                                    for(let j = 0; j < state[i].length; j++) {
+                                        for(let k = 0; k < state[i][j].length; k++) {
+                                            if(state[i][j][k].HP > 0) {
+                                                myAStar.addNode(state[i][j][k].Position.X, state[i][j][k].Position.Y);
+                                                const foundPath = myAStar.computePath(startX, startY, state[i][j][k].Position.X, state[i][j][k].Position.Y);
+                                                if(foundPath.length > 0) {
+                                                    paths.push(foundPath);
+                                                    pathLengths.push( getPathLength(foundPath) );
+                                                    pathType.push(1);
                                                 }
-
+                                                myAStar.removeNode(state[i][j][k].Position.X, state[i][j][k].Position.Y);
+                                                myAStar.clear();
                                             }
                                         }
                                     }
                                 }
-
                             }
 
                             selected_hoverable = hoverable;
@@ -338,6 +347,11 @@
                     }
 
                 }
+                break;
+
+            case 'O':
+            case 'o':
+                obstaclesOn = !obstaclesOn
                 break;
 
             case 'C':
@@ -880,9 +894,9 @@
         if (destPossible) {
             // calculate distance from unit to dynamic location
             const start2 = performance.now();
-            paths.push(aStar(startingNode, dynamics[dynamics.length - 1]));
+            //paths.push(oldAStar(startingNode, dynamics[dynamics.length - 1]));
             const end2 = performance.now();
-            console.log(`aStar executed in ${end2 - start2} ms`);
+            console.log(`AStar executed in ${end2 - start2} ms`);
 
             // remove dynamic location
             const start3 = performance.now()
@@ -913,30 +927,15 @@
                 }
             }
             if (available == true) {
-                starting_paths.push('i' + i.toString());
+                starting_paths.push(i);
                 starting_lengths.push(getDistance(unit.Position, intersections[i]))
-            }
-        }
-        for (let i = 0; i < dynamics.length; i++) {
-            let available = true;
-            for (let j = 0; j < obstacles.length; j++) {
-                if(obstacles[j].Shape=="BEZIER") {
-                    if (lineIntersectsBezier(unit.Position, dynamics[i], obstacles[j]) == true) {
-                        available = false;
-                        break;
-                    }
-                }
-            }
-            if (available == true) {
-                starting_paths.push('d' + i.toString());
-                starting_lengths.push(getDistance(unit.Position, dynamics[i]))
             }
         }
         const start = {};
         start.X = unit.Position.X;
         start.Y = unit.Position.Y;
         start.Edges = starting_paths;
-        start.EdgeLength = starting_lengths;
+        start.EdgeLengths = starting_lengths;
         const end4 = performance.now();
         console.log(`createStartingNode executed in ${end4 - start4} ms`);
 
@@ -973,10 +972,11 @@
                 }
             }
             if (available == true) {
-                starting_paths.push('i' + i.toString());
-                starting_lengths.push(getDistance(newIntersection, intersections[i]))
-                intersections[i].Edges.push('d' + dynamics.length.toString())
-                intersections[i].EdgeLength.push(getDistance(newIntersection, intersections[i]));
+
+                starting_paths.push( i );
+                starting_lengths.push(getDistance(newIntersection, intersections[i]));
+                intersections[i].Edges.push('d' + dynamics.length.toString());
+                intersections[i].EdgeLengths.push(getDistance(newIntersection, intersections[i]));
             }
         }
 
@@ -984,7 +984,7 @@
             return false;
         }
         newIntersection.Edges = starting_paths;
-        newIntersection.EdgeLength = starting_lengths;
+        newIntersection.EdgeLengths = starting_lengths;
         dynamics.push(newIntersection);
         return true;
     }
@@ -992,9 +992,10 @@
     function removeFromIntersections() {
         for (let i = 0; i < dynamics.length; i++) {
             for (let j = 0; j < dynamics[i].Edges.length; j++) {
+
                 if (dynamics[i].Edges[j][0] == 'i') {
                     intersections[parseInt(dynamics[i].Edges[j].slice(1))].Edges.pop();
-                    intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLength.pop();
+                    intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLengths.pop();
                 }
             }
         }
@@ -1077,8 +1078,8 @@
                         let newIntersect = new Object();
                         newIntersect.X = map["Intersections"][i][0]
                         newIntersect.Y = map["Intersections"][i][1]
-                        newIntersect.Edges = map["Intersections_edges"][i]
-                        newIntersect.EdgeLength = map["Intersections_edgelength"][i]
+                        newIntersect.Edges = map["Edges"][i]
+                        newIntersect.EdgeLengths = map["EdgeLengths"][i]
                         intersections.push(newIntersect)
                     }
 

@@ -362,6 +362,11 @@
         if (file) {
             const reader = new FileReader();
             reader.onload = function(e) {
+
+                drawnPoints = [];
+                savedPoints = [];
+                Obstacles = [];
+                ObstacleTypes = [];
                 let lines = e.target.result.replace(/\r\n/g, '\n').split('\n');
                 for (let i = 0; i < lines.length; i++) {
                     let jsonObject = JSON.parse(lines[i])
@@ -468,25 +473,30 @@
             }
         }
 
-        // turn intersection edges into strings
-        for (const [key, edgeIndexes] of edgesMap) {
-            let edgeLengths = [];
-            let filteredEdges = [];
-            for(let i = 0; i < edgeIndexes.length; i++) {
-                const dist = euclideanDistance( savedPoints[key][0], savedPoints[key][1], savedPoints[edgeIndexes[i]][0], savedPoints[edgeIndexes[i]][1] );
-                if(dist > 0.0001) {
-                    edgeLengths.push( dist );
-                    filteredEdges.push( edgeIndexes[i] );
+        for(let i = 0; i < savedPoints.length; i++) {
+            if(edgesMap.has(i)) {
+                let edgeLengths = [];
+                let filteredEdges = [];
+
+                const edgeIndexes = edgesMap.get(i);
+                for(let j = 0; j < edgeIndexes.length; j++) {
+                    const euclid = euclideanDistance(savedPoints[i][0],savedPoints[i][1],savedPoints[edgeIndexes[j]][0],savedPoints[edgeIndexes[j]][1]);
+                    if(euclid > 0.0001) {
+                        edgeLengths.push( euclid );
+                        filteredEdges.push( edgeIndexes[j] );
+                    }
                 }
+
+                const intersection = {
+                    Type: "INT",
+                    X: savedPoints[i][0],
+                    Y: savedPoints[i][1],
+                    EdgeLengths: edgeLengths,
+                    Edges: filteredEdges,
+                };
+
+                strings.push(JSON.stringify(intersection))
             }
-            const intersection = {
-                Type: "INT",
-                X: savedPoints[key][0],
-                Y: savedPoints[key][1],
-                EdgeLength: edgeLengths,
-                Edges: filteredEdges,
-            };
-            strings.push(JSON.stringify(intersection))
         }
 
 
@@ -639,36 +649,63 @@
 
     function LRMirror() {
         const squareSize = 500;
-        for(let i = drawnPoints.length - 1; i >= 0; i--) {
-            if(selectedPoints[i] === true) {
-                drawnPoints.push([squareSize - drawnPoints[i][0], drawnPoints[i][1]]);
-                selectedPoints.push(true);
+        const pointSet = new Set(drawnPoints.map(p => `${p[0]},${p[1]}`));
+
+        const originalLength = drawnPoints.length;
+        for (let i = 0; i < originalLength; i++) {
+            if (selectedPoints[i] === true) {
+                const mirrored = [squareSize - drawnPoints[i][0], drawnPoints[i][1]];
+                const key = `${mirrored[0]},${mirrored[1]}`;
+                if (!pointSet.has(key)) {
+                    drawnPoints.push(mirrored);
+                    selectedPoints.push(true);
+                    pointSet.add(key);
+                }
             }
         }
+
         findEdges();
         draw();
     }
 
     function UDMirror() {
         const squareSize = 500;
-        for(let i = drawnPoints.length - 1; i >= 0; i--) {
-            if(selectedPoints[i] === true) {
-                drawnPoints.push([drawnPoints[i][0], squareSize - drawnPoints[i][1]]);
-                selectedPoints.push(true);
+        const pointSet = new Set(drawnPoints.map(p => `${p[0]},${p[1]}`));
+
+        const originalLength = drawnPoints.length;
+        for (let i = 0; i < originalLength; i++) {
+            if (selectedPoints[i] === true) {
+                const mirrored = [drawnPoints[i][0], squareSize - drawnPoints[i][1]];
+                const key = `${mirrored[0]},${mirrored[1]}`;
+                if (!pointSet.has(key)) {
+                    drawnPoints.push(mirrored);
+                    selectedPoints.push(true);
+                    pointSet.add(key);
+                }
             }
         }
+
         findEdges();
         draw();
     }
 
     function diagonalMirror() {
         const squareSize = 500;
-        for(let i = drawnPoints.length - 1; i >= 0; i--) {
-            if(selectedPoints[i] === true) {
-                drawnPoints.push([squareSize - drawnPoints[i][0], squareSize - drawnPoints[i][1]]);
-                selectedPoints.push(true);
+        const pointSet = new Set(drawnPoints.map(p => `${p[0]},${p[1]}`));
+
+        const originalLength = drawnPoints.length;
+        for (let i = 0; i < originalLength; i++) {
+            if (selectedPoints[i] === true) {
+                const mirrored = [squareSize - drawnPoints[i][0], squareSize - drawnPoints[i][1]];
+                const key = `${mirrored[0]},${mirrored[1]}`;
+                if (!pointSet.has(key)) {
+                    drawnPoints.push(mirrored);
+                    selectedPoints.push(true);
+                    pointSet.add(key);
+                }
             }
         }
+
         findEdges();
         draw();
     }

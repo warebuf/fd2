@@ -457,8 +457,8 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		//c := maps.Coordinate{X: 280, Y: 190, Type: "camp", I: random_count, J: -1, K: -1}
-		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
+		c := maps.Coordinate{X: 310, Y: 190, Type: "camp", I: random_count, J: -1, K: -1}
+		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -1866,8 +1866,8 @@ func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, 
 						H:          tempH,
 						F:          tempG + tempH,
 						Parent:     current,
-						Edges:      &mapList[0].Intersections_edges_int[(*current.Edges)[i]],
-						EdgeLength: &mapList[0].Intersections_edgelength[(*current.Edges)[i]],
+						Edges:      &mapList[0].Edges[(*current.Edges)[i]],
+						EdgeLength: &mapList[0].EdgeLengths[(*current.Edges)[i]],
 						EdgeIndex:  (*current.Edges)[i],
 					}
 					track[newNode.EdgeIndex] = newNode

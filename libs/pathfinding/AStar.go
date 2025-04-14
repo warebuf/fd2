@@ -115,10 +115,10 @@ func AStarInit(mp *maps.MapDetails, start Location, goal Location) *AStarGraph {
 		masterAStar.Nodes[interestLocation] = math.Inf(1)
 
 		indivMap := make(map[Location]float64)
-		for j := 0; j < len(mp.Intersections_edges_int[i]); j++ {
-			edgeArray := mp.Intersections[mp.Intersections_edges_int[i][j]]
+		for j := 0; j < len(mp.Edges[i]); j++ {
+			edgeArray := mp.Intersections[mp.Edges[i][j]]
 			edgeLocation := Location{edgeArray[0], edgeArray[1]}
-			indivMap[edgeLocation] = mp.Intersections_edgelength[i][j]
+			indivMap[edgeLocation] = mp.EdgeLengths[i][j]
 		}
 		masterAStar.Edges[interestLocation] = indivMap
 

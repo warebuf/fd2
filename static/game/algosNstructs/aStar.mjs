@@ -145,7 +145,7 @@ export class aStar {
                 if(this.Visited.has(key) === false) {
 
                     const unhashed = unhash(key);
-                    const gVal = current.priority + value;
+                    const gVal = this.Nodes.get(current.key) + value;
                     const hVal = euclideanDistance(unhashed.X, unhashed.Y, X2, Y2);
                     const fVal = gVal + hVal;
 

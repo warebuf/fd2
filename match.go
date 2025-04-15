@@ -256,14 +256,12 @@ func m_read(m *match_socket) {
 
 							startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
 							endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
-							AStarInit(startLoc, endLoc)
+
 							m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
 							sum := 0.0
 							for i := 0; i < len(msg.Path)-1; i++ {
 								sum += maps.EuclideanDistance(msg.Path[i][0], msg.Path[i][1], msg.Path[i+1][0], msg.Path[i+1][1])
 							}
-							fmt.Println("USERSHORTESTPATH:", msg.Path)
-							fmt.Println("sum:", sum)
 
 							setPath(m.m.heroes, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Route, msg.Path)
 							m.m.sharepos(nil, 0)
@@ -457,8 +455,8 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		c := maps.Coordinate{X: 310, Y: 190, Type: "camp", I: random_count, J: -1, K: -1}
-		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
+		//c := maps.Coordinate{X: 310, Y: 190, Type: "camp", I: random_count, J: -1, K: -1}
+		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -1624,23 +1622,11 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 		return ans
 	}
 
-	// create destination node, if no edges exist, return empty
-	dest_edges, dest_count := returnEdgesArray(dest)
-	if dest_count == 0 {
-		return [][]float64{}
-	}
-
-	// create all edges for starting node, if no edges exist, return empty
-	start_edges, start_dist := returnEdgesList(start)
-	if len(start_dist) == 0 {
-		return [][]float64{}
-	}
-
-	ans := aStar(start, dest, start_edges, start_dist, dest_edges)
+	//ans := aStar(start, dest, start_edges, start_dist, dest_edges)
 	s := pathfinding.Location{X: start.X, Y: start.Y}
 	e := pathfinding.Location{X: dest.X, Y: dest.Y}
 
-	AStarInit(s, e)
+	ans := AStarInit(s, e)
 
 	sum := 0.0
 	for i := 0; i < len(ans)-1; i++ {
@@ -1759,157 +1745,6 @@ func getTheta(c1 []float64, c2 []float64) float64 {
 		theta = theta + (2 * math.Pi)
 	}
 	return toFixed(theta, 3)
-}
-
-type aStarNode struct {
-	XY         maps.Coordinate
-	Edges      *[]int
-	EdgeLength *[]float64
-
-	EdgeIndex int
-
-	G      float64 // Cost from start to this node
-	H      float64
-	F      float64
-	Parent *aStarNode // Pointer to the parent node for path reconstruction
-	Index  int        // Index in the heap
-}
-
-type PriorityQueue []*aStarNode
-
-func (pq PriorityQueue) Len() int { return len(pq) }
-func (pq PriorityQueue) Less(i, j int) bool {
-	return pq[i].F < pq[j].F
-}
-func (pq PriorityQueue) Swap(i, j int) {
-	pq[i], pq[j] = pq[j], pq[i]
-	pq[i].Index = i
-	pq[j].Index = j
-}
-func (pq *PriorityQueue) Push(x interface{}) {
-	node := x.(*aStarNode)
-	node.Index = len(*pq)
-	*pq = append(*pq, node)
-}
-func (pq *PriorityQueue) Pop() interface{} {
-	old := *pq
-	n := len(old)
-	node := old[n-1]
-	node.Index = -1
-	*pq = old[0 : n-1]
-	return node
-}
-func (pq *PriorityQueue) update(node *aStarNode, gCost float64, fCost float64) {
-	node.G = gCost
-	node.F = fCost
-	heap.Fix(pq, node.Index)
-}
-
-func aStar(s maps.Coordinate, g maps.Coordinate, sEdges []int, sDist []float64, eEdges []float64) [][]float64 {
-
-	open := &PriorityQueue{}
-	track := make(map[int]*aStarNode)
-	closed := make(map[maps.Coordinate]bool)
-
-	heap.Init(open)
-
-	startNode := &aStarNode{XY: s, G: 0, F: 0, Parent: nil, Edges: &sEdges, EdgeLength: &sDist, EdgeIndex: -1}
-	startNode.F = maps.EuclideanDistance(s.X, s.Y, g.X, g.Y)
-
-	heap.Push(open, startNode)
-
-	for open.Len() > 0 {
-		current := heap.Pop(open).(*aStarNode)
-
-		// found the answer path
-		if maps.EuclideanDistance(current.XY.X, current.XY.Y, g.X, g.Y) < 1e-3 {
-
-			path := [][]float64{}
-			for node := current; node != nil; node = node.Parent {
-				path = append(path, []float64{node.XY.X, node.XY.Y})
-			}
-			// reverse the path
-			for i, j := 0, len(path)-1; i < j; i, j = i+1, j-1 {
-				path[i], path[j] = path[j], path[i]
-			}
-			return path
-		}
-
-		closed[current.XY] = true
-
-		for i := 0; i < len(*current.Edges); i++ {
-			neighborXY := mapList[0].IntersectionsC[(*current.Edges)[i]]
-
-			_, found := closed[neighborXY]
-
-			if found {
-				continue
-			} else {
-				trackedNode, tracked := track[(*current.Edges)[i]]
-
-				if tracked {
-					tentativeG := current.G + (*current.EdgeLength)[i]
-
-					if tentativeG < trackedNode.G {
-						trackedNode.G = tentativeG
-						trackedNode.H = maps.EuclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
-						trackedNode.F = trackedNode.G + trackedNode.H
-						trackedNode.Parent = current
-
-					}
-				} else {
-					tempG := current.G + (*current.EdgeLength)[i]
-					tempH := maps.EuclideanDistance(neighborXY.X, neighborXY.Y, g.X, g.Y)
-					newNode := &aStarNode{
-						XY:         neighborXY,
-						G:          tempG,
-						H:          tempH,
-						F:          tempG + tempH,
-						Parent:     current,
-						Edges:      &mapList[0].Edges[(*current.Edges)[i]],
-						EdgeLength: &mapList[0].EdgeLengths[(*current.Edges)[i]],
-						EdgeIndex:  (*current.Edges)[i],
-					}
-					track[newNode.EdgeIndex] = newNode
-					heap.Push(open, newNode)
-
-				}
-			}
-		}
-		if (current.EdgeIndex >= 0) && (eEdges[current.EdgeIndex] > 0) {
-
-			trackedNode, tracked := track[-2]
-
-			if tracked {
-				tentativeG := current.G + eEdges[current.EdgeIndex]
-				if tentativeG < trackedNode.G {
-					trackedNode.G = tentativeG
-					trackedNode.H = 0
-					trackedNode.F = trackedNode.G
-					trackedNode.Parent = current
-				}
-			} else {
-				tempG := current.G + eEdges[current.EdgeIndex]
-				newNode := &aStarNode{
-					XY:         g,
-					G:          tempG,
-					H:          0,
-					F:          tempG,
-					Parent:     current,
-					Edges:      nil,
-					EdgeLength: nil,
-					EdgeIndex:  -2,
-				}
-				track[newNode.EdgeIndex] = newNode
-				heap.Push(open, newNode)
-
-			}
-		}
-
-	}
-
-	return [][]float64{}
-
 }
 
 func LPA(start pathfinding.Location, end pathfinding.Location) {

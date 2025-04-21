@@ -99,6 +99,7 @@ function anime() {
         drawCamps()
         drawPotentialPaths()
         drawPaths()
+        drawDynamicCircles()
         //drawStats()
         drawDamageNumbers()
         updateDamageNumbers()
@@ -1408,7 +1409,6 @@ function drawPotentialPaths() {
 }
 
 function drawPaths() {
-
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
@@ -1416,5 +1416,18 @@ function drawPaths() {
             }
         }
     }
+}
 
+function drawDynamicCircles() {
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                if(state[i][j][k].DynamicDestination.length > 0) {
+                    ctx.beginPath();
+                    ctx.arc(width + state[i][j][k].DynamicCircle[0], height - state[i][j][k].DynamicCircle[1], state[i][j][k].DistanceLeft/2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
 }

@@ -5,7 +5,6 @@ import (
 	"fd/libs/maps"
 	"fmt"
 	"math"
-	"time"
 )
 
 type AStarKey struct {
@@ -169,7 +168,7 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 	count := 0
 
-	start := time.Now()
+	//start := time.Now()
 
 	for graph.PriorityQueue.Len() > 0 {
 
@@ -178,9 +177,9 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 		if current.Location == graph.Goal {
 
-			elapsed := time.Since(start)
-			fmt.Println("A* Runtime", elapsed)
-			fmt.Println("A* count", count)
+			//elapsed := time.Since(start)
+			//fmt.Println("A* Runtime", elapsed)
+			//fmt.Println("A* count", count)
 
 			ans := [][]float64{}
 

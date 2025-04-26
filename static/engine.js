@@ -100,6 +100,7 @@ function anime() {
         drawPotentialPaths()
         drawPaths()
         drawDynamicCircles()
+        drawLastMileCircle()
         //drawStats()
         drawDamageNumbers()
         updateDamageNumbers()
@@ -1425,6 +1426,22 @@ function drawDynamicCircles() {
                 if(state[i][j][k].DynamicDestination.length > 0) {
                     ctx.beginPath();
                     ctx.arc(width + state[i][j][k].DynamicCircle[0], height - state[i][j][k].DynamicCircle[1], state[i][j][k].DistanceLeft/2, 0, 2 * Math.PI);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+}
+
+function drawLastMileCircle() {
+    ctx.strokeStyle = 'red';
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                if(state[i][j][k].DynamicDestination.length > 0) {
+                    let target = state[ state[i][j][k].DynamicDestination[0] ][ state[i][j][k].DynamicDestination[1] ][ state[i][j][k].DynamicDestination[2] ]
+                    ctx.beginPath();
+                    ctx.arc(width + target.Position.X, height - target.Position.Y, 25, 0, 2 * Math.PI);
                     ctx.stroke();
                 }
             }

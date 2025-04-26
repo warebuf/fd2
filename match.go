@@ -14,6 +14,7 @@ import (
 	"fd/libs/bezier"
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
+	"fd/libs/prediction"
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -1039,44 +1040,63 @@ func (m *match) run() {
 			fmt.Println("min", min_units)
 
 			recompute := [][]int{}
+			//lastMile := [][]int{}
 
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 
-						if len(m.heroes[i][j][k].DynamicDestination) > 0 && m.heroes[i][j][k].DistanceLeft > 0 {
+						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DynamicDestination) > 0 {
+
+							hunter := m.heroes[i][j][k]
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
-							fmt.Println(m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "target.Path:", target.Path)
-							targetTravelled := float64(target.SPD) * min_units
-							if target.DistanceLeft <= 0 {
-								targetTravelled = 0
+
+							euclidean := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+							fmt.Println("euclidean", euclidean)
+
+							// if they are close to each other and the A* distance is close
+							if(euclidean <= 25){
+								fmt.Println("euclidean", euclidean)
+								hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
+								prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
 							}
-							distanceTravelled := float64(m.heroes[i][j][k].SPD) * min_units
 
-							ans := circle.CircleIntersectPath(
-								target.Path,
-								target.Position.X, target.Position.Y,
-								target.DistanceLeft, target.DistanceLeft-targetTravelled,
-								m.heroes[i][j][k].DynamicCircle,
-								m.heroes[i][j][k].DistanceLeft, (m.heroes[i][j][k].DistanceLeft - distanceTravelled),
-								m.heroes[i][j][k].SPD,
-								2.0,
-							)
-							fmt.Println("intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
+							if false {
 
-							if ans >= 0 {
-								fmt.Println("replaced min", ans, min_units)
 
-								if ans == min_units {
-									recompute = append(recompute, []int{i, j, k})
 
-								} else if ans <= min_units {
-									recompute = [][]int{[]int{i, j, k}}
+							} else {
+
+								fmt.Println(m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "target.Path:", target.Path)
+								targetTravelled := float64(target.SPD) * min_units
+								if target.DistanceLeft <= 0 {
+									targetTravelled = 0
+								}
+								distanceTravelled := float64(m.heroes[i][j][k].SPD) * min_units
+
+								ans := circle.CircleIntersectPath(
+									target.Path,
+									target.Position.X, target.Position.Y,
+									target.DistanceLeft, target.DistanceLeft-targetTravelled,
+									m.heroes[i][j][k].DynamicCircle,
+									m.heroes[i][j][k].DistanceLeft, (m.heroes[i][j][k].DistanceLeft - distanceTravelled),
+									m.heroes[i][j][k].SPD,
+									2.0,
+								)
+								fmt.Println("intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
+
+								if ans >= 0 {
+									fmt.Println("replaced min", ans, min_units)
+									if ans == min_units {
+										recompute = append(recompute, []int{i, j, k})
+									} else if ans < min_units {
+										recompute = [][]int{[]int{i, j, k}}
+										min_units = ans
+									}
 								}
 
-								min_units = ans
-
 							}
+
 
 						}
 
@@ -1168,17 +1188,6 @@ func (m *match) run() {
 							} else {
 								travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1], toMove)
 								m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y = travelX, travelY
-
-								// i want to recalculate DLite graphs here
-								//fmt.Println(i, j, k, "posX", travelX, "posY", travelY)
-								//fmt.Println(i, j, k, "path", m.heroes[i][j][k].Path)
-								//fmt.Println(i, j, k, "seg#", m.heroes[i][j][k].Path_Segment)
-								//
-								//m.heroGraph[i][j][k].UpdatePathfinding(mapList[0], pathfinding.Location{X: travelX, Y: travelY})
-								//s := pathfinding.Location{X: travelX, Y: travelY}
-								//e := pathfinding.Location{X: m.heroes[i][j][k].Destination.X, Y: m.heroes[i][j][k].Destination.Y}
-								//AStarInit(s, e)
-
 							}
 						}
 					}
@@ -1229,7 +1238,8 @@ func (m *match) run() {
 
 				s := pathfinding.Location{X: hunter.Position.X, Y: hunter.Position.Y}
 				e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
-				path := AStarInit(s, e)
+				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+				path := AStarGraph.ComputeShortestPath()
 				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], hunter.Position, path)
 
 			}
@@ -1655,7 +1665,8 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 	//ans := aStar(start, dest, start_edges, start_dist, dest_edges)
 	s := pathfinding.Location{X: start.X, Y: start.Y}
 	e := pathfinding.Location{X: dest.X, Y: dest.Y}
-	ans := AStarInit(s, e)
+	AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+	ans := AStarGraph.ComputeShortestPath()
 
 	elapsed := time.Since(startTime)
 	milliseconds := elapsed.Milliseconds()
@@ -1716,30 +1727,6 @@ func getEdges(c1 pathfinding.Location, LPA *pathfinding.LPAGraph) ([]pathfinding
 	dist := make([]float64, 0)
 
 	for key, _ := range LPA.Nodes {
-		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
-		blocked := false
-		for j := 0; j < len(mapList[0].Obstacles); j++ {
-			if mapList[0].Obstacle_type[j] == "BEZIER" {
-				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					blocked = true
-					break
-				}
-			}
-		}
-		if !blocked {
-			edges = append(edges, key)
-			dist = append(dist, getDistanceLocation(c1, key))
-		}
-	}
-
-	return edges, dist
-}
-
-func getEdgesA(c1 pathfinding.Location, A *pathfinding.AStarGraph) ([]pathfinding.Location, []float64) {
-	edges := make([]pathfinding.Location, 0)
-	dist := make([]float64, 0)
-
-	for key, _ := range A.Nodes {
 		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
 		blocked := false
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
@@ -1833,40 +1820,23 @@ func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfi
 	return DStar
 }
 
-func AStarInit(start pathfinding.Location, end pathfinding.Location) [][]float64 {
-
-	AStarMap := pathfinding.AStarInit(mapList[0], start, end)
-
-	if _, exists := AStarMap.Nodes[start]; !exists {
-		edgeIndex, edgeCost := getEdgesA(start, AStarMap)
-		AStarMap.AddNode(start)
-		for i := 0; i < len(edgeIndex); i++ {
-			AStarMap.AddEdge(start, edgeIndex[i], edgeCost[i])
-		}
-	}
-
-	if _, exists := AStarMap.Nodes[end]; !exists {
-		edgeIndex, edgeCost := getEdgesA(end, AStarMap)
-		AStarMap.AddNode(end)
-		for i := 0; i < len(edgeIndex); i++ {
-			AStarMap.AddEdge(end, edgeIndex[i], edgeCost[i])
-		}
-	}
-
-	AStarMap.Nodes[start] = 0
-	heap.Push(AStarMap.PriorityQueue, AStarMap.CalculateKey(start))
-
-	return AStarMap.ComputeShortestPath()
-}
-
 func (m *match) printState() {
 
 	for i := 0; i < len(m.heroes); i++ {
 		for j := 0; j < len(m.heroes[i]); j++ {
 			for k := 0; k < len(m.heroes[i][j]); k++ {
-				fmt.Println(i, j, k, ":", m.heroes[i][j][k].Status, m.heroes[i][j][k].Start, m.heroes[i][j][k].Position, m.heroes[i][j][k].Destination, m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].TTD)
+				fmt.Println(i, j, k, ":", m.heroes[i][j][k].Status, m.heroes[i][j][k].Start, m.heroes[i][j][k].Position, m.heroes[i][j][k].Destination, "DistanceLeft:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].TTD)
 			}
 		}
 	}
 
+}
+
+func tailendPathfinding(i int, j int, k int) {
+
+	// check if direct path exists
+
+
+
+	// otherwise do A*
 }

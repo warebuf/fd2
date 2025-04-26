@@ -33,7 +33,7 @@ func getSubLine(lineP1 []float64, lineP2 []float64, newLength float64) [][]float
 	return line
 }
 
-func getSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
+func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
 
 	if distanceLeftStart <= distanceLeftEnd {
 		return [][]float64{}
@@ -161,7 +161,7 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 		}
 	}
 
-	subPath := getSubPath(path, distanceLeftStart, distanceLeftEnd)
+	subPath := GetSubPath(path, distanceLeftStart, distanceLeftEnd)
 	fmt.Println("subPath", subPath)
 
 	// create an array of floats that determine the percentage each line takes of the total path

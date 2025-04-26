@@ -2,6 +2,7 @@ package pathfinding
 
 import (
 	"container/heap"
+	"fd/libs/bezier"
 	"fd/libs/maps"
 	"fmt"
 	"math"
@@ -124,6 +125,25 @@ func AStarInit(mp *maps.MapDetails, start Location, goal Location) *AStarGraph {
 		masterAStar.Parent[interestLocation] = nil
 	}
 
+	if _, exists := masterAStar.Nodes[start]; !exists {
+		edgeIndex, edgeCost := masterAStar.getEdges(start, mp)
+		masterAStar.AddNode(start)
+		for i := 0; i < len(edgeIndex); i++ {
+			masterAStar.AddEdge(start, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	if _, exists := masterAStar.Nodes[goal]; !exists {
+		edgeIndex, edgeCost := masterAStar.getEdges(goal, mp)
+		masterAStar.AddNode(goal)
+		for i := 0; i < len(edgeIndex); i++ {
+			masterAStar.AddEdge(goal, edgeIndex[i], edgeCost[i])
+		}
+	}
+
+	masterAStar.Nodes[start] = 0
+	heap.Push(masterAStar.PriorityQueue, masterAStar.CalculateKey(start))
+
 	return masterAStar
 }
 
@@ -236,4 +256,28 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 	return [][]float64{}
 
+}
+
+func (graph *AStarGraph) getEdges(c1 Location, mp *maps.MapDetails) ([]Location, []float64) {
+	edges := make([]Location, 0)
+	dist := make([]float64, 0)
+
+	for key, _ := range graph.Nodes {
+		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+		blocked := false
+		for j := 0; j < len(mp.Obstacles); j++ {
+			if mp.Obstacle_type[j] == "BEZIER" {
+				if bezier.IntersectBezierLine(mp.Obstacles[j], line_seg) {
+					blocked = true
+					break
+				}
+			}
+		}
+		if !blocked {
+			edges = append(edges, key)
+			dist = append(dist, maps.EuclideanDistance(c1.X, c1.Y, key.X, key.Y))
+		}
+	}
+
+	return edges, dist
 }

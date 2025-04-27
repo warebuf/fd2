@@ -1052,13 +1052,11 @@ func (m *match) run() {
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
 							euclidean := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
-							fmt.Println("euclidean", euclidean)
 
-							prediction.WithinRadius(hunter.Path, target.Path, float64(hunter.SPD), float64(target.SPD) )
+							prediction.ProximityCheck(hunter.Path, target.Path, float64(hunter.SPD), float64(target.SPD) )
 
 							// if they are close to each other and the A* distance is close
 							if(euclidean <= 25){
-								fmt.Println("euclidean", euclidean)
 								hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
 								prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
 							}

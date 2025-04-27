@@ -1149,7 +1149,6 @@ function drawHPBoxes(hp, maxHP, x, y) {
 
 function drawSprite() {
 
-
     let x_offset = Math.round(c.width / 2) - 400
     let y_offset = Math.round(c.height / 2) - 250
 

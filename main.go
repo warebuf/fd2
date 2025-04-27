@@ -1,8 +1,6 @@
 package main
 
 import (
-	"github.com/markbates/goth"
-	"github.com/markbates/goth/providers/google"
 	"io"
 	"log"
 	"math"
@@ -11,6 +9,9 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+
+	"github.com/markbates/goth"
+	"github.com/markbates/goth/providers/google"
 
 	//"os"
 	"strings"

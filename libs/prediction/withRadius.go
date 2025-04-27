@@ -73,7 +73,7 @@ func comparePartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 
 	}
 
 	for j < len(path2) {
-		dist2 := maps.EuclideanDistance(path2[i][0], path2[i][1], path2[i-1][0], path2[i-1][1])
+		dist2 := maps.EuclideanDistance(path2[j][0], path2[j][1], path2[j-1][0], path2[j-1][1])
 		time2 := dist2 / SPD2
 		t = append(t, time2)
 		partition2 = append(partition2, path2[j])

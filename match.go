@@ -1054,6 +1054,8 @@ func (m *match) run() {
 							euclidean := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
 							fmt.Println("euclidean", euclidean)
 
+							prediction.WithinRadius(hunter.Path, target.Path, float64(hunter.SPD), float64(target.SPD) )
+
 							// if they are close to each other and the A* distance is close
 							if(euclidean <= 25){
 								fmt.Println("euclidean", euclidean)

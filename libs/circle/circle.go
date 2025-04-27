@@ -7,17 +7,17 @@ import (
 	"math"
 )
 
-func getSubLine(lineP1 []float64, lineP2 []float64, newLength float64) [][]float64 {
+func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 
 	line := [][]float64{}
 
-	line = append(line, lineP1)
+	line = append(line, P1)
 
-	oldLength := maps.EuclideanDistance(lineP1[0], lineP1[1], lineP2[0], lineP2[1])
+	oldLength := maps.EuclideanDistance(P1[0], P1[1], P2[0], P2[1])
 	fraction := math.Round(10000000000*newLength/oldLength) / 10000000000 // 10 decimal places
 
-	deltaX := lineP2[0] - lineP1[0]
-	deltaY := lineP2[1] - lineP1[1]
+	deltaX := P2[0] - P1[0]
+	deltaY := P2[1] - P1[1]
 
 	newDeltaX := deltaX * fraction
 	newDeltaY := deltaY * fraction
@@ -25,8 +25,8 @@ func getSubLine(lineP1 []float64, lineP2 []float64, newLength float64) [][]float
 	//fmt.Println(lineP1, deltaX, deltaY, newDeltaX, newDeltaY)
 	//fmt.Println("fraction:", fraction)
 
-	newX := newDeltaX + lineP1[0]
-	newY := newDeltaY + lineP1[1]
+	newX := newDeltaX + P1[0]
+	newY := newDeltaY + P1[1]
 
 	line = append(line, []float64{newX, newY})
 
@@ -48,12 +48,12 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 		curLength = curLength + maps.EuclideanDistance(path[i][0], path[i][1], path[i-1][0], path[i-1][1])
 
 		if len(end) == 0 && curLength >= distanceLeftEnd {
-			end = getSubLine(path[i-1], path[i], curLength-distanceLeftEnd)
+			end = GetSubLine(path[i-1], path[i], curLength-distanceLeftEnd)
 			subPath = append(subPath, end[1])
 		}
 
 		if curLength >= distanceLeftStart {
-			start := getSubLine(path[i-1], path[i], curLength-distanceLeftStart)
+			start := GetSubLine(path[i-1], path[i], curLength-distanceLeftStart)
 			subPath = append(subPath, start[1])
 			break
 		}

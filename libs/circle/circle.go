@@ -100,12 +100,12 @@ func lineIntersectsCircle(line [][]float64, cX float64, cY float64, r0 float64, 
 	B := t_x + t_y - t_r
 	C := x + y - r
 
-	intersect := quadraticFormula(A, B, C)
+	intersect := QuadraticFormula(A, B, C, 1)
 
 	return intersect
 }
 
-func quadraticFormula(A float64, B float64, C float64) float64 { // returns the first t between 0 and 1, returns -1 if no roots
+func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { // returns the first t between 0 and 1, returns -1 if no roots
 
 	if util.SigDig10(A) == 0 && util.SigDig10(B) == 0 {
 		if C == 0 {
@@ -115,7 +115,7 @@ func quadraticFormula(A float64, B float64, C float64) float64 { // returns the 
 		}
 	} else if util.SigDig10(A) == 0 {
 		t := -C / B
-		if t >= 0 && t <= 1 {
+		if t >= 0 && t <= tMax {
 			return t
 		} else {
 			return -1
@@ -131,10 +131,10 @@ func quadraticFormula(A float64, B float64, C float64) float64 { // returns the 
 	t1 := (-B - sqrtDisc) / (2 * A)
 	t2 := (-B + sqrtDisc) / (2 * A)
 
-	if t1 >= 0 && t1 <= 1 {
+	if t1 >= 0 && t1 <= tMax {
 		return t1
 	}
-	if t2 >= 0 && t2 <= 1 {
+	if t2 >= 0 && t2 <= tMax {
 		return t2
 	}
 

@@ -15,6 +15,7 @@ import (
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
 	"fd/libs/prediction"
+
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
@@ -1051,23 +1052,20 @@ func (m *match) run() {
 							hunter := m.heroes[i][j][k]
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
-							euclidean := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+							fmt.Println(m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "target.Path:", target.Path)
 
-							prediction.ProximityCheck(hunter.Path, target.Path, float64(hunter.SPD), float64(target.SPD) )
+							prediction.ProximityCheck(hunter.Path, target.Path, float64(hunter.SPD), float64(target.SPD))
+
+							// if(euclidean <= 25){
+							// 	hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
+							// 	prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
+							// }
 
 							// if they are close to each other and the A* distance is close
-							if(euclidean <= 25){
-								hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
-								prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
-							}
-
 							if false {
-
-
 
 							} else {
 
-								fmt.Println(m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "target.Path:", target.Path)
 								targetTravelled := float64(target.SPD) * min_units
 								if target.DistanceLeft <= 0 {
 									targetTravelled = 0
@@ -1096,7 +1094,6 @@ func (m *match) run() {
 								}
 
 							}
-
 
 						}
 
@@ -1835,8 +1832,6 @@ func (m *match) printState() {
 func tailendPathfinding(i int, j int, k int) {
 
 	// check if direct path exists
-
-
 
 	// otherwise do A*
 }

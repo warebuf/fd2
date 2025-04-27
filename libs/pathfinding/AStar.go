@@ -188,18 +188,11 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 	count := 0
 
-	//start := time.Now()
-
 	for graph.PriorityQueue.Len() > 0 {
 
 		current := heap.Pop(graph.PriorityQueue).(AStarKey)
-		//fmt.Println("current", current.Location, current.F)
 
 		if current.Location == graph.Goal {
-
-			//elapsed := time.Since(start)
-			//fmt.Println("A* Runtime", elapsed)
-			//fmt.Println("A* count", count)
 
 			ans := [][]float64{}
 
@@ -217,13 +210,11 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 				ans2 = append(ans2, ans[i])
 			}
 
-			fmt.Println("ASTAR ANS", ans2)
-
 			sum := 0.0
 			for i := 0; i < len(ans)-1; i++ {
 				sum += maps.EuclideanDistance(ans[i][0], ans[i][1], ans[i+1][0], ans[i+1][1])
 			}
-			fmt.Println("sum", sum)
+			fmt.Println("sum", sum, "A*", ans2)
 
 			return ans2
 		}
@@ -243,7 +234,6 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 					graph.Parent[neighbor] = &Location{X: current.Location.X, Y: current.Location.Y}
 					graph.Nodes[neighbor] = tentativeG
 					newF := graph.CalculateKey(neighbor)
-					//fmt.Println("n", newF, graph.Nodes[neighbor], tentativeG)
 					graph.PriorityQueue.Update(neighbor, newF.F) // I thought you would update only if G val is better
 
 				}

@@ -17,9 +17,6 @@ func comparePartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 
 	point1 := path1[0]
 	point2 := path2[0]
 
-	fmt.Println(path1)
-	fmt.Println(path2)
-
 	partition1 := [][]float64{}
 	partition2 := [][]float64{}
 	t := []float64{}
@@ -112,16 +109,23 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 func ProximityCheck(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 float64) {
 
 	partition1, partition2, times := comparePartitions(path1, path2, SPD1, SPD2)
-	fmt.Println(partition1)
-	fmt.Println(partition2)
-	fmt.Println(times)
+	fmt.Println("partition1", partition1)
+	fmt.Println("partition2", partition2)
+	fmt.Println("times", times)
 
+	totalTime := 0.0
 	for i := 0; i < len(partition1)-1; i++ {
 
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
 		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25)
 		fmt.Println(i, "t", t)
+		if t < 0 {
+			totalTime += times[i]
+		} else {
+			totalTime += t
+			fmt.Println("within radius", i, totalTime, t)
+		}
 	}
 
 }

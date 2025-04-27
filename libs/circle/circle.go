@@ -3,7 +3,6 @@ package circle
 import (
 	"fd/libs/maps"
 	"fd/libs/util"
-	"fmt"
 	"math"
 )
 
@@ -21,9 +20,6 @@ func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 
 	newDeltaX := deltaX * fraction
 	newDeltaY := deltaY * fraction
-
-	//fmt.Println(lineP1, deltaX, deltaY, newDeltaX, newDeltaY)
-	//fmt.Println("fraction:", fraction)
 
 	newX := newDeltaX + P1[0]
 	newY := newDeltaY + P1[1]
@@ -154,7 +150,6 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 		euclid := maps.EuclideanDistance(targetX, targetY, circle[0], circle[1])
 		if euclid <= radiusStart && euclid >= radiusEnd {
 			startToEuclid := radiusStart - euclid
-			fmt.Println("startToEuclid", startToEuclid)
 			return startToEuclid * reductionFactor / float64(hunterSPD)
 		} else {
 			return -1
@@ -162,7 +157,6 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 	}
 
 	subPath := GetSubPath(path, distanceLeftStart, distanceLeftEnd)
-	fmt.Println("subPath", subPath)
 
 	// create an array of floats that determine the percentage each line takes of the total path
 	distances := []float64{}
@@ -178,8 +172,6 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 		percentage = append(percentage, math.Round(10000000000*distances[i]/total)/10000000000)
 	}
 
-	fmt.Println("percentage", percentage)
-
 	radius := []float64{radiusStart}
 	radiusChange := radiusStart - radiusEnd
 	percentageCount := 0.0
@@ -188,8 +180,6 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 		radius = append(radius, radiusStart-(percentageCount*radiusChange))
 	}
 
-	fmt.Println("radius", radius)
-
 	ans := -1.0
 	percentageCount = 0.0
 	intersectFound := false
@@ -197,7 +187,6 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 	for i := 0; i < len(subPath)-1; i++ {
 		line := [][]float64{subPath[i], subPath[i+1]}
 		intersects := lineIntersectsCircle(line, circle[0], circle[1], radius[i], radius[i+1])
-		fmt.Println("intersects", intersects)
 
 		if intersects >= 0 {
 			percentageCount += percentage[i] * intersects

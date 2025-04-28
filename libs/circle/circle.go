@@ -3,6 +3,7 @@ package circle
 import (
 	"fd/libs/maps"
 	"fd/libs/util"
+	"fmt"
 	"math"
 )
 
@@ -138,6 +139,8 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 }
 
 func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, distanceLeftStart float64, distanceLeftEnd float64, circle []float64, radiusStart float64, radiusEnd float64, hunterSPD int, reductionFactor float64) float64 {
+
+	fmt.Println("-----Called CircleIntersectPath-----")
 
 	radiusStart = radiusStart / reductionFactor
 	radiusEnd = radiusEnd / reductionFactor

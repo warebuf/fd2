@@ -7,8 +7,7 @@ import (
 	"math"
 )
 
-// if one path ends earlier than the other, we do not check if the longer path is within the radius of the endpoint
-func comparePartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 float64) ([][]float64, [][]float64, []float64) {
+func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 float64) ([][]float64, [][]float64, []float64) {
 
 	// assume paths are at least 2 points
 
@@ -61,21 +60,23 @@ func comparePartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 
 	}
 
 	for i < len(path1) {
-		dist1 := maps.EuclideanDistance(path1[i][0], path1[i][1], path1[i-1][0], path1[i-1][1])
+		dist1 := maps.EuclideanDistance(point1[0], point1[1], path1[i][0], path1[i][1])
 		time1 := dist1 / SPD1
-		t = append(t, time1)
 		partition1 = append(partition1, path1[i])
+		partition2 = append(partition2, point2) // unit2 stays where it was
+		t = append(t, time1)
+		point1 = path1[i] // move point1 forward
 		i += 1
-		partition2 = append(partition2, path2[len(path2)-1])
 	}
 
 	for j < len(path2) {
-		dist2 := maps.EuclideanDistance(path2[j][0], path2[j][1], path2[j-1][0], path2[j-1][1])
+		dist2 := maps.EuclideanDistance(point2[0], point2[1], path2[j][0], path2[j][1])
 		time2 := dist2 / SPD2
-		t = append(t, time2)
 		partition2 = append(partition2, path2[j])
+		partition1 = append(partition1, point1) // unit1 stays where it was
+		t = append(t, time2)
+		point2 = path2[j] // move point1 forward
 		j += 1
-		partition1 = append(partition1, path1[len(path1)-1])
 	}
 
 	return partition1, partition2, t
@@ -106,12 +107,24 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	return circle.QuadraticFormula(A, B, C, tMax)
 }
 
-func ProximityCheck(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 float64) {
+func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64) {
 
-	partition1, partition2, times := comparePartitions(path1, path2, SPD1, SPD2)
-	fmt.Println("partition1", partition1)
-	fmt.Println("partition2", partition2)
-	fmt.Println("times", times)
+	fmt.Println("-----Called ProximityCheck-----")
+
+	fmt.Println("Path1: ", path1)
+	fmt.Println("Path2: ", path2)
+
+	// get subpaths TODO: this is wrong, if the unit is already at the destination, subPath is length 0, but it needs to be length 1
+	subPath1 := circle.GetSubPath(path1, distanceLeft1, 0)
+	subPath2 := circle.GetSubPath(path2, distanceLeft2, 0)
+
+	fmt.Println("subPath1: ", subPath1)
+	fmt.Println("subPath2: ", subPath2)
+
+	partition1, partition2, times := createPartitions(path1, path2, SPD1, SPD2)
+
+	fmt.Println("Partition1: ", partition1)
+	fmt.Println("Partition2: ", partition2)
 
 	totalTime := 0.0
 	for i := 0; i < len(partition1)-1; i++ {
@@ -119,12 +132,11 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 flo
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
 		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25)
-		fmt.Println(i, "t", t)
 		if t < 0 {
 			totalTime += times[i]
 		} else {
 			totalTime += t
-			fmt.Println("within radius", i, totalTime, t)
+			fmt.Println("ProximityCheck", i, totalTime)
 		}
 	}
 

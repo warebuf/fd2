@@ -6,10 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="bc04ebe9-ac74-4a51-9cbf-aecd0e59ca2f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/libs/prediction/withRadius.go" beforeDir="false" afterPath="$PROJECT_DIR$/libs/prediction/withRadius.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/main.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/circle/circle.go" beforeDir="false" afterPath="$PROJECT_DIR$/libs/circle/circle.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/libs/prediction/withRadius.go" beforeDir="false" afterPath="$PROJECT_DIR$/libs/prediction/proximityCheck.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/match.go" beforeDir="false" afterPath="$PROJECT_DIR$/match.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/static/engine.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/engine.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,13 +100,13 @@
       <breakpoints>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/match.go</url>
-          <line>1235</line>
+          <line>1230</line>
           <option name="timeStamp" value="28" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
-          <url>file://$PROJECT_DIR$/libs/prediction/prediction.go</url>
-          <line>11</line>
-          <option name="timeStamp" value="29" />
+          <url>file://$PROJECT_DIR$/libs/prediction/proximityCheck.go</url>
+          <line>111</line>
+          <option name="timeStamp" value="30" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -1054,7 +1054,7 @@ func (m *match) run() {
 
 							fmt.Println(m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "target.Path:", target.Path)
 
-							prediction.ProximityCheck(hunter.Path, target.Path, float64(hunter.SPD), float64(target.SPD))
+							prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft,float64(hunter.SPD), float64(target.SPD))
 
 							// if(euclidean <= 25){
 							// 	hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }

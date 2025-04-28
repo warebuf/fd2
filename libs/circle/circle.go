@@ -33,7 +33,9 @@ func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 // TODO!!! important, change to return at least 1 point and test!!!
 func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
 
-	if distanceLeftStart <= distanceLeftEnd {
+	if distanceLeftStart == distanceLeftEnd {
+		//
+	} else if distanceLeftStart < distanceLeftEnd {
 		return [][]float64{}
 	}
 

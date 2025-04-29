@@ -34,7 +34,15 @@ func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
 
 	if distanceLeftStart == distanceLeftEnd {
-		//
+		curLength := 0.0
+		for i := len(path) - 1; i >= 1; i-- {
+			curLength += maps.EuclideanDistance(path[i][0], path[i][1], path[i-1][0], path[i-1][1])
+			if curLength >= distanceLeftStart {
+				point := GetSubLine(path[i-1], path[i], curLength-distanceLeftStart)
+				return [][]float64{point[1]}
+			}
+		}
+		return [][]float64{}
 	} else if distanceLeftStart < distanceLeftEnd {
 		return [][]float64{}
 	}

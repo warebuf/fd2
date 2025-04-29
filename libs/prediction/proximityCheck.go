@@ -121,7 +121,7 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 	fmt.Println("subPath1: ", subPath1)
 	fmt.Println("subPath2: ", subPath2)
 
-	partition1, partition2, times := createPartitions(path1, path2, SPD1, SPD2)
+	partition1, partition2, times := createPartitions(subPath1, subPath2, SPD1, SPD2)
 
 	fmt.Println("Partition1: ", partition1)
 	fmt.Println("Partition2: ", partition2)

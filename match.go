@@ -42,6 +42,8 @@ type hero struct {
 	DynamicDestination []int     // either {i,j,k} or {}
 	DynamicCircle      []float64 // a location X, Y
 
+	LastMile bool
+
 	DistanceLeft float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
 
@@ -500,6 +502,8 @@ func createMatch(pl *permission_list) *match {
 
 					DynamicDestination: []int{},
 					DynamicCircle:      []float64{},
+
+					LastMile: false,
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 					Status:       0,
@@ -1041,7 +1045,7 @@ func (m *match) run() {
 			fmt.Println("min", min_units)
 
 			recompute := [][]int{}
-			//lastMile := [][]int{}
+			lastMile := [][]int{}
 
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1052,16 +1056,21 @@ func (m *match) run() {
 							hunter := m.heroes[i][j][k]
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
-							prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD))
-
-							// if(euclidean <= 25){
-							// 	hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
-							// 	prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
-							// }
+							var prox float64
+							if hunter.LastMile == false {
+								prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD))
+							}
 
 							// if they are close to each other and the A* distance is close
-							if false {
-
+							if hunter.LastMile == false && prox >= 0 && prox < min_units {
+								fmt.Println("replaced min w/ prox", prox, min_units)
+								if prox == min_units {
+									lastMile = append(lastMile, []int{i, j, k})
+								} else if prox < min_units {
+									lastMile = [][]int{[]int{i, j, k}}
+									recompute = [][]int{}
+									min_units = prox
+								}
 							} else {
 
 								targetTravelled := float64(target.SPD) * min_units
@@ -1082,11 +1091,12 @@ func (m *match) run() {
 								fmt.Println("intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
 
 								if ans >= 0 {
-									fmt.Println("replaced min", ans, min_units)
+									fmt.Println("replaced min w/ recompute", ans, min_units)
 									if ans == min_units {
 										recompute = append(recompute, []int{i, j, k})
 									} else if ans < min_units {
 										recompute = [][]int{[]int{i, j, k}}
+										lastMile = [][]int{}
 										min_units = ans
 									}
 								}
@@ -1225,7 +1235,6 @@ func (m *match) run() {
 
 			// recalculate dynamic destinations
 			for x := 0; x < len(recompute); x++ {
-
 				fmt.Println("recompute[x]", recompute[x])
 				hunter := m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]]
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
@@ -1236,7 +1245,14 @@ func (m *match) run() {
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 				path := AStarGraph.ComputeShortestPath()
 				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], hunter.Position, path)
+			}
 
+			for x := 0; x < len(lastMile); x++ {
+				hunter := m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]]
+				hunter.LastMile = true
+				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+				hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
+				prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
 			}
 
 			if len(recompute) > 0 {

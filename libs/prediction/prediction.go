@@ -9,6 +9,8 @@ import (
 
 func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft float64, targetSPD int, hunterPosition []float64, hunterSPD int) {
 
+	fmt.Println("-----Called LastMilePrediction-----")
+
 	subpath := circle.GetSubPath(path, distanceLeft, 0.0);
 
 	if distanceLeft == 0 {

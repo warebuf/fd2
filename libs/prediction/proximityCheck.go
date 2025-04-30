@@ -89,16 +89,31 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	dx1 := subline1[1][0] - subline1[0][0]
 	dy1 := subline1[1][1] - subline1[0][1]
 	length1 := math.Sqrt(dx1*dx1 + dy1*dy1)
-	Vx1 := SPD1 * dx1 / length1
-	Vy1 := SPD1 * dy1 / length1
+	Vx1 := 0.0
+	Vy1 := 0.0
+	if length1 != 0 {
+		Vx1 = SPD1 * dx1 / length1
+		Vy1 = SPD1 * dy1 / length1
+	}
 
 	Xo2 := subline2[0][0]
 	Yo2 := subline2[0][1]
 	dx2 := subline2[1][0] - subline2[0][0]
 	dy2 := subline2[1][1] - subline2[0][1]
 	length2 := math.Sqrt(dx2*dx2 + dy2*dy2)
-	Vx2 := SPD2 * dx2 / length2
-	Vy2 := SPD2 * dy2 / length2
+	Vx2 := 0.0
+	Vy2 := 0.0
+	if length2 != 0 {
+		Vx2 = SPD2 * dx2 / length2
+		Vy2 = SPD2 * dy2 / length2
+	}
+
+	// return if we are initially within radius
+	dx0 := Xo1 - Xo2
+	dy0 := Yo1 - Yo2
+	if dx0*dx0 + dy0*dy0 <= radius*radius {
+		return 0
+	}
 
 	A := ((Vx1 - Vx2) * (Vx1 - Vx2)) + ((Vy1 - Vy2) * (Vy1 - Vy2))
 	B := (2 * (Xo1 - Xo2) * (Vx1 - Vx2)) + (2 * (Yo1 - Yo2) * (Vy1 - Vy2))
@@ -107,14 +122,13 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	return circle.QuadraticFormula(A, B, C, tMax)
 }
 
-func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64) {
+func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64) float64 {
 
 	fmt.Println("-----Called ProximityCheck-----")
 
 	fmt.Println("Path1: ", path1)
 	fmt.Println("Path2: ", path2)
 
-	// get subpaths TODO: this is wrong, if the unit is already at the destination, subPath is length 0, but it needs to be length 1
 	subPath1 := circle.GetSubPath(path1, distanceLeft1, 0)
 	subPath2 := circle.GetSubPath(path2, distanceLeft2, 0)
 
@@ -127,17 +141,22 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 	fmt.Println("Partition2: ", partition2)
 
 	totalTime := 0.0
+	ans := -1.0
 	for i := 0; i < len(partition1)-1; i++ {
 
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
-		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25)
+		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25) // TODO: seems like this isn't finding the intersection if the target is not moving
 		if t < 0 {
 			totalTime += times[i]
 		} else {
 			totalTime += t
 			fmt.Println("ProximityCheck", i, totalTime)
+			if ans < 0 {
+				ans = totalTime
+			}
 		}
 	}
+	return ans
 
 }

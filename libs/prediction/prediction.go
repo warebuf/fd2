@@ -11,10 +11,10 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 
 	fmt.Println("-----Called LastMilePrediction-----")
 
-	subpath := circle.GetSubPath(path, distanceLeft, 0.0);
+	subpath := circle.GetSubPath(path, distanceLeft, 0.0)
 
 	if distanceLeft == 0 {
-		subpath = [][]float64{ path[len(path)-1] } // this is a shallow copy, not a deep copy beware
+		subpath = [][]float64{path[len(path)-1]} // this is a shallow copy, not a deep copy beware
 	}
 
 	fmt.Println("subpath", subpath)
@@ -56,11 +56,12 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 		fmt.Println("no intercepts, direct the unit to the end of the path")
 	}
 
-	earliest(mp, path, hunterPosition)
+	ans := earliest(mp, path, distanceLeft, float64(targetSPD), hunterPosition, float64(hunterSPD))
 
+	fmt.Println("ans", ans)
 }
 
-func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) float64{
+func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) float64 {
 
 	if len(targetPath) == 0 {
 		return 0
@@ -80,46 +81,36 @@ func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64
 	high := pathDist / float64(hunterSPD)
 	low := 0.0
 
-	for high - low > 0.01 {
+	for high-low > 0.01 {
 
 		mid := (low + high) / 2
 
 		targetTravelled := mid * targetSPD
 		distanceLeft := distanceStart - targetTravelled
-		if(distanceLeft < 0) {
+		if distanceLeft < 0 {
 			distanceLeft = 0
 		}
-
 		testPath := circle.GetSubPath(targetPath, distanceStart, distanceLeft)
+		newPos := testPath[len(testPath)-1]
 
+		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
+		end := pathfinding.Location{X: newPos[0], Y: newPos[1]}
+		AStarGraph := pathfinding.AStarInit(mp, start, end)
+		newPath := AStarGraph.ComputeShortestPath()
+		newDist := maps.GetPathDistance(newPath)
+		hunterTime := newDist / float64(hunterSPD)
+
+		if hunterTime <= mid {
+			high = mid
+		} else {
+			low = mid
+		}
 
 	}
 
-
-
-	return 0
+	return high
 }
-//
-//function earliest_catch_time(hunter_pos, target_path, hunter_speed, target_speed, max_time, tolerance):
-//low = 0
-//high = max_time
-//
-//while high - low > tolerance:
-//mid = (low + high) / 2
-//
-//target_pos = get_position_along_path(target_path, target_speed, mid)
-//
-//hunter_path = a_star(hunter_pos, target_pos)
-//hunter_dist = length_of_path(hunter_path)
-//hunter_time = hunter_dist / hunter_speed
-//
-//if hunter_time <= mid:
-//high = mid  # try earlier
-//else:
-//low = mid  # try later
-//
-//return high  # smallest time where hunter can catch target
-//
+
 //function get_position_along_path(path, speed, time):
 //distance = speed * time
 //for i from 0 to len(path)-2:

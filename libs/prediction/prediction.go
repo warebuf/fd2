@@ -56,4 +56,75 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 		fmt.Println("no intercepts, direct the unit to the end of the path")
 	}
 
+	earliest(mp, path, hunterPosition)
+
 }
+
+func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) float64{
+
+	if len(targetPath) == 0 {
+		return 0
+	}
+
+	if hunterSPD == 0 {
+		return 0
+	}
+
+	// calculate starting range for t
+	endpoint := targetPath[len(targetPath)-1]
+	start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
+	end := pathfinding.Location{X: endpoint[0], Y: endpoint[1]}
+	AStarEndpoint := pathfinding.AStarInit(mp, start, end)
+	path := AStarEndpoint.ComputeShortestPath()
+	pathDist := maps.GetPathDistance(path)
+	high := pathDist / float64(hunterSPD)
+	low := 0.0
+
+	for high - low > 0.01 {
+
+		mid := (low + high) / 2
+
+		targetTravelled := mid * targetSPD
+		distanceLeft := distanceStart - targetTravelled
+		if(distanceLeft < 0) {
+			distanceLeft = 0
+		}
+
+		testPath := circle.GetSubPath(targetPath, distanceStart, distanceLeft)
+
+
+	}
+
+
+
+	return 0
+}
+//
+//function earliest_catch_time(hunter_pos, target_path, hunter_speed, target_speed, max_time, tolerance):
+//low = 0
+//high = max_time
+//
+//while high - low > tolerance:
+//mid = (low + high) / 2
+//
+//target_pos = get_position_along_path(target_path, target_speed, mid)
+//
+//hunter_path = a_star(hunter_pos, target_pos)
+//hunter_dist = length_of_path(hunter_path)
+//hunter_time = hunter_dist / hunter_speed
+//
+//if hunter_time <= mid:
+//high = mid  # try earlier
+//else:
+//low = mid  # try later
+//
+//return high  # smallest time where hunter can catch target
+//
+//function get_position_along_path(path, speed, time):
+//distance = speed * time
+//for i from 0 to len(path)-2:
+//segment = distance_between(path[i], path[i+1])
+//if distance < segment:
+//return interpolate(path[i], path[i+1], distance / segment)
+//distance -= segment
+//return path[-1]  # reached end

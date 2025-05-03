@@ -1179,8 +1179,11 @@ func (m *match) run() {
 								if m.heroes[i][j][k].LastMile == 1 {
 									fmt.Println(i, j, k)
 									fmt.Println(m.heroes[i][j][k].Position)
+									fmt.Println(m.heroes[i][j][k].Path)
 									target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 									fmt.Println(target.Position)
+									fmt.Println(m.heroes[i][j][k].DynamicCircle)
+									fmt.Println(m.heroes[i][j][k].Destination)
 								}
 
 								m.heroes[i][j][k].DistanceLeft = 0

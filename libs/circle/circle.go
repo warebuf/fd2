@@ -32,6 +32,10 @@ func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 
 func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
 
+	if len(path) == 1 {
+		return path
+	}
+
 	if distanceLeftStart == distanceLeftEnd {
 		curLength := 0.0
 		for i := len(path) - 1; i >= 1; i-- {

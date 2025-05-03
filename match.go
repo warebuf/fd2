@@ -42,7 +42,7 @@ type hero struct {
 	DynamicDestination []int     // either {i,j,k} or {}
 	DynamicCircle      []float64 // a location X, Y
 
-	LastMile bool
+	LastMile int
 
 	DistanceLeft float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
@@ -455,8 +455,8 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		//c := maps.Coordinate{X: 400, Y: 400, Type: "camp", I: random_count, J: -1, K: -1}
-		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
+		c := maps.Coordinate{X: 250, Y: 370, Type: "camp", I: random_count, J: -1, K: -1}
+		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -503,7 +503,7 @@ func createMatch(pl *permission_list) *match {
 					DynamicDestination: []int{},
 					DynamicCircle:      []float64{},
 
-					LastMile: false,
+					LastMile: 0,
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 					Status:       0,
@@ -1057,21 +1057,19 @@ func (m *match) run() {
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
 							var prox float64
-							if hunter.LastMile == false {
+							if hunter.LastMile == 0 {
 								prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD))
-							}
 
-							// if they are close to each other and the A* distance is close
-							if hunter.LastMile == false && prox >= 0 && prox < min_units {
-								fmt.Println("replaced min w/ prox", prox, min_units)
-								if prox == min_units {
-									lastMile = append(lastMile, []int{i, j, k})
-								} else if prox < min_units {
-									lastMile = [][]int{[]int{i, j, k}}
-									recompute = [][]int{}
-									min_units = prox
+								if prox >= 0 && prox < min_units {
+									fmt.Println("replaced min w/ prox", prox, min_units)
+									if prox == min_units {
+										lastMile = append(lastMile, []int{i, j, k})
+									} else if prox < min_units {
+										lastMile = [][]int{[]int{i, j, k}}
+										recompute = [][]int{}
+										min_units = prox
+									}
 								}
-							} else {
 
 								targetTravelled := float64(target.SPD) * min_units
 								if target.DistanceLeft <= 0 {
@@ -1102,7 +1100,6 @@ func (m *match) run() {
 								}
 
 							}
-
 						}
 
 					}
@@ -1150,6 +1147,7 @@ func (m *match) run() {
 
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
+							fmt.Println("path", m.heroes[i][j][k].Path)
 							for toMove > 0 {
 
 								if m.heroes[i][j][k].Path_Segment+1 >= len(m.heroes[i][j][k].Path) {
@@ -1162,7 +1160,12 @@ func (m *match) run() {
 									if toMove >= 0 {
 										pos_x = m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1][0]
 										pos_y = m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1][1]
+										m.heroes[i][j][k].Position.X = pos_x
+										m.heroes[i][j][k].Position.Y = pos_y
 										m.heroes[i][j][k].Path_Segment++
+									} else {
+										travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1], toMove)
+										m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y = travelX, travelY
 									}
 								}
 							}
@@ -1171,6 +1174,14 @@ func (m *match) run() {
 							m.heroes[i][j][k].DistanceLeft -= min_units * float64(m.heroes[i][j][k].SPD)
 
 							if m.heroes[i][j][k].DistanceLeft-0.01 <= 0 {
+
+								// TODO: if the unit reaches here and is in lastMile state == 1, we have to do some following as the hunter shares the same position as the target
+								if m.heroes[i][j][k].LastMile == 1 {
+									fmt.Println(i, j, k)
+									fmt.Println(m.heroes[i][j][k].Position)
+									target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
+									fmt.Println(target.Position)
+								}
 
 								m.heroes[i][j][k].DistanceLeft = 0
 								if m.camps[m.heroes[i][j][k].Destination.I].HP > 0 {
@@ -1190,9 +1201,6 @@ func (m *match) run() {
 								m.heroes[i][j][k].Position.K = k
 								m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
-							} else {
-								travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1], toMove)
-								m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y = travelX, travelY
 							}
 						}
 					}
@@ -1244,18 +1252,20 @@ func (m *match) run() {
 				e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 				path := AStarGraph.ComputeShortestPath()
-				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], hunter.Position, path)
+				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], target.Position, path)
 			}
 
+			// calculate last mile paths
 			for x := 0; x < len(lastMile); x++ {
 				hunter := m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]]
-				hunter.LastMile = true
+				hunter.LastMile = 1
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-				hunterPos := []float64{ hunter.Position.X, hunter.Position.Y }
-				prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
+				hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
+				path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
+				setPath(m.heroes, lastMile[x][0], lastMile[x][1], lastMile[x][2], target.Position, path)
 			}
 
-			if len(recompute) > 0 {
+			if len(recompute) > 0 || len(lastMile) > 0 {
 				m.sharepos(nil, 0)
 			}
 

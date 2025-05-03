@@ -7,7 +7,7 @@ import (
 	"fmt"
 )
 
-func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft float64, targetSPD int, hunterPosition []float64, hunterSPD int) {
+func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft float64, targetSPD int, hunterPosition []float64, hunterSPD int) [][]float64 {
 
 	fmt.Println("-----Called LastMilePrediction-----")
 
@@ -17,21 +17,26 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 		subpath = [][]float64{path[len(path)-1]} // this is a shallow copy, not a deep copy beware
 	}
 
-	fmt.Println("subpath", subpath)
+	ans := findCollisionPath(mp, subpath, distanceLeft, float64(targetSPD), hunterPosition, float64(hunterSPD))
 
-	ans := earliest(mp, subpath, distanceLeft, float64(targetSPD), hunterPosition, float64(hunterSPD))
+	fmt.Println("final path", ans)
 
-	fmt.Println("ans", ans)
+	return ans
+
 }
 
-func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) float64 {
+func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) [][]float64 {
+
+	count := 0
+
+	var bestPath [][]float64
 
 	if len(targetPath) == 0 {
-		return 0
+		return bestPath
 	}
 
 	if hunterSPD == 0 {
-		return 0
+		return bestPath
 	}
 
 	// calculate starting range for t
@@ -39,8 +44,13 @@ func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64
 	start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
 	end := pathfinding.Location{X: endpoint[0], Y: endpoint[1]}
 	AStarEndpoint := pathfinding.AStarInit(mp, start, end)
-	path := AStarEndpoint.ComputeShortestPath()
-	pathDist := maps.GetPathDistance(path)
+	bestPath = AStarEndpoint.ComputeShortestPath()
+	count += 1
+	if len(targetPath) == 1 {
+		return bestPath
+	}
+
+	pathDist := maps.GetPathDistance(bestPath)
 	high := pathDist / float64(hunterSPD)
 	low := 0.0
 
@@ -59,8 +69,9 @@ func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64
 		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
 		end := pathfinding.Location{X: newPos[0], Y: newPos[1]}
 		AStarGraph := pathfinding.AStarInit(mp, start, end)
-		newPath := AStarGraph.ComputeShortestPath()
-		newDist := maps.GetPathDistance(newPath)
+		bestPath = AStarGraph.ComputeShortestPath()
+		count += 1
+		newDist := maps.GetPathDistance(bestPath)
 		hunterTime := newDist / float64(hunterSPD)
 
 		if hunterTime <= mid {
@@ -71,14 +82,7 @@ func earliest(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64
 
 	}
 
-	return high
-}
+	fmt.Println("count", count)
 
-//function get_position_along_path(path, speed, time):
-//distance = speed * time
-//for i from 0 to len(path)-2:
-//segment = distance_between(path[i], path[i+1])
-//if distance < segment:
-//return interpolate(path[i], path[i+1], distance / segment)
-//distance -= segment
-//return path[-1]  # reached end
+	return bestPath
+}

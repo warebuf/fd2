@@ -1135,6 +1135,8 @@ func (m *match) run() {
 				}
 			}
 
+			pathDup := [][]int{}
+
 			// move all unit positions
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1147,7 +1149,6 @@ func (m *match) run() {
 
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
-							fmt.Println("path", m.heroes[i][j][k].Path)
 							for toMove > 0 {
 
 								if m.heroes[i][j][k].Path_Segment+1 >= len(m.heroes[i][j][k].Path) {
@@ -1175,34 +1176,36 @@ func (m *match) run() {
 
 							if m.heroes[i][j][k].DistanceLeft-0.01 <= 0 {
 
-								// TODO: if the unit reaches here and is in lastMile state == 1, we have to do some following as the hunter shares the same position as the target
-								if m.heroes[i][j][k].LastMile == 1 {
-									fmt.Println(i, j, k)
-									fmt.Println(m.heroes[i][j][k].Position)
-									fmt.Println(m.heroes[i][j][k].Path)
-									target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
-									fmt.Println(target.Position)
-									fmt.Println(m.heroes[i][j][k].DynamicCircle)
-									fmt.Println(m.heroes[i][j][k].Destination)
-								}
-
 								m.heroes[i][j][k].DistanceLeft = 0
-								if m.camps[m.heroes[i][j][k].Destination.I].HP > 0 {
-									m.heroes[i][j][k].Status = 2
-									m.heroes[i][j][k].Battle = m.camps[m.heroes[i][j][k].Destination.I]
-									m.heroes[i][j][k].Battle.Units = append(m.heroes[i][j][k].Battle.Units, []int{i, j, k})
+
+								if m.heroes[i][j][k].LastMile == 1 {
+
+									pathDup = append(pathDup, []int{i, j, k})
+									fmt.Println("m.heroes[i][j][k].Position", m.heroes[i][j][k].Position)
+									fmt.Println("m.heroes[i][j][k].Destination", m.heroes[i][j][k].Destination)
+									fmt.Println("m.heroes[i][j][k].Path", m.heroes[i][j][k].Path)
+									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
+
 								} else {
-									m.heroes[i][j][k].Status = 0
-									if m.heroes[i][j][k].Bot == false {
-										has_user_cmd = true
+
+									if m.camps[m.heroes[i][j][k].Destination.I].HP > 0 {
+										m.heroes[i][j][k].Status = 2
+										m.heroes[i][j][k].Battle = m.camps[m.heroes[i][j][k].Destination.I]
+										m.heroes[i][j][k].Battle.Units = append(m.heroes[i][j][k].Battle.Units, []int{i, j, k})
+									} else {
+										m.heroes[i][j][k].Status = 0
+										if m.heroes[i][j][k].Bot == false {
+											has_user_cmd = true
+										}
 									}
+									m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
+									m.heroes[i][j][k].Position.Type = "unit"
+									m.heroes[i][j][k].Position.I = i
+									m.heroes[i][j][k].Position.J = j
+									m.heroes[i][j][k].Position.K = k
+									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
+
 								}
-								m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
-								m.heroes[i][j][k].Position.Type = "unit"
-								m.heroes[i][j][k].Position.I = i
-								m.heroes[i][j][k].Position.J = j
-								m.heroes[i][j][k].Position.K = k
-								m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
 							}
 						}
@@ -1255,7 +1258,9 @@ func (m *match) run() {
 				e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 				path := AStarGraph.ComputeShortestPath()
-				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], target.Position, path)
+				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: recompute[x][0], J: recompute[x][1], K: recompute[x][2]}
+				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], end, path)
+
 			}
 
 			// calculate last mile paths
@@ -1265,7 +1270,16 @@ func (m *match) run() {
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
 				path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
-				setPath(m.heroes, lastMile[x][0], lastMile[x][1], lastMile[x][2], target.Position, path)
+				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: lastMile[x][0], J: lastMile[x][1], K: lastMile[x][2]}
+				setPath(m.heroes, lastMile[x][0], lastMile[x][1], lastMile[x][2], end, path)
+			}
+
+			// calculate collision path duplication routes
+			for x := 0; x < len(pathDup); x++ {
+				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
+				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+				PathDuplication(hunter, target)
+				fmt.Println("xyz")
 			}
 
 			if len(recompute) > 0 || len(lastMile) > 0 {
@@ -1856,9 +1870,14 @@ func (m *match) printState() {
 
 }
 
-func tailendPathfinding(i int, j int, k int) {
+func PathDuplication(hunter *hero, target *hero) {
 
-	// check if direct path exists
+	dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
 
-	// otherwise do A*
+	fmt.Println("dist", dist)
+
+	if dist > 1 { // this should break the program
+		panic("Collision should not happen! Distance > 1!")
+	}
+
 }

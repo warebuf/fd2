@@ -29,8 +29,9 @@ type Camp struct {
 }
 
 type hero struct {
-	Bot  bool
-	Name string
+	Bot   bool
+	Name  string
+	Index []int
 
 	Start        maps.Coordinate
 	Position     maps.Coordinate
@@ -41,8 +42,7 @@ type hero struct {
 
 	DynamicDestination []int     // either {i,j,k} or {}
 	DynamicCircle      []float64 // a location X, Y
-
-	LastMile int
+	LastMile           int       // 0 = closing circle, 1 = last mile, 2 = collision
 
 	DistanceLeft float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
@@ -263,7 +263,7 @@ func m_read(m *match_socket) {
 							//endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
 							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
 
-							setPath(m.m.heroes, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Route, msg.Path)
+							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
 							m.m.sharepos(nil, 0)
 							m.m.printState()
 
@@ -491,8 +491,9 @@ func createMatch(pl *permission_list) *match {
 			for y := 0; y < 3; y++ {
 				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
-					Bot:  j.bot_status,
-					Name: names[rand.Intn(len(names))],
+					Bot:   j.bot_status,
+					Name:  names[rand.Intn(len(names))],
+					Index: []int{team_int, client_int, y},
 
 					Start:        temp_coordinate,
 					Position:     temp_coordinate,
@@ -1000,7 +1001,7 @@ func (m *match) run() {
 							if len(p) == 0 {
 								// figure out how to end the game here
 							} else {
-								setPath(m.heroes, i, j, k, pint, p)
+								setPath(m.heroes[i][j][k], pint, p)
 								gave_bots_acts = true
 							}
 
@@ -1259,7 +1260,7 @@ func (m *match) run() {
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 				path := AStarGraph.ComputeShortestPath()
 				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: recompute[x][0], J: recompute[x][1], K: recompute[x][2]}
-				setPath(m.heroes, recompute[x][0], recompute[x][1], recompute[x][2], end, path)
+				setPath(m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], end, path)
 
 			}
 
@@ -1271,7 +1272,7 @@ func (m *match) run() {
 				hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
 				path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
 				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: lastMile[x][0], J: lastMile[x][1], K: lastMile[x][2]}
-				setPath(m.heroes, lastMile[x][0], lastMile[x][1], lastMile[x][2], end, path)
+				setPath(m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], end, path)
 			}
 
 			// calculate collision path duplication routes
@@ -1279,7 +1280,6 @@ func (m *match) run() {
 				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				PathDuplication(hunter, target)
-				fmt.Println("xyz")
 			}
 
 			if len(recompute) > 0 || len(lastMile) > 0 {
@@ -1562,11 +1562,11 @@ func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
 	return false
 }
 
-func setPath(state [][][]*hero, i int, j int, k int, dest maps.Coordinate, p [][]float64) {
-	state[i][j][k].Start = state[i][j][k].Position
-	state[i][j][k].Destination = dest
-	state[i][j][k].Path = p
-	state[i][j][k].Path_Segment = 0
+func setPath(unit *hero, dest maps.Coordinate, p [][]float64) {
+	unit.Start = unit.Position
+	unit.Destination = dest
+	unit.Path = p
+	unit.Path_Segment = 0
 
 	thetas := make([]float64, len(p), len(p))
 	dist := 0.0
@@ -1577,11 +1577,11 @@ func setPath(state [][][]*hero, i int, j int, k int, dest maps.Coordinate, p [][
 			thetas[x+1] = thetas[x]
 		}
 	}
-	state[i][j][k].Thetas = thetas
+	unit.Thetas = thetas
 
 	fmt.Println("setPath", len(p), p)
-	state[i][j][k].DistanceLeft = dist
-	state[i][j][k].Status = 1
+	unit.DistanceLeft = dist
+	unit.Status = 1
 }
 
 // pathType can be 0 (camp) or 1 (unit),
@@ -1880,4 +1880,8 @@ func PathDuplication(hunter *hero, target *hero) {
 		panic("Collision should not happen! Distance > 1!")
 	}
 
+	end := maps.Coordinate{X: target.Path[len(target.Path)-1][0], Y: target.Path[len(target.Path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
+	newPath := circle.GetSubPath(target.Path, target.DistanceLeft, 0)
+	setPath(hunter, end, newPath)
+	hunter.LastMile = 2
 }

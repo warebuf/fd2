@@ -1187,6 +1187,14 @@ func (m *match) run() {
 									fmt.Println("m.heroes[i][j][k].Path", m.heroes[i][j][k].Path)
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
+								} else if m.heroes[i][j][k].LastMile == 2 {
+									// not sure what to do
+									m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
+									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
+									temp := m.heroes[i][j][k]
+									temp2 := m.heroes[temp.DynamicDestination[0]][temp.DynamicDestination[1]][temp.DynamicDestination[2]]
+									fmt.Println(temp2.AS)
+
 								} else {
 
 									if m.camps[m.heroes[i][j][k].Destination.I].HP > 0 {

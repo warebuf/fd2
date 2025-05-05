@@ -455,7 +455,7 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		c := maps.Coordinate{X: 250, Y: 370, Type: "camp", I: random_count, J: -1, K: -1}
+		c := maps.Coordinate{X: 240, Y: 390, Type: "camp", I: random_count, J: -1, K: -1}
 		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
@@ -1018,7 +1018,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].SPD != 0) {
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].SPD != 0) && (m.heroes[i][j][k].LastMile != 2) {
 							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.heroes[i][j][k].SPD), 10)
 							if units_of_time < min_units {
 								min_units = units_of_time
@@ -1182,9 +1182,6 @@ func (m *match) run() {
 								if m.heroes[i][j][k].LastMile == 1 {
 
 									pathDup = append(pathDup, []int{i, j, k})
-									fmt.Println("m.heroes[i][j][k].Position", m.heroes[i][j][k].Position)
-									fmt.Println("m.heroes[i][j][k].Destination", m.heroes[i][j][k].Destination)
-									fmt.Println("m.heroes[i][j][k].Path", m.heroes[i][j][k].Path)
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
 								} else if m.heroes[i][j][k].LastMile == 2 {
@@ -1885,6 +1882,10 @@ func PathDuplication(hunter *hero, target *hero) {
 	fmt.Println("dist", dist)
 
 	if dist > 1 { // this should break the program
+		fmt.Println("hunter.Position", hunter.Position)
+		fmt.Println("target.Position", target.Position)
+		fmt.Println("hunter.Path", hunter.Path)
+		fmt.Println("target.Path", target.Path)
 		panic("Collision should not happen! Distance > 1!")
 	}
 

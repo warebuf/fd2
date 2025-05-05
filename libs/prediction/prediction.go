@@ -39,8 +39,11 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 		return bestPath
 	}
 
+	// TODO: this is wrong, should find the earliest collision, not the shortest travel distance for the hunter
+
 	// calculate starting range for t
 	endpoint := targetPath[len(targetPath)-1]
+	fmt.Println("targetPath", targetPath)
 	start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
 	end := pathfinding.Location{X: endpoint[0], Y: endpoint[1]}
 	AStarEndpoint := pathfinding.AStarInit(mp, start, end)
@@ -54,7 +57,7 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 	high := pathDist / float64(hunterSPD)
 	low := 0.0
 
-	for high-low > 0.01 {
+	for high-low > 0.001 {
 
 		mid := (low + high) / 2
 
@@ -64,6 +67,7 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 			distanceLeft = 0
 		}
 		testPath := circle.GetSubPath(targetPath, distanceStart, distanceLeft)
+		fmt.Println("testPath", testPath)
 		newPos := testPath[len(testPath)-1]
 
 		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}

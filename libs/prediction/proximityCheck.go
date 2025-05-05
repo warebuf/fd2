@@ -111,7 +111,7 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	// return if we are initially within radius
 	dx0 := Xo1 - Xo2
 	dy0 := Yo1 - Yo2
-	if dx0*dx0 + dy0*dy0 <= radius*radius {
+	if dx0*dx0+dy0*dy0 <= radius*radius {
 		return 0
 	}
 

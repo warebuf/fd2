@@ -57,6 +57,11 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 	high := pathDist / float64(hunterSPD)
 	low := 0.0
 
+	targetMaxTime := distanceStart / targetSPD
+	if targetMaxTime > high {
+		high = targetMaxTime
+	}
+
 	for high-low > 0.001 {
 
 		mid := (low + high) / 2

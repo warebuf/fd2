@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"encoding/json"
 	"fd/libs/circle"
+	"fd/libs/util"
 	"fmt"
 	"math"
 	"math/rand"
@@ -455,7 +456,7 @@ func createMatch(pl *permission_list) *match {
 			HP := rand.Intn(10)*100 + 100
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		c := maps.Coordinate{X: 240, Y: 390, Type: "camp", I: random_count, J: -1, K: -1}
+		c := maps.Coordinate{X: 340, Y: 430, Type: "camp", I: random_count, J: -1, K: -1}
 		ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
@@ -1091,7 +1092,7 @@ func (m *match) run() {
 
 								if ans >= 0 {
 									fmt.Println("replaced min w/ recompute", ans, min_units)
-									if ans == min_units {
+									if util.SigDig3(ans) == util.SigDig3(min_units) {
 										recompute = append(recompute, []int{i, j, k})
 									} else if ans < min_units {
 										recompute = [][]int{[]int{i, j, k}}

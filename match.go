@@ -265,6 +265,7 @@ func m_read(m *match_socket) {
 							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
 
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
+							checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
 							m.m.sharepos(nil, 0)
 							m.m.printState()
 
@@ -1003,6 +1004,7 @@ func (m *match) run() {
 								// figure out how to end the game here
 							} else {
 								setPath(m.heroes[i][j][k], pint, p)
+								checkShadowedUnits(m.heroes, m.heroes[i][j][k])
 								gave_bots_acts = true
 							}
 
@@ -1894,4 +1896,36 @@ func PathDuplication(hunter *hero, target *hero) {
 	newPath := circle.GetSubPath(target.Path, target.DistanceLeft, 0)
 	setPath(hunter, end, newPath)
 	hunter.LastMile = 2
+}
+
+func checkShadowedUnits(state [][][]*hero, source *hero) {
+
+	fmt.Println("source.Index", source.Index)
+
+	for i := 0; i < len(state); i++ {
+		for j := 0; j < len(state[i]); j++ {
+			for k := 0; k < len(state[i][j]); k++ {
+
+				if len(state[i][j][k].DynamicDestination) > 0 &&
+					state[i][j][k].DynamicDestination[0] == source.Index[0] &&
+					state[i][j][k].DynamicDestination[1] == source.Index[1] &&
+					state[i][j][k].DynamicDestination[2] == source.Index[2] {
+
+					fmt.Println("matched at", state[i][j][k].DynamicDestination, state[i][j][k].LastMile)
+
+					// if shadow == 0
+					// set new center point and calculate A*
+
+					// if shadow == 1
+					// calculate new shadow
+
+					// if shadow == 2
+					//
+
+				}
+
+			}
+		}
+	}
+
 }

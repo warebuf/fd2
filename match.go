@@ -515,7 +515,7 @@ func createMatch(pl *permission_list) *match {
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,
 					AS:  rand.Intn(100) + 1,
-					SPD: (y * 20) + 40,
+					SPD: (team_int * 20) + 40,
 
 					Battle: nil,
 					TTD:    100.0,

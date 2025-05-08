@@ -274,7 +274,7 @@ func m_read(m *match_socket) {
 							for i := 0; i < len(m.m.heroes); i++ {
 								for j := 0; j < len(m.m.heroes[i]); j++ {
 									for k := 0; k < len(m.m.heroes[i][j]); k++ {
-										if (m.m.heroes[i][j][k].Bot == false) &&
+										if (!m.m.heroes[i][j][k].Bot) &&
 											(m.m.heroes[i][j][k].Status == 0) &&
 											(m.m.heroes[i][j][k].HP > 0) {
 											sim_check = false
@@ -283,7 +283,7 @@ func m_read(m *match_socket) {
 									}
 								}
 							}
-							if sim_check == true {
+							if sim_check {
 								fmt.Println("simulate")
 								m.m.simulate <- true
 							}
@@ -315,7 +315,7 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "endCharSel" {
 				fmt.Println("recieved endCharSel")
 
-				if m.m.char_sel_done[m.u.uid] == false {
+				if !m.m.char_sel_done[m.u.uid] {
 					m.m.char_sel_done[m.u.uid] = true
 					msg := &message{Event: "sel_finished", Name: m.u.email, Message: m.m.uuid_to_team_int[m.u.uid].ab, When: time.Now(), MatchID: m.m.mid}
 					m.mutex.Lock()
@@ -1903,8 +1903,6 @@ func PathDuplication(hunter *hero, target *hero) {
 
 func checkShadowedUnits(state [][][]*hero, source *hero) {
 
-	fmt.Println("source.Index", source.Index)
-
 	for i := 0; i < len(state); i++ {
 		for j := 0; j < len(state[i]); j++ {
 			for k := 0; k < len(state[i][j]); k++ {
@@ -1913,8 +1911,6 @@ func checkShadowedUnits(state [][][]*hero, source *hero) {
 					state[i][j][k].DynamicDestination[0] == source.Index[0] &&
 					state[i][j][k].DynamicDestination[1] == source.Index[1] &&
 					state[i][j][k].DynamicDestination[2] == source.Index[2] {
-
-					fmt.Println("matched at", state[i][j][k].DynamicDestination, state[i][j][k].LastMile)
 
 					if state[i][j][k].LastMile == 0 {
 						// set new center point and calculate A*

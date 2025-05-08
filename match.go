@@ -454,7 +454,8 @@ func createMatch(pl *permission_list) *match {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
 			c := maps.Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
-			HP := rand.Intn(10)*100 + 100
+			//HP := rand.Intn(10)*100 + 100
+			HP := 1
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
 		//c := maps.Coordinate{X: 50, Y: 420, Type: "camp", I: , J: -1, K: -1}
@@ -1277,6 +1278,7 @@ func (m *match) run() {
 				hunter := m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]]
 				hunter.LastMile = 1
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+				hunter.DynamicCircle = []float64{}
 				hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
 				path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
 				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: lastMile[x][0], J: lastMile[x][1], K: lastMile[x][2]}
@@ -1287,6 +1289,7 @@ func (m *match) run() {
 			for x := 0; x < len(pathDup); x++ {
 				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+				hunter.DynamicCircle = []float64{}
 				PathDuplication(hunter, target)
 			}
 
@@ -1913,14 +1916,35 @@ func checkShadowedUnits(state [][][]*hero, source *hero) {
 
 					fmt.Println("matched at", state[i][j][k].DynamicDestination, state[i][j][k].LastMile)
 
-					// if shadow == 0
-					// set new center point and calculate A*
+					if state[i][j][k].LastMile == 0 {
+						// set new center point and calculate A*
 
-					// if shadow == 1
-					// calculate new shadow
+						state[i][j][k].DynamicCircle = []float64{source.Position.X, source.Position.Y}
 
-					// if shadow == 2
-					//
+						s := pathfinding.Location{X: state[i][j][k].Position.X, Y: state[i][j][k].Position.Y}
+						e := pathfinding.Location{X: source.Position.X, Y: source.Position.Y}
+						AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+						path := AStarGraph.ComputeShortestPath()
+						end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: source.Index[0], J: source.Index[1], K: source.Index[2]}
+						setPath(state[i][j][k], end, path)
+
+					} else if state[i][j][k].LastMile == 1 {
+						// calculate new shadow
+						hunter := state[i][j][k]
+						target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+						hunter.DynamicCircle = []float64{}
+						hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
+						path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
+						end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
+						setPath(hunter, end, path)
+
+					} else if state[i][j][k].LastMile == 2 {
+						// copy path
+						hunter := state[i][j][k]
+						target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+						hunter.DynamicCircle = []float64{}
+						PathDuplication(hunter, target)
+					}
 
 				}
 

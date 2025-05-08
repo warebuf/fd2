@@ -491,7 +491,7 @@ func createMatch(pl *permission_list) *match {
 				"SOUND OF THE RAIN", "CAT TAIL", "HOG WILD", "YEAR ZERO",
 			}
 
-			for y := 0; y < 3; y++ {
+			for y := 0; y < 1; y++ {
 				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:   j.bot_status,

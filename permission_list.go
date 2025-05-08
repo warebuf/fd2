@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"strconv"
 	"sync"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 )
 
 type permission_list struct {

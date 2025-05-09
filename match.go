@@ -514,8 +514,8 @@ func createMatch(pl *permission_list) *match {
 
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,
-					AS:  rand.Intn(100) + 1,
-					SPD: (team_int * 20) + 40,
+					AS:  100,
+					SPD: 40 + (team_int * 20),
 
 					Battle: nil,
 					TTD:    100.0,
@@ -1104,7 +1104,10 @@ func (m *match) run() {
 									}
 								}
 
+							} else if hunter.LastMile == 1 {
+
 							}
+
 						}
 
 					}
@@ -1270,7 +1273,6 @@ func (m *match) run() {
 				path := AStarGraph.ComputeShortestPath()
 				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: recompute[x][0], J: recompute[x][1], K: recompute[x][2]}
 				setPath(m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], end, path)
-
 			}
 
 			// calculate last mile paths

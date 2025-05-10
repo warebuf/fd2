@@ -3,6 +3,7 @@ package prediction
 import (
 	"fd/libs/circle"
 	"fd/libs/maps"
+	"fd/libs/util"
 	"fmt"
 	"math"
 )
@@ -122,6 +123,33 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	return circle.QuadraticFormula(A, B, C, tMax)
 }
 
+func interpolate(p1, p2 []float64, tRatio float64) []float64 {
+	return []float64{
+		p1[0] + (p2[0]-p1[0])*tRatio,
+		p1[1] + (p2[1]-p1[1])*tRatio,
+	}
+}
+
+func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) {
+	d0 := maps.EuclideanDistance(p1Start[0], p1Start[1], p2Start[0], p2Start[1])
+	d1 := maps.EuclideanDistance(p1End[0], p1End[1], p2End[0], p2End[1])
+	d0 = util.SigDig3(d0)
+	d1 = util.SigDig3(d1)
+
+	fmt.Println("d0", d0, "d1", d1)
+
+	switch {
+	case d0 > radius && d1 <= radius:
+		fmt.Println("entering")
+	case d0 <= radius && d1 > radius:
+		fmt.Println("exiting")
+	case d0 <= radius && d1 <= radius:
+		fmt.Println("inside")
+	default:
+		fmt.Println("outside")
+	}
+}
+
 func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64) float64 {
 
 	fmt.Println("-----Called ProximityCheck-----")
@@ -143,18 +171,21 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 	totalTime := 0.0
 	ans := -1.0
 	for i := 0; i < len(partition1)-1; i++ {
-
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
-		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25) // TODO: seems like this isn't finding the intersection if the target is not moving
+		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25)
 		if t < 0 {
 			totalTime += times[i]
 		} else {
 			totalTime += t
 			fmt.Println("ProximityCheck", i, totalTime)
-			if ans < 0 {
-				ans = totalTime
-			}
+			tRatio := t / times[i]
+			p1Now := interpolate(subline1[0], subline1[1], tRatio)
+			p2Now := interpolate(subline2[0], subline2[1], tRatio)
+			radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, 25)
+
+			ans = totalTime
+			break
 		}
 	}
 	return ans

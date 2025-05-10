@@ -39,8 +39,6 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 		return bestPath
 	}
 
-	// TODO: this is wrong, should find the earliest collision, not the shortest travel distance for the hunter
-
 	// calculate starting range for t
 	endpoint := targetPath[len(targetPath)-1]
 	fmt.Println("targetPath", targetPath)

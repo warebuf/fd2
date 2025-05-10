@@ -5,6 +5,7 @@ import (
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
 	"fmt"
+	"math"
 )
 
 func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft float64, targetSPD int, hunterPosition []float64, hunterSPD int) [][]float64 {
@@ -79,8 +80,11 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 		bestPath = AStarGraph.ComputeShortestPath()
 
 		//
-		test123 := IlluminatedAStar(mp, targetPath, hunterPos, newPos)
-		fmt.Println("test123", test123)
+		test123 := IlluminatedAStar(mp, testPath, hunterPos, newPos)
+		if checkDif(bestPath, test123) {
+			fmt.Println("normalpath", bestPath)
+			fmt.Println("illuminatedPath", test123)
+		}
 
 		count += 1
 		newDist := maps.GetPathDistance(bestPath)
@@ -97,4 +101,23 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 	fmt.Println("count", count)
 
 	return bestPath
+}
+
+func checkDif(a [][]float64, b [][]float64) bool {
+	if len(a) != len(b) {
+		return true
+	}
+
+	for i := range a {
+		if len(a[i]) != len(b[i]) {
+			return true
+		}
+		for j := range a[i] {
+			if math.Abs(a[i][j]-b[i][j]) > 1e-9 {
+				return true
+			}
+		}
+	}
+
+	return false
 }

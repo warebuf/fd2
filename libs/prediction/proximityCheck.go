@@ -109,13 +109,6 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 		Vy2 = SPD2 * dy2 / length2
 	}
 
-	// return if we are initially within radius
-	dx0 := Xo1 - Xo2
-	dy0 := Yo1 - Yo2
-	if dx0*dx0+dy0*dy0 <= radius*radius {
-		return 0
-	}
-
 	A := ((Vx1 - Vx2) * (Vx1 - Vx2)) + ((Vy1 - Vy2) * (Vy1 - Vy2))
 	B := (2 * (Xo1 - Xo2) * (Vx1 - Vx2)) + (2 * (Yo1 - Yo2) * (Vy1 - Vy2))
 	C := ((Xo1 - Xo2) * (Xo1 - Xo2)) + ((Yo1 - Yo2) * (Yo1 - Yo2)) - (radius * radius)
@@ -141,39 +134,27 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 	switch {
 	case d0 > radius && d1 <= radius:
 		fmt.Println("entering")
-	case d0 <= radius && d1 > radius:
+	case d0 <= radius && d1 >= radius:
 		fmt.Println("exiting")
-	case d0 <= radius && d1 <= radius:
-		fmt.Println("inside")
 	default:
 		fmt.Println("outside")
 	}
 }
 
-func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64) float64 {
+func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64) float64 {
 
 	fmt.Println("-----Called ProximityCheck-----")
 
-	fmt.Println("Path1: ", path1)
-	fmt.Println("Path2: ", path2)
-
 	subPath1 := circle.GetSubPath(path1, distanceLeft1, 0)
 	subPath2 := circle.GetSubPath(path2, distanceLeft2, 0)
-
-	fmt.Println("subPath1: ", subPath1)
-	fmt.Println("subPath2: ", subPath2)
-
 	partition1, partition2, times := createPartitions(subPath1, subPath2, SPD1, SPD2)
-
-	fmt.Println("Partition1: ", partition1)
-	fmt.Println("Partition2: ", partition2)
 
 	totalTime := 0.0
 	ans := -1.0
 	for i := 0; i < len(partition1)-1; i++ {
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
-		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, 25)
+		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, radius)
 		if t < 0 {
 			totalTime += times[i]
 		} else {
@@ -182,12 +163,12 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 			tRatio := t / times[i]
 			p1Now := interpolate(subline1[0], subline1[1], tRatio)
 			p2Now := interpolate(subline2[0], subline2[1], tRatio)
-			radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, 25)
+			radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, radius)
 
 			ans = totalTime
 			break
 		}
 	}
-	return ans
 
+	return ans
 }

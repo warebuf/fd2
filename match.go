@@ -1061,7 +1061,7 @@ func (m *match) run() {
 
 							var prox float64
 							if hunter.LastMile == 0 {
-								prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD))
+								prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
 
 								if prox >= 0 && prox < min_units {
 									fmt.Println("replaced min w/ prox", prox, min_units)
@@ -1112,6 +1112,11 @@ func (m *match) run() {
 								if hunter.SPD >= target.SPD {
 									// do nothing
 								} else {
+									prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1)
+									if prox >= 0 && prox < min_units {
+										fmt.Println("replaced min w/ prox", prox, min_units)
+										// do stuff
+									}
 
 								}
 

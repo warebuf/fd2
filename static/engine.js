@@ -241,7 +241,7 @@ function calcPos() {
                     event_log.shift()
                 }
             }
-            state = JSON.parse(JSON.stringify(match_data[animating_state]))
+            state = JSON.parse(JSON.stringify(match_data[animating_state])) // deep copy
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++

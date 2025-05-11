@@ -307,7 +307,6 @@ func m_read(m *match_socket) {
 				if m.m.phase == "TURN" {
 					m.m.sharepos(nil, 0)
 				} else if m.m.phase == "CHARACTER SELECTION" {
-					m.m.sharebench()
 					m.m.sharepos(nil, 0)
 				}
 				m.incoming_message <- &message{Event: "assignInt", Message: m.m.uuid_to_team_int[m.u.uid].ab, MatchID: m.m.mid}
@@ -454,8 +453,8 @@ func createMatch(pl *permission_list) *match {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
 			c := maps.Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
-			//HP := rand.Intn(10)*100 + 100
-			HP := 1
+			HP := rand.Intn(10)*100 + 100
+			//HP := 1
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
 		//c := maps.Coordinate{X: 50, Y: 420, Type: "camp", I: , J: -1, K: -1}
@@ -491,7 +490,7 @@ func createMatch(pl *permission_list) *match {
 				"SOUND OF THE RAIN", "CAT TAIL", "HOG WILD", "YEAR ZERO",
 			}
 
-			for y := 0; y < 1; y++ {
+			for y := 0; y < 3; y++ {
 				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:   j.bot_status,
@@ -514,8 +513,8 @@ func createMatch(pl *permission_list) *match {
 
 					HP:  rand.Intn(100) + 1,
 					ATK: rand.Intn(100) + 1,
-					AS:  100,
-					SPD: 40 + (team_int * 20),
+					AS:  rand.Intn(100) + 1,
+					SPD: rand.Intn(100) + 1,
 
 					Battle: nil,
 					TTD:    100.0,
@@ -916,7 +915,6 @@ func (m *match) run() {
 			}
 			continue
 
-			m.sharebench()
 			m.sharepos(nil, 0)
 			m.shareint()
 
@@ -1105,6 +1103,17 @@ func (m *match) run() {
 								}
 
 							} else if hunter.LastMile == 1 {
+
+							} else if hunter.LastMile == 2 {
+
+								hunter := m.heroes[i][j][k]
+								target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
+
+								if hunter.SPD >= target.SPD {
+									// do nothing
+								} else {
+
+								}
 
 							}
 
@@ -1492,32 +1501,6 @@ func game_over_check(state [][][]*hero) bool {
 	return true
 }
 
-func (m *match) sharebench() {
-
-	/*
-		fmt.Println("sharebench")
-
-			marshalled, _ := json.Marshal(m.bench)
-
-			// send updated positions to everyone
-			for _, i := range m.gamer_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					select {
-					case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
-					}
-				}
-			}
-			for _, i := range m.spectator_uid_to_msid_to_match_socket {
-				for _, j := range i {
-					select {
-					case j.incoming_message <- &message{Event: "bench", Message: string(marshalled), MatchID: m.mid}:
-					}
-				}
-			}
-	*/
-
-}
-
 func (m *match) shareint() {
 	fmt.Println("shareint")
 
@@ -1724,53 +1707,6 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 	fmt.Printf("findPath took %d ms\n", milliseconds)
 
 	return ans
-}
-
-func returnEdgesArray(c maps.Coordinate) ([]float64, int) {
-
-	edges := make([]float64, len(mapList[0].Intersections), len(mapList[0].Intersections))
-	count := 0
-	for i := 0; i < len(edges); i++ {
-		edges[i] = -1
-		line_seg := []float64{c.X, c.Y, mapList[0].Intersections[i][0], mapList[0].Intersections[i][1]}
-		blocked := false
-		for j := 0; j < len(mapList[0].Obstacles); j++ {
-			if mapList[0].Obstacle_type[j] == "BEZIER" {
-				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					blocked = true
-					break
-				}
-			}
-		}
-		if !blocked {
-			edges[i] = getDistancePointArray(c, mapList[0].Intersections[i])
-			fmt.Println("edge exists", c, mapList[0].Intersections[i], edges[i])
-			count++
-		}
-	}
-	return edges, count
-}
-
-func returnEdgesList(c maps.Coordinate) ([]int, []float64) {
-	edges := make([]int, 0)
-	dist := make([]float64, 0)
-	for i := 0; i < len(mapList[0].Intersections); i++ {
-		line_seg := []float64{c.X, c.Y, mapList[0].Intersections[i][0], mapList[0].Intersections[i][1]}
-		blocked := false
-		for j := 0; j < len(mapList[0].Obstacles); j++ {
-			if mapList[0].Obstacle_type[j] == "BEZIER" {
-				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_seg) {
-					blocked = true
-					break
-				}
-			}
-		}
-		if !blocked {
-			edges = append(edges, i)
-			dist = append(dist, getDistancePointArray(c, mapList[0].Intersections[i]))
-		}
-	}
-	return edges, dist
 }
 
 func getEdges(c1 pathfinding.Location, LPA *pathfinding.LPAGraph) ([]pathfinding.Location, []float64) {

@@ -1114,10 +1114,16 @@ func (m *match) run() {
 								} else {
 									prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1)
 									if prox >= 0 && prox < min_units {
+										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
 										fmt.Println("replaced min w/ prox", prox, min_units)
-										// do stuff
+										if util.SigDig3(prox) == util.SigDig3(min_units) {
+											lastMile = append(lastMile, []int{i, j, k})
+										} else if prox < min_units {
+											lastMile = [][]int{[]int{i, j, k}}
+											recompute = [][]int{}
+											min_units = prox
+										}
 									}
-
 								}
 
 							}

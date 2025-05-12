@@ -280,16 +280,19 @@ function drawAttack() {
 function drawPos() {
 
     ctx.fillStyle = "white";
-
     ctx.textAlign = "left";
-    ctx.fillStyle = 'white';
     ctx.font = '11px monospace';
     for (let i = 0; i < state.length; i++) {
         for (let j = 0; j < state[i].length; j++) {
             for (let k = 0; k < state[i][j].length; k++) {
                 if (state[i][j][k].HP > 0) {
                     //drawHPBoxes(state[i][j][k].HP,state[i][j][k].HP,width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y)
-                    drawRotated('>', width + state[i][j][k].Position.X, height - state[i][j][k].Position.Y, state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "white")
+                    
+                    if(i === 0) {
+                        drawRotated('>', width + state[i][j][k].Position.X, height - state[i][j][k].Position.Y, state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "yellow")
+                    } else {
+                        drawRotated('>', width + state[i][j][k].Position.X, height - state[i][j][k].Position.Y, state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "red")
+                    }
                 }
             }
         }

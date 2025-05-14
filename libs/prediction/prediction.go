@@ -79,12 +79,11 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 		AStarGraph := pathfinding.AStarInit(mp, start, end)
 		bestPath = AStarGraph.ComputeShortestPath()
 
-		//
-		test123 := IlluminatedAStar(mp, testPath, hunterPos, newPos)
-		if checkDif(bestPath, test123) {
-			fmt.Println("normalpath", bestPath)
-			fmt.Println("illuminatedPath", test123)
-		}
+		// test123 := IlluminatedAStar(mp, testPath, hunterPos, newPos)
+		// if checkDif(bestPath, test123) {
+		// 	fmt.Println("normalpath", bestPath)
+		// 	fmt.Println("illuminatedPath", test123)
+		// }
 
 		count += 1
 		newDist := maps.GetPathDistance(bestPath)

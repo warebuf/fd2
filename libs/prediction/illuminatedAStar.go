@@ -39,6 +39,7 @@ type Point struct {
 	Y float64
 }
 
+// TODO: have to create the right edges too
 func IlluminatedAStar(mp *maps.MapDetails, path [][]float64, start []float64, end []float64) [][]float64 {
 
 	newMap := new(maps.MapDetails)
@@ -69,7 +70,7 @@ func IlluminatedAStar(mp *maps.MapDetails, path [][]float64, start []float64, en
 	}
 	s := pathfinding.Location{X: start[0], Y: start[1]}
 	e := pathfinding.Location{X: end[0], Y: end[1]}
-	AStarGraph := pathfinding.AStarInit(mp, s, e)
+	AStarGraph := pathfinding.AStarInit(newMap, s, e)
 	bestPath := AStarGraph.ComputeShortestPath()
 
 	return bestPath

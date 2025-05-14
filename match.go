@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"encoding/json"
 	"fd/libs/circle"
+	"fd/libs/heroes"
 	"fd/libs/util"
 	"fmt"
 	"math"
@@ -56,6 +57,7 @@ type hero struct {
 	MaxHP int
 	HP    int
 	ATK   int
+	DEF   int
 	AS    int
 	SPD   int
 
@@ -442,7 +444,7 @@ func createMatch(pl *permission_list) *match {
 
 		// add bots to gamer_uid_to_user
 		for _, j := range pl.spectator_uid_to_user {
-			if j.bot_status == true {
+			if j.bot_status {
 				ans.bot_join <- j
 			}
 		}
@@ -453,7 +455,7 @@ func createMatch(pl *permission_list) *match {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
 			c := maps.Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
-			HP := rand.Intn(10)*100 + 100
+			HP := rand.Intn(100) + 1
 			//HP := 1
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
@@ -491,6 +493,7 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			for y := 0; y < 3; y++ {
+				stats := heroes.RandomBudget(100, 4)
 				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:   j.bot_status,
@@ -511,10 +514,11 @@ func createMatch(pl *permission_list) *match {
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 					Status:       0,
 
-					HP:  rand.Intn(100) + 1,
-					ATK: rand.Intn(100) + 1,
-					AS:  rand.Intn(100) + 1,
-					SPD: rand.Intn(100) + 1,
+					HP:  100,
+					ATK: stats[0],
+					DEF: stats[1],
+					AS:  stats[2],
+					SPD: stats[3],
 
 					Battle: nil,
 					TTD:    100.0,
@@ -1087,7 +1091,7 @@ func (m *match) run() {
 									m.heroes[i][j][k].DynamicCircle,
 									m.heroes[i][j][k].DistanceLeft, (m.heroes[i][j][k].DistanceLeft - distanceTravelled),
 									m.heroes[i][j][k].SPD,
-									2.0,
+									3.0,
 								)
 								fmt.Println("intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
 

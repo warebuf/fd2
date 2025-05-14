@@ -1171,7 +1171,17 @@ func (m *match) run() {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) {
 
-							toMove := min_units * float64(m.heroes[i][j][k].SPD)
+							SPD := float64(m.heroes[i][j][k].SPD)
+
+							if m.heroes[i][j][k].LastMile == 2 {
+								hunter := m.heroes[i][j][k]
+								target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+								if hunter.SPD > target.SPD {
+									SPD = float64(target.SPD)
+								}
+							}
+
+							toMove := min_units * SPD
 							pos_x := m.heroes[i][j][k].Position.X
 							pos_y := m.heroes[i][j][k].Position.Y
 
@@ -1200,7 +1210,7 @@ func (m *match) run() {
 							}
 
 							// move the unit
-							m.heroes[i][j][k].DistanceLeft -= min_units * float64(m.heroes[i][j][k].SPD)
+							m.heroes[i][j][k].DistanceLeft -= min_units * SPD
 
 							if m.heroes[i][j][k].DistanceLeft-0.01 <= 0 {
 
@@ -1227,7 +1237,7 @@ func (m *match) run() {
 										m.heroes[i][j][k].Battle.Units = append(m.heroes[i][j][k].Battle.Units, []int{i, j, k})
 									} else {
 										m.heroes[i][j][k].Status = 0
-										if m.heroes[i][j][k].Bot == false {
+										if !m.heroes[i][j][k].Bot {
 											has_user_cmd = true
 										}
 									}

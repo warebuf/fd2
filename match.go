@@ -1261,11 +1261,14 @@ func (m *match) run() {
 			}
 
 			// simulate all attacks
+			levelUp := [][]int{}
+			levelCount := []int{}
 			for i := 0; i < len(atk_list); i++ {
 				unitOfInterest := m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 				campOfInterest := unitOfInterest.Battle
 				if campOfInterest.HP > 0 {
 					calculatedEXP := 0
+					startEXP := unitOfInterest.EXP
 					if unitOfInterest.ATK > campOfInterest.HP {
 						calculatedEXP = unitOfInterest.ATK
 					} else {
@@ -1277,6 +1280,13 @@ func (m *match) run() {
 						unitOfInterest.EXP += calculatedEXP + 100
 					} else {
 						unitOfInterest.EXP += calculatedEXP
+					}
+					fmt.Println("startEXP", startEXP)
+					fmt.Println("endEXP", unitOfInterest.EXP)
+					levels := math.Floor(float64(unitOfInterest.EXP)/100.0) - math.Floor(float64(startEXP)/100.0)
+					if levels > 0 {
+						levelUp = append(levelUp, []int{atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2]})
+						levelCount = append(levelCount, int(levels))
 					}
 				}
 
@@ -1293,6 +1303,10 @@ func (m *match) run() {
 				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
 				m.sharepos(nil, 0)
 			}
+
+			// handle level up
+			fmt.Println("levelUp", levelUp)
+			fmt.Println("levelCount", levelCount)
 
 			// recalculate dynamic destinations
 			for x := 0; x < len(recompute); x++ {

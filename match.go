@@ -60,6 +60,7 @@ type hero struct {
 	DEF   int
 	AS    int
 	SPD   int
+	Scale []int
 
 	EXP int
 
@@ -494,6 +495,7 @@ func createMatch(pl *permission_list) *match {
 
 			for y := 0; y < 3; y++ {
 				stats := heroes.RandomBudget(100, 4)
+				scale := []int{rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10}
 				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
 				temp := &hero{
 					Bot:   j.bot_status,
@@ -514,11 +516,12 @@ func createMatch(pl *permission_list) *match {
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 					Status:       0,
 
-					HP:  100,
-					ATK: stats[0],
-					DEF: stats[1],
-					AS:  stats[2],
-					SPD: stats[3],
+					HP:    100,
+					ATK:   stats[0],
+					DEF:   stats[1],
+					AS:    stats[2],
+					SPD:   stats[3],
+					Scale: scale,
 
 					Battle: nil,
 					TTD:    100.0,
@@ -529,90 +532,6 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			//ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
-
-			/*
-				for y := 0; y < 5; y++ {
-						pick := rand.Intn(4)
-						if pick == 0 {
-							temp := rand.Intn(len(namesh))
-							p := &part{
-								SECTION:     0,
-								SERIAL:      temp,
-								NAME:        namesh[temp],
-								HP:          rand.Intn(99) + 1,
-								DOG:         rand.Intn(99) + 1,
-								ATK:         rand.Intn(99) + 1,
-								DEF:         rand.Intn(99) + 1,
-								ACC:         rand.Intn(99) + 1,
-								CRT:         rand.Intn(99) + 1,
-								CD:          rand.Intn(99) + 1,
-								CLU:         rand.Intn(99) + 1,
-								Use_current: 0,
-								Use_outof:   0,
-								Weight:      rand.Intn(99) + 1,
-							}
-							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-						} else if pick == 1 {
-							temp := rand.Intn(len(namesl))
-							p := &part{
-								SECTION:     1,
-								SERIAL:      temp,
-								NAME:        namesl[temp],
-								HP:          rand.Intn(99) + 1,
-								DOG:         rand.Intn(99) + 1,
-								ATK:         rand.Intn(99) + 1,
-								DEF:         rand.Intn(99) + 1,
-								ACC:         rand.Intn(99) + 1,
-								CRT:         rand.Intn(99) + 1,
-								CD:          rand.Intn(99) + 1,
-								CLU:         rand.Intn(99) + 1,
-								Use_current: 0,
-								Use_outof:   0,
-								Weight:      rand.Intn(99) + 1,
-							}
-							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-						} else if pick == 2 {
-							temp := rand.Intn(len(namesr))
-							p := &part{
-								SECTION:     2,
-								SERIAL:      temp,
-								NAME:        namesr[temp],
-								HP:          rand.Intn(99) + 1,
-								DOG:         rand.Intn(99) + 1,
-								ATK:         rand.Intn(99) + 1,
-								DEF:         rand.Intn(99) + 1,
-								ACC:         rand.Intn(99) + 1,
-								CRT:         rand.Intn(99) + 1,
-								CD:          rand.Intn(99) + 1,
-								CLU:         rand.Intn(99) + 1,
-								Use_current: 0,
-								Use_outof:   0,
-								Weight:      rand.Intn(99) + 1,
-							}
-							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-						} else {
-							temp := rand.Intn(len(namesb))
-							p := &part{
-								SECTION:     3,
-								SERIAL:      temp,
-								NAME:        namesb[temp],
-								HP:          rand.Intn(99) + 1,
-								ATK:         rand.Intn(99) + 1,
-								DEF:         rand.Intn(99) + 1,
-								ACC:         rand.Intn(99) + 1,
-								CRT:         rand.Intn(99) + 1,
-								CD:          rand.Intn(99) + 1,
-								CLU:         rand.Intn(99) + 1,
-								SPD:         rand.Intn(99) + 1,
-								DOG:         rand.Intn(99) + 1,
-								Use_current: 0,
-								Use_outof:   0,
-								Weight:      rand.Intn(99) + 1,
-							}
-							ans.bench[ans.uuid_to_team_int[i].ab] = append(ans.bench[ans.uuid_to_team_int[i].ab], p)
-						}
-					}
-			*/
 
 			if ans.game_mode == "ffa" {
 				team_int++
@@ -1290,6 +1209,7 @@ func (m *match) run() {
 					}
 				}
 
+				// TODO: not sure why this is here TBH
 				if m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
 					m.ended = true
 				}
@@ -1305,8 +1225,24 @@ func (m *match) run() {
 			}
 
 			// handle level up
-			fmt.Println("levelUp", levelUp)
-			fmt.Println("levelCount", levelCount)
+			for i := 0; i < len(levelUp); i++ {
+
+				fmt.Println("levelUp[i]", levelUp[i])
+				fmt.Println("levelCount[i]", levelCount[i])
+
+				for j := 0; j < levelCount[i]; j++ {
+					focus := m.heroes[levelUp[i][0]][levelUp[i][1]][levelUp[i][2]]
+					additions := heroes.LevelUp(focus.Scale, 20)
+					focus.MaxHP += additions[0]
+					focus.HP += additions[0]
+					focus.ATK += additions[1]
+					focus.AS += additions[2]
+					focus.DEF += additions[3]
+					focus.SPD += additions[4]
+					m.sharepos(nil, 0)
+				}
+
+			}
 
 			// recalculate dynamic destinations
 			for x := 0; x < len(recompute); x++ {

@@ -101,7 +101,6 @@ function anime() {
         drawPaths()
         drawDynamicCircles()
         drawLastMileCircle()
-        //drawStats()
         drawDamageNumbers()
         updateDamageNumbers()
         drawTurn()
@@ -508,7 +507,7 @@ function drawHeatMap() {
                     }
                 }
                 ctx.fillText(state[i][j][k].Name, x_offset + x_shift + t_shift, y_offset + y_shift);
-                x_shift += 24 * 4
+                x_shift += 24 * 5
                 ctx.textAlign = "right";
                 ctx.fillText("LV. " + (Math.floor(state[i][j][k].EXP / 100) + 1), x_offset + x_shift + t_shift, y_offset + y_shift);
                 x_shift = 0;

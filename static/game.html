@@ -95,19 +95,6 @@
     var state = []
     var camps = [];
 
-    var h_index = 0;
-    var l_index = 0;
-    var r_index = 0;
-    var b_index = 0;
-
-    var screen_index = 0;
-    var x_index_1 = 0;
-    var y_index_1 = 0;
-    var second_index = false;
-    var screen_index_2 = 0;
-    var x_index_2 = 0;
-    var y_index_2 = 0;
-
     // datasets
     var match_data = [];
     var atk_data = [];
@@ -139,7 +126,7 @@
 
     var obstacles = [];
     var intersections = [];
-    var intersectionsOn = true;
+    var obstaclesOn = true;
 
     var dynamics = [];
 
@@ -161,7 +148,7 @@
     var frameIndex = 0;
     var frameCount = 0;
     var frameCountMax = 4;
-
+    
 
 
 </script>
@@ -182,51 +169,6 @@
             case "Enter":
                 if (phase == "CHARACTER SELECTION") {
 
-                    if (second_index == false) {
-                        second_index = true
-
-                        screen_index_2 = screen_index
-                        x_index_2 = x_index_1
-                        if (screen_index == 1) {
-                            if (x_index_1 == 0) {
-                                y_index_2 = y_index_1 + h_index
-                            } else if (x_index_1 == 1) {
-                                y_index_2 = y_index_1 + l_index
-                            } else if (x_index_1 == 2) {
-                                y_index_2 = y_index_1 + r_index
-                            } else if (x_index_1 == 3) {
-                                y_index_2 = y_index_1 + b_index
-                            }
-                        } else {
-                            y_index_2 = y_index_1
-                        }
-
-                    } else if (second_index == true) {
-
-                        if (x_index_1 == x_index_2) {
-
-                            let y1 = ""
-                            if (screen_index == 1) {
-                                if (x_index_1 == 0) {
-                                    y1 = y_index_1 + h_index
-                                } else if (x_index_1 == 1) {
-                                    y1 = y_index_1 + l_index
-                                } else if (x_index_1 == 2) {
-                                    y1 = y_index_1 + r_index
-                                } else if (x_index_1 == 3) {
-                                    y1 = y_index_1 + b_index
-                                }
-
-                            } else {
-                                y1 = y_index_1
-                            }
-                            const s = screen_index + ';' + x_index_1 + ';' + y1 + ';' + screen_index_2 + ';' + x_index_2 + ';' + y_index_2
-                            socket.send(JSON.stringify({"Event": "swapRequest", "Message": s}))
-                            console.log("sent swapreq")
-                        }
-
-                        second_index = false
-                    }
                 }
                 else {
                     console.log("enter")
@@ -340,7 +282,7 @@
 
             case 'O':
             case 'o':
-                intersectionsOn = !intersectionsOn
+                obstaclesOn = !obstaclesOn
                 break;
 
             case 'C':
@@ -358,10 +300,6 @@
 
                 if (phase == "CHARACTER SELECTION") {
 
-                    x_index_1 = x_index_1 - 1
-                    if (x_index_1 < 0) {
-                        x_index_1 = 3
-                    }
                 } else if (match_data.length > 0) {
                     calculateNextHoverable(1);
                 }
@@ -373,10 +311,7 @@
             case "ArrowRight":
 
                 if (phase == "CHARACTER SELECTION") {
-                    x_index_1 = x_index_1 + 1
-                    if (x_index_1 > 3) {
-                        x_index_1 = 0
-                    }
+                    
                 } else if (match_data.length > 0) {
                     calculateNextHoverable(2);
                 }
@@ -388,61 +323,6 @@
             case "ArrowUp":
                 if (phase == "CHARACTER SELECTION") {
 
-                    if (screen_index == 1) {
-                        if (x_index_1 == 0) { //h case
-                            y_index_1 = y_index_1 - 1
-                            if (y_index_1 < 0) {
-                                if (h_index > 0) {
-                                    h_index = h_index - 1
-                                    y_index_1 = 0
-                                } else {
-                                    screen_index = 0
-                                    y_index_1 = 4
-                                }
-                            }
-                        } else if (x_index_1 == 1) {
-                            y_index_1 = y_index_1 - 1
-                            if (y_index_1 < 0) {
-                                if (l_index > 0) {
-                                    l_index = l_index - 1
-                                    y_index_1 = 0
-                                } else {
-                                    screen_index = 0
-                                    y_index_1 = 4
-                                }
-                            }
-                        } else if (x_index_1 == 2) {
-                            y_index_1 = y_index_1 - 1
-                            if (y_index_1 < 0) {
-                                if (r_index > 0) {
-                                    r_index = r_index - 1
-                                    y_index_1 = 0
-                                } else {
-                                    screen_index = 0
-                                    y_index_1 = 4
-                                }
-                            }
-                        } else if (x_index_1 == 3) {
-                            y_index_1 = y_index_1 - 1
-                            if (y_index_1 < 0) {
-                                if (b_index > 0) {
-                                    b_index = b_index - 1
-                                    y_index_1 = 0
-                                } else {
-                                    screen_index = 0
-                                    y_index_1 = 4
-                                }
-                            }
-                        }
-                    } 
-                    else {
-                        y_index_1 = y_index_1 - 1
-                        if (y_index_1 < 0) {
-                            screen_index = 1
-                            y_index_1 = 4
-                        }
-                    }
-                
                 } else if (match_data.length > 0) {
                     calculateNextHoverable(0);
                 }

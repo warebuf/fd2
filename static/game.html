@@ -95,40 +95,33 @@
     var state = []
     var camps = [];
 
-    var h_index = 0
-    var l_index = 0
-    var r_index = 0
-    var b_index = 0
+    var h_index = 0;
+    var l_index = 0;
+    var r_index = 0;
+    var b_index = 0;
 
-    var bench = null
-    var bench_index = 0
-
-    var screen_index = 0
-    var x_index_1 = 0
-    var y_index_1 = 0
-    var second_index = false
-    var screen_index_2 = 0
-    var x_index_2 = 0
-    var y_index_2 = 0
-
-    var err_msg_index = 0
-    var err_count = 0
+    var screen_index = 0;
+    var x_index_1 = 0;
+    var y_index_1 = 0;
+    var second_index = false;
+    var screen_index_2 = 0;
+    var x_index_2 = 0;
+    var y_index_2 = 0;
 
     // datasets
     var match_data = [];
     var atk_data = [];
     var camp_data = [];
 
-    var time_queue = []
-    var turn_queue = []
-    var event_log = []
+    var time_queue = [];
+    var turn_queue = [];
+    var event_log = [];
 
     var damageNumbers = []; // UI related, holds the damage number animation
 
     var frame_count = 0;
     var state_machine = 0;
     var even = 0; // just a small global variable to let us know when to flash camp icons
-    var action_buffer = ""
 
     var hoverable = null;
     var hoverable_coordinate = null;
@@ -146,12 +139,11 @@
 
     var obstacles = [];
     var intersections = [];
-    var obstaclesOn = true;
+    var intersectionsOn = true;
 
     var dynamics = [];
 
-
-    var sprites = []
+    var sprites = [];
 
     let sprite1 = new Image();
     sprite1.src = "/sprite/venusaur-idle.png"
@@ -231,9 +223,6 @@
                             const s = screen_index + ';' + x_index_1 + ';' + y1 + ';' + screen_index_2 + ';' + x_index_2 + ';' + y_index_2
                             socket.send(JSON.stringify({"Event": "swapRequest", "Message": s}))
                             console.log("sent swapreq")
-                        } else {
-                            console.log("CANNOT SWAP INCOMPATIBLE BODY PARTS")
-                            err_msg_index = 1
                         }
 
                         second_index = false
@@ -326,7 +315,7 @@
                                 console.log("sent valid path", paths[i])
                                 socket.send(JSON.stringify({
                                     "Event": 'act',
-                                    "Message": action_buffer,
+                                    "Message": "",
                                     "IndexI": my_team,
                                     "IndexJ": my_int,
                                     "IndexK": selected_hoverable.K,
@@ -351,7 +340,7 @@
 
             case 'O':
             case 'o':
-                obstaclesOn = !obstaclesOn
+                intersectionsOn = !intersectionsOn
                 break;
 
             case 'C':
@@ -445,13 +434,15 @@
                                 }
                             }
                         }
-                    } else {
+                    } 
+                    else {
                         y_index_1 = y_index_1 - 1
                         if (y_index_1 < 0) {
                             screen_index = 1
                             y_index_1 = 4
                         }
                     }
+                
                 } else if (match_data.length > 0) {
                     calculateNextHoverable(0);
                 }
@@ -1056,8 +1047,6 @@
                     my_int = parseInt(temp_string[1])
                 } else if (msg.Event == 'ticker_start') {
                     sent_time = Date.parse(msg.Message)
-                } else if (msg.Event == 'bench') {
-                    bench = JSON.parse(msg.Message)
                 } else if (msg.Event == 'update_phase') {
                     if (phase == "null") {
                         phase = msg.Phase

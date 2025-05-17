@@ -116,8 +116,6 @@ type match struct {
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
 
-	//bench map[string][]*part // team, user index to part
-
 	broadcast      chan *message // a channel is a thread-safe queue, incoming messages
 	prio_broadcast chan *message // gets priority over normal broadcast ^
 
@@ -433,8 +431,6 @@ func createMatch(pl *permission_list) *match {
 			turn:         "null",
 			start_ticker: make(chan bool),
 
-			//bench: make(map[string][]*part),
-
 			char_sel_done:   make(map[uuid.UUID]bool),
 			char_sel_ticker: make(chan bool),
 
@@ -530,8 +526,6 @@ func createMatch(pl *permission_list) *match {
 				ans.heroes[team_int][client_int] = append(ans.heroes[team_int][client_int], temp)
 				//ans.heroGraph[team_int][client_int] = append(ans.heroGraph[team_int][client_int], nil)
 			}
-
-			//ans.bench[ans.uuid_to_team_int[i].ab] = make([]*part, 0)
 
 			if ans.game_mode == "ffa" {
 				team_int++

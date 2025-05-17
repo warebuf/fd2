@@ -78,13 +78,10 @@ function anime() {
         //drawGrid()
         drawPhase()
         drawLog()
-        //drawBench()
         //drawStarters()
-        drawError()
         //drawTable1()
         //drawTable2()
         //drawStartersTable1()
-        //drawBenchTable()
         //drawStartersTable2()
         //drawSelect()
         //ctx.fillRect(1150,40 , 1, 800);
@@ -444,23 +441,6 @@ function drawLog() {
     }
 }
 
-function drawError() {
-    if (err_msg_index == 0) {
-        return
-    }
-    if (err_msg_index == 1) {
-        ctx.font = '11px monospace';
-        ctx.fillStyle = 'red';
-        ctx.fillText("CANNOT SWAP INCOMPATIBLE BODY PARTS", 50, 50);
-        err_count = err_count + 1
-    }
-
-    if (err_count == 50) {
-        err_msg_index = 0
-        err_count = 0
-    }
-}
-
 function drawHeatMap() {
 
     let x_offset = Math.round(c.width / 2) - 450
@@ -784,7 +764,7 @@ function drawObstacles() {
         }
     }
 
-    if(obstaclesOn) {
+    if(intersectionsOn) {
         ctx.fillStyle = "red";
         for (let i = 0; i < intersections.length; i++) {
             ctx.fillRect(width + intersections[i].X, height - intersections[i].Y, 1, 1);

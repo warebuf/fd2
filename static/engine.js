@@ -764,7 +764,7 @@ function drawObstacles() {
         }
     }
 
-    if(intersectionsOn) {
+    if(obstaclesOn) {
         ctx.fillStyle = "red";
         for (let i = 0; i < intersections.length; i++) {
             ctx.fillRect(width + intersections[i].X, height - intersections[i].Y, 1, 1);

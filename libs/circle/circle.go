@@ -30,6 +30,7 @@ func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 	return line
 }
 
+// TODO: if one of the units has 0 speed, seems like it returns an empty array
 func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
 
 	if len(path) == 1 {

@@ -70,6 +70,7 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 		if distanceLeft < 0 {
 			distanceLeft = 0
 		}
+		fmt.Println("targetPath", targetPath, "distanceStart", distanceStart, "distanceLeft", distanceLeft)
 		testPath := circle.GetSubPath(targetPath, distanceStart, distanceLeft)
 		fmt.Println("testPath", testPath)
 		newPos := testPath[len(testPath)-1]

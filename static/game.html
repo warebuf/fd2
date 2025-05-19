@@ -149,7 +149,7 @@
     var frameCount = 0;
     var frameCountMax = 4;
     
-
+    let simFSM = null;
 
 </script>
 
@@ -892,28 +892,50 @@
     class simFSMNode {
         constructor(name){
             this.name = name;
+            this.conditions = [];
+            this.transitions = [];
         }
     }
 
     class simFSMGraph {
         constructor() {
-            this.nodes = [];
+            this.nodes = {};
+
+            this.nodes["START"] = new simFSMNode("START");
+            this.nodes["START"].conditions.push(() => animating_state !== -1);
+            this.nodes["START"].transitions.push("SYNC_UNIT_STATES");
             
-            this.nodes.push( new simFSMNode("START") );
-            this.nodes[0].conditions = [];
-            this.nodes[0].transitions = [];
+            this.nodes["GAME_OVER"] = new simFSMNode("GAME_OVER");
 
+            this.nodes["WAIT_FOR_SERVER"] = new simFSMNode("WAIT_FOR_SERVER");
 
-            this.current = 0;
+            this.nodes["SYNC_UNIT_STATES"] = new simFSMNode("SYNC_UNIT_STATES");
+
+            this.nodes["SIM_MOVEMENT"] = new simFSMNode("SIM_MOVEMENT");
+
+            this.nodes["SIM_COMBAT"] = new simFSMNode("SIM_COMBAT");
+
+            this.nodes["ADVANCE_SIM"] = new simFSMNode("ADVANCE_SIM");
+
+            this.current = "START";
         }
 
         checkState() {
 
-        }
+            for(let i = 0; i < this.nodes[this.current].conditions.length; i++) {
 
+                if(this.nodes[this.current].conditions[i]) {
+                    console.log( "transitioning to", this.nodes[this.current].transitions[i] )
+                    this.current = this.nodes[this.current].transitions[i];
+                    break;
+                }
+
+            }
+
+        }
     }
 
-    new simFSMGraph();
+    simFSM = new simFSMGraph();
 
     function main() {
 
@@ -1061,7 +1083,10 @@
                             state = md;
                             animating_state = 0
                             camps = cdata
+                            
                             setupHoverable()
+                            simFSM.checkState();
+
                         }
 
                         match_data.push(md)

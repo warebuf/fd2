@@ -284,6 +284,10 @@ function drawAttack() {
     }
 }
 
+function drawLevelUp() {
+    
+}
+
 function drawPos() {
 
     ctx.fillStyle = "white";

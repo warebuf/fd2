@@ -171,6 +171,7 @@ function calcPos() {
             for (let j = 0; j < state[i].length; j++) {
                 for (let k = 0; k < state[i][j].length; k++) {
                     if (state[i][j][k].Status == 1) {
+
                         if (campEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false) {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
@@ -178,6 +179,7 @@ function calcPos() {
                             state[i][j][k].Path = match_data[animating_state][i][j][k].Path;
                             state[i][j][k].Path_Segment = 0;
                         }
+                        
                         if (state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;
 

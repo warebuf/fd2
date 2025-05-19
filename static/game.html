@@ -888,6 +888,32 @@
         return total;
     }
 
+    // TODO: when you turn this into ESM modules, this is predictionFSM.js 
+    class simFSMNode {
+        constructor(name){
+            this.name = name;
+        }
+    }
+
+    class simFSMGraph {
+        constructor() {
+            this.nodes = [];
+            
+            this.nodes.push( new simFSMNode("START") );
+            this.nodes[0].conditions = [];
+            this.nodes[0].transitions = [];
+
+
+            this.current = 0;
+        }
+
+        checkState() {
+
+        }
+
+    }
+
+    new simFSMGraph();
 
     function main() {
 

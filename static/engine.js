@@ -285,7 +285,9 @@ function drawAttack() {
 }
 
 function drawLevelUp() {
+
     
+
 }
 
 function drawPos() {

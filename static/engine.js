@@ -463,6 +463,7 @@ function drawHeatMap() {
         for (let j = 0; j < state[i].length; j++) {
             for (let k = 0; k < state[i][j].length; k++) {
 
+                // ready for action or not
                 if (state[i][j][k].HP > 0) {
                     if (state[i][j][k].Status == 0) {
                         ctx.beginPath();
@@ -478,6 +479,7 @@ function drawHeatMap() {
                     }
                 }
 
+                // write name and level
                 ctx.textAlign = "left";
                 ctx.font = '8px monospace';
                 ctx.fillStyle = 'white'
@@ -501,6 +503,7 @@ function drawHeatMap() {
                 x_shift = 0;
                 y_shift = y_shift + 5
 
+                // write headers
                 ctx.textAlign = "center";
                 ctx.fillStyle = '#848884';
 
@@ -536,11 +539,7 @@ function drawHeatMap() {
                 y_shift = y_shift + 20;
 
 
-                //ctx.fillStyle = '#848884';
-                //ctx.fillRect(x_offset+x_shift+t_shift-25,y_offset+y_shift,24,19)
-                //ctx.fillStyle = 'white';
-                //ctx.fillText("H",x_offset+x_shift+t_shift+12-25,y_offset+y_shift+14);
-
+                // write stats
                 ctx.fillStyle = calcColour(state[i][j][k].HP)
                 ctx.fillRect(x_offset + x_shift + t_shift, y_offset + y_shift, 24, 19)
                 ctx.font = '10px monospace';
@@ -600,6 +599,41 @@ function drawHeatMap() {
                 ctx.fillStyle = 'white';
                 ctx.fillText((100 * percentage).toFixed(0) + '%', x_offset + x_shift + t_shift, y_offset + y_shift + 2);
 
+                // draw scaling
+                y_shift = y_shift + 20;
+                x_shift = 0;
+                ctx.fillStyle = "gray";
+                ctx.fillRect(x_offset + x_shift + t_shift, y_offset + y_shift, 24, 19)
+                ctx.font = '10px monospace';
+                ctx.fillStyle = 'black';
+                ctx.fillText(state[i][j][k].Scale[0]+"%", x_offset + x_shift + t_shift + 12, y_offset + y_shift + 14);
+                x_shift = x_shift + 25
+                ctx.fillStyle = "gray";
+                ctx.fillRect(x_offset + x_shift + t_shift, y_offset + y_shift, 24, 19)
+                ctx.font = '10px monospace';
+                ctx.fillStyle = 'black';
+                ctx.fillText(state[i][j][k].Scale[1]+"%", x_offset + x_shift + t_shift + 12, y_offset + y_shift + 14);
+                x_shift = x_shift + 25;
+                ctx.fillStyle = "gray";
+                ctx.fillRect(x_offset + x_shift + t_shift, y_offset + y_shift, 24, 19)
+                ctx.font = '10px monospace';
+                ctx.fillStyle = 'black';
+                ctx.fillText(state[i][j][k].Scale[2]+"%", x_offset + x_shift + t_shift + 12, y_offset + y_shift + 14);
+                x_shift = x_shift + 25;
+                ctx.fillStyle = "gray";
+                ctx.fillRect(x_offset+x_shift+t_shift,y_offset+y_shift,24,19)
+                ctx.font = '10px monospace';
+                ctx.fillStyle = 'black';
+                ctx.fillText(state[i][j][k].Scale[3]+"%",x_offset+x_shift+t_shift+12,y_offset+y_shift+14);
+                x_shift = x_shift+25;
+                ctx.fillStyle = "gray";
+                ctx.fillRect(x_offset + x_shift + t_shift, y_offset + y_shift, 24, 19)
+                ctx.font = '10px monospace';
+                ctx.fillStyle = 'black';
+                ctx.fillText(state[i][j][k].Scale[4]+"%", x_offset + x_shift + t_shift + 12, y_offset + y_shift + 14);
+
+                ctx.font = "7px monospace";
+                ctx.fillStyle = 'white';
                 x_shift = 0;
                 y_shift = y_shift + 25;
                 drawEXPBar(x_offset + x_shift + t_shift, y_offset + y_shift + 2, state[i][j][k].EXP)

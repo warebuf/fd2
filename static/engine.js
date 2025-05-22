@@ -638,6 +638,10 @@ function drawHeatMap() {
                 y_shift = y_shift + 25;
                 drawEXPBar(x_offset + x_shift + t_shift, y_offset + y_shift + 2, state[i][j][k].EXP)
 
+                x_shift += 110;
+                ctx.fillText( state[i][j][k].EXP, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
+
+                x_shift = 0;
                 y_shift = y_shift + 75;
             }
         }

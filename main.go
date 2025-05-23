@@ -276,7 +276,6 @@ func main() {
 	//	"http://ec2-3-21-28-93.us-east-2.compute.amazonaws.com:3000/callback",
 	//))
 
-	//port = os.Getenv("PORT")
 	port = "3000"
 
 	// init

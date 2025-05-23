@@ -1182,7 +1182,8 @@ func (m *match) run() {
 				if campOfInterest.HP > 0 {
 					calculatedEXP := 0
 					startEXP := unitOfInterest.EXP
-					if unitOfInterest.ATK > campOfInterest.HP {
+					fmt.Println(unitOfInterest.ATK, campOfInterest.HP)
+					if unitOfInterest.ATK <= campOfInterest.HP {
 						calculatedEXP = unitOfInterest.ATK
 					} else {
 						calculatedEXP = campOfInterest.HP

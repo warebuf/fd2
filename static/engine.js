@@ -433,8 +433,8 @@ function drawUnitsOfTime() {
 
 function drawLog() {
 
-    let x = 50
-    let y = 50
+    let x = Math.round(c.width / 2) - 250;
+    let y = 650;
 
     if (view == 1) {
         x = Math.round(c.width / 2) - 250
@@ -640,6 +640,16 @@ function drawHeatMap() {
 
                 x_shift += 110;
                 ctx.fillText( state[i][j][k].EXP, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
+
+                x_shift += 30;
+                ctx.fillText( state[i][j][k].Status, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
+                
+                x_shift += 10;
+                ctx.fillText( state[i][j][k].LastMile, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
+                
+                x_shift = 0;
+                ctx.fillText( state[i][j][k].Position.X, x_offset + x_shift + t_shift, y_offset + y_shift + 15);
+                ctx.fillText( state[i][j][k].Position.Y, x_offset + x_shift + t_shift, y_offset + y_shift + 25);
 
                 x_shift = 0;
                 y_shift = y_shift + 75;

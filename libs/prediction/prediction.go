@@ -40,6 +40,15 @@ func findCollisionPath(mp *maps.MapDetails, targetPath [][]float64, distanceStar
 		return bestPath
 	}
 
+	if targetSPD == 0 {
+		targetCurrentPos := targetPath[0] // this should be the target's current position
+		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
+		end := pathfinding.Location{X: targetCurrentPos[0], Y: targetCurrentPos[1]}
+		AStarGraph := pathfinding.AStarInit(mp, start, end)
+		ans := AStarGraph.ComputeShortestPath()
+		return ans
+	}
+
 	// calculate starting range for t
 	endpoint := targetPath[len(targetPath)-1]
 	fmt.Println("targetPath", targetPath)

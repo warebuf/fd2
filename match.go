@@ -456,8 +456,8 @@ func createMatch(pl *permission_list) *match {
 			//HP := 1
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		//c := maps.Coordinate{X: 50, Y: 420, Type: "camp", I: , J: -1, K: -1}
-		//ans.camps = append(ans.camps, &Camp{MaxHP: 100, HP: 100, XY: c, Units: make([][]int, 0)})
+		//c := maps.Coordinate{X: 100, Y: 500, Type: "camp", I: 0, J: -1, K: -1}
+		//ans.camps = append(ans.camps, &Camp{MaxHP: 1000, HP: 1000, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -523,6 +523,9 @@ func createMatch(pl *permission_list) *match {
 					TTD:    100.0,
 				}
 				temp.MaxHP = temp.HP
+				if j.bot_status {
+					temp.SPD = 0
+				}
 				ans.heroes[team_int][client_int] = append(ans.heroes[team_int][client_int], temp)
 				//ans.heroGraph[team_int][client_int] = append(ans.heroGraph[team_int][client_int], nil)
 			}
@@ -977,11 +980,13 @@ func (m *match) run() {
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
 							var prox float64
+							var entry string
 							if hunter.LastMile == 0 {
-								prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
 
-								if prox >= 0 && prox < min_units {
-									fmt.Println("replaced min w/ prox", prox, min_units)
+								if prox >= 0 && prox < min_units && entry == "entering" {
+									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
+
 									if prox == min_units {
 										lastMile = append(lastMile, []int{i, j, k})
 									} else if prox < min_units {
@@ -1021,18 +1026,45 @@ func (m *match) run() {
 
 							} else if hunter.LastMile == 1 {
 
+								// radius check
+								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
+								if util.SigDig3(radiusCheck) > 25 {
+									fmt.Println("weird behavior!!!")
+								}
+
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
+								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
+
+								if prox >= 0 && prox <= min_units && entry == "exiting" {
+
+									fmt.Println("replace min w/ recompute", min_units, prox, entry)
+									if util.SigDig3(prox) == util.SigDig3(min_units) {
+										recompute = append(recompute, []int{i, j, k})
+									} else if prox < min_units {
+										recompute = [][]int{[]int{i, j, k}}
+										lastMile = [][]int{}
+										min_units = prox
+									}
+								}
+
 							} else if hunter.LastMile == 2 {
 
 								hunter := m.heroes[i][j][k]
 								target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
+								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
+								if util.SigDig3(radiusCheck) > 1 {
+									fmt.Println("weird behavior2!!!")
+								}
+
 								if hunter.SPD >= target.SPD {
 									// do nothing
 								} else {
-									prox = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1)
-									if prox >= 0 && prox < min_units {
+									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1)
+
+									if prox >= 0 && prox < min_units && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
-										fmt.Println("replaced min w/ prox", prox, min_units)
+										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry)
 										if util.SigDig3(prox) == util.SigDig3(min_units) {
 											lastMile = append(lastMile, []int{i, j, k})
 										} else if prox < min_units {
@@ -1252,6 +1284,7 @@ func (m *match) run() {
 				path := AStarGraph.ComputeShortestPath()
 				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: recompute[x][0], J: recompute[x][1], K: recompute[x][2]}
 				setPath(m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], end, path)
+				hunter.LastMile = 0
 			}
 
 			// calculate last mile paths

@@ -123,25 +123,40 @@ func interpolate(p1, p2 []float64, tRatio float64) []float64 {
 	}
 }
 
-func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) {
+func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) string {
 	d0 := maps.EuclideanDistance(p1Start[0], p1Start[1], p2Start[0], p2Start[1])
 	d1 := maps.EuclideanDistance(p1End[0], p1End[1], p2End[0], p2End[1])
 	d0 = util.SigDig3(d0)
 	d1 = util.SigDig3(d1)
 
 	fmt.Println("d0", d0, "d1", d1)
+	fmt.Println("p1Start", p1Start, "p1End", p1End)
+	fmt.Println("p2Start", p2Start, "p2End", p2End)
+
+	// TODO/BUG: if the hunter travels from one point of the circle to another side
+	// this algorithm will detect it as on_edge, not exiting
+	// my guess is you can calculate the vectors, and if they are parallel, then they are on_edge, otherwise, exiting
+
+	// ChatGPT wants me to:
+	// if d0 and d1 are both on the radius
+	// find the midpoint, check if they are within the radius OR on the radius
+
+	// actually ChatGPT is now telling me to find the closest point
 
 	switch {
 	case d0 > radius && d1 <= radius:
 		fmt.Println("entering")
-	case d0 <= radius && d1 >= radius:
+		return "entering"
+	case d0 < radius && d1 >= radius:
 		fmt.Println("exiting")
+		return "exiting"
 	default:
-		fmt.Println("outside")
+		fmt.Println("on_edge")
+		return "on_edge"
 	}
 }
 
-func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64) float64 {
+func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64) (float64, string) {
 
 	fmt.Println("-----Called ProximityCheck-----")
 
@@ -151,6 +166,7 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 
 	totalTime := 0.0
 	ans := -1.0
+	entryType := ""
 	for i := 0; i < len(partition1)-1; i++ {
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
@@ -159,16 +175,15 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 			totalTime += times[i]
 		} else {
 			totalTime += t
-			fmt.Println("ProximityCheck", i, totalTime)
+			fmt.Println("ProximityCheck", totalTime)
 			tRatio := t / times[i]
 			p1Now := interpolate(subline1[0], subline1[1], tRatio)
 			p2Now := interpolate(subline2[0], subline2[1], tRatio)
-			radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, radius)
-
+			entryType = radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, radius)
 			ans = totalTime
 			break
 		}
 	}
 
-	return ans
+	return ans, entryType
 }

@@ -434,7 +434,7 @@ function drawUnitsOfTime() {
 function drawLog() {
 
     let x = Math.round(c.width / 2) - 250;
-    let y = 650;
+    let y = Math.round(c.height / 2) + 300;
 
     if (view == 1) {
         x = Math.round(c.width / 2) - 250

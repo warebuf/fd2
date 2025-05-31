@@ -130,18 +130,9 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 	d1 = util.SigDig3(d1)
 
 	fmt.Println("d0", d0, "d1", d1)
-	fmt.Println("p1Start", p1Start, "p1End", p1End)
-	fmt.Println("p2Start", p2Start, "p2End", p2End)
 
-	// TODO/BUG: if the hunter travels from one point of the circle to another side
-	// this algorithm will detect it as on_edge, not exiting
-	// my guess is you can calculate the vectors, and if they are parallel, then they are on_edge, otherwise, exiting
-
-	// ChatGPT wants me to:
-	// if d0 and d1 are both on the radius
-	// find the midpoint, check if they are within the radius OR on the radius
-
-	// actually ChatGPT is now telling me to find the closest point
+	closest := closestPoint(p1Start, p1End, p2Start, p2End)
+	fmt.Println("closest", util.SigDig3(closest))
 
 	switch {
 	case d0 > radius && d1 <= radius:
@@ -154,6 +145,40 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 		fmt.Println("on_edge")
 		return "on_edge"
 	}
+}
+
+func closestPoint(p1Start, p1End, p2Start, p2End []float64) float64 {
+	// Motion vectors
+	ax := p1End[0] - p1Start[0]
+	ay := p1End[1] - p1Start[1]
+	bx := p2End[0] - p2Start[0]
+	by := p2End[1] - p2Start[1]
+
+	// Relative motion and position
+	dx := p1Start[0] - p2Start[0]
+	dy := p1Start[1] - p2Start[1]
+	vx := ax - bx
+	vy := ay - by
+
+	denom := vx*vx + vy*vy
+	var t float64
+	if denom != 0 {
+		t = -(dx*vx + dy*vy) / denom
+		t = math.Max(0, math.Min(1, t)) // clamp to [0, 1]
+	} else {
+		t = 0 // relative velocity is zero
+	}
+
+	// Evaluate A(t) and B(t)
+	axNow := p1Start[0] + t*ax
+	ayNow := p1Start[1] + t*ay
+	bxNow := p2Start[0] + t*bx
+	byNow := p2Start[1] + t*by
+
+	// Distance
+	dx = axNow - bxNow
+	dy = ayNow - byNow
+	return math.Sqrt(dx*dx + dy*dy)
 }
 
 func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64) (float64, string) {

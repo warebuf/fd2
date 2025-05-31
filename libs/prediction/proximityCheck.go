@@ -3,7 +3,6 @@ package prediction
 import (
 	"fd/libs/circle"
 	"fd/libs/maps"
-	"fd/libs/util"
 	"fmt"
 	"math"
 )
@@ -116,35 +115,37 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	return circle.QuadraticFormula(A, B, C, tMax)
 }
 
-func interpolate(p1, p2 []float64, tRatio float64) []float64 {
-	return []float64{
-		p1[0] + (p2[0]-p1[0])*tRatio,
-		p1[1] + (p2[1]-p1[1])*tRatio,
-	}
-}
-
 func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) string {
+	const eps = 1e-4 // slightly looser to prevent rounding artifacts
+
+	// Start and end distances
 	d0 := maps.EuclideanDistance(p1Start[0], p1Start[1], p2Start[0], p2Start[1])
 	d1 := maps.EuclideanDistance(p1End[0], p1End[1], p2End[0], p2End[1])
-	d0 = util.SigDig3(d0)
-	d1 = util.SigDig3(d1)
-
-	fmt.Println("d0", d0, "d1", d1)
-	fmt.Println("p1Start", p1Start, "p1End", p1End)
-	fmt.Println("p2Start", p2Start, "p2End", p2End)
-
 	closest := closestPoint(p1Start, p1End, p2Start, p2End)
-	fmt.Println("closestRadius", util.SigDig3(closest))
 
+	// Define status relative to radius with band
+	d0Inside := d0 < radius-eps
+	d0Outside := d0 > radius+eps
+
+	d1Inside := d1 < radius-eps
+	d1Outside := d1 > radius+eps
+
+	closestInside := closest < radius-eps
+	closestOnEdge := math.Abs(closest-radius) <= eps
+
+	// Now we classify transitions
 	switch {
-	case d0 > radius && d1 <= radius:
-		fmt.Println("entering")
+	case d0Outside && d1Inside:
 		return "entering"
-	case d0 < radius && d1 >= radius:
-		fmt.Println("exiting")
+	case d0Inside && d1Outside:
 		return "exiting"
+	case d0Outside && d1Outside && closestInside:
+		return "passing"
+	case !d0Outside && !d0Inside && !d1Outside && !d1Inside && closestOnEdge:
+		return "grazing"
+	case d0Inside && d1Inside:
+		return "sitting"
 	default:
-		fmt.Println("on_edge")
 		return "on_edge"
 	}
 }
@@ -203,10 +204,7 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 		} else {
 			totalTime += t
 			fmt.Println("ProximityCheck", totalTime)
-			tRatio := t / times[i]
-			p1Now := interpolate(subline1[0], subline1[1], tRatio)
-			p2Now := interpolate(subline2[0], subline2[1], tRatio)
-			entryType = radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, radius)
+			entryType = radiusTransitionStatus(subline1[0], subline1[1], subline2[0], subline2[1], radius)
 			ans = totalTime
 			break
 		}

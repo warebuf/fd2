@@ -130,9 +130,11 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 	d1 = util.SigDig3(d1)
 
 	fmt.Println("d0", d0, "d1", d1)
+	fmt.Println("p1Start", p1Start, "p1End", p1End)
+	fmt.Println("p2Start", p2Start, "p2End", p2End)
 
 	closest := closestPoint(p1Start, p1End, p2Start, p2End)
-	fmt.Println("closest", util.SigDig3(closest))
+	fmt.Println("closestRadius", util.SigDig3(closest))
 
 	switch {
 	case d0 > radius && d1 <= radius:

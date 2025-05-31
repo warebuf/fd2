@@ -1029,6 +1029,7 @@ func (m *match) run() {
 									fmt.Println("weird behavior!!!")
 								}
 
+								fmt.Println(i, j, k)
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
 

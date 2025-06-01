@@ -116,7 +116,7 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 }
 
 func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) string {
-	const eps = 1e-4
+	const eps = 1e-4 // 0.0001
 
 	// Distances
 	d0 := maps.EuclideanDistance(p1Start[0], p1Start[1], p2Start[0], p2Start[1])
@@ -230,12 +230,16 @@ func closestPoint(p1Start, p1End, p2Start, p2End []float64) float64 {
 	return math.Sqrt(dx*dx + dy*dy)
 }
 
-// TODO: so the problem is because of rounding, the unit might be sitting slightly inside or outside radius
-// so instead if we are calculating a state entering -> calculate 24.999
-// and if we are calculating an exiting, calculate 25.001
-func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64) (float64, string) {
+func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64, adjustment string) (float64, string) {
 
 	fmt.Println("-----Called ProximityCheck-----")
+
+	adj := 0.0
+	if adjustment == "enter" {
+		adj = -0.001
+	} else if adjustment == "exit" {
+		adj = 0.001
+	}
 
 	subPath1 := circle.GetSubPath(path1, distanceLeft1, 0)
 	subPath2 := circle.GetSubPath(path2, distanceLeft2, 0)
@@ -247,7 +251,7 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 	for i := 0; i < len(partition1)-1; i++ {
 		subline1 := [][]float64{partition1[i], partition1[i+1]}
 		subline2 := [][]float64{partition2[i], partition2[i+1]}
-		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, radius)
+		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, radius+adj)
 		if t < 0 {
 			totalTime += times[i]
 		} else {

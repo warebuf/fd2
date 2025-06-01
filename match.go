@@ -45,6 +45,7 @@ type hero struct {
 	DynamicDestination []int     // either {i,j,k} or {}
 	DynamicCircle      []float64 // a location X, Y
 	LastMile           int       // 0 = closing circle, 1 = last mile, 2 = collision
+	LastMileRadius     float64
 
 	DistanceLeft float64
 	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
@@ -507,7 +508,8 @@ func createMatch(pl *permission_list) *match {
 					DynamicDestination: []int{},
 					DynamicCircle:      []float64{},
 
-					LastMile: 0,
+					LastMile:       0,
+					LastMileRadius: 25,
 
 					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
 					Status:       0,
@@ -982,12 +984,17 @@ func (m *match) run() {
 
 								// radius check
 								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
-								if util.SigDig3(radiusCheck) < 25 {
-									fmt.Println("weird behavior!!!", i, j, k, util.SigDig3(radiusCheck))
-									panic("should not be less than 25 radius")
+								if util.SigDig3(radiusCheck) < hunter.LastMileRadius {
+									fmt.Println("weird behavior!!!", i, j, k, util.SigDig3(radiusCheck), hunter.LastMileRadius)
+									panic("should not be less than hunter.LastMileRadius")
 								}
 
-								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
+								// the best idea is to exponential reduce the last mile activation radius
+								// until the last mile vector moves towards the target
+								// LMRadius = LMRadius * 0.75
+								// this also solves/prevents the behavior when the unit moves away to hit the collision
+
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
 								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
 
 								if prox >= 0 && prox < min_units && (entry == "entering") {
@@ -1034,12 +1041,12 @@ func (m *match) run() {
 
 								// radius check
 								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
-								if util.SigDig3(radiusCheck) > 25 {
-									fmt.Println("weird behavior!!!1", i, j, k)
-									panic("should not exceed 25 radius")
+								if util.SigDig3(radiusCheck) > hunter.LastMileRadius {
+									fmt.Println("weird behavior!!!1", i, j, k, radiusCheck, hunter.LastMileRadius)
+									panic("should not exceed hunter.LastMileRadius (1)")
 								}
 
-								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
 
 								if prox >= 0 && prox <= min_units && (entry == "exiting" || entry == "passing") {
@@ -1068,7 +1075,7 @@ func (m *match) run() {
 								if hunter.SPD >= target.SPD {
 									// do nothing
 								} else {
-									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1)
+									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "exit")
 
 									if prox >= 0 && prox < min_units && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
@@ -1179,12 +1186,11 @@ func (m *match) run() {
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
 								} else if m.heroes[i][j][k].LastMile == 2 {
-									// not sure what to do
 									m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
-									temp := m.heroes[i][j][k]
-									temp2 := m.heroes[temp.DynamicDestination[0]][temp.DynamicDestination[1]][temp.DynamicDestination[2]]
-									fmt.Println(temp2.AS)
+									// temp := m.heroes[i][j][k]
+									// temp2 := m.heroes[temp.DynamicDestination[0]][temp.DynamicDestination[1]][temp.DynamicDestination[2]]
+									// fmt.Println(temp2.AS)
 
 								} else {
 
@@ -1297,6 +1303,9 @@ func (m *match) run() {
 
 			// calculate last mile paths
 			for x := 0; x < len(lastMile); x++ {
+
+				// if the initial vector path creates more distance
+
 				hunter := m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]]
 				hunter.LastMile = 1
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]

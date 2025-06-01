@@ -123,6 +123,9 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 	d1 := maps.EuclideanDistance(p1End[0], p1End[1], p2End[0], p2End[1])
 	closest := closestPoint(p1Start, p1End, p2Start, p2End)
 
+	fmt.Println("p1Start", p1Start, p1End, "p1End")
+	fmt.Println("p2Start", p2Start, p2End, "p2End")
+
 	fmt.Println("d0", d0, "d1", d1)
 
 	// Classify d0 and d1 as "inside", "outside", or "edge"
@@ -176,6 +179,7 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 		fmt.Println("passing2", d0, d1, closest)
 		return "passing"
 	case s0 == "edge" && s1 == "edge" && closestOnEdge:
+		fmt.Println("grazing", d0, d1, closest)
 		return "grazing"
 	case s0 == "inside" && s1 == "inside":
 		return "sitting"

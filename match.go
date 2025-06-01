@@ -268,7 +268,7 @@ func m_read(m *match_socket) {
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
 							checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
 							m.m.sharepos(nil, 0)
-							m.m.printState()
+							//m.m.printState()
 
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
@@ -979,9 +979,18 @@ func (m *match) run() {
 							var prox float64
 							var entry string
 							if hunter.LastMile == 0 {
-								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
 
-								if prox >= 0 && prox < min_units && entry == "entering" {
+								// radius check
+								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
+								if util.SigDig3(radiusCheck) < 25 {
+									fmt.Println("weird behavior!!!", i, j, k, util.SigDig3(radiusCheck))
+									panic("should not be less than 25 radius")
+								}
+
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
+								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
+
+								if prox >= 0 && prox < min_units && (entry == "entering") {
 									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
 
 									if prox == min_units {
@@ -1026,7 +1035,8 @@ func (m *match) run() {
 								// radius check
 								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > 25 {
-									fmt.Println("weird behavior!!!")
+									fmt.Println("weird behavior!!!1", i, j, k)
+									panic("should not exceed 25 radius")
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 25)
@@ -1052,6 +1062,7 @@ func (m *match) run() {
 								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > 1 {
 									fmt.Println("weird behavior2!!!")
+									panic("should not exceed 1 radius")
 								}
 
 								if hunter.SPD >= target.SPD {
@@ -1371,7 +1382,7 @@ func (m *match) run() {
 
 			fmt.Println("sending:", msg)
 
-			m.printState()
+			//m.printState()
 
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {

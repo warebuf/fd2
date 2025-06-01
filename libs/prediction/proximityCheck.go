@@ -116,37 +116,79 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 }
 
 func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) string {
-	const eps = 1e-4 // slightly looser to prevent rounding artifacts
+	const eps = 1e-4
 
-	// Start and end distances
+	// Distances
 	d0 := maps.EuclideanDistance(p1Start[0], p1Start[1], p2Start[0], p2Start[1])
 	d1 := maps.EuclideanDistance(p1End[0], p1End[1], p2End[0], p2End[1])
 	closest := closestPoint(p1Start, p1End, p2Start, p2End)
 
-	// Define status relative to radius with band
-	d0Inside := d0 < radius-eps
-	d0Outside := d0 > radius+eps
+	fmt.Println("d0", d0, "d1", d1)
 
-	d1Inside := d1 < radius-eps
-	d1Outside := d1 > radius+eps
+	// Classify d0 and d1 as "inside", "outside", or "edge"
+	s0, s1 := "", ""
+
+	switch {
+	case d0 < radius-eps:
+		s0 = "inside"
+	case d0 > radius+eps:
+		s0 = "outside"
+	default:
+		s0 = "edge"
+	}
+
+	switch {
+	case d1 < radius-eps:
+		s1 = "inside"
+	case d1 > radius+eps:
+		s1 = "outside"
+	default:
+		s1 = "edge"
+	}
 
 	closestInside := closest < radius-eps
 	closestOnEdge := math.Abs(closest-radius) <= eps
 
-	// Now we classify transitions
+	// Classify transition
 	switch {
-	case d0Outside && d1Inside:
+	case s0 == "outside" && s1 == "inside":
+		fmt.Println("entering1")
 		return "entering"
-	case d0Inside && d1Outside:
+	case s0 == "outside" && s1 == "edge":
+		fmt.Println("entering2")
+		return "entering"
+	case s0 == "edge" && s1 == "inside":
+		fmt.Println("entering3")
+		return "entering"
+	case s0 == "inside" && s1 == "outside":
+		fmt.Println("exiting1")
 		return "exiting"
-	case d0Outside && d1Outside && closestInside:
+	case s0 == "inside" && s1 == "edge":
+		fmt.Println("exiting2")
+		return "exiting"
+	case s0 == "edge" && s1 == "outside":
+		fmt.Println("exiting3")
+		return "exiting"
+	case s0 == "outside" && s1 == "outside" && closestInside:
+		fmt.Println("passing", d0, d1, closest)
 		return "passing"
-	case !d0Outside && !d0Inside && !d1Outside && !d1Inside && closestOnEdge:
+	case s0 == "edge" && s1 == "edge" && closestInside:
+		fmt.Println("passing2", d0, d1, closest)
+		return "passing"
+	case s0 == "edge" && s1 == "edge" && closestOnEdge:
 		return "grazing"
-	case d0Inside && d1Inside:
+	case s0 == "inside" && s1 == "inside":
 		return "sitting"
 	default:
+		fmt.Println("on_edge", s0, s1, d0, d1, closest)
 		return "on_edge"
+	}
+}
+
+func interpolate(p1, p2 []float64, tRatio float64) []float64 {
+	return []float64{
+		p1[0] + (p2[0]-p1[0])*tRatio,
+		p1[1] + (p2[1]-p1[1])*tRatio,
 	}
 }
 
@@ -184,6 +226,9 @@ func closestPoint(p1Start, p1End, p2Start, p2End []float64) float64 {
 	return math.Sqrt(dx*dx + dy*dy)
 }
 
+// TODO: so the problem is because of rounding, the unit might be sitting slightly inside or outside radius
+// so instead if we are calculating a state entering -> calculate 24.999
+// and if we are calculating an exiting, calculate 25.001
 func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64) (float64, string) {
 
 	fmt.Println("-----Called ProximityCheck-----")
@@ -204,7 +249,12 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 		} else {
 			totalTime += t
 			fmt.Println("ProximityCheck", totalTime)
-			entryType = radiusTransitionStatus(subline1[0], subline1[1], subline2[0], subline2[1], radius)
+
+			tRatio := t / times[i]
+			p1Now := interpolate(subline1[0], subline1[1], tRatio)
+			p2Now := interpolate(subline2[0], subline2[1], tRatio)
+			entryType = radiusTransitionStatus(subline1[0], p1Now, subline2[0], p2Now, radius)
+
 			ans = totalTime
 			break
 		}

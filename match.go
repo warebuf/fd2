@@ -1331,6 +1331,9 @@ func (m *match) run() {
 
 				if !gainingGround && hunter.LastMile == 0 {
 
+					fmt.Println("hunter.path", path)
+					fmt.Println("target.path", target.Path, target.Path_Segment)
+
 					hunter.LastMileRadius = hunter.LastMileRadius * 0.75
 					hunter.DynamicCircle = []float64{target.Position.X, target.Position.Y}
 					s := pathfinding.Location{X: hunter.Position.X, Y: hunter.Position.Y}
@@ -1344,6 +1347,7 @@ func (m *match) run() {
 				} else {
 					hunter.LastMile = 1
 					hunter.DynamicCircle = []float64{}
+					hunter.LastMileRadius = 25
 					end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: lastMile[x][0], J: lastMile[x][1], K: lastMile[x][2]}
 					setPath(m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], end, path)
 				}

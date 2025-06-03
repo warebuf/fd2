@@ -452,6 +452,26 @@
 
                 break;
 
+            case '0':
+            case '1':
+            case '2':
+            case '3':
+            case '4':
+            case '5':
+            case '6':
+            case '7':
+            case '8':
+            case '9':
+                
+                const num = parseInt(e.key) - 1;
+                const x = Math.floor(num / 3)
+                const y = num % 3
+                
+                console.log(num, x,y)
+                hoverable = state[x][0][y].Position;
+                hoverable_coordinate = state[x][0][y];
+
+                break;
 
 
         }

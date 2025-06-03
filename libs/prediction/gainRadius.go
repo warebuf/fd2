@@ -32,12 +32,12 @@ func GainRadius(hunterStart, hunterEnd, targetStart, targetEnd []float64, hunter
 	}
 
 	// Relative position and velocity
-	pRel := []float64{hunterStart[0] - targetStart[0], hunterStart[1] - targetStart[1]}
+	pRel := []float64{targetStart[0] - hunterStart[0], targetStart[1] - hunterStart[1]}
 	vRel := []float64{vHunter[0] - vTarget[0], vHunter[1] - vTarget[1]}
 
 	// Dot product
 	dot := pRel[0]*vRel[0] + pRel[1]*vRel[1]
 	fmt.Println("dot", dot)
 
-	return dot > 0 // true = hunter is losing ground
+	return dot >= 0 // true = hunter is gaining ground
 }

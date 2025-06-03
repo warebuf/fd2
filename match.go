@@ -1308,6 +1308,7 @@ func (m *match) run() {
 
 			// calculate last mile paths
 			for x := 0; x < len(lastMile); x++ {
+				fmt.Println("lastMile[x]", lastMile[x])
 
 				// calculate the last mile path
 				hunter := m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]]
@@ -1321,14 +1322,14 @@ func (m *match) run() {
 				if len(path) > 1 {
 					hunterEnd = path[1]
 				}
-				targetStart := target.Path[target.Path_Segment]
-				targetEnd := target.Path[target.Path_Segment]
+				targetStart := []float64{target.Position.X, target.Position.Y}
+				targetEnd := []float64{target.Position.X, target.Position.Y}
 				if target.Path_Segment+1 < len(target.Path) {
 					targetEnd = target.Path[target.Path_Segment+1]
 				}
-				losingGround := prediction.GainRadius(hunterStart, hunterEnd, targetStart, targetEnd, hunter.SPD, target.SPD)
+				gainingGround := prediction.GainRadius(hunterStart, hunterEnd, targetStart, targetEnd, hunter.SPD, target.SPD)
 
-				if losingGround {
+				if !gainingGround && hunter.LastMile == 0 {
 
 					hunter.LastMileRadius = hunter.LastMileRadius * 0.75
 					hunter.DynamicCircle = []float64{target.Position.X, target.Position.Y}

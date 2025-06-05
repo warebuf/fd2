@@ -459,8 +459,8 @@ func createMatch(pl *permission_list) *match {
 			//HP := 1
 			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
-		//c := maps.Coordinate{X: 100, Y: 500, Type: "camp", I: 0, J: -1, K: -1}
-		//ans.camps = append(ans.camps, &Camp{MaxHP: 1000, HP: 1000, XY: c, Units: make([][]int, 0)})
+		// c := maps.Coordinate{X: 265, Y: 80, Type: "camp", I: random_count, J: -1, K: -1}
+		// ans.camps = append(ans.camps, &Camp{MaxHP: 10, HP: 10, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -517,10 +517,10 @@ func createMatch(pl *permission_list) *match {
 					Status:       0,
 
 					HP:    100,
-					ATK:   stats[0],
+					ATK:   50, //stats[0],
 					DEF:   stats[1],
-					AS:    stats[2],
-					SPD:   stats[3],
+					AS:    75, //stats[2],
+					SPD:   50, //stats[3],
 					Scale: scale,
 
 					Battle: nil,

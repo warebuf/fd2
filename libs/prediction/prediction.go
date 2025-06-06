@@ -24,8 +24,8 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 	elapsed := time.Since(start)
 	fmt.Println("Execution time:", elapsed)
 
-	fmt.Println("final path1", finalPath)
-	fmt.Println("final path2", ans)
+	fmt.Println("linear path", finalPath)
+	fmt.Println("binary path", ans)
 
 	return finalPath
 
@@ -34,7 +34,7 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) [][]float64 {
 
 	count := 0
-	increment := 0.5
+	increment := 0.25 // note: if the linear search is not tight enough and does not find a collision, this algorithm will fail
 
 	if len(targetPath) == 0 {
 		return [][]float64{}
@@ -54,6 +54,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 	}
 
 	targetMaxTime := distanceStart / targetSPD
+	var bestPath [][]float64
 
 	overshot := false
 	for t := 0.0; ; t += increment {
@@ -85,7 +86,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
 		end := pathfinding.Location{X: newPos[0], Y: newPos[1]}
 		AStarGraph := pathfinding.AStarInit(mp, start, end)
-		bestPath := AStarGraph.ComputeShortestPath()
+		bestPath = AStarGraph.ComputeShortestPath()
 
 		count += 1
 		newDist := maps.GetPathDistance(bestPath)
@@ -105,9 +106,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 	fmt.Println("linear count", count)
 	fmt.Println("no collision in time, pathing to end")
 	// we did not find a collision, path to the end
-	start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
-	end := pathfinding.Location{X: targetPath[len(targetPath)-1][0], Y: targetPath[len(targetPath)-1][1]}
-	return pathfinding.AStarInit(mp, start, end).ComputeShortestPath()
+	return bestPath
 
 }
 

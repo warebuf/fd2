@@ -999,7 +999,7 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
 								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
 
-								if prox >= 0 && prox < min_units && (entry == "entering") {
+								if prox >= 0 && math.Abs(prox-min_units) <= 1e-9 && (entry == "entering") {
 									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
 
 									if math.Abs(prox-min_units) < 1e-9 {
@@ -1026,7 +1026,7 @@ func (m *match) run() {
 									m.heroes[i][j][k].SPD,
 									3.0,
 								)
-								fmt.Println("intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
+								fmt.Println(i, j, k, "intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
 
 								if ans >= 0 {
 									fmt.Println("replaced min w/ recompute", ans, min_units)
@@ -1051,7 +1051,7 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
 
-								if prox >= 0 && prox <= min_units && (entry == "exiting" || entry == "passing") {
+								if prox >= 0 && math.Abs(prox-min_units) <= 1e-9 && (entry == "exiting" || entry == "passing") {
 
 									fmt.Println("replace min w/ recompute", min_units, prox, entry)
 									if math.Abs(prox-min_units) < 1e-9 {
@@ -1076,7 +1076,7 @@ func (m *match) run() {
 								} else {
 									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "exit")
 
-									if prox >= 0 && prox <= min_units && entry == "exiting" {
+									if prox >= 0 && math.Abs(prox-min_units) <= 1e-9 && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
 										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry)
 										if math.Abs(prox-min_units) < 1e-9 {

@@ -942,7 +942,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].SPD != 0) && (m.heroes[i][j][k].LastMile != 2) {
-							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.heroes[i][j][k].SPD), 10)
+							units_of_time := util.SigDig3(toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.heroes[i][j][k].SPD), 10))
 							if units_of_time < min_units {
 								min_units = units_of_time
 							}
@@ -957,7 +957,7 @@ func (m *match) run() {
 					for j := 0; j < len(m.camps[i].Units); j++ {
 						unitOfInterest := m.heroes[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
 						if unitOfInterest.HP > 0 {
-							ttd := unitOfInterest.TTD / float64(unitOfInterest.AS)
+							ttd := util.SigDig3(unitOfInterest.TTD / float64(unitOfInterest.AS))
 							if ttd < min_units {
 								min_units = ttd
 							}
@@ -997,17 +997,18 @@ func (m *match) run() {
 								// this also solves/prevents the behavior when the unit moves away to hit the collision
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
-								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
+								roundedProx := util.SigDig3(prox)
+								fmt.Println(i, j, k, "lm0", roundedProx, min_units, entry)
 
-								if prox >= 0 && prox < min_units && (entry == "entering") {
-									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
+								if roundedProx >= 0 && roundedProx < min_units && (entry == "entering") {
+									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", roundedProx, min_units, entry)
 
-									if prox == min_units {
+									if roundedProx == min_units {
 										lastMile = append(lastMile, []int{i, j, k})
-									} else if prox < min_units {
+									} else if roundedProx < min_units {
 										lastMile = [][]int{[]int{i, j, k}}
 										recompute = [][]int{}
-										min_units = prox
+										min_units = roundedProx
 									}
 								}
 
@@ -1049,28 +1050,26 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
-								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
+								roundedProx := util.SigDig3(prox)
+								fmt.Println(i, j, k, "prox (LM1)", roundedProx, entry)
 
-								if prox >= 0 && prox <= min_units && (entry == "exiting" || entry == "passing") {
+								if roundedProx >= 0 && roundedProx <= min_units && (entry == "exiting" || entry == "passing") {
 
-									fmt.Println("replace min w/ recompute", min_units, prox, entry)
-									if util.SigDig3(prox) == util.SigDig3(min_units) {
+									fmt.Println("replace min w/ recompute", min_units, roundedProx, entry)
+									if util.SigDig3(roundedProx) == util.SigDig3(min_units) {
 										recompute = append(recompute, []int{i, j, k})
-									} else if prox < min_units {
+									} else if roundedProx < min_units {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
-										min_units = prox
+										min_units = roundedProx
 									}
 								}
 
 							} else if hunter.LastMile == 2 {
 
-								hunter := m.heroes[i][j][k]
-								target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
-
 								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > 1 {
-									fmt.Println("weird behavior2!!!")
+									fmt.Println("weird behavior2!!!", i, j, k, util.SigDig3(radiusCheck), radiusCheck)
 									panic("should not exceed 1 radius")
 								}
 
@@ -1078,16 +1077,17 @@ func (m *match) run() {
 									// do nothing
 								} else {
 									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "exit")
+									roundedProx := util.SigDig3(prox)
 
-									if prox >= 0 && prox < min_units && entry == "exiting" {
+									if roundedProx >= 0 && roundedProx <= min_units && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
-										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry)
-										if util.SigDig3(prox) == util.SigDig3(min_units) {
+										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", roundedProx, min_units, entry)
+										if util.SigDig3(roundedProx) == util.SigDig3(min_units) {
 											lastMile = append(lastMile, []int{i, j, k})
-										} else if prox < min_units {
+										} else if roundedProx < min_units {
 											lastMile = [][]int{[]int{i, j, k}}
 											recompute = [][]int{}
-											min_units = prox
+											min_units = roundedProx
 										}
 									}
 								}

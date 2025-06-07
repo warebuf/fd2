@@ -999,7 +999,7 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
 								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
 
-								if prox >= 0 && math.Abs(prox-min_units) <= 1e-9 && (entry == "entering") {
+								if prox >= 0 && prox-min_units <= 1e-9 && (entry == "entering") {
 									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
 
 									if math.Abs(prox-min_units) < 1e-9 {
@@ -1051,7 +1051,7 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
 
-								if prox >= 0 && math.Abs(prox-min_units) <= 1e-9 && (entry == "exiting" || entry == "passing") {
+								if prox >= 0 && prox-min_units <= 1e-9 && (entry == "exiting" || entry == "passing") {
 
 									fmt.Println("replace min w/ recompute", min_units, prox, entry)
 									if math.Abs(prox-min_units) < 1e-9 {
@@ -1076,7 +1076,7 @@ func (m *match) run() {
 								} else {
 									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "exit")
 
-									if prox >= 0 && math.Abs(prox-min_units) <= 1e-9 && entry == "exiting" {
+									if prox >= 0 && prox-min_units <= 1e-9 && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
 										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry)
 										if math.Abs(prox-min_units) < 1e-9 {

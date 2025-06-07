@@ -1030,13 +1030,13 @@ func (m *match) run() {
 								fmt.Println("intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
 
 								if ans >= 0 {
-									fmt.Println("replaced min w/ recompute", ans, min_units)
+									fmt.Println("replaced min w/ recompute", util.SigDig3(ans), min_units)
 									if util.SigDig3(ans) == util.SigDig3(min_units) {
 										recompute = append(recompute, []int{i, j, k})
 									} else if ans < min_units {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
-										min_units = ans
+										min_units = util.SigDig3(ans)
 									}
 								}
 

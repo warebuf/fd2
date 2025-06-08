@@ -180,6 +180,14 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 		return "passing"
 	case s0 == "edge" && s1 == "edge" && closestOnEdge:
 		fmt.Println("grazing", d0, d1, closest)
+		if d0 < radius && d1 > radius {
+			fmt.Println("grazing -> exiting")
+			return "exiting"
+		} else if d0 > radius && d1 < radius {
+			fmt.Println("grazing -> entering")
+			return "entering"
+		}
+		fmt.Println("grazing -> did not choose")
 		return "grazing"
 	case s0 == "inside" && s1 == "inside":
 		return "sitting"
@@ -236,9 +244,9 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 
 	adj := 0.0
 	if adjustment == "enter" {
-		adj = -0.001
+		adj = -1e-4
 	} else if adjustment == "exit" {
-		adj = 0.001
+		adj = 1e-4
 	}
 
 	subPath1 := circle.GetSubPath(path1, distanceLeft1, 0)

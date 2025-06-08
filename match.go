@@ -970,6 +970,7 @@ func (m *match) run() {
 
 			recompute := [][]int{}
 			lastMile := [][]int{}
+			triggerRange := []float64{}
 
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -999,12 +1000,12 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
 								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
 
-								if prox >= 0 && prox-min_units <= 1e-9 && (entry == "entering") {
+								if prox >= 0 && prox-min_units <= 1e-3 && (entry == "entering") {
 									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
 
-									if math.Abs(prox-min_units) < 1e-9 {
+									if math.Abs(prox-min_units) < 1e-3 {
 										lastMile = append(lastMile, []int{i, j, k})
-									} else if prox < min_units {
+									} else {
 										lastMile = [][]int{[]int{i, j, k}}
 										recompute = [][]int{}
 										min_units = prox
@@ -1030,9 +1031,9 @@ func (m *match) run() {
 
 								if ans >= 0 {
 									fmt.Println("replaced min w/ recompute", ans, min_units)
-									if math.Abs(ans-min_units) < 1e-9 {
+									if math.Abs(ans-min_units) < 1e-3 {
 										recompute = append(recompute, []int{i, j, k})
-									} else if ans < min_units {
+									} else {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
 										min_units = ans
@@ -1051,12 +1052,12 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
 
-								if prox >= 0 && prox-min_units <= 1e-9 && (entry == "exiting" || entry == "passing") {
+								if prox >= 0 && prox-min_units <= 1e-3 && (entry == "exiting" || entry == "passing") {
 
 									fmt.Println("replace min w/ recompute", min_units, prox, entry)
-									if math.Abs(prox-min_units) < 1e-9 {
+									if math.Abs(prox-min_units) < 1e-3 {
 										recompute = append(recompute, []int{i, j, k})
-									} else if prox < min_units {
+									} else {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
 										min_units = prox
@@ -1066,8 +1067,8 @@ func (m *match) run() {
 							} else if hunter.LastMile == 2 {
 
 								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
-								if util.SigDig3(radiusCheck) > 1 {
-									fmt.Println("weird behavior2!!!", i, j, k, util.SigDig3(radiusCheck), radiusCheck)
+								if util.SigDig3(radiusCheck) > 1.001 {
+									fmt.Println("weird behavior2!!!", i, j, k, radiusCheck)
 									panic("should not exceed 1 radius")
 								}
 
@@ -1075,18 +1076,23 @@ func (m *match) run() {
 									// do nothing
 								} else {
 									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "exit")
+									fmt.Println(i, j, k, "prox (LM2)", prox, min_units, entry)
 
-									if prox >= 0 && prox-min_units <= 1e-9 && entry == "exiting" {
+									if prox >= 0 && prox-min_units <= 1e-3 && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
-										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry)
-										if math.Abs(prox-min_units) < 1e-9 {
+										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry, math.Abs(prox-min_units), math.Abs(prox-min_units) <= 1e-3)
+										if math.Abs(prox-min_units) <= 1e-3 {
 											lastMile = append(lastMile, []int{i, j, k})
-										} else if prox < min_units {
+										} else {
 											lastMile = [][]int{[]int{i, j, k}}
 											recompute = [][]int{}
 											min_units = prox
 										}
 									}
+
+									// note: there is an edge case where the min_units can be less than prox (as prox is to 1.001 radius),
+									// but still the unit is 'exiting' or even clear the radius
+									// therefore we should check if the exit radius is cleared
 								}
 
 							}
@@ -1187,9 +1193,6 @@ func (m *match) run() {
 								} else if m.heroes[i][j][k].LastMile == 2 {
 									m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
-									// temp := m.heroes[i][j][k]
-									// temp2 := m.heroes[temp.DynamicDestination[0]][temp.DynamicDestination[1]][temp.DynamicDestination[2]]
-									// fmt.Println(temp2.AS)
 
 								} else {
 

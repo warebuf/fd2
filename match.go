@@ -970,7 +970,6 @@ func (m *match) run() {
 
 			recompute := [][]int{}
 			lastMile := [][]int{}
-			triggerRange := []float64{}
 
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -992,16 +991,14 @@ func (m *match) run() {
 									panic("should not be less than hunter.LastMileRadius")
 								}
 
-								// the best idea is to exponential reduce the last mile activation radius
-								// until the last mile vector moves towards the target
-								// LMRadius = LMRadius * 0.75
-								// this also solves/prevents the behavior when the unit moves away to hit the collision
-
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
+								prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "test")
+
 								fmt.Println(i, j, k, "lm0", prox, min_units, entry)
+								fmt.Println(i, j, k, "lm0-2", prox2, min_units, entry2)
 
 								if prox >= 0 && prox-min_units <= 1e-3 && (entry == "entering") {
-									fmt.Println(i, j, k, "replaced min w/ prox (lm0)", prox, min_units, entry)
+									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm0)", prox, entry)
 
 									if math.Abs(prox-min_units) < 1e-3 {
 										lastMile = append(lastMile, []int{i, j, k})
@@ -1030,7 +1027,7 @@ func (m *match) run() {
 								fmt.Println(i, j, k, "intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
 
 								if ans >= 0 {
-									fmt.Println("replaced min w/ recompute", ans, min_units)
+									fmt.Println("replaced min ", min_units, "w/ recompute", ans)
 									if math.Abs(ans-min_units) < 1e-3 {
 										recompute = append(recompute, []int{i, j, k})
 									} else {
@@ -1050,7 +1047,10 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
+								prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "test")
+
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry)
+								fmt.Println(i, j, k, "prox2 (LM1)", prox2, entry2)
 
 								if prox >= 0 && prox-min_units <= 1e-3 && (entry == "exiting" || entry == "passing") {
 
@@ -1076,11 +1076,14 @@ func (m *match) run() {
 									// do nothing
 								} else {
 									prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "exit")
+									prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), 1, "test")
+
 									fmt.Println(i, j, k, "prox (LM2)", prox, min_units, entry)
+									fmt.Println(i, j, k, "prox2 (LM2)", prox2, min_units, entry2)
 
 									if prox >= 0 && prox-min_units <= 1e-3 && entry == "exiting" {
 										fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
-										fmt.Println(i, j, k, "replaced min w/ prox (lm2)", prox, min_units, entry, math.Abs(prox-min_units), math.Abs(prox-min_units) <= 1e-3)
+										fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm2)", prox, entry, math.Abs(prox-min_units), math.Abs(prox-min_units) <= 1e-3)
 										if math.Abs(prox-min_units) <= 1e-3 {
 											lastMile = append(lastMile, []int{i, j, k})
 										} else {

@@ -118,6 +118,8 @@ func lineIntersectsCircle(line [][]float64, cX float64, cY float64, r0 float64, 
 
 func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { // returns the first t between 0 and 1, returns -1 if no roots
 
+	fmt.Println("A:", A, "B:", B, "C:", C, "tMax:", tMax)
+
 	if IsZero(A) && IsZero(B) {
 		if C == 0 {
 			return 0
@@ -141,6 +143,8 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 	sqrtDisc := math.Sqrt(discriminant)
 	t1 := (-B - sqrtDisc) / (2 * A)
 	t2 := (-B + sqrtDisc) / (2 * A)
+
+	fmt.Println("t1:", t1, "t2:", t2)
 
 	if t1 >= 0 && t1 <= tMax && t2 >= 0 && t2 <= tMax {
 		return math.Min(t1, t2)

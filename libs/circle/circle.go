@@ -2,7 +2,6 @@ package circle
 
 import (
 	"fd/libs/maps"
-	"fd/libs/util"
 	"fmt"
 	"math"
 )
@@ -119,13 +118,13 @@ func lineIntersectsCircle(line [][]float64, cX float64, cY float64, r0 float64, 
 
 func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { // returns the first t between 0 and 1, returns -1 if no roots
 
-	if util.SigDig10(A) == 0 && util.SigDig10(B) == 0 {
+	if IsZero(A) && IsZero(B) {
 		if C == 0 {
 			return 0
 		} else {
 			return -1
 		}
-	} else if util.SigDig10(A) == 0 {
+	} else if IsZero(A) {
 		t := -C / B
 		if t >= 0 && t <= tMax {
 			return t
@@ -143,6 +142,9 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 	t1 := (-B - sqrtDisc) / (2 * A)
 	t2 := (-B + sqrtDisc) / (2 * A)
 
+	if t1 >= 0 && t1 <= tMax && t2 >= 0 && t2 <= tMax {
+		return math.Min(t1, t2)
+	}
 	if t1 >= 0 && t1 <= tMax {
 		return t1
 	}
@@ -151,6 +153,10 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 	}
 
 	return -1
+}
+
+func IsZero(x float64) bool {
+	return math.Abs(x) < 1e-9
 }
 
 func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, distanceLeftStart float64, distanceLeftEnd float64, circle []float64, radiusStart float64, radiusEnd float64, hunterSPD int, reductionFactor float64) float64 {

@@ -1074,7 +1074,7 @@ func (m *match) run() {
 								}
 
 								hunterSPD := hunter.SPD
-								targetSPD := hunter.SPD
+								targetSPD := target.SPD
 								if hunterSPD > targetSPD {
 									hunterSPD = targetSPD
 								}

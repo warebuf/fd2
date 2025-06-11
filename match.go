@@ -998,8 +998,8 @@ func (m *match) run() {
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
 								prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "test")
 
-								fmt.Println(i, j, k, "lm0", prox, min_units, entry, prox-min_units)
-								fmt.Println(i, j, k, "lm0-2", prox2, min_units, entry2)
+								fmt.Println(i, j, k, "LM0", prox, min_units, entry, prox-min_units)
+								fmt.Println(i, j, k, "LM0-2", prox2, min_units, entry2)
 
 								if prox >= 0 && prox-min_units <= 0 && entry == "entering" {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm0)", prox, entry)

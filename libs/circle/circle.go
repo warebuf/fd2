@@ -163,7 +163,7 @@ func IsZero(x float64) bool {
 	return math.Abs(x) < 1e-9
 }
 
-func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, distanceLeftStart float64, distanceLeftEnd float64, circle []float64, radiusStart float64, radiusEnd float64, hunterSPD int, reductionFactor float64) float64 {
+func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, distanceLeftStart float64, distanceLeftEnd float64, circle []float64, radiusStart float64, radiusEnd float64, hunterSPD int, targetSPD int, reductionFactor float64) float64 {
 
 	fmt.Println("-----Called CircleIntersectPath-----")
 
@@ -174,7 +174,7 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 		distanceLeftEnd = 0
 	}
 
-	if distanceLeftStart == distanceLeftEnd {
+	if distanceLeftStart == distanceLeftEnd { // 0 SPD target
 		euclid := maps.EuclideanDistance(targetX, targetY, circle[0], circle[1])
 		if euclid <= radiusStart && euclid >= radiusEnd {
 			startToEuclid := radiusStart - euclid
@@ -226,6 +226,11 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 	}
 
 	if intersectFound {
+
+		if hunterSPD == 0 {
+			return total * percentageCount / float64(targetSPD) // hope this is correct
+		}
+
 		ans = (radiusChange * percentageCount * reductionFactor) / float64(hunterSPD)
 	}
 

@@ -529,6 +529,9 @@ func createMatch(pl *permission_list) *match {
 				temp.MaxHP = temp.HP
 				ans.heroes[team_int][client_int] = append(ans.heroes[team_int][client_int], temp)
 				//ans.heroGraph[team_int][client_int] = append(ans.heroGraph[team_int][client_int], nil)
+				if !j.bot_status {
+					temp.SPD = 0
+				}
 			}
 
 			if ans.game_mode == "ffa" {
@@ -1022,7 +1025,7 @@ func (m *match) run() {
 									target.DistanceLeft, target.DistanceLeft-targetTravelled,
 									m.heroes[i][j][k].DynamicCircle,
 									m.heroes[i][j][k].DistanceLeft, (m.heroes[i][j][k].DistanceLeft - distanceTravelled),
-									m.heroes[i][j][k].SPD,
+									m.heroes[i][j][k].SPD, target.SPD,
 									3.0,
 								)
 								fmt.Println(i, j, k, "intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)

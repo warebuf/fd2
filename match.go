@@ -1628,11 +1628,11 @@ func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
 
 func setPath(unit *hero, dest maps.Coordinate, p [][]float64) {
 
-	if (unit.Position.X != unit.Path[0][0]) || (unit.Position.Y != unit.Path[0][1]) {
+	if (unit.Position.X != p[0][0]) || (unit.Position.Y != p[0][1]) {
 
-		fmt.Println(unit.Position.X, unit.Path[0][0])
-		fmt.Println(unit.Position.Y, unit.Path[0][1])
-		panic("Path start and unit position do not match!")
+		fmt.Println(unit.Position.X, p[0][0])
+		fmt.Println(unit.Position.Y, p[0][1])
+		panic("Path and unit position do not match!")
 
 	}
 

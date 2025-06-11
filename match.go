@@ -1917,6 +1917,7 @@ func PathDuplication(hunter *hero, target *hero) {
 	fmt.Println("dist", dist)
 
 	if dist > 1 { // this should break the program
+		fmt.Println("hunter index", hunter.Index)
 		fmt.Println("hunter.Position", hunter.Position)
 		fmt.Println("target.Position", target.Position)
 		fmt.Println("hunter.Path", hunter.Path)

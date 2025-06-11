@@ -145,6 +145,7 @@ func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float
 
 		hunterFinal := bestPath[len(bestPath)-1]
 		distToTarget := maps.EuclideanDistance(newPos[0], newPos[1], hunterFinal[0], hunterFinal[1])
+		fmt.Println("distToTarget", distToTarget, newPos, hunterFinal)
 
 		if distToTarget > 1 {
 			epsilon = epsilon / 2

@@ -529,9 +529,7 @@ func createMatch(pl *permission_list) *match {
 				temp.MaxHP = temp.HP
 				ans.heroes[team_int][client_int] = append(ans.heroes[team_int][client_int], temp)
 				//ans.heroGraph[team_int][client_int] = append(ans.heroGraph[team_int][client_int], nil)
-				if !j.bot_status {
-					temp.SPD = 0
-				}
+
 			}
 
 			if ans.game_mode == "ffa" {

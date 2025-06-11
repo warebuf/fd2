@@ -267,7 +267,7 @@ func m_read(m *match_socket) {
 							//startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
 							//endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
 							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
-
+							fmt.Println("calling setPath from m_read")
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
 							checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
 							m.m.sharepos(nil, 0)
@@ -923,6 +923,7 @@ func (m *match) run() {
 							if len(p) == 0 {
 								// figure out how to end the game here
 							} else {
+								fmt.Println("calling setPath from gave_bot_acts")
 								setPath(m.heroes[i][j][k], pint, p)
 								checkShadowedUnits(m.heroes, m.heroes[i][j][k])
 								gave_bots_acts = true
@@ -1307,6 +1308,7 @@ func (m *match) run() {
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 				path := AStarGraph.ComputeShortestPath()
 				end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: recompute[x][0], J: recompute[x][1], K: recompute[x][2]}
+				fmt.Println("calling setPath from dynamic destinations")
 				setPath(m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], end, path)
 				hunter.LastMile = 0
 			}
@@ -1346,6 +1348,7 @@ func (m *match) run() {
 					AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 					path := AStarGraph.ComputeShortestPath()
 					end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: lastMile[x][0], J: lastMile[x][1], K: lastMile[x][2]}
+					fmt.Println("calling setPath from gainingGround")
 					setPath(m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], end, path)
 					hunter.LastMile = 0
 
@@ -1354,6 +1357,7 @@ func (m *match) run() {
 					hunter.DynamicCircle = []float64{}
 					hunter.LastMileRadius = 25
 					end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: lastMile[x][0], J: lastMile[x][1], K: lastMile[x][2]}
+					fmt.Println("calling setPath from last_mile")
 					setPath(m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], end, path)
 				}
 
@@ -1364,6 +1368,7 @@ func (m *match) run() {
 				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				hunter.DynamicCircle = []float64{}
+				fmt.Println("calling PathDuplication from pathDup")
 				PathDuplication(hunter, target)
 			}
 
@@ -1622,6 +1627,15 @@ func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
 }
 
 func setPath(unit *hero, dest maps.Coordinate, p [][]float64) {
+
+	if (unit.Position.X != unit.Path[0][0]) || (unit.Position.Y != unit.Path[0][1]) {
+
+		fmt.Println(unit.Position.X, unit.Path[0][0])
+		fmt.Println(unit.Position.Y, unit.Path[0][1])
+		panic("Path start and unit position do not match!")
+
+	}
+
 	unit.Start = unit.Position
 	unit.Destination = dest
 	unit.Path = p
@@ -1898,6 +1912,7 @@ func PathDuplication(hunter *hero, target *hero) {
 
 	end := maps.Coordinate{X: target.Path[len(target.Path)-1][0], Y: target.Path[len(target.Path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
 	newPath := circle.GetSubPath(target.Path, target.DistanceLeft, 0)
+	fmt.Println("calling setPath from PathDuplication")
 	setPath(hunter, end, newPath)
 	hunter.LastMile = 2
 }
@@ -1923,6 +1938,7 @@ func checkShadowedUnits(state [][][]*hero, source *hero) {
 						AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 						path := AStarGraph.ComputeShortestPath()
 						end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: source.Index[0], J: source.Index[1], K: source.Index[2]}
+						fmt.Println("calling setPath from checkShadowedUnits0")
 						setPath(state[i][j][k], end, path)
 
 					} else if state[i][j][k].LastMile == 1 {
@@ -1933,6 +1949,7 @@ func checkShadowedUnits(state [][][]*hero, source *hero) {
 						hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
 						path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
 						end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
+						fmt.Println("calling setPath from checkShadowedUnits1")
 						setPath(hunter, end, path)
 
 					} else if state[i][j][k].LastMile == 2 {
@@ -1940,6 +1957,7 @@ func checkShadowedUnits(state [][][]*hero, source *hero) {
 						hunter := state[i][j][k]
 						target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 						hunter.DynamicCircle = []float64{}
+						fmt.Println("calling PathDuplication from checkShadowedUnits2")
 						PathDuplication(hunter, target)
 					}
 

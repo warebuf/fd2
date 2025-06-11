@@ -1630,9 +1630,25 @@ func setPath(unit *hero, dest maps.Coordinate, p [][]float64) {
 
 	if (unit.Position.X != p[0][0]) || (unit.Position.Y != p[0][1]) {
 
-		fmt.Println(unit.Position.X, p[0][0])
-		fmt.Println(unit.Position.Y, p[0][1])
-		panic("Path and unit position do not match!")
+		dist := maps.EuclideanDistance(unit.Position.X, unit.Position.Y, p[0][0], p[0][1])
+		fmt.Println("X:", unit.Position.X, unit.Position.Y, p[0])
+		fmt.Println("dist", dist)
+
+		if dist < 1e-8 {
+			unit.Position.X = p[0][0]
+			unit.Position.Y = p[0][1]
+
+		} else if dist <= 1 {
+
+			// to me the best option here would be to calculate A* from unit.Position to the destination
+			s := pathfinding.Location{X: unit.Position.X, Y: unit.Position.Y}
+			e := pathfinding.Location{X: dest.X, Y: dest.Y}
+			AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+			p = AStarGraph.ComputeShortestPath()
+
+		} else {
+			panic("Path and unit position exceed 1 dist!")
+		}
 
 	}
 
@@ -1912,6 +1928,8 @@ func PathDuplication(hunter *hero, target *hero) {
 
 	end := maps.Coordinate{X: target.Path[len(target.Path)-1][0], Y: target.Path[len(target.Path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
 	newPath := circle.GetSubPath(target.Path, target.DistanceLeft, 0)
+	fmt.Println("hunter.Position", hunter.Position)
+	fmt.Println("PathDuplication newPath:", newPath)
 	fmt.Println("calling setPath from PathDuplication")
 	setPath(hunter, end, newPath)
 	hunter.LastMile = 2

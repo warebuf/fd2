@@ -56,6 +56,8 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 	curLength := 0.0
 	for i := len(path) - 1; i >= 1; i-- {
 
+		fmt.Println(path[i], path[i-1], distanceLeftStart, distanceLeftEnd, curLength, subPath)
+
 		curLength = curLength + maps.EuclideanDistance(path[i][0], path[i][1], path[i-1][0], path[i-1][1])
 
 		if len(end) == 0 && curLength >= distanceLeftEnd {
@@ -78,6 +80,8 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 		}
 
 	}
+
+	fmt.Println(curLength, subPath)
 
 	reversedSubPath := [][]float64{}
 	for i := len(subPath) - 1; i >= 0; i-- {

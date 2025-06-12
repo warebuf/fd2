@@ -1118,7 +1118,7 @@ func (m *match) run() {
 						unitOfInterest := m.heroes[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
 						if unitOfInterest.HP > 0 {
 							unitOfInterest.TTD = unitOfInterest.TTD - (min_units * float64(unitOfInterest.AS))
-							if unitOfInterest.TTD <= 0.1 {
+							if unitOfInterest.TTD <= 1e-6 {
 								unitOfInterest.TTD = 0
 
 								a := &attack{
@@ -1132,6 +1132,17 @@ func (m *match) run() {
 								a.Attacker[2] = unitOfInterest.Position.K
 								atk_list = append(atk_list, a)
 							}
+						}
+					}
+				}
+			}
+
+			// quick check
+			for i := 0; i < len(m.heroes); i++ {
+				for j := 0; j < len(m.heroes[i]); j++ {
+					for k := 0; k < len(m.heroes[i][j]); k++ {
+						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "dist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]))
 						}
 					}
 				}
@@ -1186,7 +1197,7 @@ func (m *match) run() {
 							// move the unit
 							m.heroes[i][j][k].DistanceLeft -= min_units * SPD
 
-							if m.heroes[i][j][k].DistanceLeft-0.01 <= 0 {
+							if m.heroes[i][j][k].DistanceLeft <= 1e-6 {
 
 								m.heroes[i][j][k].DistanceLeft = 0
 
@@ -1196,6 +1207,7 @@ func (m *match) run() {
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
 								} else if m.heroes[i][j][k].LastMile == 2 {
+
 									m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
@@ -1221,6 +1233,17 @@ func (m *match) run() {
 								}
 
 							}
+						}
+					}
+				}
+			}
+
+			// quick check
+			for i := 0; i < len(m.heroes); i++ {
+				for j := 0; j < len(m.heroes[i]); j++ {
+					for k := 0; k < len(m.heroes[i][j]); k++ {
+						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "dist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]))
 						}
 					}
 				}
@@ -1260,6 +1283,17 @@ func (m *match) run() {
 				// TODO: not sure why this is here TBH
 				if m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
 					m.ended = true
+				}
+			}
+
+			// quick check
+			for i := 0; i < len(m.heroes); i++ {
+				for j := 0; j < len(m.heroes[i]); j++ {
+					for k := 0; k < len(m.heroes[i][j]); k++ {
+						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "dist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]))
+						}
+					}
 				}
 			}
 
@@ -1600,6 +1634,20 @@ func getDistanceLocation(c1 pathfinding.Location, c2 pathfinding.Location) float
 	y_dist := c2.Y - c1.Y
 	x_dist := c2.X - c1.X
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
+}
+
+func getDistFromDynamic(state [][][]*hero, unit *hero) float64 {
+
+	if len(unit.DynamicDestination) > 0 {
+
+		hunter := unit
+		target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+		x_dist := target.Position.X - hunter.Position.X
+		y_dist := target.Position.Y - hunter.Position.Y
+		return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
+	}
+	return 0.0
+
 }
 
 func getXYComponent(theta float64, r float64) (float64, float64) {

@@ -1971,6 +1971,9 @@ func PathDuplication(hunter *hero, target *hero) {
 		fmt.Println("target.Position", target.Position)
 		fmt.Println("hunter.Path", hunter.Path)
 		fmt.Println("target.Path", target.Path)
+		fmt.Println("hunter.DistanceLeft", hunter.DistanceLeft)
+		fmt.Println("target.DistanceLeft", target.DistanceLeft)
+
 		panic("Collision should not happen! Distance > 1!")
 	}
 

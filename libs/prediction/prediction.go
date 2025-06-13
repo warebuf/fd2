@@ -100,7 +100,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 				return bestPath // already at the position ? weird
 			} else {
 				fmt.Println("linear count", count)
-				return binary(mp, targetPath, t-increment, t, distanceStart, targetSPD, hunterPos, hunterSPD) // check between t and t-increment (binary search) for the earliest point
+				return binary(mp, targetPath, t-increment, t, distanceStart, targetSPD, hunterPos, hunterSPD, bestPath) // check between t and t-increment (binary search) for the earliest point
 			}
 		}
 	}
@@ -112,10 +112,10 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 
 }
 
-func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) [][]float64 {
+func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64, topPath [][]float64) [][]float64 {
 
 	count := 0
-	var bestPath [][]float64
+	bestPath := topPath
 	epsilon := 0.001
 
 	for high-low > epsilon {

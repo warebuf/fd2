@@ -134,24 +134,27 @@ func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float
 		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
 		end := pathfinding.Location{X: newPos[0], Y: newPos[1]}
 		AStarGraph := pathfinding.AStarInit(mp, start, end)
-		bestPath = AStarGraph.ComputeShortestPath()
+		calculated := AStarGraph.ComputeShortestPath()
 
 		count += 1
-		newDist := maps.GetPathDistance(bestPath)
+		newDist := maps.GetPathDistance(calculated)
 		hunterTime := newDist / float64(hunterSPD)
 
 		if hunterTime <= mid {
 			high = mid
+			bestPath = calculated
+
+			// i dont think this will ever trigger, but let's check
+			hunterFinal := bestPath[len(bestPath)-1]
+			distToTarget := maps.EuclideanDistance(newPos[0], newPos[1], hunterFinal[0], hunterFinal[1])
+			fmt.Println("distToTarget", distToTarget, newPos, hunterFinal)
+
+			if distToTarget > 1 {
+				panic("dist somehow > 1")
+			}
+
 		} else {
 			low = mid
-		}
-
-		hunterFinal := bestPath[len(bestPath)-1]
-		distToTarget := maps.EuclideanDistance(newPos[0], newPos[1], hunterFinal[0], hunterFinal[1])
-		fmt.Println("distToTarget", distToTarget, newPos, hunterFinal)
-
-		if distToTarget > 1 {
-			epsilon = epsilon / 2
 		}
 
 	}

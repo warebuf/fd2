@@ -1001,15 +1001,14 @@ func (m *match) run() {
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "entering" {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm0)", prox, entry)
-
-									if prox-min_units == 0 {
+									absDiff := math.Abs(prox - min_units)
+									if absDiff <= 1e-6 {
 										lastMile = append(lastMile, []int{i, j, k})
-									} else if prox-min_units < 0 {
+										min_units = math.Max(min_units, prox)
+									} else {
 										lastMile = [][]int{[]int{i, j, k}}
 										recompute = [][]int{}
 										min_units = prox
-									} else if prox-min_units <= 1e-6 {
-										lastMile = append(lastMile, []int{i, j, k})
 									}
 								}
 
@@ -1032,14 +1031,14 @@ func (m *match) run() {
 
 								if ans >= 0 {
 									fmt.Println("replaced min ", min_units, "w/ recompute", ans, ans-min_units)
-									if ans-min_units == 0 {
+									absDiff := math.Abs(ans - min_units)
+									if absDiff <= 1e-6 {
 										recompute = append(recompute, []int{i, j, k})
-									} else if ans-min_units < 0 {
+										min_units = math.Max(min_units, ans)
+									} else if ans-min_units <= 0 {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
 										min_units = ans
-									} else if ans-min_units <= 1e-6 {
-										recompute = append(recompute, []int{i, j, k})
 									}
 								}
 
@@ -1061,14 +1060,14 @@ func (m *match) run() {
 								if prox >= 0 && prox-min_units <= 1e-6 && (entry == "exiting" || entry == "passing") {
 
 									fmt.Println("replace min w/ recompute", min_units, prox, entry)
-									if prox-min_units == 0 {
+									absDiff := math.Abs(prox - min_units)
+									if absDiff <= 1e-6 {
 										recompute = append(recompute, []int{i, j, k})
-									} else if prox-min_units < 0 {
+										min_units = math.Max(min_units, prox)
+									} else {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
 										min_units = prox
-									} else if prox-min_units <= 1e-6 {
-										recompute = append(recompute, []int{i, j, k})
 									}
 								}
 
@@ -1095,14 +1094,14 @@ func (m *match) run() {
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "exiting" {
 									fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm2)", prox, entry, prox-min_units)
-									if prox-min_units == 0 {
+									absDiff := math.Abs(prox - min_units)
+									if absDiff <= 1e-6 {
 										lastMile = append(lastMile, []int{i, j, k})
-									} else if prox-min_units < 0 {
+										min_units = math.Max(min_units, prox)
+									} else {
 										lastMile = [][]int{[]int{i, j, k}}
 										recompute = [][]int{}
 										min_units = prox
-									} else if prox-min_units < 1e-6 {
-										lastMile = append(lastMile, []int{i, j, k})
 									}
 								}
 

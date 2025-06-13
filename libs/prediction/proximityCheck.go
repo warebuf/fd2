@@ -179,7 +179,7 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 		fmt.Println("passing2", d0, d1, closest)
 		return "passing"
 	case s0 == "edge" && s1 == "edge" && closestOnEdge:
-		fmt.Println("grazing", d0, d1, closest)
+		fmt.Println("grazing", d0, d1, closest, radius)
 		if d0 < radius && d1 > radius {
 			fmt.Println("grazing -> exiting")
 			return "exiting"

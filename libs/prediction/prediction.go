@@ -119,6 +119,10 @@ func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float
 	bestPath := topPath
 	epsilon := 0.001
 
+	if low < 0 {
+		low = 0
+	}
+
 	for high-low > epsilon {
 
 		mid := (low + high) / 2

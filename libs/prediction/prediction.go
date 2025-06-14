@@ -1,7 +1,6 @@
 package prediction
 
 import (
-	"fd/libs/circle"
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
 	"fmt"
@@ -14,7 +13,7 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 
 	fmt.Println("targetPath", path, distanceLeft, targetSPD)
 
-	subpath := circle.GetSubPath(path, distanceLeft, 0.0)
+	subpath := GetSubPath(path, distanceLeft, 0.0)
 
 	if distanceLeft == 0 {
 		subpath = [][]float64{path[len(path)-1]} // this is a shallow copy, not a deep copy beware
@@ -81,7 +80,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 		} else if t == targetMaxTime { // make sure no funny rounding problem, go to destination
 			newPos = targetPath[len(targetPath)-1]
 		} else {
-			testPath := circle.GetSubPath(targetPath, distanceStart, distanceLeft) // distanceStart is a bit funny to use here but it works
+			testPath := GetSubPath(targetPath, distanceStart, distanceLeft) // distanceStart is a bit funny to use here but it works
 			newPos = testPath[len(testPath)-1]
 		}
 
@@ -132,7 +131,7 @@ func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float
 		if distanceLeft < 0 {
 			distanceLeft = 0
 		}
-		testPath := circle.GetSubPath(targetPath, distanceStart, distanceLeft)
+		testPath := GetSubPath(targetPath, distanceStart, distanceLeft)
 		fmt.Println("low", low, "high", high, "mid", mid, "distanceStart", distanceStart, "distanceLeft", distanceLeft)
 		newPos := testPath[len(testPath)-1]
 

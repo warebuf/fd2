@@ -1,4 +1,4 @@
-package circle
+package prediction
 
 import (
 	"fd/libs/maps"

@@ -3,7 +3,6 @@ package main
 import (
 	"container/heap"
 	"encoding/json"
-	"fd/libs/circle"
 	"fd/libs/heroes"
 	"fd/libs/util"
 	"fmt"
@@ -1018,7 +1017,7 @@ func (m *match) run() {
 								}
 								distanceTravelled := float64(m.heroes[i][j][k].SPD) * min_units
 
-								ans := circle.CircleIntersectPath(
+								ans := prediction.CircleIntersectPath(
 									target.Path,
 									target.Position.X, target.Position.Y,
 									target.DistanceLeft, target.DistanceLeft-targetTravelled,
@@ -1985,7 +1984,7 @@ func PathDuplication(hunter *hero, target *hero) {
 	}
 
 	end := maps.Coordinate{X: target.Path[len(target.Path)-1][0], Y: target.Path[len(target.Path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
-	newPath := circle.GetSubPath(target.Path, target.DistanceLeft, 0)
+	newPath := prediction.GetSubPath(target.Path, target.DistanceLeft, 0)
 	fmt.Println("hunter.Position", hunter.Position)
 	fmt.Println("PathDuplication newPath:", newPath)
 	fmt.Println("calling setPath from PathDuplication", hunter.Index)

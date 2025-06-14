@@ -1,7 +1,6 @@
 package prediction
 
 import (
-	"fd/libs/circle"
 	"fd/libs/maps"
 	"fmt"
 	"math"
@@ -41,14 +40,14 @@ func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 f
 				point1 = path1[i+1]
 				i += 1
 				newDist2 := time1 * SPD2
-				subline := circle.GetSubLine(point2, path2[j+1], newDist2)
+				subline := GetSubLine(point2, path2[j+1], newDist2)
 				point2 = subline[1]
 				t = append(t, time1)
 			} else {
 				point2 = path2[j+1]
 				j += 1
 				newDist1 := time2 * SPD1
-				subline := circle.GetSubLine(point1, path1[i+1], newDist1)
+				subline := GetSubLine(point1, path1[i+1], newDist1)
 				point1 = subline[1]
 				t = append(t, time2)
 			}
@@ -112,7 +111,7 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	B := (2 * (Xo1 - Xo2) * (Vx1 - Vx2)) + (2 * (Yo1 - Yo2) * (Vy1 - Vy2))
 	C := ((Xo1 - Xo2) * (Xo1 - Xo2)) + ((Yo1 - Yo2) * (Yo1 - Yo2)) - (radius * radius)
 
-	return circle.QuadraticFormula(A, B, C, tMax)
+	return QuadraticFormula(A, B, C, tMax)
 }
 
 func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) string {
@@ -259,8 +258,8 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 		adj = 1e-4
 	}
 
-	subPath1 := circle.GetSubPath(path1, distanceLeft1, 0)
-	subPath2 := circle.GetSubPath(path2, distanceLeft2, 0)
+	subPath1 := GetSubPath(path1, distanceLeft1, 0)
+	subPath2 := GetSubPath(path2, distanceLeft2, 0)
 	partition1, partition2, times := createPartitions(subPath1, subPath2, SPD1, SPD2)
 
 	totalTime := 0.0

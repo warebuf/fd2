@@ -1149,7 +1149,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "dist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]))
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft)
 						}
 					}
 				}
@@ -1250,7 +1250,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "dist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]))
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft)
 						}
 					}
 				}
@@ -1298,7 +1298,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "dist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]))
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft)
 						}
 					}
 				}

@@ -96,6 +96,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 
 		if hunterTime <= t {
 			fmt.Println("found earliest hunterTime", hunterTime, count)
+			fmt.Println("earliest targetTime", t, t-increment)
 			if t == 0 {
 				return bestPath // already at the position ? weird
 			} else {
@@ -143,16 +144,6 @@ func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float
 		if hunterTime <= mid {
 			high = mid
 			bestPath = calculated
-
-			// i dont think this will ever trigger, but let's check
-			hunterFinal := bestPath[len(bestPath)-1]
-			distToTarget := maps.EuclideanDistance(newPos[0], newPos[1], hunterFinal[0], hunterFinal[1])
-			fmt.Println("distToTarget", distToTarget, newPos, hunterFinal)
-
-			if distToTarget > 1 {
-				panic("dist somehow > 1")
-			}
-
 		} else {
 			low = mid
 		}

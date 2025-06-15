@@ -1447,12 +1447,18 @@ func (m *match) run() {
 					p := [][]float64{[]float64{hunter.Position.X, hunter.Position.Y}}
 					setPath(hunter, hunter.Position, p)
 
-					fmt.Println("post setPath]", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
+					fmt.Println("post setPath", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
 					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
 					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
 
 					hunter.LastMile = 3
 				} else {
+
+					if hunter.LastMile == 3 {
+						fmt.Println("I just want to see it work 1 time")
+						panic("I just want to see it work 1 time")
+					}
+
 					fmt.Println("calling PathDuplication from pathDup")
 					PathDuplication(hunter, target)
 				}

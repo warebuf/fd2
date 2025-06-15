@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-func meetsPoint(path [][]float64, dest []float64, SPD float64) float64 {
+func MeetsPoint(path [][]float64, dest []float64, SPD float64) float64 {
 
 	accum := 0.0
 	found := false
@@ -23,12 +23,12 @@ func meetsPoint(path [][]float64, dest []float64, SPD float64) float64 {
 			accum += length
 		}
 	}
+	fmt.Println(path, dest, SPD, accum, found)
 	if found {
 		return accum / SPD
+	} else {
+		panic("did not find position on path")
 	}
-
-	fmt.Println(path, dest, SPD, accum, found)
-	panic("did not find position on path")
 
 	return -1
 }

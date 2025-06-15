@@ -43,7 +43,7 @@ type hero struct {
 
 	DynamicDestination []int     // either {i,j,k} or {}
 	DynamicCircle      []float64 // a location X, Y
-	LastMile           int       // 0 = closing circle, 1 = last mile, 2 = collision
+	LastMile           int       // 0 = closing circle, 1 = last mile, 2 = collision pathing, 3 = waiting for collision
 	LastMileRadius     float64
 
 	DistanceLeft float64
@@ -971,6 +971,7 @@ func (m *match) run() {
 
 			recompute := [][]int{}
 			lastMile := [][]int{}
+			pathDup := [][]int{}
 
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1037,6 +1038,7 @@ func (m *match) run() {
 									} else if ans-min_units <= 0 {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
+										pathDup = [][]int{}
 										min_units = ans
 									}
 								}
@@ -1066,6 +1068,7 @@ func (m *match) run() {
 									} else {
 										recompute = [][]int{[]int{i, j, k}}
 										lastMile = [][]int{}
+										pathDup = [][]int{}
 										min_units = prox
 									}
 								}
@@ -1098,9 +1101,29 @@ func (m *match) run() {
 										lastMile = append(lastMile, []int{i, j, k})
 										min_units = math.Max(min_units, prox)
 									} else {
-										lastMile = [][]int{[]int{i, j, k}}
 										recompute = [][]int{}
+										lastMile = [][]int{[]int{i, j, k}}
+										pathDup = [][]int{}
 										min_units = prox
+									}
+								}
+
+							} else if hunter.LastMile == 3 {
+
+								pos := []float64{hunter.Position.X, hunter.Position.Y}
+								intersect := prediction.MeetsPoint(target.Path, pos, float64(target.SPD))
+								fmt.Println("found int", hunter.Index, intersect)
+								if intersect >= 0 && intersect-min_units <= 1e-6 {
+									fmt.Println(i, j, k, "replaced min", min_units, "w/ int (lm3)", intersect, intersect-min_units)
+									absDiff := math.Abs(intersect - min_units)
+									if absDiff <= 1e-6 {
+										pathDup = append(pathDup, []int{i, j, k})
+										min_units = math.Max(min_units, intersect)
+									} else {
+										recompute = [][]int{}
+										lastMile = [][]int{}
+										pathDup = [][]int{[]int{i, j, k}}
+										min_units = intersect
 									}
 								}
 
@@ -1148,13 +1171,13 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft)
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+						} else {
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
 						}
 					}
 				}
 			}
-
-			pathDup := [][]int{}
 
 			// move all unit positions
 			for i := 0; i < len(m.heroes); i++ {
@@ -1170,6 +1193,8 @@ func (m *match) run() {
 								if hunter.SPD > target.SPD {
 									SPD = float64(target.SPD)
 								}
+							} else if m.heroes[i][j][k].LastMile == 3 {
+								continue
 							}
 
 							toMove := min_units * SPD
@@ -1249,7 +1274,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft)
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+						} else {
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
 						}
 					}
 				}
@@ -1297,7 +1324,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft)
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+						} else {
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
 						}
 					}
 				}
@@ -1407,8 +1436,26 @@ func (m *match) run() {
 				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				hunter.DynamicCircle = []float64{}
-				fmt.Println("calling PathDuplication from pathDup")
-				PathDuplication(hunter, target)
+
+				// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
+				dist := getDistFromDynamic(m.heroes, hunter)
+				fmt.Println(pathDup[x], "dist", dist)
+				if dist > 1 {
+					fmt.Println("dist is > 1", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
+					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
+					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
+					p := [][]float64{[]float64{hunter.Position.X, hunter.Position.Y}}
+					setPath(hunter, hunter.Position, p)
+
+					fmt.Println("post setPath]", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
+					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
+					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
+
+					hunter.LastMile = 3
+				} else {
+					fmt.Println("calling PathDuplication from pathDup")
+					PathDuplication(hunter, target)
+				}
 			}
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {

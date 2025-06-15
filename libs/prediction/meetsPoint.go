@@ -1,0 +1,34 @@
+package prediction
+
+import (
+	"fd/libs/maps"
+	"fmt"
+	"math"
+)
+
+func meetsPoint(path [][]float64, dest []float64, SPD float64) float64 {
+
+	accum := 0.0
+	found := false
+
+	for i := 0; i < len(path)-1; i++ {
+		d1 := maps.EuclideanDistance(path[i][0], path[i][1], dest[0], dest[1])
+		d2 := maps.EuclideanDistance(dest[0], dest[1], path[i+1][0], path[i+1][1])
+		length := maps.EuclideanDistance(path[i][0], path[i][1], path[i+1][0], path[i+1][1])
+		if math.Abs(d1+d2-length) < 1e-6 {
+			accum += d1
+			found = true
+			break
+		} else {
+			accum += length
+		}
+	}
+	if found {
+		return accum / SPD
+	}
+
+	fmt.Println(path, dest, SPD, accum, found)
+	panic("did not find position on path")
+
+	return -1
+}

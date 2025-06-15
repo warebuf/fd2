@@ -176,6 +176,8 @@ function calcPos() {
                                 if(hunter.SPD > target.SPD) {
                                     SPD = target.SPD;
                                 }
+                            } else if (state[i][j][k].LastMile == 3) {
+                                SPD = 0;
                             }
 
                             let toMove = SPD * 0.015;

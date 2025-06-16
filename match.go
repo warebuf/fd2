@@ -1437,6 +1437,11 @@ func (m *match) run() {
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				hunter.DynamicCircle = []float64{}
 
+				if hunter.LastMile == 3 {
+					fmt.Println("I just want to see it work 1 time")
+					panic("I just want to see it work 1 time")
+				}
+
 				// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
 				dist := getDistFromDynamic(m.heroes, hunter)
 				fmt.Println(pathDup[x], "dist", dist)
@@ -1453,12 +1458,6 @@ func (m *match) run() {
 
 					hunter.LastMile = 3
 				} else {
-
-					if hunter.LastMile == 3 {
-						fmt.Println("I just want to see it work 1 time")
-						panic("I just want to see it work 1 time")
-					}
-
 					fmt.Println("calling PathDuplication from pathDup")
 					PathDuplication(hunter, target)
 				}

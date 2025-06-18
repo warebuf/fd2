@@ -3,8 +3,7 @@ package main
 import (
 	"container/heap"
 	"encoding/json"
-	"fd/libs/heroes"
-	"fd/libs/util"
+
 	"fmt"
 	"math"
 	"math/rand"
@@ -13,83 +12,15 @@ import (
 	"time"
 
 	"fd/libs/bezier"
+	"fd/libs/heroes"
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
 	"fd/libs/prediction"
+	"fd/libs/util"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
 )
-
-type Camp struct {
-	MaxHP int
-	HP    int
-	XY    maps.Coordinate
-	Units [][]int // second array is of the form i, j, k for a *hero object in TCH
-
-}
-
-type hero struct {
-	Bot   bool
-	Name  string
-	Index []int
-
-	Start        maps.Coordinate
-	Position     maps.Coordinate
-	Destination  maps.Coordinate
-	Path         [][]float64
-	Thetas       []float64
-	Path_Segment int // is the last node we've visited
-
-	DynamicDestination []int     // either {i,j,k} or {}
-	DynamicCircle      []float64 // a location X, Y
-	LastMile           int       // 0 = closing circle, 1 = last mile, 2 = collision pathing, 3 = waiting for collision
-	LastMileRadius     float64
-
-	DistanceLeft float64
-	Status       int // 0 = requires destination, 1 = in route, 2 = attacking something
-
-	H part
-	L part
-	R part
-	B part
-
-	MaxHP int
-	HP    int
-	ATK   int
-	DEF   int
-	AS    int
-	SPD   int
-	Scale []int
-
-	EXP int
-
-	Battle *Camp
-	TTD    float64
-}
-
-type part struct {
-	SECTION int // 0 is H, 1 is L, 2 is R, 3 is B
-	SERIAL  int
-	NAME    string
-
-	HP  int
-	DEF int
-	DOG int
-
-	ATK int
-	ACC int
-	CRT int
-
-	CD     int
-	CLU    int
-	Weight int
-
-	Use_current int
-	Use_outof   int
-
-	SPD int
-}
 
 type attack struct {
 	Attacker []int      //i,j,k
@@ -109,9 +40,9 @@ type match struct {
 
 	// each client is represented as an int
 	state_count int
-	heroes      [][][]*hero
+	heroes      [][][]*heroes.Hero
 	//heroGraph   [][][]*pathfinding.DLiteGraph
-	camps []*Camp
+	camps []*heroes.Camp
 
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
@@ -405,12 +336,12 @@ func createMatch(pl *permission_list) *match {
 			ended:     false,
 
 			state_count: 0,
-			heroes:      make([][][]*hero, 0, 0),
+			heroes:      make([][][]*heroes.Hero, 0, 0),
 			//heroGraph:   make([][][]*pathfinding.DLiteGraph, 0, 0),
 
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
-			camps: make([]*Camp, 0, 0),
+			camps: make([]*heroes.Camp, 0, 0),
 
 			broadcast:      make(chan *message),
 			prio_broadcast: make(chan *message),
@@ -456,7 +387,7 @@ func createMatch(pl *permission_list) *match {
 			c := maps.Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
 			HP := rand.Intn(100) + 1
 			//HP := 1
-			ans.camps = append(ans.camps, &Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
+			ans.camps = append(ans.camps, &heroes.Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
 		// c := maps.Coordinate{X: 265, Y: 80, Type: "camp", I: random_count, J: -1, K: -1}
 		// ans.camps = append(ans.camps, &Camp{MaxHP: 10, HP: 10, XY: c, Units: make([][]int, 0)})
@@ -464,7 +395,7 @@ func createMatch(pl *permission_list) *match {
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
 		for i := 0; i < int(ans.sides); i++ {
-			ans.heroes = append(ans.heroes, make([][]*hero, 0))
+			ans.heroes = append(ans.heroes, make([][]*heroes.Hero, 0))
 			//ans.heroGraph = append(ans.heroGraph, make([][]*pathfinding.DLiteGraph, 0))
 		}
 
@@ -481,7 +412,7 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			ans.uuid_to_team_int[i] = pair{team_int, client_int, strconv.Itoa(team_int) + ";" + strconv.Itoa(client_int)} // assigning a pair of ints (team, pos in team) to each client
-			ans.heroes[team_int] = append(ans.heroes[team_int], make([]*hero, 0, 5))
+			ans.heroes[team_int] = append(ans.heroes[team_int], make([]*heroes.Hero, 0, 5))
 			//ans.heroGraph[team_int] = append(ans.heroGraph[team_int], make([]*pathfinding.DLiteGraph, 0, 5))
 
 			names := []string{
@@ -495,7 +426,7 @@ func createMatch(pl *permission_list) *match {
 				stats := heroes.RandomBudget(100, 4)
 				scale := []int{rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10}
 				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
-				temp := &hero{
+				temp := &heroes.Hero{
 					Bot:   j.bot_status,
 					Name:  names[rand.Intn(len(names))],
 					Index: []int{team_int, client_int, y},
@@ -518,8 +449,8 @@ func createMatch(pl *permission_list) *match {
 					HP:    100,
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
-					AS:    75, //stats[2],
-					SPD:   50, //stats[3],
+					AS:    75,             //stats[2],
+					SPD:   rand.Intn(100), //stats[3],
 					Scale: scale,
 
 					Battle: nil,
@@ -1371,6 +1302,11 @@ func (m *match) run() {
 					hunter.LastMileRadius = 25
 				}
 
+				if hunter.LastMile == 3 {
+					fmt.Println("I just want to see it work 1 time")
+					panic("I just want to see it work 1 time")
+				}
+
 				s := pathfinding.Location{X: hunter.Position.X, Y: hunter.Position.Y}
 				e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
@@ -1390,6 +1326,11 @@ func (m *match) run() {
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
 				path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
+
+				if hunter.LastMile == 3 {
+					fmt.Println("I just want to see it work 1 time")
+					panic("I just want to see it work 1 time")
+				}
 
 				// check if the last mile path doesn't backtrack (causing a corner case)
 				hunterStart := path[0]
@@ -1632,7 +1573,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	}
 }
 
-func game_over_check(state [][][]*hero) bool {
+func game_over_check(state [][][]*heroes.Hero) bool {
 
 	// check all teams, if there are two+ teams with alive heroes, then it is not game over
 	counter := 0
@@ -1694,7 +1635,7 @@ func getDistanceLocation(c1 pathfinding.Location, c2 pathfinding.Location) float
 	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 }
 
-func getDistFromDynamic(state [][][]*hero, unit *hero) float64 {
+func getDistFromDynamic(state [][][]*heroes.Hero, unit *heroes.Hero) float64 {
 
 	if len(unit.DynamicDestination) > 0 {
 
@@ -1731,7 +1672,7 @@ func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
 	return false
 }
 
-func setPath(unit *hero, dest maps.Coordinate, p [][]float64) {
+func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
 
 	if (unit.Position.X != p[0][0]) || (unit.Position.Y != p[0][1]) {
 
@@ -1779,7 +1720,7 @@ func setPath(unit *hero, dest maps.Coordinate, p [][]float64) {
 }
 
 // pathType can be 0 (camp) or 1 (unit),
-func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate, pathType int) bool {
+func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate, pathType int) bool {
 
 	// path of 1... wth???
 	if len(path) <= 1 {
@@ -1834,7 +1775,7 @@ func confirmValidPath(state [][][]*hero, camps []*Camp, i int, j int, k int, pat
 	return true
 }
 
-func determineBotAction(b *hero, camps []*Camp) ([][]float64, maps.Coordinate) {
+func determineBotAction(b *heroes.Hero, camps []*heroes.Camp) ([][]float64, maps.Coordinate) {
 
 	// for now just pick a random camp, don't care about HP or pathfinding
 	// if all camps are inaccessible... maybe end the game?
@@ -2017,7 +1958,7 @@ func (m *match) printState() {
 
 }
 
-func PathDuplication(hunter *hero, target *hero) {
+func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 
 	dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
 
@@ -2044,7 +1985,7 @@ func PathDuplication(hunter *hero, target *hero) {
 	hunter.LastMile = 2
 }
 
-func checkShadowedUnits(state [][][]*hero, source *hero) {
+func checkShadowedUnits(state [][][]*heroes.Hero, source *heroes.Hero) {
 
 	for i := 0; i < len(state); i++ {
 		for j := 0; j < len(state[i]); j++ {

@@ -1302,11 +1302,6 @@ func (m *match) run() {
 					hunter.LastMileRadius = 25
 				}
 
-				if hunter.LastMile == 3 {
-					fmt.Println("I just want to see it work 1 time")
-					panic("I just want to see it work 1 time")
-				}
-
 				s := pathfinding.Location{X: hunter.Position.X, Y: hunter.Position.Y}
 				e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
 				AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
@@ -1315,6 +1310,38 @@ func (m *match) run() {
 				fmt.Println("calling setPath from dynamic destinations", recompute[x])
 				setPath(m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], end, path)
 				hunter.LastMile = 0
+			}
+
+			// calculate collision path duplication routes
+			for x := 0; x < len(pathDup); x++ {
+				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
+				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+				hunter.DynamicCircle = []float64{}
+
+				if hunter.LastMile == 3 {
+					fmt.Println("I just want to see it work 1 time")
+					panic("I just want to see it work 1 time")
+				}
+
+				// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
+				dist := getDistFromDynamic(m.heroes, hunter)
+				fmt.Println(pathDup[x], "dist", dist)
+				if dist > 1 {
+					fmt.Println("dist is > 1", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
+					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
+					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
+					p := [][]float64{[]float64{hunter.Position.X, hunter.Position.Y}}
+					setPath(hunter, hunter.Position, p)
+
+					fmt.Println("post setPath", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
+					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
+					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
+
+					hunter.LastMile = 3
+				} else {
+					fmt.Println("calling PathDuplication from pathDup")
+					PathDuplication(hunter, target)
+				}
 			}
 
 			// calculate last mile paths
@@ -1326,11 +1353,6 @@ func (m *match) run() {
 				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 				hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
 				path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
-
-				if hunter.LastMile == 3 {
-					fmt.Println("I just want to see it work 1 time")
-					panic("I just want to see it work 1 time")
-				}
 
 				// check if the last mile path doesn't backtrack (causing a corner case)
 				hunterStart := path[0]
@@ -1370,38 +1392,6 @@ func (m *match) run() {
 					setPath(m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], end, path)
 				}
 
-			}
-
-			// calculate collision path duplication routes
-			for x := 0; x < len(pathDup); x++ {
-				hunter := m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]]
-				target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-				hunter.DynamicCircle = []float64{}
-
-				if hunter.LastMile == 3 {
-					fmt.Println("I just want to see it work 1 time")
-					panic("I just want to see it work 1 time")
-				}
-
-				// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
-				dist := getDistFromDynamic(m.heroes, hunter)
-				fmt.Println(pathDup[x], "dist", dist)
-				if dist > 1 {
-					fmt.Println("dist is > 1", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
-					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
-					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
-					p := [][]float64{[]float64{hunter.Position.X, hunter.Position.Y}}
-					setPath(hunter, hunter.Position, p)
-
-					fmt.Println("post setPath", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
-					fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
-					fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
-
-					hunter.LastMile = 3
-				} else {
-					fmt.Println("calling PathDuplication from pathDup")
-					PathDuplication(hunter, target)
-				}
 			}
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {

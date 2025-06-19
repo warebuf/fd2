@@ -6,7 +6,6 @@ import (
 
 // this problem is a well known problem called path decomposition in functional graphs
 // each node has 0 or 1 outgoing directed edges, we want to find all strands/cycles
-
 func GetStrandsAndCycles(state [][][]*heroes.Hero) ([][][3]int, [][][3]int) {
 	visited := make(map[[3]int]int) // 0 = unvisited, 1 = currently visiting, 2 = visited
 	cycles := [][][3]int{}
@@ -117,6 +116,15 @@ func GetStrandsAndCycles(state [][][]*heroes.Hero) ([][][3]int, [][][3]int) {
 	return cycles, strands
 }
 
-// now given cycles and strands
-// 1. calculate the best path for cycles
-// 2. go down the strand and calculate up
+func SolveCycles() {
+
+}
+
+func GetStrandOrder() {
+
+}
+
+func SolveStrandOrder() {
+
+	GetStrandOrder()
+}

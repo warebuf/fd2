@@ -1300,12 +1300,10 @@ func (m *match) run() {
 			for x := 0; x < len(recompute); x++ {
 				setRecompute(m.heroes, recompute[x])
 			}
-
 			// calculate last mile paths (LM1)
 			for x := 0; x < len(lastMile); x++ {
 				setLastMile(m.heroes, lastMile[x])
 			}
-
 			// calculate collision path duplication routes (LM2)
 			for x := 0; x < len(pathDup); x++ {
 				setPathDup(m.heroes, pathDup[x])
@@ -1949,9 +1947,9 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 		if currentHunter.LastMile == 0 {
 			continue
 		} else if currentHunter.LastMile == 1 {
-			// update
+			setLastMile(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 2 {
-			// update
+			setPathDup(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 3 {
 			// update state
 			// update

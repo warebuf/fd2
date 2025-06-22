@@ -2097,3 +2097,9 @@ func setPathDup(state [][][]*heroes.Hero, idx []int) {
 		PathDuplication(hunter, target)
 	}
 }
+
+// we want to detect which dependencies are in a cycle
+// update the dependencies in a cycle first
+
+// dfs is the only way to confirm something is in a cycle
+//

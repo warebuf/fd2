@@ -165,7 +165,7 @@ func m_read(m *match_socket) {
 								(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1))) {
 
 						canSetPath := false
-
+						oldTarget := []int
 						if msg.Route.I >= 0 &&
 							msg.Route.I < len(m.m.heroes) &&
 							msg.Route.J >= 0 &&
@@ -175,6 +175,7 @@ func m_read(m *match_socket) {
 							m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].HP > 0 {
 
 							if confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 1) {
+								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{msg.Route.I, msg.Route.J, msg.Route.K}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = []float64{m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].Position.X, m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].Position.Y}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
@@ -184,6 +185,7 @@ func m_read(m *match_socket) {
 						} else if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
 							if confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 0) {
+								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = []float64{}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
@@ -201,7 +203,10 @@ func m_read(m *match_socket) {
 							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
 							fmt.Println("calling setPath from m_read", msg.IndexI, msg.IndexJ, msg.IndexK)
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
-							checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
+							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination)
+							updateDependencies(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], m.m.dependencies)
+							//checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
+
 							m.m.sharepos(nil, 0)
 							//m.m.printState()
 
@@ -858,7 +863,9 @@ func (m *match) run() {
 							} else {
 								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
 								setPath(m.heroes[i][j][k], pint, p)
-								checkShadowedUnits(m.heroes, m.heroes[i][j][k])
+								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{})
+								updateDependencies(m.heroes, m.heroes[i][j][k], m.dependencies)
+								//checkShadowedUnits(m.heroes, m.heroes[i][j][k])
 								gave_bots_acts = true
 							}
 
@@ -1299,14 +1306,17 @@ func (m *match) run() {
 			// recalculate dynamic destinations (LM0)
 			for x := 0; x < len(recompute); x++ {
 				setRecompute(m.heroes, recompute[x])
+				updateDependencies(m.heroes, m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], m.dependencies)
 			}
 			// calculate last mile paths (LM1)
 			for x := 0; x < len(lastMile); x++ {
 				setLastMile(m.heroes, lastMile[x])
+				updateDependencies(m.heroes, m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], m.dependencies)
 			}
 			// calculate collision path duplication routes (LM2)
 			for x := 0; x < len(pathDup); x++ {
 				setPathDup(m.heroes, pathDup[x])
+				updateDependencies(m.heroes, m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]], m.dependencies)
 			}
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {
@@ -1921,7 +1931,31 @@ func checkShadowedUnits(state [][][]*heroes.Hero, source *heroes.Hero) {
 	}
 }
 
-func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][3]int) {
+func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int, dependencies map[[3]int][][3]int) {
+
+	hunterIndex := [3]int{hunter.Index[0], hunter.Index[1], hunter.Index[2]}
+
+	// remove from old array
+	if len(oldTarget) > 0 {
+		oldKey := [3]int{oldTarget[0], oldTarget[1], oldTarget[2]}
+		updatedArray := [][3]int{}
+		for i := 0; i < len(dependencies[oldKey]); i++ {
+			if dependencies[oldKey][i] != hunterIndex {
+				updatedArray = append(updatedArray, dependencies[oldKey][i])
+			}
+		}
+		dependencies[oldKey] = updatedArray
+	}
+
+	// update to new array
+	if len(newTarget) > 0 {
+		newKey := [3]int{newTarget[0], newTarget[1], newTarget[2]}
+		dependencies[newKey] = append(dependencies[newKey], hunterIndex)
+	}
+
+}
+
+func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][][3]int) {
 
 	key := [3]int{parent.Index[0], parent.Index[1], parent.Index[2]}
 	val, ok := graph[key]
@@ -1934,7 +1968,6 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 		queue.PushBack(val[i])
 	}
 
-	//visited := make(map[[3]int][3]int)
 	for queue.Len() > 0 {
 
 		current := queue.Front().Value.([3]int)
@@ -1951,11 +1984,21 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 		} else if currentHunter.LastMile == 2 {
 			setPathDup(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 3 {
-			// update state
-			// update
+			dist := getDistFromDynamic(state, currentHunter)
+			if dist <= 1 {
+				setPathDup(state, currentHunter.Index)
+			} else if dist <= 25 {
+				setLastMile(state, currentHunter.Index)
+			} else {
+				setRecompute(state, currentHunter.Index)
+			}
 		}
 
-		// also add the dependencies
+		if val, ok := graph[key]; ok {
+			for i := 0; i < len(val); i++ {
+				queue.PushBack(val[i])
+			}
+		}
 		queue.Remove(queue.Front())
 	}
 

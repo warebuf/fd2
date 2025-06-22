@@ -1995,7 +1995,7 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 			}
 		}
 
-		if val, ok := graph[key]; ok {
+		if val, ok := graph[current]; ok {
 			for i := 0; i < len(val); i++ {
 				queue.PushBack(val[i])
 			}

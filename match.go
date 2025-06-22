@@ -165,7 +165,7 @@ func m_read(m *match_socket) {
 								(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1))) {
 
 						canSetPath := false
-						oldTarget := []int
+						oldTarget := []int{}
 						if msg.Route.I >= 0 &&
 							msg.Route.I < len(m.m.heroes) &&
 							msg.Route.J >= 0 &&
@@ -203,7 +203,7 @@ func m_read(m *match_socket) {
 							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
 							fmt.Println("calling setPath from m_read", msg.IndexI, msg.IndexJ, msg.IndexK)
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
-							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination)
+							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
 							updateDependencies(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], m.m.dependencies)
 							//checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
 
@@ -345,6 +345,7 @@ func createMatch(pl *permission_list) *match {
 			state_count: 0,
 			heroes:      make([][][]*heroes.Hero, 0, 0),
 			//heroGraph:   make([][][]*pathfinding.DLiteGraph, 0, 0),
+			dependencies: make(map[[3]int][][3]int),
 
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
@@ -863,7 +864,7 @@ func (m *match) run() {
 							} else {
 								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
 								setPath(m.heroes[i][j][k], pint, p)
-								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{})
+								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
 								updateDependencies(m.heroes, m.heroes[i][j][k], m.dependencies)
 								//checkShadowedUnits(m.heroes, m.heroes[i][j][k])
 								gave_bots_acts = true

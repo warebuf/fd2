@@ -1979,7 +1979,7 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 		}
 
 		if currentHunter.LastMile == 0 {
-			continue
+
 		} else if currentHunter.LastMile == 1 {
 			setLastMile(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 2 {

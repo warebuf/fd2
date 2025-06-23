@@ -1932,79 +1932,6 @@ func checkShadowedUnits(state [][][]*heroes.Hero, source *heroes.Hero) {
 	}
 }
 
-func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int, dependencies map[[3]int][][3]int) {
-
-	hunterIndex := [3]int{hunter.Index[0], hunter.Index[1], hunter.Index[2]}
-
-	// remove from old array
-	if len(oldTarget) > 0 {
-		oldKey := [3]int{oldTarget[0], oldTarget[1], oldTarget[2]}
-		updatedArray := [][3]int{}
-		for i := 0; i < len(dependencies[oldKey]); i++ {
-			if dependencies[oldKey][i] != hunterIndex {
-				updatedArray = append(updatedArray, dependencies[oldKey][i])
-			}
-		}
-		dependencies[oldKey] = updatedArray
-	}
-
-	// update to new array
-	if len(newTarget) > 0 {
-		newKey := [3]int{newTarget[0], newTarget[1], newTarget[2]}
-		dependencies[newKey] = append(dependencies[newKey], hunterIndex)
-	}
-
-}
-
-func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][][3]int) {
-
-	key := [3]int{parent.Index[0], parent.Index[1], parent.Index[2]}
-	val, ok := graph[key]
-	if !ok || len(val) == 0 {
-		return
-	}
-
-	queue := list.New()
-	for i := 0; i < len(val); i++ {
-		queue.PushBack(val[i])
-	}
-
-	for queue.Len() > 0 {
-
-		current := queue.Front().Value.([3]int)
-		currentHunter := state[current[0]][current[1]][current[2]]
-
-		if currentHunter.Status != 1 {
-			panic("why are we updating a dependency that is not a follower")
-		}
-
-		if currentHunter.LastMile == 0 {
-
-		} else if currentHunter.LastMile == 1 {
-			setLastMile(state, currentHunter.Index)
-		} else if currentHunter.LastMile == 2 {
-			setPathDup(state, currentHunter.Index)
-		} else if currentHunter.LastMile == 3 {
-			dist := getDistFromDynamic(state, currentHunter)
-			if dist <= 1 {
-				setPathDup(state, currentHunter.Index)
-			} else if dist <= 25 {
-				setLastMile(state, currentHunter.Index)
-			} else {
-				setRecompute(state, currentHunter.Index)
-			}
-		}
-
-		if val, ok := graph[current]; ok {
-			for i := 0; i < len(val); i++ {
-				queue.PushBack(val[i])
-			}
-		}
-		queue.Remove(queue.Front())
-	}
-
-}
-
 func setRecompute(state [][][]*heroes.Hero, idx []int) {
 	fmt.Println("recompute[x]", idx)
 	hunter := state[idx[0]][idx[1]][idx[2]]
@@ -2098,8 +2025,159 @@ func setPathDup(state [][][]*heroes.Hero, idx []int) {
 	}
 }
 
-// we want to detect which dependencies are in a cycle
-// update the dependencies in a cycle first
+func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int, dependencies map[[3]int][][3]int) {
 
-// dfs is the only way to confirm something is in a cycle
-//
+	hunterIndex := [3]int{hunter.Index[0], hunter.Index[1], hunter.Index[2]}
+
+	// remove from old array
+	if len(oldTarget) > 0 {
+		oldKey := [3]int{oldTarget[0], oldTarget[1], oldTarget[2]}
+		updatedArray := [][3]int{}
+		for i := 0; i < len(dependencies[oldKey]); i++ {
+			if dependencies[oldKey][i] != hunterIndex {
+				updatedArray = append(updatedArray, dependencies[oldKey][i])
+			}
+		}
+		dependencies[oldKey] = updatedArray
+	}
+
+	// update to new array
+	if len(newTarget) > 0 {
+		newKey := [3]int{newTarget[0], newTarget[1], newTarget[2]}
+		dependencies[newKey] = append(dependencies[newKey], hunterIndex)
+	}
+
+}
+
+func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][][3]int) {
+
+	key := [3]int{parent.Index[0], parent.Index[1], parent.Index[2]}
+	val, ok := graph[key]
+	if !ok || len(val) == 0 {
+		return
+	}
+
+	queue := list.New()
+	for i := 0; i < len(val); i++ {
+		queue.PushBack(val[i])
+	}
+
+	for queue.Len() > 0 {
+
+		current := queue.Front().Value.([3]int)
+		currentHunter := state[current[0]][current[1]][current[2]]
+
+		if currentHunter.Status != 1 {
+			panic("why are we updating a dependency that is not a follower")
+		}
+
+		if currentHunter.LastMile == 0 {
+
+		} else if currentHunter.LastMile == 1 {
+			setLastMile(state, currentHunter.Index)
+		} else if currentHunter.LastMile == 2 {
+			setPathDup(state, currentHunter.Index)
+		} else if currentHunter.LastMile == 3 {
+			dist := getDistFromDynamic(state, currentHunter)
+			if dist <= 1 {
+				setPathDup(state, currentHunter.Index)
+			} else if dist <= 25 {
+				setLastMile(state, currentHunter.Index)
+			} else {
+				setRecompute(state, currentHunter.Index)
+			}
+		}
+
+		if val, ok := graph[current]; ok {
+			for i := 0; i < len(val); i++ {
+				queue.PushBack(val[i])
+			}
+		}
+		queue.Remove(queue.Front())
+	}
+
+}
+
+func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
+
+	current := [3]int{focus.Index[0], focus.Index[1], focus.Index[2]}
+
+	visited := make(map[[3]int]bool)
+	setStart := true
+
+	for {
+		if first, ok := visited[current]; ok {
+			if first {
+				return true
+			} else {
+				return false
+			}
+		} else {
+			visited[current] = setStart
+			setStart = false
+		}
+
+		next := state[current[0]][current[1]][current[2]].DynamicDestination
+		if len(next) > 0 {
+			current = [3]int{next[0], next[1], next[2]}
+		} else {
+			return false
+		}
+	}
+}
+
+func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][][3]int, [][][3]int) {
+
+	completed := make(map[[3]int]bool)
+	for i := 0; i < len(points); i++ {
+		key := [3]int{points[i][0], points[i][1], points[i][2]}
+		completed[key] = false
+	}
+
+	cycles := [][][3]int{}
+	strands := [][][3]int{}
+
+	for i := 0; i < len(points); i++ {
+
+		// run through path, determine of the point is in a cycle or a strand
+		current := [3]int{points[i][0], points[i][1], points[i][2]}
+		visited := make(map[[3]int]bool)
+		path := [][3]int{}
+		setStart := true
+		for {
+			path = append(path, current)
+			if first, ok := visited[current]; ok {
+				if first {
+					cycles = append(cycles, path)
+					break
+				} else {
+					strands = append(strands, path)
+					break
+				}
+			} else {
+				visited[current] = setStart
+				setStart = false
+			}
+
+			next := state[current[0]][current[1]][current[2]].DynamicDestination
+			if len(next) > 0 {
+				current = [3]int{next[0], next[1], next[2]}
+			} else {
+				strands = append(strands, path)
+				break
+			}
+		}
+	}
+
+	return cycles, strands
+}
+
+// if the unit is changing destinations
+// determine if the changed edge creates/is inside a cycle
+// if it does, run the cycle algorithm
+// update any non-cycle paths that depend on the cycle too
+
+// if the unit is updating it's path
+// determine which nodes are in a cycle
+// update their paths using the cycle algorithm
+// update any dependencies

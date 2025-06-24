@@ -2126,7 +2126,7 @@ func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
 	}
 }
 
-func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][][3]int, [][][3]int) {
+func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)
 	for i := 0; i < len(points); i++ {
@@ -2134,42 +2134,85 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][][3]int, 
 		completed[key] = false
 	}
 
-	cycles := [][][3]int{}
-	strands := [][][3]int{}
+	cycleStart := [][3]int{}
+	strandStart := [][3]int{}
+	visited := make(map[[3]int]bool)
 
 	for i := 0; i < len(points); i++ {
 
-		// run through path, determine of the point is in a cycle or a strand
+		// skip if we already visited
 		current := [3]int{points[i][0], points[i][1], points[i][2]}
-		visited := make(map[[3]int]bool)
-		path := [][3]int{}
+		if done := completed[current]; done {
+			continue
+		}
+
+		cycleCheck := make(map[[3]int]bool)
 		setStart := true
 		for {
-			path = append(path, current)
-			if first, ok := visited[current]; ok {
+
+			if _, found := completed[current]; found { // we incidentally found a node we are interested in
+				completed[current] = true
+			}
+
+			if first, ok := cycleCheck[current]; ok { // if we encountered a node in our current path, we have a cycle and our start is either the start of the cycle or a strand pointing to a cycle
 				if first {
-					cycles = append(cycles, path)
+					cycleStart = append(cycleStart, [3]int{points[i][0], points[i][1], points[i][2]})
 					break
 				} else {
-					strands = append(strands, path)
+					strandStart = append(strandStart, [3]int{points[i][0], points[i][1], points[i][2]})
 					break
 				}
 			} else {
-				visited[current] = setStart
+				cycleCheck[current] = setStart
 				setStart = false
+			}
+
+			if _, found := visited[current]; found { // otherwise, we have seen this before, therefore we do not need to explore anymore
+				strandStart = append(strandStart, [3]int{points[i][0], points[i][1], points[i][2]})
+				break
+			} else {
+				visited[current] = true
 			}
 
 			next := state[current[0]][current[1]][current[2]].DynamicDestination
 			if len(next) > 0 {
 				current = [3]int{next[0], next[1], next[2]}
-			} else {
-				strands = append(strands, path)
+			} else { // if we are at an end, let's save
+				strandStart = append(strandStart, [3]int{points[i][0], points[i][1], points[i][2]})
 				break
 			}
 		}
 	}
 
-	return cycles, strands
+	// get rid of the false starts
+	filteredStrands := [][3]int{}
+	seen := make(map[[3]int]bool)
+	for j := len(strandStart) - 1; j >= 0; j-- {
+
+		if seen[strandStart[j]] {
+			continue
+		}
+
+		filteredStrands = append(filteredStrands, strandStart[j])
+		current := strandStart[j]
+		for {
+			if seen[current] {
+				break
+			} else {
+				seen[current] = true
+			}
+
+			next := state[current[0]][current[1]][current[2]].DynamicDestination
+			if len(next) == 0 {
+				break
+			} else {
+				current = [3]int{next[0], next[1], next[2]}
+			}
+		}
+
+	}
+
+	return cycleStart, filteredStrands
 }
 
 // if the unit is changing destinations

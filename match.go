@@ -2126,6 +2126,7 @@ func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
 	}
 }
 
+// given a set of nodes, will determine the start nodes that encompass the cycle and strands for this set
 func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)
@@ -2184,7 +2185,7 @@ func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int
 		}
 	}
 
-	// get rid of the false starts
+	// get rid of the false starts, not sure if this is correct TBH
 	filteredStrands := [][3]int{}
 	seen := make(map[[3]int]bool)
 	for j := len(strandStart) - 1; j >= 0; j-- {

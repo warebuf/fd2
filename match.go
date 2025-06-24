@@ -2185,7 +2185,7 @@ func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int
 		}
 	}
 
-	// get rid of the false starts, not sure if this is correct TBH
+	// get rid of the false starts, not sure if this is correct TBH (do i have to include cycles)
 	filteredStrands := [][3]int{}
 	seen := make(map[[3]int]bool)
 	for j := len(strandStart) - 1; j >= 0; j-- {

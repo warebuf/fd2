@@ -2128,6 +2128,7 @@ func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
 
 // given a set of nodes, will determine the start nodes that encompass the cycle and strands for this set
 // this is wrong right, we want the strand ends, not the starts?
+// getCycleStartsAndStrandEnds?
 func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)

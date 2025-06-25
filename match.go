@@ -2156,20 +2156,20 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 
 				// iterate through path, figure out which nodes are strands and cycles
 				idx := 0
-				for i := 0; i < len(path); i++ {
-					if path[i] == current {
+				for j := 0; j < len(path); j++ {
+					if path[j] == current {
 						break
 					}
-					if interested[idx] == path[i] {
+					if interested[idx] == path[j] {
 						idx += 1
 					}
 				}
 
-				for i := idx; i < len(interested); i++ {
+				for j := idx; j < len(interested); j++ {
 					cycle = append(cycle, interested[idx])
 				}
 
-				for i := idx - 1; i >= 0; i-- { // append in reverse for hierarchy
+				for j := idx - 1; j >= 0; j-- { // append in reverse for hierarchy
 					strand = append(strand, interested[idx])
 				}
 
@@ -2185,8 +2185,8 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 			}
 
 			if _, found := visited[current]; found { // we have seen this before, we do not need to explore anymore
-				for i := len(interested) - 1; i >= 0; i-- { // append in reverse for hierarchy
-					strand = append(strand, interested[i])
+				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
+					strand = append(strand, interested[j])
 				}
 				break
 			} else {
@@ -2197,8 +2197,8 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 			if len(next) > 0 {
 				current = [3]int{next[0], next[1], next[2]}
 			} else { // if we are at an end, let's save
-				for i := len(interested) - 1; i >= 0; i-- { // append in reverse for hierarchy
-					strand = append(strand, interested[i])
+				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
+					strand = append(strand, interested[j])
 				}
 				break
 			}

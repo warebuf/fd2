@@ -115,10 +115,7 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 // can actually run through cycle again, depending on status, may not ve an actual cycle
 // a LastMile 0 means that the dependency does not update for a changing path
 // meaning this is not a cycle
-
-func determineIfTrueCycle() {
-
-}
+// should probably update getCyclesAndStrands to handle this
 
 func calcCyclePath() {
 

@@ -2126,10 +2126,8 @@ func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
 	}
 }
 
-// given a set of nodes, will determine the start nodes that encompass the cycle and strands for this set
-// this is wrong right, we want the strand ends, not the starts?
-// getCycleStartsAndStrandEnds?
-func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
+// given a set of nodes, determine if in a cycle or strand
+func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)
 	for i := 0; i < len(points); i++ {
@@ -2137,8 +2135,8 @@ func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int
 		completed[key] = false
 	}
 
-	cycleStart := [][3]int{}
-	strandStart := [][3]int{}
+	cycle := [][3]int{}
+	strand := [][3]int{}
 	visited := make(map[[3]int]bool)
 
 	for i := 0; i < len(points); i++ {
@@ -2150,28 +2148,46 @@ func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int
 		}
 
 		cycleCheck := make(map[[3]int]bool)
-		setStart := true
+		path := [][3]int{}
+		interested := [][3]int{}
 		for {
+
+			if _, ok := cycleCheck[current]; ok { // if we encountered a node in our current path, we have a cycle
+
+				// iterate through path, figure out which nodes are strands and cycles
+				idx := 0
+				for i := 0; i < len(path); i++ {
+					if path[i] == current {
+						break
+					}
+					if interested[idx] == path[i] {
+						idx += 1
+					}
+				}
+
+				for i := idx; i < len(interested); i++ {
+					cycle = append(cycle, interested[idx])
+				}
+
+				for i := idx - 1; i >= 0; i-- { // append in reverse for hierarchy
+					strand = append(strand, interested[idx])
+				}
+
+				break
+			} else {
+				cycleCheck[current] = true
+				path = append(path, current)
+			}
 
 			if _, found := completed[current]; found { // we incidentally found a node we are interested in
 				completed[current] = true
+				interested = append(interested, current)
 			}
 
-			if first, ok := cycleCheck[current]; ok { // if we encountered a node in our current path, we have a cycle and our start is either the start of the cycle or a strand pointing to a cycle
-				if first {
-					cycleStart = append(cycleStart, [3]int{points[i][0], points[i][1], points[i][2]})
-					break
-				} else {
-					strandStart = append(strandStart, [3]int{points[i][0], points[i][1], points[i][2]})
-					break
+			if _, found := visited[current]; found { // we have seen this before, we do not need to explore anymore
+				for i := len(interested) - 1; i >= 0; i-- { // append in reverse for hierarchy
+					strand = append(strand, interested[i])
 				}
-			} else {
-				cycleCheck[current] = setStart
-				setStart = false
-			}
-
-			if _, found := visited[current]; found { // otherwise, we have seen this before, therefore we do not need to explore anymore
-				strandStart = append(strandStart, [3]int{points[i][0], points[i][1], points[i][2]})
 				break
 			} else {
 				visited[current] = true
@@ -2181,41 +2197,15 @@ func getCyclesAndStrandStart(state [][][]*heroes.Hero, points [][]int) ([][3]int
 			if len(next) > 0 {
 				current = [3]int{next[0], next[1], next[2]}
 			} else { // if we are at an end, let's save
-				strandStart = append(strandStart, [3]int{points[i][0], points[i][1], points[i][2]})
+				for i := len(interested) - 1; i >= 0; i-- { // append in reverse for hierarchy
+					strand = append(strand, interested[i])
+				}
 				break
 			}
 		}
 	}
 
-	// get rid of the false starts, not sure if this is correct TBH (do i have to include cycles)
-	filteredStrands := [][3]int{}
-	seen := make(map[[3]int]bool)
-	for j := len(strandStart) - 1; j >= 0; j-- {
-
-		if seen[strandStart[j]] {
-			continue
-		}
-
-		filteredStrands = append(filteredStrands, strandStart[j])
-		current := strandStart[j]
-		for {
-			if seen[current] {
-				break
-			} else {
-				seen[current] = true
-			}
-
-			next := state[current[0]][current[1]][current[2]].DynamicDestination
-			if len(next) == 0 {
-				break
-			} else {
-				current = [3]int{next[0], next[1], next[2]}
-			}
-		}
-
-	}
-
-	return cycleStart, filteredStrands
+	return cycle, strand
 }
 
 // if the unit is changing destinations

@@ -117,7 +117,11 @@ func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][
 }
 
 // thinking of using frechet distance to determine path similarity (n^2ß)
-// can do resample as a faster method 
+// can do resample as a faster method
+// we can do it in linear time, we can take the major points, take the distance and mirror in both paths, as soon as you exceed, escape
+func comparePathSimilarity(p1 [][]float64, p2 [][]float64, maxScore float64) bool {
+
+}
 
 // make sure to handle LastMile==3 case
 func calcCyclePath() {

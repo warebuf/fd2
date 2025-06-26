@@ -98,13 +98,13 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 			}
 
 			next := state[current[0]][current[1]][current[2]].DynamicDestination
-			if len(next) > 0 {
-				current = [3]int{next[0], next[1], next[2]}
-			} else { // if we are at an end, let's save
+			if state[current[0]][current[1]][current[2]].LastMile == 0 || len(next) == 0 { // if we are at an end, let's save
 				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
 					strand = append(strand, interested[j])
 				}
 				break
+			} else {
+				current = [3]int{next[0], next[1], next[2]}
 			}
 		}
 	}
@@ -112,11 +112,7 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 	return cycle, strand
 }
 
-// can actually run through cycle again, depending on status, may not ve an actual cycle
-// a LastMile 0 means that the dependency does not update for a changing path
-// meaning this is not a cycle
-// should probably update getCyclesAndStrands to handle this
-
+// make sure to handle LastMile==3 case
 func calcCyclePath() {
 
 }

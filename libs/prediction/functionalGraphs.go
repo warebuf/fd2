@@ -112,6 +112,13 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 	return cycle, strand
 }
 
+func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
+
+}
+
+// thinking of using frechet distance to determine path similarity (n^2ß)
+// can do resample as a faster method 
+
 // make sure to handle LastMile==3 case
 func calcCyclePath() {
 

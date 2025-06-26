@@ -2,6 +2,7 @@ package prediction
 
 import (
 	"fd/libs/heroes"
+	"fd/libs/maps"
 	"math"
 )
 
@@ -117,8 +118,6 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 
 func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
 
-	
-
 }
 
 // could do frechet, or mirror major points, but just going to do simple major point comparison
@@ -136,7 +135,7 @@ func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
 			break
 		}
 
-		compare := EuclideanDistance(p1[it][0], p1[it][1], p2[it][0], p2[it][1])
+		compare := maps.EuclideanDistance(p1[it][0], p1[it][1], p2[it][0], p2[it][1])
 		if math.Abs(compare) > 1e-6 { // same points
 			return false
 		}

@@ -1,6 +1,9 @@
 package prediction
 
-import "fd/libs/heroes"
+import (
+	"fd/libs/heroes"
+	"math"
+)
 
 func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
 
@@ -116,10 +119,30 @@ func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][
 
 }
 
-// thinking of using frechet distance to determine path similarity (n^2ß)
-// can do resample as a faster method
-// we can do it in linear time, we can take the major points, take the distance and mirror in both paths, as soon as you exceed, escape
-func comparePathSimilarity(p1 [][]float64, p2 [][]float64, maxScore float64) bool {
+// could do frechet, or mirror major points, but just going to do simple major point comparison
+func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
+
+	if len(p1) != len(p2) {
+		return false
+	}
+
+	it := 0
+
+	for {
+
+		if it >= len(p1) {
+			break
+		}
+
+		compare := EuclideanDistance(p1[it][0], p1[it][1], p2[it][0], p2[it][1])
+		if math.Abs(compare) > 1e-6 { // same points
+			return false
+		}
+
+		it += 1
+	}
+
+	return true
 
 }
 

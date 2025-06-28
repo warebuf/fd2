@@ -2098,4 +2098,95 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 
 }
 
+func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
 
+}
+
+// could do frechet, or mirror major points, but just going to do simple major point comparison
+func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
+
+	if len(p1) != len(p2) {
+		return false
+	}
+
+	it := 0
+
+	for {
+
+		if it >= len(p1) {
+			break
+		}
+
+		compare := maps.EuclideanDistance(p1[it][0], p1[it][1], p2[it][0], p2[it][1])
+		if math.Abs(compare) > 1e-6 { // same points
+			return false
+		}
+
+		it += 1
+	}
+
+	return true
+
+}
+
+// make sure to handle LastMile==3 case
+func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int) {
+
+	completed := make(map[[3]int]bool)
+	for i := 0; i < len(cyclePoints); i++ {
+		completed[cyclePoints[i]] = false
+	}
+
+	for i := 0; i < len(cyclePoints); i++ {
+
+		if completed[cyclePoints[i]] {
+			continue
+		}
+
+		// identify the cycle
+		start := cyclePoints[i]
+		current := start
+		cycle := [][3]int{}
+		for {
+			cycle = append(cycle, current)
+			if _, found := completed[current]; found {
+				completed[current] = true
+			}
+			next := state[cyclePoints[i][0]][cyclePoints[i][1]][cyclePoints[i][2]].DynamicDestination
+			current = [3]int{next[0], next[1], next[2]}
+			if current == start {
+				break
+			}
+		}
+
+		// set the first path
+		startingUnit := state[start[0]][start[1]][start[2]]
+		if startingUnit.LastMile == 0 {
+			panic("should not be 0, we should've found out sooner")
+		} else if startingUnit.LastMile == 1 {
+
+		} else if startingUnit.LastMile == 2 {
+
+		} else if startingUnit.LastMile == 3 {
+
+		}
+
+		// iterate backwards
+		current := cyclePoints[i]
+		for {
+			// solve for path for current
+			// check for change, otherwise iterate backwards
+		}
+	}
+
+}
+
+// if the unit is changing destinations
+// determine if the changed edge creates/is inside a cycle
+// if it does, run the cycle algorithm
+// update any non-cycle paths that depend on the cycle too
+
+// if the unit is updating it's path
+// determine which nodes are in a cycle
+// update their paths using the cycle algorithm
+// update any dependencies

@@ -2100,6 +2100,9 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 
 func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
 
+	// call calcCyclePath
+	// update cycle dependencies, strands
+
 }
 
 // could do frechet, or mirror major points, but just going to do simple major point comparison
@@ -2178,22 +2181,37 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			}
 		}
 
-		// iterate backwards
-		current = 
+		it := 1
 		for {
-			// solve for path for current
-			// check for change, otherwise iterate backwards
+
+			// iterate backwards, solve path for current, check for change
+			currentUnit := state[cycle[it][0]][cycle[it][1]][cycle[it][2]]
+			previousPath := currentUnit.Path
+			if startingUnit.LastMile == 0 {
+				setRecompute(state, start[:])
+			} else if startingUnit.LastMile == 1 {
+				setLastMile(state, start[:])
+			} else if startingUnit.LastMile == 2 {
+				setPathDup(state, start[:])
+			} else if startingUnit.LastMile == 3 {
+				dist := getDistFromDynamic(state, startingUnit)
+				if dist <= 1 {
+					setPathDup(state, start[:])
+				} else if dist <= 25 {
+					setLastMile(state, start[:])
+				} else {
+					setRecompute(state, start[:])
+				}
+			}
+			newPath := currentUnit.Path
+			if comparePathSimilarity(previousPath, newPath) {
+				break
+			}
 		}
+
 	}
 
+	// return a list of dependencies
+	// return a list of updated nodes
+
 }
-
-// if the unit is changing destinations
-// determine if the changed edge creates/is inside a cycle
-// if it does, run the cycle algorithm
-// update any non-cycle paths that depend on the cycle too
-
-// if the unit is updating it's path
-// determine which nodes are in a cycle
-// update their paths using the cycle algorithm
-// update any dependencies

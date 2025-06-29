@@ -2,8 +2,6 @@ package prediction
 
 import (
 	"fd/libs/heroes"
-	"fd/libs/maps"
-	"math"
 )
 
 func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
@@ -102,7 +100,7 @@ func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 			}
 
 			next := state[current[0]][current[1]][current[2]].DynamicDestination
-			if state[current[0]][current[1]][current[2]].LastMile == 0 || len(next) == 0 { // if we are at an end, let's save
+			if len(next) == 0 { // if we are at an end, let's save
 				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
 					strand = append(strand, interested[j])
 				}

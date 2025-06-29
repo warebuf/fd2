@@ -2072,7 +2072,7 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 		}
 
 		if currentHunter.LastMile == 0 {
-
+			setRecompute(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 1 {
 			setLastMile(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 2 {
@@ -2162,17 +2162,24 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 		// set the first path
 		startingUnit := state[start[0]][start[1]][start[2]]
 		if startingUnit.LastMile == 0 {
-			panic("should not be 0, we should've found out sooner")
+			setRecompute(state, start[:])
 		} else if startingUnit.LastMile == 1 {
-
+			setLastMile(state, start[:])
 		} else if startingUnit.LastMile == 2 {
-
+			setPathDup(state, start[:])
 		} else if startingUnit.LastMile == 3 {
-
+			dist := getDistFromDynamic(state, startingUnit)
+			if dist <= 1 {
+				setPathDup(state, start[:])
+			} else if dist <= 25 {
+				setLastMile(state, start[:])
+			} else {
+				setRecompute(state, start[:])
+			}
 		}
 
 		// iterate backwards
-		current := cyclePoints[i]
+		current = 
 		for {
 			// solve for path for current
 			// check for change, otherwise iterate backwards

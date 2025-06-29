@@ -2203,9 +2203,16 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 					setRecompute(state, start[:])
 				}
 			}
+
+			// since we updated this node, let's save the node and it's dependencies
+
 			newPath := currentUnit.Path
 			if comparePathSimilarity(previousPath, newPath) {
 				break
+			}
+			it += 1
+			if it >= len(cycle) {
+				it = 0
 			}
 		}
 

@@ -5,7 +5,7 @@ import (
 )
 
 // given a set of nodes, determine if in a cycle or strand
-func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
+func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int, hardUpdate map[[3]int]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)
 	for i := 0; i < len(points); i++ {
@@ -72,7 +72,9 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 			}
 
 			next := state[current[0]][current[1]][current[2]].DynamicDestination
-			if state[current[0]][current[1]][current[2]].LastMile == 0 || len(next) == 0 { // if we are at an end, let's save (LastMile 0 is an end because it does't need to be updated more than once, and therefore not a cycle)
+			stayLastMile0 := (_, ok := hardUpdate[current]; !ok) && state[current[0]][current[1]][current[2]].LastMile == 0
+			changeToLastMile0 := (status, ok := hardUpdate[current]; ok && status == 0)
+			if stayLastMile0 || changeToLastMile0 || len(next) == 0 { // if we are at an end, let's save (LastMile 0 is an end because it does't need to be updated more than once, and therefore not a cycle)
 				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
 					strand = append(strand, interested[j])
 				}

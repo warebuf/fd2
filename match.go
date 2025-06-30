@@ -957,10 +957,7 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
-								prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "test")
-
 								fmt.Println(i, j, k, "LM0", prox, min_units, entry, prox-min_units)
-								fmt.Println(i, j, k, "LM0-2", prox2, min_units, entry2)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "entering" {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm0)", prox, entry)
@@ -1016,10 +1013,7 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
-								prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "test")
-
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry, min_units, prox-min_units)
-								fmt.Println(i, j, k, "prox2 (LM1)", prox2, entry2, min_units, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && (entry == "exiting" || entry == "passing") {
 
@@ -1051,10 +1045,7 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), 1, "exit")
-								prox2, entry2 := prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), 1, "test")
-
 								fmt.Println(i, j, k, "prox (LM2)", prox, min_units, entry, prox-min_units)
-								fmt.Println(i, j, k, "prox2 (LM2)", prox2, min_units, entry2)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "exiting" {
 									fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
@@ -1336,26 +1327,10 @@ func (m *match) run() {
 				hardUpdate[[3]int(lastMile[i])] = 1
 			}
 			for i := 0; i < len(pathDup); i++ {
-				hardUpdate[[3]int(pathDup[i])] = 1
+				hardUpdate[[3]int(pathDup[i])] = 2
 			}
 			cycles, strands := prediction.GetCyclesAndStrands(m.heroes, allToUpdate, hardUpdate)
 			updateDependencies(m.heroes, cycles, strands, m.dependencies, hardUpdate)
-
-			// recalculate dynamic destinations (LM0)
-			// for x := 0; x < len(recompute); x++ {
-			// 	setRecompute(m.heroes, recompute[x])
-			// 	updateDependencies(m.heroes, m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], m.dependencies)
-			// }
-			// // calculate last mile paths (LM1)
-			// for x := 0; x < len(lastMile); x++ {
-			// 	setLastMile(m.heroes, lastMile[x])
-			// 	updateDependencies(m.heroes, m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], m.dependencies)
-			// }
-			// // calculate collision path duplication routes (LM2)
-			// for x := 0; x < len(pathDup); x++ {
-			// 	setPathDup(m.heroes, pathDup[x])
-			// 	updateDependencies(m.heroes, m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]], m.dependencies)
-			// }
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {
 				m.sharepos(nil, 0)

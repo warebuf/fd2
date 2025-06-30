@@ -207,9 +207,13 @@ func m_read(m *match_socket) {
 							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
 							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points)
-							hardUpdate := make(map[[3]int]struct{})
+							hardUpdate := make(map[[3]int]int)
 							if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 0 {
-								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = struct{}{}
+								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
+							} else if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 1 {
+								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 1
+							} else if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 2 {
+								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
 							}
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
@@ -874,9 +878,13 @@ func (m *match) run() {
 								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
 								points := [][]int{{i, j, k}}
 								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points)
-								hardUpdate := make(map[[3]int]struct{})
+								hardUpdate := make(map[[3]int]int)
 								if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 0 {
-									hardUpdate[[3]int{i, j, k}] = struct{}{}
+									hardUpdate[[3]int{i, j, k}] = 0
+								} else if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 1 {
+									hardUpdate[[3]int{i, j, k}] = 1
+								} else if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 2 {
+									hardUpdate[[3]int{i, j, k}] = 2
 								}
 								updateDependencies(m.heroes, cycle, strand, m.dependencies, hardUpdate)
 
@@ -1319,9 +1327,15 @@ func (m *match) run() {
 
 			// can this all be replaced by a single function call?
 			allToUpdate := append(append(recompute, lastMile...), pathDup...)
-			hardUpdate := make(map[[3]int]struct{})
+			hardUpdate := make(map[[3]int]int)
 			for i := 0; i < len(recompute); i++ {
-				hardUpdate[[3]int(recompute[i])] = struct{}{}
+				hardUpdate[[3]int(recompute[i])] = 0
+			}
+			for i := 0; i < len(lastMile); i++ {
+				hardUpdate[[3]int(recompute[i])] = 1
+			}
+			for i := 0; i < len(pathDup); i++ {
+				hardUpdate[[3]int(pathDup[i])] = 1
 			}
 			cycles, strands := prediction.GetCyclesAndStrands(m.heroes, allToUpdate)
 			updateDependencies(m.heroes, cycles, strands, m.dependencies, hardUpdate)
@@ -2018,7 +2032,7 @@ func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int
 
 }
 
-func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]int, updated map[[3]int]struct{}, hardUpdate map[[3]int]struct{}) {
+func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]int, updated map[[3]int]struct{}, hardUpdate map[[3]int]int) {
 
 	// if we have already updated this strand, skip
 	if _, found := updated[point]; found {
@@ -2028,13 +2042,6 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 	// add the current strand to the queue
 	queue := list.New()
 	queue.PushBack(point)
-
-	// add the dependencies to a queue
-	if val, ok := graph[point]; ok {
-		for i := 0; i < len(val); i++ {
-			queue.PushBack(val[i])
-		}
-	}
 
 	for queue.Len() > 0 {
 
@@ -2050,10 +2057,21 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 		}
 
 		// update the current node
-		if currentHunter.Destination.Type == "camp" {
+		notRealUpdate := false // if the LastMile == 0 and is not a hard update, it doesn't update the path, so we don't need to continue
 
-		} else if _, ok := hardUpdate[current]; ok && currentHunter.LastMile == 0 {
-			setRecompute(state, currentHunter.Index) // TODO: this is wrong, should only call setRecompute when dist < pathDist / 3 ; TLDR we should only call this when it matches the recompute array
+		if status, ok := hardUpdate[current]; ok {
+
+			if status == 0 {
+				setRecompute(state, currentHunter.Index)
+			} else if status == 1 {
+				setLastMile(state, currentHunter.Index)
+			} else if status == 2 {
+				setPathDup(state, currentHunter.Index)
+			}
+
+		} else if currentHunter.Destination.Type == "camp" {
+		} else if currentHunter.LastMile == 0 {
+			notRealUpdate = true
 		} else if currentHunter.LastMile == 1 {
 			setLastMile(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 2 {
@@ -2070,9 +2088,11 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 		}
 
 		// add the current node's dependencies to the queue
-		if val, ok := graph[current]; ok {
-			for i := 0; i < len(val); i++ {
-				queue.PushBack(val[i])
+		if notRealUpdate == false {
+			if val, ok := graph[current]; ok {
+				for i := 0; i < len(val); i++ {
+					queue.PushBack(val[i])
+				}
 			}
 		}
 

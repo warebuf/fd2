@@ -100,7 +100,7 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 			}
 
 			next := state[current[0]][current[1]][current[2]].DynamicDestination
-			if len(next) == 0 { // if we are at an end, let's save
+			if state[current[0]][current[1]][current[2]].LastMile == 0 || len(next) == 0 { // if we are at an end, let's save (LastMile 0 is an end because it does't need to be updated more than once, and therefore not a cycle)
 				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
 					strand = append(strand, interested[j])
 				}

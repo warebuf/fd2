@@ -1332,7 +1332,7 @@ func (m *match) run() {
 				hardUpdate[[3]int(recompute[i])] = 0
 			}
 			for i := 0; i < len(lastMile); i++ {
-				hardUpdate[[3]int(recompute[i])] = 1
+				hardUpdate[[3]int(lastMile[i])] = 1
 			}
 			for i := 0; i < len(pathDup); i++ {
 				hardUpdate[[3]int(pathDup[i])] = 1

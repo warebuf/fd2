@@ -214,7 +214,7 @@ func m_read(m *match_socket) {
 							} else if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 2 {
 								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
 							}
-							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points)
+							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points, hardUpdate)
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
 							m.m.sharepos(nil, 0)
@@ -877,7 +877,7 @@ func (m *match) run() {
 
 								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
 								points := [][]int{{i, j, k}}
-								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points)
+
 								hardUpdate := make(map[[3]int]int)
 								if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 0 {
 									hardUpdate[[3]int{i, j, k}] = 0
@@ -886,6 +886,7 @@ func (m *match) run() {
 								} else if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 2 {
 									hardUpdate[[3]int{i, j, k}] = 2
 								}
+								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points, hardUpdate)
 								updateDependencies(m.heroes, cycle, strand, m.dependencies, hardUpdate)
 
 								gave_bots_acts = true
@@ -1337,7 +1338,7 @@ func (m *match) run() {
 			for i := 0; i < len(pathDup); i++ {
 				hardUpdate[[3]int(pathDup[i])] = 1
 			}
-			cycles, strands := prediction.GetCyclesAndStrands(m.heroes, allToUpdate)
+			cycles, strands := prediction.GetCyclesAndStrands(m.heroes, allToUpdate, hardUpdate)
 			updateDependencies(m.heroes, cycles, strands, m.dependencies, hardUpdate)
 
 			// recalculate dynamic destinations (LM0)

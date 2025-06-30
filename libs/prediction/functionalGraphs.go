@@ -33,7 +33,7 @@ func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
 }
 
 // given a set of nodes, determine if in a cycle or strand
-func getCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
+func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)
 	for i := 0; i < len(points); i++ {

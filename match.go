@@ -203,9 +203,11 @@ func m_read(m *match_socket) {
 							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
 							fmt.Println("calling setPath from m_read", msg.IndexI, msg.IndexJ, msg.IndexK)
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
+
 							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
-							updateDependencies(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], m.m.dependencies)
-							//checkShadowedUnits(m.m.heroes, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK])
+							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
+							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points)
+							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies)
 
 							m.m.sharepos(nil, 0)
 							//m.m.printState()
@@ -864,9 +866,12 @@ func (m *match) run() {
 							} else {
 								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
 								setPath(m.heroes[i][j][k], pint, p)
+
 								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
-								updateDependencies(m.heroes, m.heroes[i][j][k], m.dependencies)
-								//checkShadowedUnits(m.heroes, m.heroes[i][j][k])
+								points := [][]int{{i, j, k}}
+								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points)
+								updateDependencies(m.heroes, cycle, strand, m.dependencies)
+
 								gave_bots_acts = true
 							}
 
@@ -1304,21 +1309,26 @@ func (m *match) run() {
 
 			}
 
+			// can this all be replaced by a single function call?
+			allToUpdate := append(append(recompute, lastMile...), pathDup...)
+			cycles, strands := prediction.GetCyclesAndStrands(m.heroes, allToUpdate)
+			updateDependencies(m.heroes, cycles, strands, m.dependencies)
+
 			// recalculate dynamic destinations (LM0)
-			for x := 0; x < len(recompute); x++ {
-				setRecompute(m.heroes, recompute[x])
-				updateDependencies(m.heroes, m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], m.dependencies)
-			}
-			// calculate last mile paths (LM1)
-			for x := 0; x < len(lastMile); x++ {
-				setLastMile(m.heroes, lastMile[x])
-				updateDependencies(m.heroes, m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], m.dependencies)
-			}
-			// calculate collision path duplication routes (LM2)
-			for x := 0; x < len(pathDup); x++ {
-				setPathDup(m.heroes, pathDup[x])
-				updateDependencies(m.heroes, m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]], m.dependencies)
-			}
+			// for x := 0; x < len(recompute); x++ {
+			// 	setRecompute(m.heroes, recompute[x])
+			// 	updateDependencies(m.heroes, m.heroes[recompute[x][0]][recompute[x][1]][recompute[x][2]], m.dependencies)
+			// }
+			// // calculate last mile paths (LM1)
+			// for x := 0; x < len(lastMile); x++ {
+			// 	setLastMile(m.heroes, lastMile[x])
+			// 	updateDependencies(m.heroes, m.heroes[lastMile[x][0]][lastMile[x][1]][lastMile[x][2]], m.dependencies)
+			// }
+			// // calculate collision path duplication routes (LM2)
+			// for x := 0; x < len(pathDup); x++ {
+			// 	setPathDup(m.heroes, pathDup[x])
+			// 	updateDependencies(m.heroes, m.heroes[pathDup[x][0]][pathDup[x][1]][pathDup[x][2]], m.dependencies)
+			// }
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {
 				m.sharepos(nil, 0)
@@ -2049,7 +2059,8 @@ func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int
 
 }
 
-func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][][3]int) {
+// out of date function
+func updateDep(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][][3]int) {
 
 	key := [3]int{parent.Index[0], parent.Index[1], parent.Index[2]}
 	val, ok := graph[key]
@@ -2098,10 +2109,87 @@ func updateDependencies(state [][][]*heroes.Hero, parent *heroes.Hero, graph map
 
 }
 
-func updateCycleDependency(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
+func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]int, updated map[[3]int]struct{}) {
 
-	// call calcCyclePath
-	// update cycle dependencies, strands
+	// if we have already updated this strand, skip
+	if _, found := updated[point]; found {
+		return
+	}
+
+	// find the dependencies for this point
+	val, ok := graph[point]
+	if !ok || len(val) == 0 {
+		return
+	}
+
+	// add the current strand to the queue
+	queue := list.New()
+	queue.PushBack(point)
+
+	// add the dependencies to a queue
+	for i := 0; i < len(val); i++ {
+		queue.PushBack(val[i])
+	}
+
+	for queue.Len() > 0 {
+
+		current := queue.Front().Value.([3]int)
+		queue.Remove(queue.Front())
+		currentHunter := state[current[0]][current[1]][current[2]]
+
+		// if we have already updated this, then skip
+		if _, found := updated[current]; found {
+			continue
+		} else {
+			updated[current] = struct{}{}
+		}
+
+		// update the current node
+		if currentHunter.LastMile == 0 {
+			setRecompute(state, currentHunter.Index)
+		} else if currentHunter.LastMile == 1 {
+			setLastMile(state, currentHunter.Index)
+		} else if currentHunter.LastMile == 2 {
+			setPathDup(state, currentHunter.Index)
+		} else if currentHunter.LastMile == 3 {
+			dist := getDistFromDynamic(state, currentHunter)
+			if dist <= 1 {
+				setPathDup(state, currentHunter.Index)
+			} else if dist <= 25 {
+				setLastMile(state, currentHunter.Index)
+			} else {
+				setRecompute(state, currentHunter.Index)
+			}
+		}
+
+		// add the current node's dependencies to the queue
+		if val, ok := graph[current]; ok {
+			for i := 0; i < len(val); i++ {
+				queue.PushBack(val[i])
+			}
+		}
+
+	}
+
+}
+
+func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
+
+	updated, dependents := updatedCycles(state, cycle, graph)
+
+	// update cycle dependencies
+	for node, _ := range dependents {
+		if _, found := updated[node]; !found {
+			updateStrand(state, node, graph, updated)
+		}
+	}
+
+	// update strands
+	for node, _ := range dependents {
+		if _, found := updated[node]; !found {
+			updateStrand(state, node, graph, updated)
+		}
+	}
 
 }
 
@@ -2133,7 +2221,10 @@ func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
 }
 
 // make sure to handle LastMile==3 case
-func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int) {
+func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int) (map[[3]int]struct{}, map[[3]int]struct{}) {
+
+	updated := make(map[[3]int]struct{})
+	dependents := make(map[[3]int]struct{})
 
 	completed := make(map[[3]int]bool)
 	for i := 0; i < len(cyclePoints); i++ {
@@ -2162,6 +2253,13 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			}
 		}
 
+		// add the start to the updated/dependents map
+		updated[start] = struct{}{}
+		startDependents := graph[start]
+		for j := 0; j < len(startDependents); j++ {
+			dependents[startDependents[j]] = struct{}{}
+		}
+
 		// set the first path
 		startingUnit := state[start[0]][start[1]][start[2]]
 		if startingUnit.LastMile == 0 {
@@ -2187,6 +2285,16 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			// iterate backwards, solve path for current, check for change
 			currentUnit := state[cycle[it][0]][cycle[it][1]][cycle[it][2]]
 			previousPath := currentUnit.Path
+
+			// add the current node and dependents to our updated/dependent map
+			if _, exists := updated[cycle[it]]; !exists {
+				updated[cycle[it]] = struct{}{}
+				startDependents := graph[start]
+				for j := 0; j < len(startDependents); j++ {
+					dependents[startDependents[j]] = struct{}{}
+				}
+			}
+
 			if startingUnit.LastMile == 0 {
 				setRecompute(state, start[:])
 			} else if startingUnit.LastMile == 1 {
@@ -2204,8 +2312,7 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 				}
 			}
 
-			// since we updated this node, let's save the node and it's dependencies
-
+			// check if we hit a steady state
 			newPath := currentUnit.Path
 			if comparePathSimilarity(previousPath, newPath) {
 				break
@@ -2218,7 +2325,6 @@ func calcCyclePath(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 	}
 
-	// return a list of dependencies
-	// return a list of updated nodes
+	return updated, dependents
 
 }

@@ -2100,7 +2100,7 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 
 }
 
-func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int, hardUpdate map[[3]int]struct{}) {
+func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int, hardUpdate map[[3]int]int) {
 
 	updated, dependents := updatedCycles(state, cycle, graph, hardUpdate)
 
@@ -2148,7 +2148,7 @@ func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
 }
 
 // make sure to handle LastMile==3 case
-func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int, hardUpdate map[[3]int]struct{}) (map[[3]int]struct{}, map[[3]int]struct{}) {
+func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int, hardUpdate map[[3]int]int) (map[[3]int]struct{}, map[[3]int]struct{}) {
 
 	updated := make(map[[3]int]struct{})
 	dependents := make(map[[3]int]struct{})
@@ -2180,33 +2180,8 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			}
 		}
 
-		// add the start to the updated/dependents map
-		updated[start] = struct{}{}
-		startDependents := graph[start]
-		for j := 0; j < len(startDependents); j++ {
-			dependents[startDependents[j]] = struct{}{}
-		}
-
-		// set the first path
-		startingUnit := state[start[0]][start[1]][start[2]]
-		if _, ok := hardUpdate[start]; ok && startingUnit.LastMile == 0 {
-			setRecompute(state, start[:])
-		} else if startingUnit.LastMile == 1 {
-			setLastMile(state, start[:])
-		} else if startingUnit.LastMile == 2 {
-			setPathDup(state, start[:])
-		} else if startingUnit.LastMile == 3 {
-			dist := getDistFromDynamic(state, startingUnit)
-			if dist <= 1 {
-				setPathDup(state, start[:])
-			} else if dist <= 25 {
-				setLastMile(state, start[:])
-			} else {
-				setRecompute(state, start[:])
-			}
-		}
-
-		it := 1
+		it := 0
+		first := true
 		for {
 
 			// iterate backwards, solve path for current, check for change
@@ -2222,14 +2197,22 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 				}
 			}
 
-			if _, ok := hardUpdate[start]; ok && startingUnit.LastMile == 0 {
-				setRecompute(state, start[:])
-			} else if startingUnit.LastMile == 1 {
+			if status, ok := hardUpdate[current]; ok {
+				if status == 0 {
+					setRecompute(state, cycle[it][:])
+				} else if status == 1 {
+					setLastMile(state, cycle[it][:])
+				} else if status == 2 {
+					setPathDup(state, cycle[it][:])
+				}
+			} else if currentUnit.LastMile == 0 {
+
+			} else if currentUnit.LastMile == 1 {
 				setLastMile(state, start[:])
-			} else if startingUnit.LastMile == 2 {
+			} else if currentUnit.LastMile == 2 {
 				setPathDup(state, start[:])
-			} else if startingUnit.LastMile == 3 {
-				dist := getDistFromDynamic(state, startingUnit)
+			} else if currentUnit.LastMile == 3 {
+				dist := getDistFromDynamic(state, currentUnit)
 				if dist <= 1 {
 					setPathDup(state, start[:])
 				} else if dist <= 25 {
@@ -2241,9 +2224,10 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 			// check if we hit a steady state
 			newPath := currentUnit.Path
-			if comparePathSimilarity(previousPath, newPath) {
+			if !first && comparePathSimilarity(previousPath, newPath) {
 				break
 			}
+			first = false
 			it += 1
 			if it >= len(cycle) {
 				it = 0

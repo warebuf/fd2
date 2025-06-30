@@ -4,34 +4,6 @@ import (
 	"fd/libs/heroes"
 )
 
-func isInCycle(state [][][]*heroes.Hero, focus *heroes.Hero) bool {
-
-	current := [3]int{focus.Index[0], focus.Index[1], focus.Index[2]}
-
-	visited := make(map[[3]int]bool)
-	setStart := true
-
-	for {
-		if first, ok := visited[current]; ok {
-			if first {
-				return true
-			} else {
-				return false
-			}
-		} else {
-			visited[current] = setStart
-			setStart = false
-		}
-
-		next := state[current[0]][current[1]][current[2]].DynamicDestination
-		if len(next) > 0 {
-			current = [3]int{next[0], next[1], next[2]}
-		} else {
-			return false
-		}
-	}
-}
-
 // given a set of nodes, determine if in a cycle or strand
 func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, [][3]int) {
 

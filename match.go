@@ -207,7 +207,11 @@ func m_read(m *match_socket) {
 							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
 							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points)
-							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
+							hardUpdate := make(map[[3]int]struct{})
+							if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 0 {
+								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = struct{}{}
+							}
+							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
 							m.m.sharepos(nil, 0)
 							//m.m.printState()
@@ -870,7 +874,11 @@ func (m *match) run() {
 								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
 								points := [][]int{{i, j, k}}
 								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points)
-								updateDependencies(m.heroes, cycle, strand, m.dependencies)
+								hardUpdate := make(map[[3]int]struct{})
+								if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 0 {
+									hardUpdate[[3]int{i, j, k}] = struct{}{}
+								}
+								updateDependencies(m.heroes, cycle, strand, m.dependencies, hardUpdate)
 
 								gave_bots_acts = true
 							}
@@ -1311,8 +1319,12 @@ func (m *match) run() {
 
 			// can this all be replaced by a single function call?
 			allToUpdate := append(append(recompute, lastMile...), pathDup...)
+			hardUpdate := make(map[[3]int]struct{})
+			for i := 0; i < len(recompute); i++ {
+				hardUpdate[[3]int(recompute[i])] = struct{}{}
+			}
 			cycles, strands := prediction.GetCyclesAndStrands(m.heroes, allToUpdate)
-			updateDependencies(m.heroes, cycles, strands, m.dependencies)
+			updateDependencies(m.heroes, cycles, strands, m.dependencies, hardUpdate)
 
 			// recalculate dynamic destinations (LM0)
 			// for x := 0; x < len(recompute); x++ {
@@ -1889,57 +1901,6 @@ func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 	hunter.LastMile = 2
 }
 
-func checkShadowedUnits(state [][][]*heroes.Hero, source *heroes.Hero) {
-
-	for i := 0; i < len(state); i++ {
-		for j := 0; j < len(state[i]); j++ {
-			for k := 0; k < len(state[i][j]); k++ {
-
-				if len(state[i][j][k].DynamicDestination) > 0 &&
-					state[i][j][k].DynamicDestination[0] == source.Index[0] &&
-					state[i][j][k].DynamicDestination[1] == source.Index[1] &&
-					state[i][j][k].DynamicDestination[2] == source.Index[2] {
-
-					if state[i][j][k].LastMile == 0 {
-						// set new center point and calculate A*
-
-						state[i][j][k].DynamicCircle = []float64{source.Position.X, source.Position.Y}
-
-						s := pathfinding.Location{X: state[i][j][k].Position.X, Y: state[i][j][k].Position.Y}
-						e := pathfinding.Location{X: source.Position.X, Y: source.Position.Y}
-						AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
-						path := AStarGraph.ComputeShortestPath()
-						end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: source.Index[0], J: source.Index[1], K: source.Index[2]}
-						fmt.Println("calling setPath from checkShadowedUnits0", i, j, k)
-						setPath(state[i][j][k], end, path)
-
-					} else if state[i][j][k].LastMile == 1 {
-						// calculate new shadow
-						hunter := state[i][j][k]
-						target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-						hunter.DynamicCircle = []float64{}
-						hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
-						path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
-						end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
-						fmt.Println("calling setPath from checkShadowedUnits1", i, j, k)
-						setPath(hunter, end, path)
-
-					} else if state[i][j][k].LastMile == 2 {
-						// copy path
-						hunter := state[i][j][k]
-						target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-						hunter.DynamicCircle = []float64{}
-						fmt.Println("calling PathDuplication from checkShadowedUnits2", i, j, k)
-						PathDuplication(hunter, target)
-					}
-
-				}
-
-			}
-		}
-	}
-}
-
 func setRecompute(state [][][]*heroes.Hero, idx []int) {
 	fmt.Println("recompute[x]", idx)
 	hunter := state[idx[0]][idx[1]][idx[2]]
@@ -2057,7 +2018,7 @@ func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int
 
 }
 
-func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]int, updated map[[3]int]struct{}) {
+func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]int, updated map[[3]int]struct{}, hardUpdate map[[3]int]struct{}) {
 
 	// if we have already updated this strand, skip
 	if _, found := updated[point]; found {
@@ -2091,7 +2052,7 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 		// update the current node
 		if currentHunter.Destination.Type == "camp" {
 
-		} else if currentHunter.LastMile == 0 {
+		} else if _, ok := hardUpdate[current]; ok && currentHunter.LastMile == 0 {
 			setRecompute(state, currentHunter.Index) // TODO: this is wrong, should only call setRecompute when dist < pathDist / 3 ; TLDR we should only call this when it matches the recompute array
 		} else if currentHunter.LastMile == 1 {
 			setLastMile(state, currentHunter.Index)
@@ -2119,21 +2080,21 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 
 }
 
-func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int) {
+func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]int, graph map[[3]int][][3]int, hardUpdate map[[3]int]struct{}) {
 
-	updated, dependents := updatedCycles(state, cycle, graph)
+	updated, dependents := updatedCycles(state, cycle, graph, hardUpdate)
 
 	// update cycle dependencies
 	for node, _ := range dependents {
 		if _, found := updated[node]; !found {
-			updateStrand(state, node, graph, updated)
+			updateStrand(state, node, graph, updated, hardUpdate)
 		}
 	}
 
 	// update strands
 	for i := 0; i < len(strands); i++ {
 		if _, found := updated[strands[i]]; !found {
-			updateStrand(state, strands[i], graph, updated)
+			updateStrand(state, strands[i], graph, updated, hardUpdate)
 		}
 	}
 
@@ -2167,7 +2128,7 @@ func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
 }
 
 // make sure to handle LastMile==3 case
-func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int) (map[[3]int]struct{}, map[[3]int]struct{}) {
+func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]int][][3]int, hardUpdate map[[3]int]struct{}) (map[[3]int]struct{}, map[[3]int]struct{}) {
 
 	updated := make(map[[3]int]struct{})
 	dependents := make(map[[3]int]struct{})
@@ -2208,8 +2169,8 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 		// set the first path
 		startingUnit := state[start[0]][start[1]][start[2]]
-		if startingUnit.LastMile == 0 {
-			//setRecompute(state, start[:])
+		if _, ok := hardUpdate[start]; ok && startingUnit.LastMile == 0 {
+			setRecompute(state, start[:])
 		} else if startingUnit.LastMile == 1 {
 			setLastMile(state, start[:])
 		} else if startingUnit.LastMile == 2 {
@@ -2241,8 +2202,8 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 				}
 			}
 
-			if startingUnit.LastMile == 0 {
-				//setRecompute(state, start[:])
+			if _, ok := hardUpdate[start]; ok && startingUnit.LastMile == 0 {
+				setRecompute(state, start[:])
 			} else if startingUnit.LastMile == 1 {
 				setLastMile(state, start[:])
 			} else if startingUnit.LastMile == 2 {

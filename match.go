@@ -207,7 +207,7 @@ func m_read(m *match_socket) {
 							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
 							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points)
-							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies)
+							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
 							m.m.sharepos(nil, 0)
 							//m.m.printState()
@@ -1592,6 +1592,7 @@ func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
 
 func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
 
+	// if the unit's position does not equal the start of the path, recalculate the path
 	if (unit.Position.X != p[0][0]) || (unit.Position.Y != p[0][1]) {
 
 		dist := maps.EuclideanDistance(unit.Position.X, unit.Position.Y, p[0][0], p[0][1])
@@ -1601,15 +1602,12 @@ func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
 		if dist < 1e-8 {
 			unit.Position.X = p[0][0]
 			unit.Position.Y = p[0][1]
-
 		} else if dist <= 1 {
-
 			// to me the best option here would be to calculate A* from unit.Position to the destination
 			s := pathfinding.Location{X: unit.Position.X, Y: unit.Position.Y}
 			e := pathfinding.Location{X: dest.X, Y: dest.Y}
 			AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
 			p = AStarGraph.ComputeShortestPath()
-
 		} else {
 			panic("Path and unit position exceed 1 dist!")
 		}
@@ -2059,66 +2057,10 @@ func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int
 
 }
 
-// out of date function
-func updateDep(state [][][]*heroes.Hero, parent *heroes.Hero, graph map[[3]int][][3]int) {
-
-	key := [3]int{parent.Index[0], parent.Index[1], parent.Index[2]}
-	val, ok := graph[key]
-	if !ok || len(val) == 0 {
-		return
-	}
-
-	queue := list.New()
-	for i := 0; i < len(val); i++ {
-		queue.PushBack(val[i])
-	}
-
-	for queue.Len() > 0 {
-
-		current := queue.Front().Value.([3]int)
-		currentHunter := state[current[0]][current[1]][current[2]]
-
-		if currentHunter.Status != 1 {
-			panic("why are we updating a dependency that is not a follower")
-		}
-
-		if currentHunter.LastMile == 0 {
-			setRecompute(state, currentHunter.Index)
-		} else if currentHunter.LastMile == 1 {
-			setLastMile(state, currentHunter.Index)
-		} else if currentHunter.LastMile == 2 {
-			setPathDup(state, currentHunter.Index)
-		} else if currentHunter.LastMile == 3 {
-			dist := getDistFromDynamic(state, currentHunter)
-			if dist <= 1 {
-				setPathDup(state, currentHunter.Index)
-			} else if dist <= 25 {
-				setLastMile(state, currentHunter.Index)
-			} else {
-				setRecompute(state, currentHunter.Index)
-			}
-		}
-
-		if val, ok := graph[current]; ok {
-			for i := 0; i < len(val); i++ {
-				queue.PushBack(val[i])
-			}
-		}
-		queue.Remove(queue.Front())
-	}
-
-}
-
 func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]int, updated map[[3]int]struct{}) {
 
 	// if we have already updated this strand, skip
 	if _, found := updated[point]; found {
-		return
-	}
-
-	// find the dependencies for this point
-	val, ok := graph[point]
-	if !ok || len(val) == 0 {
 		return
 	}
 
@@ -2127,8 +2069,10 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 	queue.PushBack(point)
 
 	// add the dependencies to a queue
-	for i := 0; i < len(val); i++ {
-		queue.PushBack(val[i])
+	if val, ok := graph[point]; ok {
+		for i := 0; i < len(val); i++ {
+			queue.PushBack(val[i])
+		}
 	}
 
 	for queue.Len() > 0 {
@@ -2145,8 +2089,10 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 		}
 
 		// update the current node
-		if currentHunter.LastMile == 0 {
-			setRecompute(state, currentHunter.Index)
+		if currentHunter.Destination.Type == "camp" {
+
+		} else if currentHunter.LastMile == 0 {
+			setRecompute(state, currentHunter.Index) // TODO: this is wrong, should only call setRecompute when dist < pathDist / 3 ; TLDR we should only call this when it matches the recompute array
 		} else if currentHunter.LastMile == 1 {
 			setLastMile(state, currentHunter.Index)
 		} else if currentHunter.LastMile == 2 {
@@ -2185,9 +2131,9 @@ func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]i
 	}
 
 	// update strands
-	for node, _ := range dependents {
-		if _, found := updated[node]; !found {
-			updateStrand(state, node, graph, updated)
+	for i := 0; i < len(strands); i++ {
+		if _, found := updated[strands[i]]; !found {
+			updateStrand(state, strands[i], graph, updated)
 		}
 	}
 
@@ -2246,7 +2192,7 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			if _, found := completed[current]; found {
 				completed[current] = true
 			}
-			next := state[cyclePoints[i][0]][cyclePoints[i][1]][cyclePoints[i][2]].DynamicDestination
+			next := state[current[0]][current[1]][current[2]].DynamicDestination
 			current = [3]int{next[0], next[1], next[2]}
 			if current == start {
 				break
@@ -2263,7 +2209,7 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 		// set the first path
 		startingUnit := state[start[0]][start[1]][start[2]]
 		if startingUnit.LastMile == 0 {
-			setRecompute(state, start[:])
+			//setRecompute(state, start[:])
 		} else if startingUnit.LastMile == 1 {
 			setLastMile(state, start[:])
 		} else if startingUnit.LastMile == 2 {
@@ -2296,7 +2242,7 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			}
 
 			if startingUnit.LastMile == 0 {
-				setRecompute(state, start[:])
+				//setRecompute(state, start[:])
 			} else if startingUnit.LastMile == 1 {
 				setLastMile(state, start[:])
 			} else if startingUnit.LastMile == 2 {

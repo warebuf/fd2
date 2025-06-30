@@ -54,8 +54,8 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int) ([][3]int, []
 		}
 
 		cycleCheck := make(map[[3]int]bool)
-		path := [][3]int{}
-		interested := [][3]int{}
+		path := [][3]int{}       // the nodes that we have visited
+		interested := [][3]int{} // the nodes that we have visited that are points
 		for {
 
 			if _, ok := cycleCheck[current]; ok { // if we encountered a node in our current path, we have a cycle

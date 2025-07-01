@@ -905,7 +905,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].SPD != 0) && (m.heroes[i][j][k].LastMile != 2) {
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].SPD != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
 							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.heroes[i][j][k].SPD), 10)
 							if units_of_time < min_units {
 								min_units = units_of_time
@@ -1145,9 +1145,13 @@ func (m *match) run() {
 
 							if m.heroes[i][j][k].LastMile == 2 {
 								hunter := m.heroes[i][j][k]
-								target := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-								if hunter.SPD > target.SPD {
-									SPD = float64(target.SPD)
+								paceTarget := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]] // iterate down the dependencies to find who is setting the pace
+								for paceTarget.Status == 1 && paceTarget.LastMile == 2 {
+									paceTarget = m.heroes[paceTarget.DynamicDestination[0]][paceTarget.DynamicDestination[1]][paceTarget.DynamicDestination[2]]
+								}
+								// iterate down and find the best speed
+								if hunter.SPD > paceTarget.SPD {
+									SPD = float64(paceTarget.SPD)
 								}
 							} else if m.heroes[i][j][k].LastMile == 3 {
 								continue

@@ -6,16 +6,16 @@ import (
 	"math"
 )
 
-func MeetsPoint(path [][]float64, dest []float64, SPD float64) float64 {
+func MeetsPoint(path [][]float64, pos []float64, SPD float64) float64 {
 
 	accum := 0.0
 	found := false
 
 	for i := 0; i < len(path)-1; i++ {
-		d1 := maps.EuclideanDistance(path[i][0], path[i][1], dest[0], dest[1])
-		d2 := maps.EuclideanDistance(dest[0], dest[1], path[i+1][0], path[i+1][1])
+		d1 := maps.EuclideanDistance(path[i][0], path[i][1], pos[0], pos[1])
+		d2 := maps.EuclideanDistance(pos[0], pos[1], path[i+1][0], path[i+1][1])
 		length := maps.EuclideanDistance(path[i][0], path[i][1], path[i+1][0], path[i+1][1])
-		fmt.Println(i, math.Abs(d1+d2-length))
+		fmt.Println(i, d1, d2, length, math.Abs(d1+d2-length))
 		if math.Abs(d1+d2-length) < 1e-6 {
 			accum += d1
 			found = true
@@ -24,7 +24,7 @@ func MeetsPoint(path [][]float64, dest []float64, SPD float64) float64 {
 			accum += length
 		}
 	}
-	fmt.Println(path, dest, SPD, accum, found)
+	fmt.Println(path, pos, SPD, accum, found)
 	if found {
 		return accum / SPD
 	} else {

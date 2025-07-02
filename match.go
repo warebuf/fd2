@@ -900,13 +900,15 @@ func (m *match) run() {
 				m.sharepos(nil, 0)
 			}
 
+			SPDTable := heroes.SpeedTable(m.heroes, m.dependencies)
+
 			// calculate min unit of time to action
 			min_units := 999999.99
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].SPD != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
-							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.heroes[i][j][k].SPD), 10)
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (SPDTable[i][j][k] != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
+							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(SPDTable[i][j][k]), 10)
 							if units_of_time < min_units {
 								min_units = units_of_time
 							}
@@ -943,7 +945,9 @@ func (m *match) run() {
 						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DynamicDestination) > 0 {
 
 							hunter := m.heroes[i][j][k]
+							hunterSPD := SPDTable[i][j][k]
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
+							targetSPD := SPDTable[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
 							var prox float64
 							var entry string
@@ -956,7 +960,7 @@ func (m *match) run() {
 									panic("should not be less than hunter.LastMileRadius")
 								}
 
-								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "enter")
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), hunter.LastMileRadius, "enter")
 								fmt.Println(i, j, k, "LM0", prox, min_units, entry, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "entering" {
@@ -972,11 +976,11 @@ func (m *match) run() {
 									}
 								}
 
-								targetTravelled := float64(target.SPD) * min_units
+								targetTravelled := float64(targetSPD) * min_units
 								if target.DistanceLeft <= 0 {
 									targetTravelled = 0
 								}
-								distanceTravelled := float64(m.heroes[i][j][k].SPD) * min_units
+								distanceTravelled := float64(hunterSPD) * min_units
 
 								ans := prediction.CircleIntersectPath(
 									target.Path,
@@ -984,7 +988,7 @@ func (m *match) run() {
 									target.DistanceLeft, target.DistanceLeft-targetTravelled,
 									m.heroes[i][j][k].DynamicCircle,
 									m.heroes[i][j][k].DistanceLeft, (m.heroes[i][j][k].DistanceLeft - distanceTravelled),
-									m.heroes[i][j][k].SPD, target.SPD,
+									hunterSPD, targetSPD,
 									3.0,
 								)
 								fmt.Println(i, j, k, "intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
@@ -1012,7 +1016,7 @@ func (m *match) run() {
 									panic("should not exceed hunter.LastMileRadius (1)")
 								}
 
-								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunter.SPD), float64(target.SPD), hunter.LastMileRadius, "exit")
+								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), hunter.LastMileRadius, "exit")
 								fmt.Println(i, j, k, "prox (LM1)", prox, entry, min_units, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && (entry == "exiting" || entry == "passing") {
@@ -1038,12 +1042,6 @@ func (m *match) run() {
 									panic("should not exceed 1 radius")
 								}
 
-								hunterSPD := hunter.SPD
-								targetSPD := target.SPD
-								if hunterSPD > targetSPD {
-									hunterSPD = targetSPD
-								}
-
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), 1, "exit")
 								fmt.Println(i, j, k, "prox (LM2)", prox, min_units, entry, prox-min_units)
 
@@ -1065,7 +1063,7 @@ func (m *match) run() {
 							} else if hunter.LastMile == 3 {
 
 								pos := []float64{hunter.Position.X, hunter.Position.Y}
-								intersect := prediction.MeetsPoint(target.Path, pos, float64(target.SPD))
+								intersect := prediction.MeetsPoint(target.Path, pos, float64(targetSPD))
 								fmt.Println("found int", hunter.Index, intersect)
 								if intersect >= 0 && intersect-min_units <= 1e-6 {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ int (lm3)", intersect, intersect-min_units)
@@ -1127,9 +1125,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						} else {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						}
 					}
 				}
@@ -1141,23 +1139,17 @@ func (m *match) run() {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) {
 
-							SPD := float64(m.heroes[i][j][k].SPD)
-
 							if m.heroes[i][j][k].LastMile == 2 {
 								hunter := m.heroes[i][j][k]
 								paceTarget := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]] // iterate down the dependencies to find who is setting the pace
 								for paceTarget.Status == 1 && paceTarget.LastMile == 2 {
 									paceTarget = m.heroes[paceTarget.DynamicDestination[0]][paceTarget.DynamicDestination[1]][paceTarget.DynamicDestination[2]]
 								}
-								// iterate down and find the best speed
-								if hunter.SPD > paceTarget.SPD {
-									SPD = float64(paceTarget.SPD)
-								}
 							} else if m.heroes[i][j][k].LastMile == 3 {
 								continue
 							}
 
-							toMove := min_units * SPD
+							toMove := min_units * float64(SPDTable[i][j][k])
 							pos_x := m.heroes[i][j][k].Position.X
 							pos_y := m.heroes[i][j][k].Position.Y
 
@@ -1186,7 +1178,7 @@ func (m *match) run() {
 							}
 
 							// move the unit
-							m.heroes[i][j][k].DistanceLeft -= min_units * SPD
+							m.heroes[i][j][k].DistanceLeft -= min_units * float64(SPDTable[i][j][k])
 
 							if m.heroes[i][j][k].DistanceLeft <= 1e-6 {
 
@@ -1234,9 +1226,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						} else {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						}
 					}
 				}
@@ -1284,9 +1276,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						} else {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position)
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						}
 					}
 				}
@@ -1920,8 +1912,9 @@ func setLastMile(state [][][]*heroes.Hero, idx []int) {
 	// calculate the last mile path
 	hunter := state[idx[0]][idx[1]][idx[2]]
 	target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+	targetSPD := heroes.SpeedLookup(state, target)
 	hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
-	path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, target.SPD, hunterPos, hunter.SPD)
+	path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, targetSPD, hunterPos, hunter.SPD)
 
 	// check if the last mile path doesn't backtrack (causing a corner case)
 	hunterStart := path[0]
@@ -1934,7 +1927,7 @@ func setLastMile(state [][][]*heroes.Hero, idx []int) {
 	if target.Path_Segment+1 < len(target.Path) {
 		targetEnd = target.Path[target.Path_Segment+1]
 	}
-	gainingGround := prediction.GainRadius(hunterStart, hunterEnd, targetStart, targetEnd, hunter.SPD, target.SPD)
+	gainingGround := prediction.GainRadius(hunterStart, hunterEnd, targetStart, targetEnd, hunter.SPD, targetSPD)
 
 	if !gainingGround && hunter.LastMile == 0 {
 

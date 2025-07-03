@@ -1290,6 +1290,8 @@ func (m *match) run() {
 			// handle level up
 			for i := 0; i < len(levelUp); i++ {
 
+				continue // for testing - skip level ups
+
 				fmt.Println("levelUp[i]", levelUp[i])
 				fmt.Println("levelCount[i]", levelCount[i])
 

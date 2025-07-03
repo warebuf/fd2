@@ -1139,13 +1139,7 @@ func (m *match) run() {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) {
 
-							if m.heroes[i][j][k].LastMile == 2 {
-								hunter := m.heroes[i][j][k]
-								paceTarget := m.heroes[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]] // iterate down the dependencies to find who is setting the pace
-								for paceTarget.Status == 1 && paceTarget.LastMile == 2 {
-									paceTarget = m.heroes[paceTarget.DynamicDestination[0]][paceTarget.DynamicDestination[1]][paceTarget.DynamicDestination[2]]
-								}
-							} else if m.heroes[i][j][k].LastMile == 3 {
+							if m.heroes[i][j][k].LastMile == 3 {
 								continue
 							}
 
@@ -2170,7 +2164,7 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 				}
 			}
 
-			if status, ok := hardUpdate[current]; ok {
+			if status, ok := hardUpdate[cycle[it]]; ok {
 				if status == 0 {
 					setRecompute(state, cycle[it][:])
 				} else if status == 1 {
@@ -2181,17 +2175,17 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			} else if currentUnit.LastMile == 0 {
 
 			} else if currentUnit.LastMile == 1 {
-				setLastMile(state, start[:])
+				setLastMile(state, cycle[it][:])
 			} else if currentUnit.LastMile == 2 {
-				setPathDup(state, start[:])
+				setPathDup(state, cycle[it][:])
 			} else if currentUnit.LastMile == 3 {
 				dist := getDistFromDynamic(state, currentUnit)
 				if dist <= 1 {
-					setPathDup(state, start[:])
+					setPathDup(state, cycle[it][:])
 				} else if dist <= 25 {
-					setLastMile(state, start[:])
+					setLastMile(state, cycle[it][:])
 				} else {
-					setRecompute(state, start[:])
+					setRecompute(state, cycle[it][:])
 				}
 			}
 
@@ -2201,9 +2195,9 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 				break
 			}
 			first = false
-			it += 1
-			if it >= len(cycle) {
-				it = 0
+			it -= 1
+			if it < 0 {
+				it = len(cycle) - 1
 			}
 		}
 

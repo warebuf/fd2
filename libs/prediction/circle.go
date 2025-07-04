@@ -132,7 +132,7 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 		}
 	} else if IsZero(A) {
 		t := -C / B
-		if t >= 0 && t <= tMax {
+		if t >= 0 && t-tMax <= 1e-6 {
 			return t
 		} else {
 			return -1
@@ -150,13 +150,13 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 
 	fmt.Println("t1:", t1, "t2:", t2)
 
-	if t1 >= 0 && t1 <= tMax && t2 >= 0 && t2 <= tMax {
+	if t1 >= 0 && t1-tMax <= 1e-6 && t2 >= 0 && t2-tMax <= 1e-6 {
 		return math.Min(t1, t2)
 	}
-	if t1 >= 0 && t1 <= tMax {
+	if t1 >= 0 && t1-tMax <= 1e-6 {
 		return t1
 	}
-	if t2 >= 0 && t2 <= tMax {
+	if t2 >= 0 && t2-tMax <= 1e-6 {
 		return t2
 	}
 

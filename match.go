@@ -1886,6 +1886,11 @@ func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 func setRecompute(state [][][]*heroes.Hero, idx []int) {
 	fmt.Println("recompute[x]", idx)
 	hunter := state[idx[0]][idx[1]][idx[2]]
+
+	if len(hunter.DynamicDestination) == 0 {
+		return
+	}
+
 	target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
 	hunter.DynamicCircle = []float64{target.Position.X, target.Position.Y}
 	if hunter.LastMile == 1 {

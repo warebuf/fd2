@@ -1133,6 +1133,8 @@ func (m *match) run() {
 				}
 			}
 
+			movementChange := 0.0
+
 			// move all unit positions
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1146,6 +1148,8 @@ func (m *match) run() {
 							toMove := min_units * float64(SPDTable[i][j][k])
 							pos_x := m.heroes[i][j][k].Position.X
 							pos_y := m.heroes[i][j][k].Position.Y
+
+							startPos := [2]float64{m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y}
 
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
@@ -1210,6 +1214,10 @@ func (m *match) run() {
 								}
 
 							}
+
+							endPos := [2]float64{m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y}
+							movementChange += maps.EuclideanDistance(startPos[0], startPos[1], endPos[0], endPos[1])
+
 						}
 					}
 				}
@@ -1284,7 +1292,12 @@ func (m *match) run() {
 				m.sharepos(atk_list, min_units)
 			} else {
 				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
-				m.sharepos(nil, 0)
+				if movementChange != 0 {
+					m.sharepos(nil, 0)
+				} else {
+					fmt.Println("no more movement")
+				}
+
 			}
 
 			// handle level up

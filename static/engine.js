@@ -634,6 +634,9 @@ function drawHeatMap() {
                 
                 x_shift += 10;
                 ctx.fillText( state[i][j][k].LastMile, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
+
+                x_shift += 10;
+                ctx.fillText( state[i][j][k].DynamicDestination, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
                 
                 x_shift = 0;
                 ctx.fillText( state[i][j][k].Position.X, x_offset + x_shift + t_shift, y_offset + y_shift + 15);

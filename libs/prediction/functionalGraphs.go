@@ -38,7 +38,7 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int, hardUpdate ma
 					if path[j] == current {
 						break
 					}
-					if interested[idx] == path[j] {
+					if idx < len(interested) && interested[idx] == path[j] {
 						idx += 1
 					}
 				}

@@ -10,31 +10,34 @@ func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 		return interest.SPD
 	}
 
-	current := interest
-	lowestSPD := current.SPD
-	first := true
+	current := [3]int{interest.Index[0], interest.Index[1], interest.Index[2]}
+	lowestSPD := interest.SPD
+
+	visited := make(map[[3]int]struct{})
+	visited[current] = struct{}{}
 
 	for {
 
-		if !first && current == interest {
+		if _, exists := visited[current]; exists {
 			break
 		}
 
-		if current.SPD < lowestSPD {
-			lowestSPD = current.SPD
+		currentUnit := state[current[0]][current[1]][current[2]]
+
+		if currentUnit.SPD < lowestSPD {
+			lowestSPD = currentUnit.SPD
 		}
 
-		if current.Status != 1 || current.LastMile != 2 {
+		if currentUnit.Status != 1 || currentUnit.LastMile != 2 {
 			break
 		} else {
-			next := state[current.DynamicDestination[0]][current.DynamicDestination[1]][current.DynamicDestination[2]]
-			if next.HP > 0 {
+			next := [3]int{currentUnit.DynamicDestination[0], currentUnit.DynamicDestination[1], currentUnit.DynamicDestination[2]}
+			if state[next[0]][next[1]][next[2]].HP > 0 {
 				current = next
 			} else {
 				break
 			}
 		}
-		first = false
 
 	}
 
@@ -107,7 +110,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		}
 
 		// if the chain ends in a cycle, find the lowest SPD in the cycle, then solve upwards the chain
-		cycleIndex := len(chain) - 1
+		cycleIndex := len(chain)
 		if isCycle {
 			for i := 0; i < len(chain); i++ {
 				if chain[i] == cycleStart { // update the cycle with the lowest SPD

@@ -2123,7 +2123,8 @@ func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
 		}
 
 		compare := maps.EuclideanDistance(p1[it][0], p1[it][1], p2[it][0], p2[it][1])
-		if math.Abs(compare) > 1e-6 { // same points
+		fmt.Println(it, "compare", compare)
+		if math.Abs(compare) > 0.05 { // instead of 1e-6 because it's too precise, we are just looking for near steady state
 			return false
 		}
 

@@ -1,6 +1,8 @@
 package heroes
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 
@@ -42,7 +44,7 @@ func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 
 func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 
-	LM2Units := make(map[[3]int]bool) // find LM2 units
+	LM2Units := make(map[[3]int]bool) // find LM2 units, they are the units that need their speed checked
 	table := [][][]int{}              // create speed table
 
 	// create speed table and find the LM2 units
@@ -86,27 +88,63 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 	// set the speed for the LM2 strands
 	for i := 0; i < len(degree0); i++ {
 
-		// find the lowest SPD in this LM2 strand
-		lowestSPD := state[degree0[i][0]][degree0[i][1]][degree0[i][2]].SPD
+		// find the LM2 chain
+		chain := [][3]int{degree0[i]}
+		seen := make(map[[3]int]struct{})
+		seen[degree0[i]] = struct{}{}
+		cycleStart := [3]int{}
+		isCycle := false
 		current := [3]int(state[degree0[i][0]][degree0[i][1]][degree0[i][2]].DynamicDestination)
 		for state[current[0]][current[1]][current[2]].Status == 1 && state[current[0]][current[1]][current[2]].LastMile == 2 && state[current[0]][current[1]][current[2]].HP > 0 {
-			if state[current[0]][current[1]][current[2]].SPD < lowestSPD {
-				lowestSPD = state[current[0]][current[1]][current[2]].SPD
+			if _, found := seen[current]; found {
+				cycleStart = current
+				isCycle = true
+				break
 			}
+			seen[current] = struct{}{}
+			chain = append(chain, current)
 			current = [3]int(state[current[0]][current[1]][current[2]].DynamicDestination)
 		}
 
-		// check if the head (not a LM2 unit) is lowest SPD
-		if state[current[0]][current[1]][current[2]].HP > 0 && state[current[0]][current[1]][current[2]].SPD < lowestSPD {
-			lowestSPD = state[current[0]][current[1]][current[2]].SPD
+		// if the chain ends in a cycle, find the lowest SPD in the cycle, then solve upwards the chain
+		cycleIndex := len(chain) - 1
+		if isCycle {
+			for i := 0; i < len(chain); i++ {
+				if chain[i] == cycleStart { // update the cycle with the lowest SPD
+					cycleIndex = i
+
+					lowestSPD := state[chain[i][0]][chain[i][1]][chain[i][2]].SPD // find the lowest SPD in the cycle
+					for j := cycleIndex; j < len(chain); j++ {
+						if state[chain[j][0]][chain[j][1]][chain[j][2]].SPD < lowestSPD {
+							lowestSPD = state[chain[j][0]][chain[j][1]][chain[j][2]].SPD
+						}
+					}
+
+					for j := cycleIndex; j < len(chain); j++ { // update the cycle
+						table[chain[j][0]][chain[j][1]][chain[j][2]] = lowestSPD
+						LM2Units[chain[j]] = true
+					}
+					break
+				}
+			}
 		}
 
-		// update the LM2 strand with the lowest SPD
-		current = degree0[i]
-		for state[current[0]][current[1]][current[2]].Status == 1 && state[current[0]][current[1]][current[2]].LastMile == 2 && state[current[0]][current[1]][current[2]].HP > 0 {
-			table[current[0]][current[1]][current[2]] = lowestSPD
-			current = [3]int(state[current[0]][current[1]][current[2]].DynamicDestination)
+		// for the remaining strand, solve upwards by comparing the current vs the parent
+		for i := cycleIndex - 1; i >= 0; i-- {
+			toUpdate := chain[i]
+			toUpdateSPD := state[toUpdate[0]][toUpdate[1]][toUpdate[2]].SPD
+			parent := [3]int(state[chain[i][0]][chain[i][1]][chain[i][2]].DynamicDestination)
+			parentSPD := state[parent[0]][parent[1]][parent[2]].SPD
+
+			minSPD := toUpdateSPD
+			if parentSPD < toUpdateSPD {
+				minSPD = parentSPD
+			}
+
+			table[toUpdate[0]][toUpdate[1]][toUpdate[2]] = minSPD
+			LM2Units[toUpdate] = true
 		}
+
 	}
 
 	// for cycles, iterate through the cycle and find the lowest SPD unit (maybe set SPD to 0 idk)
@@ -132,6 +170,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 					break
 				}
 				table[current[0]][current[1]][current[2]] = lowestSPD
+				LM2Units[current] = true
 				first = false
 				current = [3]int(state[current[0]][current[1]][current[2]].DynamicDestination)
 			}

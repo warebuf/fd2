@@ -37,15 +37,11 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 	count := 0
 	increment := 0.25 // note: if the linear search is not tight enough and does not find a collision, this algorithm will fail
 
-	if len(targetPath) == 0 {
-		return [][]float64{}
-	}
-
 	if hunterSPD == 0 {
-		return [][]float64{}
+		return [][]float64{hunterPos}
 	}
 
-	if targetSPD == 0 {
+	if targetSPD == 0 || len(targetPath) == 0 {
 		targetCurrentPos := targetPath[0] // this should be the target's current position
 		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
 		end := pathfinding.Location{X: targetCurrentPos[0], Y: targetCurrentPos[1]}

@@ -14,13 +14,13 @@ func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 	lowestSPD := interest.SPD
 
 	visited := make(map[[3]int]struct{})
-	visited[current] = struct{}{}
 
 	for {
 
 		if _, exists := visited[current]; exists {
 			break
 		}
+		visited[current] = struct{}{}
 
 		currentUnit := state[current[0]][current[1]][current[2]]
 

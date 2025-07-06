@@ -424,7 +424,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		SPDHardcode := []int{35, 87, 28, 55, 43, 95}
+		SPDHardcode := []int{20, 74, 42, 94, 44, 50}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -2189,6 +2189,9 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 		it := 0
 		first := true
+
+		iterationsCount := 0
+
 		for {
 
 			// iterate backwards, solve path for current, check for change
@@ -2235,14 +2238,26 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 				break
 			}
 			first = false
+
+			if it == 0 {
+				iterationsCount += 1
+			}
 			it -= 1
 			if it < 0 {
 				it = len(cycle) - 1
+			}
+
+			if iterationsCount >= 10 { // we encountered an oscillation and will not hit steady-state, let's brute force this
+
 			}
 		}
 
 	}
 
 	return updated, dependents
+
+}
+
+func bruteForceCycleSolver() {
 
 }

@@ -16,7 +16,7 @@ func MeetsPoint(path [][]float64, pos []float64, SPD float64) float64 {
 		d2 := maps.EuclideanDistance(pos[0], pos[1], path[i+1][0], path[i+1][1])
 		length := maps.EuclideanDistance(path[i][0], path[i][1], path[i+1][0], path[i+1][1])
 		fmt.Println(i, d1, d2, length, math.Abs(d1+d2-length))
-		if math.Abs(d1+d2-length) < 1e-6 {
+		if math.Abs(d1+d2-length) < 0.01 {
 			accum += d1
 			found = true
 			break

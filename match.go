@@ -424,7 +424,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		SPDHardcode := []int{57, 8, 15, 82, 28, 0}
+		//SPDHardcode := []int{57, 8, 15, 82, 28, 0}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -474,7 +474,7 @@ func createMatch(pl *permission_list) *match {
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
 					AS:    75,             //stats[2],
-					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100), SPDHardcode[a]
+					SPD:   rand.Intn(100), //stats[3], rand.Intn(100), SPDHardcode[a]
 					Scale: scale,
 
 					Battle: nil,

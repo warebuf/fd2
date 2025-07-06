@@ -169,14 +169,8 @@ function calcPos() {
                         if (state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;
 
-                            let SPD = state[i][j][k].SPD;
-                            if(state[i][j][k].LastMile == 2) {
-                                let hunter = state[i][j][k]
-								let target = state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-                                if(hunter.SPD > target.SPD) {
-                                    SPD = target.SPD;
-                                }
-                            } else if (state[i][j][k].LastMile == 3) {
+                            let SPD = SPDTable[animating_state][i][j][k];
+                            if (state[i][j][k].LastMile == 3) {
                                 SPD = 0;
                             }
 

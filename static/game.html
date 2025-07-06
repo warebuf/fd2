@@ -79,11 +79,12 @@
     var levelUpFrames = 0;
 
     // the board state
-    var state = []
+    var state = [];
     var camps = [];
 
     // datasets
     var match_data = [];
+    var SPDTable = [];
     var atk_data = [];
     var camp_data = [];
 
@@ -1098,6 +1099,7 @@
                         }
 
                         match_data.push(md)
+                        SPDTable.push(msg.SPDTable)
                         camp_data.push(cdata)
 
                         if (msg.Atk == null) {

@@ -43,7 +43,9 @@ type match struct {
 	state_count  int
 	heroes       [][][]*heroes.Hero
 	dependencies map[[3]int][][3]int
+	SPDTable     [][][]int
 	//heroGraph   [][][]*pathfinding.DLiteGraph
+
 	camps []*heroes.Camp
 
 	uuid_to_team_int map[uuid.UUID]pair
@@ -108,6 +110,7 @@ type message struct {
 
 	// game state stuff
 	TCH         [][][]string
+	SPDTable    [][][]int
 	Turn        string
 	Atk         []string
 	UnitsOfTime string
@@ -499,6 +502,21 @@ func createMatch(pl *permission_list) *match {
 				client_int = len(ans.heroes[team_int])
 			}
 		}
+
+		// create speed table
+		SPDTable := [][][]int{}
+		for i := 0; i < len(ans.heroes); i++ {
+			subside := [][]int{}
+			for j := 0; j < len(ans.heroes[i]); j++ {
+				subteam := []int{}
+				for k := 0; k < len(ans.heroes[i][j]); k++ {
+					subteam = append(subteam, ans.heroes[i][j][k].SPD)
+				}
+				subside = append(subside, subteam)
+			}
+			SPDTable = append(SPDTable, subside)
+		}
+		ans.SPDTable = SPDTable
 
 		fmt.Println("created MID:", ans.mid)
 
@@ -903,15 +921,15 @@ func (m *match) run() {
 				m.sharepos(nil, 0)
 			}
 
-			SPDTable := heroes.SpeedTable(m.heroes, m.dependencies)
+			m.SPDTable = heroes.SpeedTable(m.heroes, m.dependencies)
 
 			// calculate min unit of time to action
 			min_units := 999999.99
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (SPDTable[i][j][k] != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
-							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(SPDTable[i][j][k]), 10)
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.SPDTable[i][j][k] != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
+							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.SPDTable[i][j][k]), 10)
 							if units_of_time < min_units {
 								min_units = units_of_time
 							}
@@ -948,9 +966,9 @@ func (m *match) run() {
 						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DynamicDestination) > 0 {
 
 							hunter := m.heroes[i][j][k]
-							hunterSPD := SPDTable[i][j][k]
+							hunterSPD := m.SPDTable[i][j][k]
 							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
-							targetSPD := SPDTable[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
+							targetSPD := m.SPDTable[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
 
 							var prox float64
 							var entry string
@@ -1128,9 +1146,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].DynamicDestination, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].DynamicDestination, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						} else {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						}
 					}
 				}
@@ -1148,7 +1166,7 @@ func (m *match) run() {
 								continue
 							}
 
-							toMove := min_units * float64(SPDTable[i][j][k])
+							toMove := min_units * float64(m.SPDTable[i][j][k])
 							pos_x := m.heroes[i][j][k].Position.X
 							pos_y := m.heroes[i][j][k].Position.Y
 
@@ -1179,7 +1197,7 @@ func (m *match) run() {
 							}
 
 							// move the unit
-							m.heroes[i][j][k].DistanceLeft -= min_units * float64(SPDTable[i][j][k])
+							m.heroes[i][j][k].DistanceLeft -= min_units * float64(m.SPDTable[i][j][k])
 
 							if m.heroes[i][j][k].DistanceLeft <= 1e-6 {
 
@@ -1231,9 +1249,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						} else {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						}
 					}
 				}
@@ -1281,9 +1299,9 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						} else {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						}
 					}
 				}
@@ -1495,7 +1513,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
 			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Camps: tempCamp, When: time.Now(), MatchID: m.mid}:
+			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Camps: tempCamp, When: time.Now(), MatchID: m.mid}:
 
 			}
 		}

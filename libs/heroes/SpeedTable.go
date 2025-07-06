@@ -135,9 +135,9 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		// for the remaining strand, solve upwards by comparing the current vs the parent
 		for i := cycleIndex - 1; i >= 0; i-- {
 			toUpdate := chain[i]
-			toUpdateSPD := state[toUpdate[0]][toUpdate[1]][toUpdate[2]].SPD
+			toUpdateSPD := table[toUpdate[0]][toUpdate[1]][toUpdate[2]]
 			parent := [3]int(state[chain[i][0]][chain[i][1]][chain[i][2]].DynamicDestination)
-			parentSPD := state[parent[0]][parent[1]][parent[2]].SPD
+			parentSPD := table[parent[0]][parent[1]][parent[2]]
 
 			minSPD := toUpdateSPD
 			if parentSPD < toUpdateSPD {

@@ -421,6 +421,9 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
+		SPDHardcode := []int{4, 95, 98, 62, 51, 29}
+		a := 0
+
 		for i, j := range pl.gamer_permission_list {
 
 			if j.bot_status == false {
@@ -467,17 +470,17 @@ func createMatch(pl *permission_list) *match {
 					HP:    100,
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
-					AS:    75, //stats[2],
-					SPD:   50, //stats[3], rand.Intn(100)
+					AS:    75,             //stats[2],
+					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100)
 					Scale: scale,
 
 					Battle: nil,
 					TTD:    100.0,
 				}
+				a += 1
 				temp.MaxHP = temp.HP
 				ans.heroes[team_int][client_int] = append(ans.heroes[team_int][client_int], temp)
 				//ans.heroGraph[team_int][client_int] = append(ans.heroGraph[team_int][client_int], nil)
-
 			}
 
 			if ans.game_mode == "ffa" {
@@ -1125,7 +1128,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].DynamicDestination, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						} else {
 							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
 						}

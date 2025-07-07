@@ -46,7 +46,8 @@ type match struct {
 	SPDTable     [][][]int
 	//heroGraph   [][][]*pathfinding.DLiteGraph
 
-	camps []*heroes.Camp
+	camps      []*heroes.Camp
+	accessible []bool
 
 	uuid_to_team_int map[uuid.UUID]pair
 	turn             string // tells you turn #
@@ -410,6 +411,19 @@ func createMatch(pl *permission_list) *match {
 			//HP := 1
 			ans.camps = append(ans.camps, &heroes.Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
 		}
+
+		// check for camp accessiblity
+		accessible := make([]bool, len(ans.camps))
+		for i := 0; i < len(ans.camps); i++ {
+			s := maps.Coordinate{X: 0, Y: 0, Type: "Unit", I: 0, J: 0, K: 0}
+			e := maps.Coordinate{X: ans.camps[i].XY.X, Y: ans.camps[i].XY.Y, Type: "Unit", I: 1, J: 0, K: 0}
+			path := findPath(s, e)
+			if len(path) > 0 {
+				accessible[i] = true
+			}
+		}
+		ans.accessible = accessible
+
 		// c := maps.Coordinate{X: 265, Y: 80, Type: "camp", I: random_count, J: -1, K: -1}
 		// ans.camps = append(ans.camps, &Camp{MaxHP: 10, HP: 10, XY: c, Units: make([][]int, 0)})
 
@@ -889,7 +903,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if (m.heroes[i][j][k].Bot == true) && (m.heroes[i][j][k].Status == 0) {
-							p, pint := determineBotAction(m.heroes[i][j][k], m.camps)
+							p, pint := determineBotAction(m.heroes[i][j][k], m.camps, m.accessible)
 							if len(p) == 0 {
 								// figure out how to end the game here
 							} else {
@@ -1717,40 +1731,20 @@ func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j i
 	return true
 }
 
-func determineBotAction(b *heroes.Hero, camps []*heroes.Camp) ([][]float64, maps.Coordinate) {
+func determineBotAction(b *heroes.Hero, camps []*heroes.Camp, accessible []bool) ([][]float64, maps.Coordinate) {
 
-	// for now just pick a random camp, don't care about HP or pathfinding
-	// if all camps are inaccessible... maybe end the game?
-
-	checked := make([]int, len(camps))
-	count := 0
-
-	for count < len(camps) {
-		rng := rand.Intn(len(camps))
-		fmt.Println("rng", rng, checked)
-		if checked[rng] == 0 {
-			checked[rng] = 1
-			count++
-
-			if camps[rng].HP <= 0 {
-				continue
-			}
-
-			ans := findPath(b.Position, camps[rng].XY)
-
-			if len(ans) > 0 {
-
-				//s := pathfinding.Location{X: b.Position.X, Y: b.Position.Y}
-				//e := pathfinding.Location{X: camps[rng].XY.X, Y: camps[rng].XY.Y}
-				//dGraph := DStarLiteInit(s, e)
-
-				return ans, camps[rng].XY
-			} else {
-				continue
-			}
-		} else {
-			continue
+	// get an array of valid camps
+	valid := []int{}
+	for i := 0; i < len(camps); i++ {
+		if accessible[i] && camps[i].HP > 0 {
+			valid = append(valid, i)
 		}
+	}
+
+	if len(valid) > 0 {
+		rng := rand.Intn(len(valid))
+		ans := findPath(b.Position, camps[valid[rng]].XY)
+		return ans, camps[valid[rng]].XY
 	}
 
 	return [][]float64{}, maps.Coordinate{}

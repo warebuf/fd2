@@ -2258,6 +2258,48 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 }
 
-func bruteForceCycleSolver() {
+// TODO: please do heavy testing on this, not sure if it is good enough
+func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
+
+	selectedUnit := [3]int{-1, -1, -1}
+	for i := 0; i < len(state); i++ {
+		for j := 0; j < len(state[i][j]); j++ {
+			for k := 0; k < len(state[i][j]); k++ {
+				if state[i][j][k].HP > 0 && state[i][j][k].Status == 1 && state[i][j][k].LastMile == 1 {
+					selectedUnit = [3]int{i, j, k}
+				}
+			}
+		}
+	}
+
+	if selectedUnit[0] < 0 || selectedUnit[1] < 0 || selectedUnit[2] < 0 {
+		panic("this should not happen, there should be at least 1 LM1 unit right?")
+	}
+
+	// take the endpoint this unit is going to and path all units in the cycle to that endpoint
+	selectedPath := state[selectedUnit[0]][selectedUnit[1]][selectedUnit[2]].Path
+	selectedEndpoint := selectedPath[len(selectedPath)-1]
+	endpoint := maps.Coordinate{X: selectedEndpoint[0], Y: selectedEndpoint[1], Type: "unit", I: selectedUnit[0], J: selectedUnit[1], K: selectedUnit[2]}
+
+	for i := 0; i < len(cycle); i++ {
+		current := state[cycle[i][0]][cycle[i][1]][cycle[i][2]]
+
+		if current.HP > 0 && current.Status == 1 && (current.LastMile == 1 || current.LastMile == 3) {
+			s := pathfinding.Location{X: current.Position.X, Y: current.Position.Y}
+			e := pathfinding.Location{X: endpoint.X, Y: endpoint.Y}
+			AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+			path := AStarGraph.ComputeShortestPath()
+			setPath(current, endpoint, path)
+			current.LastMileRadius = 25
+		}
+	}
+
+	for i := 0; i < len(cycle); i++ {
+		current := state[cycle[i][0]][cycle[i][1]][cycle[i][2]]
+
+		if current.HP > 0 && current.Status == 1 && current.LastMile == 2 {
+			setPathDup(state, cycle[i][:])
+		}
+	}
 
 }

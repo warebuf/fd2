@@ -2248,7 +2248,7 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			}
 
 			if iterationsCount >= 10 { // we encountered an oscillation and will not hit steady-state, let's brute force this
-
+				bruteForceCycleSolver(state, cycle)
 			}
 		}
 
@@ -2260,6 +2260,8 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 // TODO: please do heavy testing on this, not sure if it is good enough
 func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
+
+	panic("made it")
 
 	selectedUnit := [3]int{-1, -1, -1}
 	for i := 0; i < len(state); i++ {

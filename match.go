@@ -209,15 +209,24 @@ func m_read(m *match_socket) {
 							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
 
 							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
-							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
+
+							// checking the hunter's distance from the target to decide the pathfinding algorithm
+							hunter := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK]
+							targetIdx := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
+							target := m.m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
+							dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+
 							hardUpdate := make(map[[3]int]int)
-							if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 0 {
-								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
-							} else if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 1 {
-								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 1
-							} else if m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1 && m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMile == 2 {
+							if dist <= 1 {
 								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
+							} else if dist <= 25 {
+								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 1
+							} else {
+								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
 							}
+
+							// running the pathfinding algorithm and updating dependencies
+							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points, hardUpdate)
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
@@ -902,25 +911,36 @@ func (m *match) run() {
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if (m.heroes[i][j][k].Bot == true) && (m.heroes[i][j][k].Status == 0) {
-							p, pint := determineBotAction(m.heroes[i][j][k], m.camps, m.accessible)
-							if len(p) == 0 {
+						if m.heroes[i][j][k].Bot && (m.heroes[i][j][k].Status == 0) {
+							p, pint, idx := determineBotAction(m.heroes[i][j][k], m.heroes, m.camps, m.accessible, true)
+							if len(p) == 0 || len(idx) == 0 {
 								// figure out how to end the game here
 							} else {
 								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
 								setPath(m.heroes[i][j][k], pint, p)
 
-								updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
-								points := [][]int{{i, j, k}}
+								if len(idx) == 1 {
+									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
+								} else {
+									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, idx, m.dependencies)
+								}
+
+								// checking the hunter's distance from the target to decide the pathfinding algorithm
+								hunter := m.heroes[i][j][k]
+								targetIdx := m.heroes[i][j][k].DynamicDestination
+								target := m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
+								dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
 
 								hardUpdate := make(map[[3]int]int)
-								if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 0 {
-									hardUpdate[[3]int{i, j, k}] = 0
-								} else if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 1 {
-									hardUpdate[[3]int{i, j, k}] = 1
-								} else if m.heroes[i][j][k].Status == 1 && m.heroes[i][j][k].LastMile == 2 {
+								if dist <= 1 {
 									hardUpdate[[3]int{i, j, k}] = 2
+								} else if dist <= 25 {
+									hardUpdate[[3]int{i, j, k}] = 1
+								} else {
+									hardUpdate[[3]int{i, j, k}] = 0
 								}
+
+								points := [][]int{{i, j, k}}
 								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points, hardUpdate)
 								updateDependencies(m.heroes, cycle, strand, m.dependencies, hardUpdate)
 
@@ -1731,23 +1751,52 @@ func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j i
 	return true
 }
 
-func determineBotAction(b *heroes.Hero, camps []*heroes.Camp, accessible []bool) ([][]float64, maps.Coordinate) {
+func determineBotAction(b *heroes.Hero, state [][][]*heroes.Hero, camps []*heroes.Camp, accessible []bool, campOnly bool) ([][]float64, maps.Coordinate, []int) {
 
 	// get an array of valid camps
-	valid := []int{}
+	validCamps := []int{}
 	for i := 0; i < len(camps); i++ {
 		if accessible[i] && camps[i].HP > 0 {
-			valid = append(valid, i)
+			validCamps = append(validCamps, i)
 		}
 	}
 
-	if len(valid) > 0 {
-		rng := rand.Intn(len(valid))
-		ans := findPath(b.Position, camps[valid[rng]].XY)
-		return ans, camps[valid[rng]].XY
+	// also append the array of valid units
+	validUnits := [][3]int{}
+	for i := 0; i < len(state); i++ {
+		if i != b.Index[0] {
+			for j := 0; j < len(state[i]); j++ {
+				for k := 0; k < len(state[i][j]); k++ {
+					if state[i][j][k].HP > 0 { // no accessibility check for now
+						validUnits = append(validUnits, [3]int{i, j, k})
+					}
+				}
+			}
+		}
 	}
 
-	return [][]float64{}, maps.Coordinate{}
+	if campOnly && len(validCamps) > 0 {
+		rng := rand.Intn(len(validCamps))
+		ans := findPath(b.Position, camps[validCamps[rng]].XY)
+		return ans, camps[validCamps[rng]].XY, []int{validCamps[rng]}
+	}
+
+	if !campOnly && len(validCamps)+len(validUnits) > 0 {
+		rng := rand.Intn(len(validCamps) + len(validUnits))
+
+		if rng < len(validCamps) {
+			ans := findPath(b.Position, camps[validCamps[rng]].XY)
+			return ans, camps[validCamps[rng]].XY, []int{validCamps[rng]}
+		} else {
+			unitRNG := rng - len(validCamps)
+			target := state[validUnits[unitRNG][0]][validUnits[unitRNG][1]][validUnits[unitRNG][2]]
+			ans := findPath(b.Position, target.Position)
+			return ans, target.Position, validUnits[unitRNG][:]
+		}
+
+	}
+
+	return [][]float64{}, maps.Coordinate{}, []int{}
 }
 
 func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {

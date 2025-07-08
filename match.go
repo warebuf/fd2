@@ -451,7 +451,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		SPDHardcode := []int{20, 74, 42, 94, 44, 50}
+		//SPDHardcode := []int{20, 74, 42, 94, 44, 50}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -501,7 +501,7 @@ func createMatch(pl *permission_list) *match {
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
 					AS:    75,             //stats[2],
-					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100), SPDHardcode[a]
+					SPD:   rand.Intn(100), //stats[3], rand.Intn(100), SPDHardcode[a]
 					Scale: scale,
 
 					Battle: nil,
@@ -2312,11 +2312,13 @@ func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 	panic("made it")
 
 	selectedUnit := [3]int{-1, -1, -1}
-	for i := 0; i < len(state); i++ {
-		for j := 0; j < len(state[i][j]); j++ {
-			for k := 0; k < len(state[i][j]); k++ {
+	broken := false
+	for i := 0; i < len(state) && !broken; i++ {
+		for j := 0; j < len(state[i]) && !broken; j++ {
+			for k := 0; k < len(state[i][j]) && !broken; k++ {
 				if state[i][j][k].HP > 0 && state[i][j][k].Status == 1 && state[i][j][k].LastMile == 1 {
 					selectedUnit = [3]int{i, j, k}
+					broken = true
 				}
 			}
 		}

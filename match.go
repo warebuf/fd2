@@ -211,18 +211,22 @@ func m_read(m *match_socket) {
 							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
 
 							// checking the hunter's distance from the target to decide the pathfinding algorithm
-							hunter := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK]
-							targetIdx := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
-							target := m.m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
-							dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
-
 							hardUpdate := make(map[[3]int]int)
-							if dist <= 1 {
-								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
-							} else if dist <= 25 {
-								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 1
-							} else {
+							if len(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination) <= 0 {
 								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
+							} else {
+								hunter := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK]
+								targetIdx := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
+								target := m.m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
+								dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+
+								if dist <= 1 {
+									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
+								} else if dist <= 25 {
+									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 1
+								} else {
+									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
+								}
 							}
 
 							// running the pathfinding algorithm and updating dependencies
@@ -919,25 +923,26 @@ func (m *match) run() {
 								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
 								setPath(m.heroes[i][j][k], pint, p)
 
+								hardUpdate := make(map[[3]int]int)
 								if len(idx) == 1 {
 									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
+									hardUpdate[[3]int{i, j, k}] = 0
 								} else {
 									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, idx, m.dependencies)
-								}
 
-								// checking the hunter's distance from the target to decide the pathfinding algorithm
-								hunter := m.heroes[i][j][k]
-								targetIdx := m.heroes[i][j][k].DynamicDestination
-								target := m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
-								dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+									// get hunter distance from target and determine algorithm
+									hunter := m.heroes[i][j][k]
+									targetIdx := m.heroes[i][j][k].DynamicDestination
+									target := m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
+									dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
 
-								hardUpdate := make(map[[3]int]int)
-								if dist <= 1 {
-									hardUpdate[[3]int{i, j, k}] = 2
-								} else if dist <= 25 {
-									hardUpdate[[3]int{i, j, k}] = 1
-								} else {
-									hardUpdate[[3]int{i, j, k}] = 0
+									if dist <= 1 {
+										hardUpdate[[3]int{i, j, k}] = 2
+									} else if dist <= 25 {
+										hardUpdate[[3]int{i, j, k}] = 1
+									} else {
+										hardUpdate[[3]int{i, j, k}] = 0
+									}
 								}
 
 								points := [][]int{{i, j, k}}
@@ -1698,20 +1703,13 @@ func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
 // pathType can be 0 (camp) or 1 (unit),
 func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate, pathType int) bool {
 
-	// path of 1... wth???
-	if len(path) <= 1 {
-		fmt.Println("returned path of 1")
-		return false
-	}
-
-	// check if the start of the path is the same as the unit's coordinate
-	if (state[i][j][k].Position.X != path[0][0]) || (state[i][j][k].Position.Y != path[0][1]) {
-		fmt.Println("unit position is same as start position")
+	// path of 0
+	if len(path) == 0 {
+		fmt.Println("returned path of 0")
 		return false
 	}
 
 	// check if the end of the path is a valid destination
-
 	if pathType == 0 {
 		if dest.I >= 0 && dest.I < len(camps) && dest.J < 0 && dest.K < 0 {
 			if (camps[dest.I].XY.X != path[len(path)-1][0]) || (camps[dest.I].XY.Y != path[len(path)-1][1]) {
@@ -1719,29 +1717,35 @@ func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j i
 				return false
 			}
 		} else {
-			fmt.Println("camp index does not exit")
+			fmt.Println("camp index does not exist")
 			return false
 		}
 	} else if pathType == 1 {
 		if dest.I >= 0 && dest.I < len(state) && dest.J >= 0 && dest.J < len(state[dest.I]) && dest.K >= 0 && dest.K < len(state[dest.I][dest.J]) {
+
+			if i == dest.I {
+				fmt.Println("cannot path to own unit")
+				return false
+			}
+
 			if (state[dest.I][dest.J][dest.K].Position.X != path[len(path)-1][0]) || (state[dest.I][dest.J][dest.K].Position.Y != path[len(path)-1][1]) {
 				fmt.Println("path destination does not match unit coordinate")
 				return false
 			}
+
 		} else {
-			fmt.Println("unit index does not exit")
+			fmt.Println("unit index does not exist")
 			return false
 		}
 	}
 
 	// check if any of the line segments cross an obstacle
-	for i := 0; i < len(path)-1; i++ {
-		line_segment := []float64{path[i][0], path[i][1], path[i+1][0], path[i+1][1]}
-		for j := 0; j < len(mapList[0].Obstacles); j++ {
-			if mapList[0].Obstacle_type[j] == "BEZIER" {
-				if bezier.IntersectBezierLine(mapList[0].Obstacles[j], line_segment) {
-
-					fmt.Println("line segment intersects obstacle", mapList[0].Obstacles[j], line_segment)
+	for a := 0; a < len(path)-1; a++ {
+		line_segment := []float64{path[a][0], path[a][1], path[a+1][0], path[a+1][1]}
+		for b := 0; b < len(mapList[0].Obstacles); b++ {
+			if mapList[0].Obstacle_type[b] == "BEZIER" {
+				if bezier.IntersectBezierLine(mapList[0].Obstacles[b], line_segment) {
+					fmt.Println("line segment intersects obstacle", mapList[0].Obstacles[b], line_segment)
 					return false
 				}
 			}
@@ -1963,6 +1967,7 @@ func setRecompute(state [][][]*heroes.Hero, idx []int) {
 	hunter := state[idx[0]][idx[1]][idx[2]]
 
 	if len(hunter.DynamicDestination) == 0 {
+		hunter.LastMile = 0
 		return
 	}
 

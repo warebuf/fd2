@@ -2309,8 +2309,6 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 // TODO: please do heavy testing on this, not sure if it is good enough
 func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 
-	panic("made it")
-
 	selectedUnit := [3]int{-1, -1, -1}
 	broken := false
 	for i := 0; i < len(state) && !broken; i++ {

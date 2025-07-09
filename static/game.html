@@ -136,8 +136,9 @@
     var frameIndex = 0;
     var frameCount = 0;
     var frameCountMax = 4;
-    
-    let simFSM = null;
+
+    let randomMove = "";
+    let randomMoveFrameCount = 0;
 
 </script>
 
@@ -474,6 +475,13 @@
 
                 break;
 
+            case 'R':
+            case 'r':    
+
+                console.log("R is pressed");
+                randomUnitSelection();
+                
+                break;
 
         }
     }
@@ -794,6 +802,13 @@
 
     }
 
+    function returnPath(start, end) {
+        const myAStar = new aStar(intersections);
+        myAStar.addNode(start.X, start.Y);
+        myAStar.addNode(end.X, end.Y);
+        return myAStar.computePath(start.X, start.Y, end.X, end.Y);
+    }
+
     function createStartingNode(unit) {
 
         // create unit node
@@ -896,55 +911,84 @@
         return total;
     }
 
-    // TODO: when you turn this into ESM modules, this is predictionFSM.js 
-    // TODO: not going to use this for now, not worth the time, calcPos is pretty complicated, may have to rethink match_data, will implement later if calcPos breaks
-    class simFSMNode {
-        constructor(name){
-            this.name = name;
-            this.conditions = [];
-            this.transitions = [];
-        }
-    }
+    // TODO: there is definitely a bug in here
+    // 1) at the end of the game, when there are no more camps, you can move to dead camps
+    // 2) if you navigate to a camp you are already on, it bugs out
+    function randomUnitSelection() {
 
-    class simFSMGraph {
-        constructor() {
-            this.nodes = {};
-
-            this.nodes["START"] = new simFSMNode("START");
-            this.nodes["START"].conditions.push(() => animating_state !== -1);
-            this.nodes["START"].transitions.push("SYNC_UNIT_STATES");
-            
-            this.nodes["GAME_OVER"] = new simFSMNode("GAME_OVER");
-
-            this.nodes["WAIT_FOR_SERVER"] = new simFSMNode("WAIT_FOR_SERVER");
-
-            this.nodes["SYNC_UNIT_STATES"] = new simFSMNode("SYNC_UNIT_STATES");
-
-            this.nodes["INCREMENT_TIME"] = new simFSMNode("INCREMENT_TIME");
-
-            this.nodes["SIM_ATTACK"] = new simFSMNode("SIM_ATTACK");
-
-            this.nodes["ADVANCE_STATE"] = new simFSMNode("ADVANCE_STATE");
-
-            this.current = "START";
+        // find a ready unit on your team
+        let readyUnit = -1;
+        for(let i = 0; i < state[my_team][my_int].length; i++) {
+            if(state[my_team][my_int][i].Status == 0) {
+                readyUnit = i;
+                break;
+            }
         }
 
-        checkState() {
+        if(readyUnit >= 0) {
 
-            for(let i = 0; i < this.nodes[this.current].conditions.length; i++) {
-
-                if(this.nodes[this.current].conditions[i]) {
-                    console.log( "transitioning to", this.nodes[this.current].transitions[i] )
-                    this.current = this.nodes[this.current].transitions[i];
-                    break;
+            // get the number of possible units
+            let unitCount = 0;
+            for(let i = 0; i < state.length; i++) {
+                for(let j = 0; j < state[i].length; j++) {
+                    for(let k = 0; k < state[i][j].length; k++) {
+                        unitCount += 1;
+                    }
                 }
-
             }
 
+            // get the number of possible camps
+            let campCount = camps.length;
+
+            // randomly chose a random unit
+            const randomUnit = Math.floor(Math.random() * (unitCount + campCount));
+
+            let endPos;
+            if( randomUnit < unitCount ) {
+                let count = 0;
+                for(let i = 0; i < state.length; i++) {
+                    for(let j = 0; j < state[i].length; j++) {
+                        for(let k = 0; k < state[i][j].length; k++) {
+                            if(randomUnit === count) {
+                                endPos = state[i][j][k].Position;
+                                break;
+                            }
+                            count += 1;
+                        }
+                    }
+                }
+            } else {
+                endPos = camps[randomUnit - unitCount].XY;
+            }
+            console.log("endPos", endPos)
+
+            // find path from ready unit to random unit
+            const foundPath = returnPath(state[my_team][my_int][readyUnit].Position, endPos);
+
+            if(foundPath.length > 0) {
+                socket.send(JSON.stringify({
+                    "Event": 'act',
+                    "Message": "",
+                    "IndexI": my_team,
+                    "IndexJ": my_int,
+                    "IndexK": readyUnit,
+                    "Route": endPos,
+                    "Path": foundPath,
+                }));
+                randomMove = my_team.toString() + my_int.toString() + readyUnit.toString() + '->' + endPos.I.toString() + endPos.J.toString() + endPos.K.toString() + ' | ' + JSON.stringify(foundPath);
+                randomMoveFrameCount = 120;
+            } else {
+                randomMove = "notfound123";
+                randomMoveFrameCount = 60;
+            }
+            
+
+            
+        } else {
+            randomMove = "testing123";
+            randomMoveFrameCount = 60;
         }
     }
-
-    simFSM = new simFSMGraph();
 
     function main() {
 
@@ -1094,7 +1138,6 @@
                             camps = cdata
                             
                             setupHoverable()
-                            simFSM.checkState();
 
                         }
 

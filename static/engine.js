@@ -99,6 +99,12 @@ function anime() {
 
         //drawSprite(); // I think it's too distracting right now
 
+        if( randomMoveFrameCount > 0) {
+            ctx.font = '9px monospace';
+            ctx.textAlign = "left";
+            ctx.fillStyle = 'white'
+            ctx.fillText(randomMove, 10, 10);
+        }
 
     }
 
@@ -108,6 +114,10 @@ function anime() {
         if (even == 0) { even = 1 }
         else { even = 0 }
     }
+
+    if (randomMoveFrameCount > 0) {
+        randomMoveFrameCount -= 1;
+    } 
 
 }
 anime()

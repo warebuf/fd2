@@ -188,7 +188,7 @@ func m_read(m *match_socket) {
 
 						} else if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
 
-							if confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 0) {
+							if m.m.camps[msg.Route.I].HP > 0 && confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 0) {
 								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = []float64{}

@@ -196,7 +196,7 @@ func loadMapDetails(fp string) {
 		if result["Type"] == "INT" {
 
 			XY := []float64{result["X"].(float64), result["Y"].(float64)}
-			XYC := maps.Coordinate{X: result["X"].(float64), Y: result["Y"].(float64)}
+			XYC := maps.Coordinate{X: result["X"].(float64), Y: result["Y"].(float64), I: -1, J: -1, K: -1}
 
 			m.Intersections = append(m.Intersections, XY)
 			m.IntersectionsC = append(m.IntersectionsC, XYC)

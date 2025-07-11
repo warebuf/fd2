@@ -428,8 +428,8 @@ func createMatch(pl *permission_list) *match {
 		// check for camp accessiblity
 		accessible := make([]bool, len(ans.camps))
 		for i := 0; i < len(ans.camps); i++ {
-			s := maps.Coordinate{X: 0, Y: 0, Type: "Unit", I: 0, J: 0, K: 0}
-			e := maps.Coordinate{X: ans.camps[i].XY.X, Y: ans.camps[i].XY.Y, Type: "Unit", I: 1, J: 0, K: 0}
+			s := maps.Coordinate{X: 0, Y: 0, Type: "space", I: -1, J: -1, K: -1}
+			e := maps.Coordinate{X: ans.camps[i].XY.X, Y: ans.camps[i].XY.Y, Type: "camp", I: i, J: 0, K: 0}
 			path := findPath(s, e)
 			if len(path) > 0 {
 				accessible[i] = true

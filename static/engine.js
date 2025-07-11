@@ -1,9 +1,5 @@
 console.log("loaded js");
 
-
-
-
-
 var c = document.getElementById("myCanvas");
 const ctx = c.getContext("2d");
 
@@ -74,21 +70,21 @@ function anime() {
 
     } else if (match_data.length > 0) {
 
-        drawObstacles()
-        calcPos()
-        drawAttack()
-        drawPos()
-        drawHoverable()
-        drawCamps()
-        drawPotentialPaths()
-        drawPaths()
-        drawDynamicCircles()
-        drawLastMileCircle()
-        drawDamageNumbers()
-        updateDamageNumbers()
-        drawTurn()
-        drawUnitsOfTime()
-        drawLog()
+        drawObstacles();
+        calcPos();
+        drawAttack();
+        drawPos();
+        drawHoverable();
+        drawCamps();
+        drawPotentialPaths();
+        drawPaths();
+        drawDynamicCircles();
+        drawLastMileCircle();
+        drawDamageNumbers();
+        updateDamageNumbers();
+        drawTurn();
+        drawUnitsOfTime();
+        drawLog();
         drawSelected();
         drawUnitSelect();
 
@@ -277,8 +273,6 @@ function drawAttack() {
 }
 
 function drawLevelUp() {
-
-    
 
 }
 

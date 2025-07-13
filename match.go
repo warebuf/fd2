@@ -2249,9 +2249,9 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			// add the current node and dependents to our updated/dependent map
 			if _, exists := updated[cycle[it]]; !exists {
 				updated[cycle[it]] = struct{}{}
-				startDependents := graph[start]
-				for j := 0; j < len(startDependents); j++ {
-					dependents[startDependents[j]] = struct{}{}
+				dependentList := graph[cycle[it]]
+				for j := 0; j < len(dependentList); j++ {
+					dependents[dependentList[j]] = struct{}{}
 				}
 			}
 

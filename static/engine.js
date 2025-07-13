@@ -637,9 +637,9 @@ function drawHeatMap() {
                 ctx.fillText( state[i][j][k].DynamicDestination, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
                 
                 x_shift = 0;
-                ctx.fillText( state[i][j][k].Position.X, x_offset + x_shift + t_shift, y_offset + y_shift + 15);
-                ctx.fillText( state[i][j][k].Position.Y, x_offset + x_shift + t_shift, y_offset + y_shift + 25);
-
+                ctx.fillText( state[i][j][k].Start.X.toString() + " " + state[i][j][k].Start.Y.toString() + " " + state[i][j][k].Start.Type + " " + state[i][j][k].Start.I.toString() + " "  + state[i][j][k].Start.J.toString() + " " + state[i][j][k].Start.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 15);
+                ctx.fillText( state[i][j][k].Position.X.toString() + " " + state[i][j][k].Position.Y.toString() + " " + state[i][j][k].Position.Type + " " + state[i][j][k].Position.I.toString() + " "  + state[i][j][k].Position.J.toString() + " " + state[i][j][k].Position.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 25);
+                ctx.fillText( state[i][j][k].Destination.X.toString() + " " + state[i][j][k].Destination.Y.toString() + " " + state[i][j][k].Destination.Type + " " + state[i][j][k].Destination.I.toString() + " "  + state[i][j][k].Destination.J.toString() + " " + state[i][j][k].Destination.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 35);
                 x_shift = 0;
                 y_shift = y_shift + 75;
             }

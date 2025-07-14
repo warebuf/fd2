@@ -5,7 +5,7 @@ import (
 )
 
 // given a set of nodes, determine if in a cycle or strand
-func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int, hardUpdate map[[3]int]int) ([][3]int, [][3]int) {
+func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][3]int, hardUpdate map[[3]int]int) ([][3]int, [][3]int) {
 
 	completed := make(map[[3]int]bool)
 	for i := 0; i < len(points); i++ {
@@ -71,7 +71,7 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][]int, hardUpdate ma
 				visited[current] = true
 			}
 
-			next := state[current[0]][current[1]][current[2]].DynamicDestination
+			next := state[current[0]][current[1]][current[2]].DestinationIndex
 			status, ok := hardUpdate[current]
 			stayLastMile0 := !ok && state[current[0]][current[1]][current[2]].LastMile == 0
 			changeToLastMile0 := ok && status == 0                    // lm0 will never be an effective cycle

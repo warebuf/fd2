@@ -9,34 +9,31 @@ import (
 )
 
 type AStarKey struct {
-	Location Location
+	Location [2]float64
 	F        float64
 }
 
 type AStarGraph struct {
-	Start Location
-	Goal  Location
+	Start [2]float64
+	Goal  [2]float64
 
-	Nodes  map[Location]float64 // g-score
-	Edges  map[Location]map[Location]float64
-	Parent map[Location]*Location
+	Nodes  map[[2]float64]float64 // g-score
+	Edges  map[[2]float64]map[[2]float64]float64
+	Parent map[[2]float64]*[2]float64
 
 	PriorityQueue *AStarPQ
-	Visited       map[Location]bool
+	Visited       map[[2]float64]bool
 }
 
 type AStarPQ struct {
 	queue    []AStarKey
-	indexMap map[Location]int // Maps node (coordinate) to its index in queue
+	indexMap map[[2]float64]int // Maps node (coordinate) to its index in queue
 }
 
 func (pq *AStarPQ) Len() int { return len(pq.queue) }
 
 func (pq *AStarPQ) Less(i, j int) bool {
-	if pq.queue[i].F < pq.queue[j].F {
-		return true
-	}
-	return false
+	return pq.queue[i].F < pq.queue[j].F
 }
 
 func (pq *AStarPQ) Swap(i, j int) {
@@ -60,14 +57,7 @@ func (pq *AStarPQ) Pop() interface{} {
 	return node
 }
 
-func (pq *AStarPQ) topKey() AStarKey {
-	if len(pq.queue) == 0 {
-		return AStarKey{F: math.Inf(1)}
-	}
-	return pq.queue[0] // The top of the heap is always at index 0
-}
-
-func (pq *AStarPQ) Remove(location Location) {
+func (pq *AStarPQ) Remove(location [2]float64) {
 	removeIndex, exists := pq.indexMap[location]
 	if !exists {
 		return
@@ -81,7 +71,7 @@ func (pq *AStarPQ) Remove(location Location) {
 	}
 }
 
-func (pq *AStarPQ) Update(location Location, fCost float64) {
+func (pq *AStarPQ) Update(location [2]float64, fCost float64) {
 	index, exists := pq.indexMap[location]
 	if !exists {
 		heap.Push(pq, AStarKey{Location: location, F: fCost})
@@ -92,33 +82,32 @@ func (pq *AStarPQ) Update(location Location, fCost float64) {
 	heap.Fix(pq, index) // Restore heap property, swap will update index mappings for us
 }
 
-func AStarInit(mp *maps.MapDetails, start Location, goal Location) *AStarGraph {
+func AStarInit(mp *maps.MapDetails, start [2]float64, goal [2]float64) *AStarGraph {
 
 	masterAStar := &AStarGraph{
 		Start: start,
 		Goal:  goal,
 
-		Nodes:  make(map[Location]float64),
-		Edges:  make(map[Location]map[Location]float64),
-		Parent: make(map[Location]*Location),
+		Nodes:  make(map[[2]float64]float64),
+		Edges:  make(map[[2]float64]map[[2]float64]float64),
+		Parent: make(map[[2]float64]*[2]float64),
 
 		PriorityQueue: &AStarPQ{
 			queue:    make([]AStarKey, 0),
-			indexMap: make(map[Location]int),
+			indexMap: make(map[[2]float64]int),
 		},
-		Visited: make(map[Location]bool),
+		Visited: make(map[[2]float64]bool),
 	}
 
 	for i := 0; i < len(mp.Intersections); i++ {
 
-		interestLocation := Location{X: mp.Intersections[i][0], Y: mp.Intersections[i][1]}
+		interestLocation := mp.Intersections[i]
 		masterAStar.Nodes[interestLocation] = math.Inf(1)
 
-		indivMap := make(map[Location]float64)
+		indivMap := make(map[[2]float64]float64)
 		for j := 0; j < len(mp.Edges[i]); j++ {
 			edgeArray := mp.Intersections[mp.Edges[i][j]]
-			edgeLocation := Location{edgeArray[0], edgeArray[1]}
-			indivMap[edgeLocation] = mp.EdgeLengths[i][j]
+			indivMap[edgeArray] = mp.EdgeLengths[i][j]
 		}
 		masterAStar.Edges[interestLocation] = indivMap
 
@@ -147,21 +136,21 @@ func AStarInit(mp *maps.MapDetails, start Location, goal Location) *AStarGraph {
 	return masterAStar
 }
 
-func (graph *AStarGraph) CalculateKey(location Location) AStarKey {
-	F := graph.Nodes[location] + maps.EuclideanDistance(location.X, location.Y, graph.Goal.X, graph.Goal.Y)
+func (graph *AStarGraph) CalculateKey(location [2]float64) AStarKey {
+	F := graph.Nodes[location] + maps.EuclideanDistance2(location, graph.Goal)
 	return AStarKey{Location: location, F: F}
 }
 
-func (graph *AStarGraph) AddNode(location Location) {
+func (graph *AStarGraph) AddNode(location [2]float64) {
 
 	if _, exists := graph.Nodes[location]; !exists {
 		graph.Nodes[location] = math.Inf(1)
-		graph.Edges[location] = make(map[Location]float64)
+		graph.Edges[location] = make(map[[2]float64]float64)
 	}
 
 }
 
-func (graph *AStarGraph) AddEdge(from Location, to Location, cost float64) {
+func (graph *AStarGraph) AddEdge(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = math.Inf(1)
@@ -172,11 +161,11 @@ func (graph *AStarGraph) AddEdge(from Location, to Location, cost float64) {
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -184,7 +173,7 @@ func (graph *AStarGraph) AddEdge(from Location, to Location, cost float64) {
 
 }
 
-func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
+func (graph *AStarGraph) ComputeShortestPath() [][2]float64 {
 
 	count := 0
 
@@ -194,25 +183,25 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 		if current.Location == graph.Goal {
 
-			ans := [][]float64{}
+			ans := [][2]float64{}
 
 			currentPath := &graph.Goal
 
 			for currentPath != nil {
 
-				ans = append(ans, []float64{currentPath.X, currentPath.Y})
+				ans = append(ans, *currentPath)
 				currentPath = graph.Parent[*currentPath]
 
 			}
 
-			ans2 := [][]float64{}
+			ans2 := [][2]float64{}
 			for i := len(ans) - 1; i >= 0; i-- {
 				ans2 = append(ans2, ans[i])
 			}
 
 			sum := 0.0
 			for i := 0; i < len(ans)-1; i++ {
-				sum += maps.EuclideanDistance(ans[i][0], ans[i][1], ans[i+1][0], ans[i+1][1])
+				sum += maps.EuclideanDistance2(ans[i], ans[i+1])
 			}
 			fmt.Println("sum", sum, "A*", ans2)
 
@@ -231,7 +220,7 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 				tentativeG := graph.Nodes[current.Location] + cost
 
 				if tentativeG < graph.Nodes[neighbor] {
-					graph.Parent[neighbor] = &Location{X: current.Location.X, Y: current.Location.Y}
+					graph.Parent[neighbor] = &current.Location
 					graph.Nodes[neighbor] = tentativeG
 					newF := graph.CalculateKey(neighbor)
 					graph.PriorityQueue.Update(neighbor, newF.F) // I thought you would update only if G val is better
@@ -244,16 +233,16 @@ func (graph *AStarGraph) ComputeShortestPath() [][]float64 {
 
 	}
 
-	return [][]float64{}
+	return [][2]float64{}
 
 }
 
-func (graph *AStarGraph) getEdges(c1 Location, mp *maps.MapDetails) ([]Location, []float64) {
-	edges := make([]Location, 0)
+func (graph *AStarGraph) getEdges(c1 [2]float64, mp *maps.MapDetails) ([][2]float64, []float64) {
+	edges := [][2]float64{}
 	dist := make([]float64, 0)
 
-	for key, _ := range graph.Nodes {
-		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+	for key := range graph.Nodes {
+		line_seg := []float64{key[0], key[1], c1[0], c1[1]}
 		blocked := false
 		for j := 0; j < len(mp.Obstacles); j++ {
 			if mp.Obstacle_type[j] == "BEZIER" {
@@ -265,7 +254,7 @@ func (graph *AStarGraph) getEdges(c1 Location, mp *maps.MapDetails) ([]Location,
 		}
 		if !blocked {
 			edges = append(edges, key)
-			dist = append(dist, maps.EuclideanDistance(c1.X, c1.Y, key.X, key.Y))
+			dist = append(dist, maps.EuclideanDistance2(c1, key))
 		}
 	}
 

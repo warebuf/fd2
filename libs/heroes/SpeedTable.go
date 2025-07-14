@@ -31,7 +31,7 @@ func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 		if currentUnit.Status != 1 || currentUnit.LastMile != 2 {
 			break
 		} else {
-			next := [3]int{currentUnit.DynamicDestination[0], currentUnit.DynamicDestination[1], currentUnit.DynamicDestination[2]}
+			next := [3]int{currentUnit.DestinationIndex[0], currentUnit.DestinationIndex[1], currentUnit.DestinationIndex[2]}
 			if state[next[0]][next[1]][next[2]].HP > 0 {
 				current = next
 			} else {
@@ -97,7 +97,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		seen[degree0[i]] = struct{}{}
 		cycleStart := [3]int{}
 		isCycle := false
-		current := [3]int(state[degree0[i][0]][degree0[i][1]][degree0[i][2]].DynamicDestination)
+		current := [3]int(state[degree0[i][0]][degree0[i][1]][degree0[i][2]].DestinationIndex)
 		for state[current[0]][current[1]][current[2]].Status == 1 && state[current[0]][current[1]][current[2]].LastMile == 2 && state[current[0]][current[1]][current[2]].HP > 0 {
 			if _, found := seen[current]; found {
 				cycleStart = current
@@ -106,7 +106,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 			}
 			seen[current] = struct{}{}
 			chain = append(chain, current)
-			current = [3]int(state[current[0]][current[1]][current[2]].DynamicDestination)
+			current = [3]int(state[current[0]][current[1]][current[2]].DestinationIndex)
 		}
 
 		// if the chain ends in a cycle, find the lowest SPD in the cycle, then solve upwards the chain
@@ -136,7 +136,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		for i := cycleIndex - 1; i >= 0; i-- {
 			toUpdate := chain[i]
 			toUpdateSPD := table[toUpdate[0]][toUpdate[1]][toUpdate[2]]
-			parent := [3]int(state[chain[i][0]][chain[i][1]][chain[i][2]].DynamicDestination)
+			parent := [3]int(state[chain[i][0]][chain[i][1]][chain[i][2]].DestinationIndex)
 			parentSPD := table[parent[0]][parent[1]][parent[2]]
 
 			minSPD := toUpdateSPD
@@ -155,7 +155,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		if !completed && state[LM2[0]][LM2[1]][LM2[2]].HP > 0 {
 
 			lowestSPD := state[LM2[0]][LM2[1]][LM2[2]].SPD
-			current := [3]int(state[LM2[0]][LM2[1]][LM2[2]].DynamicDestination)
+			current := [3]int(state[LM2[0]][LM2[1]][LM2[2]].DestinationIndex)
 			for state[current[0]][current[1]][current[2]].Status == 1 && state[current[0]][current[1]][current[2]].LastMile == 2 && state[current[0]][current[1]][current[2]].HP > 0 {
 				if current == LM2 {
 					break
@@ -163,7 +163,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 				if state[current[0]][current[1]][current[2]].SPD < lowestSPD {
 					lowestSPD = state[current[0]][current[1]][current[2]].SPD
 				}
-				current = [3]int(state[current[0]][current[1]][current[2]].DynamicDestination)
+				current = [3]int(state[current[0]][current[1]][current[2]].DestinationIndex)
 			}
 
 			first := true
@@ -175,7 +175,7 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 				table[current[0]][current[1]][current[2]] = lowestSPD
 				LM2Units[current] = true
 				first = false
-				current = [3]int(state[current[0]][current[1]][current[2]].DynamicDestination)
+				current = [3]int(state[current[0]][current[1]][current[2]].DestinationIndex)
 			}
 		}
 	}

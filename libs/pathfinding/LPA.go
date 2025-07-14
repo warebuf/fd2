@@ -7,32 +7,27 @@ import (
 	"math"
 )
 
-type Location struct {
-	X float64
-	Y float64
-}
-
 type LPAKey struct {
-	Location Location
+	Location [2]float64
 	H        float64
 	RHS      float64
 }
 
 type LPAGraph struct {
-	Start Location
-	Goal  Location
+	Start [2]float64
+	Goal  [2]float64
 
-	Nodes map[Location][]float64 // [g, RHS]
-	Edges map[Location]map[Location]float64
+	Nodes map[[2]float64][]float64 // [g, RHS]
+	Edges map[[2]float64]map[[2]float64]float64
 
 	PriorityQueue *LPAPQ
-	Visited       map[Location]bool
+	Visited       map[[2]float64]bool
 }
 
 // LPAPQ represents the priority queue with an index map for efficient updates
 type LPAPQ struct {
 	queue    []LPAKey
-	indexMap map[Location]int // Maps node (coordinate) to its index in queue
+	indexMap map[[2]float64]int // Maps node (coordinate) to its index in queue
 }
 
 func isLPAKeyLess(a, b LPAKey) bool {
@@ -88,7 +83,7 @@ func (pq *LPAPQ) topKey() LPAKey {
 	return pq.queue[0] // The top of the heap is always at index 0
 }
 
-func (pq *LPAPQ) Remove(location Location) {
+func (pq *LPAPQ) Remove(location [2]float64) {
 	removeIndex, exists := pq.indexMap[location]
 	if !exists {
 		return
@@ -102,7 +97,7 @@ func (pq *LPAPQ) Remove(location Location) {
 	}
 }
 
-func (pq *LPAPQ) Update(location Location, hCost float64, rhsCost float64) {
+func (pq *LPAPQ) Update(location [2]float64, hCost float64, rhsCost float64) {
 	index, exists := pq.indexMap[location]
 	if !exists {
 		heap.Push(pq, LPAKey{Location: location, H: hCost, RHS: rhsCost})
@@ -114,29 +109,29 @@ func (pq *LPAPQ) Update(location Location, hCost float64, rhsCost float64) {
 	heap.Fix(pq, index) // Restore heap property, swap will update index mappings for us
 }
 
-func LPAInit(mp *maps.MapDetails, start Location, goal Location) *LPAGraph {
+func LPAInit(mp *maps.MapDetails, start [2]float64, goal [2]float64) *LPAGraph {
 
 	masterLPA := &LPAGraph{
 		Start: start,
 		Goal:  goal,
-		Nodes: make(map[Location][]float64),
-		Edges: make(map[Location]map[Location]float64),
+		Nodes: make(map[[2]float64][]float64),
+		Edges: make(map[[2]float64]map[[2]float64]float64),
 		PriorityQueue: &LPAPQ{
 			queue:    make([]LPAKey, 0),
-			indexMap: make(map[Location]int),
+			indexMap: make(map[[2]float64]int),
 		},
-		Visited: make(map[Location]bool),
+		Visited: make(map[[2]float64]bool),
 	}
 
 	for i := 0; i < len(mp.Intersections); i++ {
 
-		interestLocation := Location{X: mp.Intersections[i][0], Y: mp.Intersections[i][1]}
+		interestLocation := mp.Intersections[i]
 		masterLPA.Nodes[interestLocation] = []float64{math.Inf(1), math.Inf(1)}
 
-		indivMap := make(map[Location]float64)
+		indivMap := make(map[[2]float64]float64)
 		for j := 0; j < len(mp.Edges[i]); j++ {
 			edgeArray := mp.Intersections[mp.Edges[i][j]]
-			edgeLocation := Location{edgeArray[0], edgeArray[1]}
+			edgeLocation := edgeArray
 			indivMap[edgeLocation] = mp.EdgeLengths[i][j]
 		}
 		masterLPA.Edges[interestLocation] = indivMap
@@ -145,14 +140,14 @@ func LPAInit(mp *maps.MapDetails, start Location, goal Location) *LPAGraph {
 	return masterLPA
 }
 
-func (graph *LPAGraph) CalculateKey(location Location) LPAKey {
-	H := maps.EuclideanDistance(location.X, location.Y, graph.Goal.X, graph.Goal.Y)
+func (graph *LPAGraph) CalculateKey(location [2]float64) LPAKey {
+	H := maps.EuclideanDistance2(location, graph.Goal)
 	G := graph.Nodes[location][0]
 	RHS := graph.Nodes[location][1]
 	return LPAKey{Location: location, H: math.Min(G, RHS) + H, RHS: math.Min(G, RHS)}
 }
 
-func (graph *LPAGraph) updateVertex(location Location) {
+func (graph *LPAGraph) updateVertex(location [2]float64) {
 	if location != graph.Start {
 		minRHS := math.Inf(1)
 		for neighborNode, edgeCost := range graph.Edges[location] {
@@ -169,16 +164,16 @@ func (graph *LPAGraph) updateVertex(location Location) {
 	}
 }
 
-func (graph *LPAGraph) AddNode(location Location) {
+func (graph *LPAGraph) AddNode(location [2]float64) {
 
 	if _, exists := graph.Nodes[location]; !exists {
 		graph.Nodes[location] = []float64{math.Inf(1), math.Inf(1)}
-		graph.Edges[location] = make(map[Location]float64)
+		graph.Edges[location] = make(map[[2]float64]float64)
 	}
 
 }
 
-func (graph *LPAGraph) AddEdge(from Location, to Location, cost float64) {
+func (graph *LPAGraph) AddEdge(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
@@ -189,11 +184,11 @@ func (graph *LPAGraph) AddEdge(from Location, to Location, cost float64) {
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -201,7 +196,7 @@ func (graph *LPAGraph) AddEdge(from Location, to Location, cost float64) {
 
 }
 
-func (graph *LPAGraph) UpdateEdgeCost(from Location, to Location, cost float64) {
+func (graph *LPAGraph) UpdateEdgeCost(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
@@ -212,11 +207,11 @@ func (graph *LPAGraph) UpdateEdgeCost(from Location, to Location, cost float64) 
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -262,9 +257,9 @@ func (graph *LPAGraph) ComputeShortestPath() {
 	}
 }
 
-func (graph *LPAGraph) ReturnShortestPath() []Location {
+func (graph *LPAGraph) ReturnShortestPath() [][2]float64 {
 
-	var ans []Location
+	var ans [][2]float64
 
 	if graph.Nodes[graph.Goal][0] == math.Inf(1) {
 		fmt.Println("the path does not exist")
@@ -275,31 +270,33 @@ func (graph *LPAGraph) ReturnShortestPath() []Location {
 	for current != graph.Start {
 		ans = append(ans, current)
 
-		var smallestNeighbor *Location
+		var smallestNeighbor [2]float64
+		found := false
 		smallest := math.Inf(1)
 
 		for neighborLocation, neighborEdge := range graph.Edges[current] {
 			if graph.Nodes[neighborLocation][0]+neighborEdge < smallest {
+				found = true
 				smallest = graph.Nodes[neighborLocation][0] + neighborEdge
-				smallestNeighbor = &neighborLocation
+				smallestNeighbor = neighborLocation
 			}
 		}
 
-		if smallestNeighbor == nil {
+		if !found {
 			fmt.Println("the path terminates early")
-			return []Location{}
+			return [][2]float64{}
 		}
-		current = *smallestNeighbor
+		current = smallestNeighbor
 	}
 	ans = append(ans, current)
-	var ans2 []Location
+	var ans2 [][2]float64
 	for i := len(ans) - 1; i >= 0; i-- {
 		ans2 = append(ans2, ans[i])
 	}
 	fmt.Println(ans2)
 	sum := 0.0
 	for i := 0; i < len(ans)-1; i++ {
-		sum += maps.EuclideanDistance(ans[i].X, ans[i].Y, ans[i+1].X, ans[i+1].Y)
+		sum += maps.EuclideanDistance2(ans[i], ans[i+1])
 	}
 	fmt.Println("sum", sum)
 

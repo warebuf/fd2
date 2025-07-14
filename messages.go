@@ -2,12 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"sync"
 	"time"
+
+	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 )
 
 func newRoom(name string) bool {
@@ -140,7 +141,7 @@ func (r *room) run() {
 			rid_to_room.mutex.RUnlock()
 			rid_to_room.mutex.Lock()
 			r.mutex.Lock()
-			if check == false {
+			if !check {
 				r.uid_to_user[ws.u.uid] = ws.u
 				r.uid_to_sid_to_socket[ws.u.uid] = make(map[uuid.UUID]*socket)
 			}
@@ -156,7 +157,7 @@ func (r *room) run() {
 			ws.u.mutex.RUnlock()
 			uid_to_user.mutex.Lock()
 			ws.u.mutex.Lock()
-			if check == false {
+			if !check {
 				ws.u.rid_to_room[r.rid] = r
 				ws.u.rid_to_sid_to_socket[r.rid] = make(map[uuid.UUID]*socket)
 			}
@@ -171,7 +172,7 @@ func (r *room) run() {
 					fmt.Println(i, j.Message)
 				}
 
-				if check == false {
+				if !check {
 					msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 					w.r.broadcast <- msg
 				}
@@ -212,7 +213,7 @@ func (r *room) run() {
 
 				fmt.Println("left the chat entered")
 
-				if check == false {
+				if !check {
 					msg := &message{Name: email, Message: "x left the chat", Event: "left", When: time.Now()}
 					r.broadcast <- msg
 				}
@@ -239,9 +240,7 @@ func (r *room) run() {
 
 			for _, i := range r.uid_to_sid_to_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 
@@ -250,7 +249,7 @@ func (r *room) run() {
 
 			// go through each user and delete their sockets
 			uid_to_user.mutex.Lock()
-			for uid, _ := range r.uid_to_sid_to_socket {
+			for uid := range r.uid_to_sid_to_socket {
 				uid_to_user.users[uid].mutex.Lock()
 				delete(uid_to_user.users[uid].rid_to_sid_to_socket, r.rid)
 				delete(uid_to_user.users[uid].rid_to_room, r.rid)

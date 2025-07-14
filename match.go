@@ -24,8 +24,8 @@ import (
 )
 
 type attack struct {
-	Attacker []int      //i,j,k
-	Defender [][]int    //list of i,j,k
+	Attacker [3]int     //i,j,k
+	Defender [][3]int   //list of i,j,k
 	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
 	Type     string     //miss,
 }
@@ -117,8 +117,8 @@ type message struct {
 	UnitsOfTime string
 	Camps       []string
 
-	Route maps.Coordinate
-	Path  [][]float64
+	DestinationType  int
+	DestinationIndex []int
 
 	IndexI int
 	IndexJ int
@@ -156,69 +156,76 @@ func m_read(m *match_socket) {
 			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
-			if m.m.ended == true {
+			if m.m.ended {
 				continue
 			} else if msg.Event == "act" {
 
 				// check if the match has started and the action is to a user's own hero
-				if m.m.phase == "TURN" && m.m.ended == false && m.m.uuid_to_team_int[m.u.uid].a == msg.IndexI && m.m.uuid_to_team_int[m.u.uid].b == msg.IndexJ {
+				if m.m.phase == "TURN" && !m.m.ended && m.m.uuid_to_team_int[m.u.uid].a == msg.IndexI && m.m.uuid_to_team_int[m.u.uid].b == msg.IndexJ {
 					// check if the hero is alive and at starting position
 					if (m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].HP > 0) &&
 						((m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 0) ||
-							(sameCoordinates(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Position, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Start) &&
+							((m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Position == m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Start) &&
 								(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1))) {
 
 						canSetPath := false
 						oldTarget := []int{}
-						if msg.Route.I >= 0 &&
-							msg.Route.I < len(m.m.heroes) &&
-							msg.Route.J >= 0 &&
-							msg.Route.J < len(m.m.heroes[msg.Route.I]) &&
-							msg.Route.K >= 0 &&
-							msg.Route.K < len(m.m.heroes[msg.Route.I][msg.Route.J]) &&
-							m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].HP > 0 {
-
-							if confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 1) {
-								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{msg.Route.I, msg.Route.J, msg.Route.K}
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = []float64{m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].Position.X, m.m.heroes[msg.Route.I][msg.Route.J][msg.Route.K].Position.Y}
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
-								canSetPath = true
-							}
-
-						} else if (msg.Route.I < len(m.m.camps)) && (msg.Route.I >= 0) { // possibly check if camp is still up here
-
-							if m.m.camps[msg.Route.I].HP > 0 && confirmValidPath(m.m.heroes, m.m.camps, msg.IndexI, msg.IndexJ, msg.IndexK, msg.Path, msg.Route, 0) {
-								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination = []int{}
+						if msg.DestinationType == 0 {
+							if confirmValidPath(m.m.heroes, m.m.camps, msg.DestinationIndex, msg.DestinationType) {
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationType = 0
+								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex = []int{msg.DestinationIndex[0]}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = []float64{}
 								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
 								canSetPath = true
 							}
-
+						} else if msg.DestinationType == 1 {
+							if confirmValidPath(m.m.heroes, m.m.camps, msg.DestinationIndex, msg.DestinationType) {
+								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationType = 1
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex = msg.DestinationIndex
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position[:]
+								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
+								canSetPath = true
+							}
 						} else {
 							fmt.Printf("this route does not exist")
 						}
 
+						// setting the path
+						if canSetPath {
+							fmt.Println("calling setPath from m_read", msg.IndexI, msg.IndexJ, msg.IndexK)
+
+							var dest [2]float64
+							if msg.DestinationType == 0 {
+								dest = m.m.camps[msg.DestinationIndex[0]].Position
+							} else if msg.DestinationType == 1 {
+								dest = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position
+							}
+
+							AStarGraph := pathfinding.AStarInit(mapList[0], m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Position, dest)
+							path := AStarGraph.ComputeShortestPath()
+							if len(path) > 0 {
+								setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], dest, path)
+							} else {
+								canSetPath = false
+							}
+
+						}
+
 						if canSetPath {
 
-							//startLoc := pathfinding.Location{X: msg.Path[0][0], Y: msg.Path[0][1]}
-							//endLoc := pathfinding.Location{X: msg.Path[len(msg.Path)-1][0], Y: msg.Path[len(msg.Path)-1][1]}
-							//m.m.heroGraph[msg.IndexI][msg.IndexJ][msg.IndexK] = DStarLiteInit(startLoc, endLoc)
-							fmt.Println("calling setPath from m_read", msg.IndexI, msg.IndexJ, msg.IndexK)
-							setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], msg.Route, msg.Path)
-
-							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination, m.m.dependencies)
+							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex, m.m.dependencies)
 
 							// checking the hunter's distance from the target to decide the pathfinding algorithm
 							hardUpdate := make(map[[3]int]int)
-							if len(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination) <= 0 {
+							if len(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex) <= 0 {
 								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
 							} else {
 								hunter := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK]
-								targetIdx := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicDestination
+								targetIdx := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex
 								target := m.m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
-								dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+								dist := maps.EuclideanDistance2(hunter.Position, target.Position)
 
 								if dist <= 1 {
 									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
@@ -230,7 +237,7 @@ func m_read(m *match_socket) {
 							}
 
 							// running the pathfinding algorithm and updating dependencies
-							points := [][]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
+							points := [][3]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points, hardUpdate)
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
@@ -290,17 +297,13 @@ func m_read(m *match_socket) {
 					m.mutex.Unlock()
 					for _, i := range m.m.gamer_uid_to_msid_to_match_socket {
 						for _, j := range i {
-							select {
-							case j.incoming_message <- msg:
-							}
+							j.incoming_message <- msg
 						}
 					}
 
 					for _, i := range m.m.spectator_uid_to_msid_to_match_socket {
 						for _, j := range i {
-							select {
-							case j.incoming_message <- msg:
-							}
+							j.incoming_message <- msg
 						}
 					}
 				}
@@ -308,7 +311,7 @@ func m_read(m *match_socket) {
 				all_done := true
 				for _, j := range m.m.char_sel_done {
 
-					if j == false {
+					if !j {
 						all_done = false
 						break
 					}
@@ -325,17 +328,13 @@ func m_read(m *match_socket) {
 
 				for _, i := range m.m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 
 				for _, i := range m.m.spectator_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 			} else {
@@ -370,13 +369,13 @@ func createMatch(pl *permission_list) *match {
 			ended:     false,
 
 			state_count: 0,
-			heroes:      make([][][]*heroes.Hero, 0, 0),
+			heroes:      make([][][]*heroes.Hero, 0),
 			//heroGraph:   make([][][]*pathfinding.DLiteGraph, 0, 0),
 			dependencies: make(map[[3]int][][3]int),
 
 			uuid_to_team_int: make(map[uuid.UUID]pair),
 
-			camps: make([]*heroes.Camp, 0, 0),
+			camps: make([]*heroes.Camp, 0),
 
 			broadcast:      make(chan *message),
 			prio_broadcast: make(chan *message),
@@ -419,26 +418,23 @@ func createMatch(pl *permission_list) *match {
 		for i := 0; i < random_count; i++ {
 			random_x := float64(rand.Intn(40))
 			random_y := float64(rand.Intn(40))
-			c := maps.Coordinate{X: 50.0 + (random_x * 10.0), Y: 50.0 + (random_y * 10.0), Type: "camp", I: i, J: -1, K: -1}
+			c := [2]float64{50.0 + (random_x * 10.0), 50.0 + (random_y * 10.0)}
 			HP := rand.Intn(100) + 1
 			//HP := 1
-			ans.camps = append(ans.camps, &heroes.Camp{MaxHP: HP, HP: HP, XY: c, Units: make([][]int, 0)})
+			ans.camps = append(ans.camps, &heroes.Camp{MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
 		}
 
 		// check for camp accessiblity
 		accessible := make([]bool, len(ans.camps))
 		for i := 0; i < len(ans.camps); i++ {
-			s := maps.Coordinate{X: 0, Y: 0, Type: "space", I: -1, J: -1, K: -1}
-			e := maps.Coordinate{X: ans.camps[i].XY.X, Y: ans.camps[i].XY.Y, Type: "camp", I: i, J: 0, K: 0}
+			s := [2]float64{0, 0}
+			e := ans.camps[i].Position
 			path := findPath(s, e)
 			if len(path) > 0 {
 				accessible[i] = true
 			}
 		}
 		ans.accessible = accessible
-
-		// c := maps.Coordinate{X: 265, Y: 80, Type: "camp", I: random_count, J: -1, K: -1}
-		// ans.camps = append(ans.camps, &Camp{MaxHP: 10, HP: 10, XY: c, Units: make([][]int, 0)})
 
 		// set up the game state by: (1) creating each team, (2) assigning clients to each team, (3) creating the basic hero unit for each client
 		// (1) creating each team
@@ -456,7 +452,7 @@ func createMatch(pl *permission_list) *match {
 
 		for i, j := range pl.gamer_permission_list {
 
-			if j.bot_status == false {
+			if !j.bot_status {
 				ans.char_sel_done[i] = false // setting up a map of user to a boolean to check/track the state of all clients
 			} else {
 				ans.char_sel_done[i] = true
@@ -476,25 +472,25 @@ func createMatch(pl *permission_list) *match {
 			for y := 0; y < 3; y++ {
 				stats := heroes.RandomBudget(100, 4)
 				scale := []int{rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10}
-				temp_coordinate := maps.Coordinate{X: float64(team_int * 500), Y: 500 - (float64(y) * 100), Type: "unit", I: team_int, J: client_int, K: y}
+				temp_coordinate := [2]float64{float64(team_int * 500), 500 - (float64(y) * 100)}
 				temp := &heroes.Hero{
 					Bot:   j.bot_status,
 					Name:  names[rand.Intn(len(names))],
-					Index: []int{team_int, client_int, y},
+					Index: [3]int{team_int, client_int, y},
 
 					Start:        temp_coordinate,
 					Position:     temp_coordinate,
 					Destination:  temp_coordinate,
-					Path:         make([][]float64, 0),
+					Path:         make([][2]float64, 0),
 					Path_Segment: 0,
 
-					DynamicDestination: []int{},
-					DynamicCircle:      []float64{},
+					DestinationIndex: []int{},
+					DynamicCircle:    []float64{},
 
 					LastMile:       0,
 					LastMileRadius: 25,
 
-					DistanceLeft: getDistanceTwoPoints(temp_coordinate, temp_coordinate),
+					DistanceLeft: maps.EuclideanDistance2(temp_coordinate, temp_coordinate),
 					Status:       0,
 
 					HP:    100,
@@ -571,7 +567,7 @@ func (m *match) run() {
 
 			// if user is not in the match object, add the user and create a socket object
 			m.mutex.Lock()
-			if check_uid == false {
+			if !check_uid {
 				m.gamer_uid_to_user[ws.u.uid] = ws.u
 				m.gamer_uid_to_msid_to_match_socket[ws.u.uid] = make(map[uuid.UUID]*match_socket)
 			}
@@ -580,7 +576,7 @@ func (m *match) run() {
 
 			// if match is not in the user object, add the match and create a match_socket object
 			ws.u.mutex.Lock()
-			if check_mid == false {
+			if !check_mid {
 				ws.u.mid_to_match[m.mid] = m
 				ws.u.mid_to_msid_to_match_socket[m.mid] = make(map[uuid.UUID]*match_socket)
 			}
@@ -598,12 +594,12 @@ func (m *match) run() {
 				ws.incoming_message <- j
 			}
 
-			if m.ended == true {
+			if m.ended {
 				ws.incoming_message <- &message{Event: "game_over"}
 			}
 
 			// communicate to all participants - a new user has joined ( only unique users, not unique sockets )
-			if check_uid == false {
+			if !check_uid {
 				msg := &message{Name: ws.u.email, Message: "x entered the chat", Event: "entered", When: time.Now()}
 
 				m.mutex.Lock()
@@ -614,17 +610,13 @@ func (m *match) run() {
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 
 				for _, i := range m.spectator_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 			}
@@ -673,17 +665,13 @@ func (m *match) run() {
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 
 				for _, i := range m.spectator_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 			}
@@ -696,7 +684,7 @@ func (m *match) run() {
 			ws.open = false
 
 			// if empty now, delete match, clear all users and global variables of objects related to this match
-			if m.ended == true && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
+			if m.ended && len(m.gamer_uid_to_msid_to_match_socket) == 0 {
 				delete(mid_to_match.match, m.mid)
 				plid_to_permission_list.global[m.mid].ended <- true
 				break
@@ -720,16 +708,12 @@ func (m *match) run() {
 			fmt.Println("sending:", msg)
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 			fmt.Println("bot has joined the game")
@@ -746,16 +730,12 @@ func (m *match) run() {
 			msg := &message{Name: u.email, Event: "left", When: time.Now()}
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 			fmt.Println("bot has left the game")
@@ -773,7 +753,7 @@ func (m *match) run() {
 				msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 
 				m.next_time = time.Now().Add(120 * time.Second)
-				m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
+				m.ticker = time.NewTicker(time.Until(m.next_time)) //will tick in 30 s
 
 				// send ticker to everyone
 				m.mutex.Lock()
@@ -785,18 +765,14 @@ func (m *match) run() {
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {
 						msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 
 				for _, i := range m.spectator_uid_to_msid_to_match_socket {
 					for _, j := range i {
 						msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 			}
@@ -807,7 +783,7 @@ func (m *match) run() {
 			msg := &message{Event: "ticker_start", When: time.Now(), MatchID: m.mid}
 			msg2 := &message{Event: "update_phase", Phase: m.phase, MatchID: m.mid}
 			m.next_time = time.Now().Add(600 * time.Second)
-			m.ticker = time.NewTicker(m.next_time.Sub(time.Now()))
+			m.ticker = time.NewTicker(time.Until(m.next_time))
 
 			// send ticker to everyone
 			fmt.Println("sending:", msg)
@@ -815,20 +791,16 @@ func (m *match) run() {
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
-					select {
-					case j.incoming_message <- msg:
-						j.incoming_message <- msg2
-					}
+					j.incoming_message <- msg
+					j.incoming_message <- msg2
 				}
 			}
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
-					select {
-					case j.incoming_message <- msg:
-						j.incoming_message <- msg2
-					}
+					j.incoming_message <- msg
+					j.incoming_message <- msg2
 				}
 			}
 			continue
@@ -846,7 +818,7 @@ func (m *match) run() {
 			msg2 := &message{Event: "update_phase", Phase: m.phase, MatchID: m.mid}
 
 			m.next_time = time.Now().Add(120 * time.Second)
-			m.ticker = time.NewTicker(m.next_time.Sub(time.Now())) //will tick in 30 s
+			m.ticker = time.NewTicker(time.Until(m.next_time)) // will tick in 30 s
 
 			// send ticker to everyone
 			m.mutex.Lock()
@@ -858,20 +830,16 @@ func (m *match) run() {
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = m.next_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
-					select {
-					case j.incoming_message <- msg:
-						j.incoming_message <- msg2
-					}
+					j.incoming_message <- msg
+					j.incoming_message <- msg2
 				}
 			}
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = m.next_time.Add(j.system_time.Sub(j.user_time)).String()
-					select {
-					case j.incoming_message <- msg:
-						j.incoming_message <- msg2
-					}
+					j.incoming_message <- msg
+					j.incoming_message <- msg2
 				}
 			}
 
@@ -889,17 +857,13 @@ func (m *match) run() {
 
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 			continue
@@ -925,16 +889,16 @@ func (m *match) run() {
 
 								hardUpdate := make(map[[3]int]int)
 								if len(idx) == 1 {
-									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, []int{}, m.dependencies)
+									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DestinationIndex, []int{}, m.dependencies)
 									hardUpdate[[3]int{i, j, k}] = 0
 								} else {
-									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DynamicDestination, idx, m.dependencies)
+									updateDependencyGraph(m.heroes[i][j][k], m.heroes[i][j][k].DestinationIndex, idx, m.dependencies)
 
 									// get hunter distance from target and determine algorithm
 									hunter := m.heroes[i][j][k]
-									targetIdx := m.heroes[i][j][k].DynamicDestination
+									targetIdx := m.heroes[i][j][k].DestinationIndex
 									target := m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
-									dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+									dist := maps.EuclideanDistance2(hunter.Position, target.Position)
 
 									if dist <= 1 {
 										hardUpdate[[3]int{i, j, k}] = 2
@@ -945,7 +909,7 @@ func (m *match) run() {
 									}
 								}
 
-								points := [][]int{{i, j, k}}
+								points := [][3]int{{i, j, k}}
 								cycle, strand := prediction.GetCyclesAndStrands(m.heroes, points, hardUpdate)
 								updateDependencies(m.heroes, cycle, strand, m.dependencies, hardUpdate)
 
@@ -994,27 +958,27 @@ func (m *match) run() {
 
 			fmt.Println("min", min_units)
 
-			recompute := [][]int{}
-			lastMile := [][]int{}
-			pathDup := [][]int{}
+			recompute := [][3]int{}
+			lastMile := [][3]int{}
+			pathDup := [][3]int{}
 
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 
-						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DynamicDestination) > 0 {
+						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DestinationIndex) > 0 {
 
 							hunter := m.heroes[i][j][k]
 							hunterSPD := m.SPDTable[i][j][k]
-							target := m.heroes[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
-							targetSPD := m.SPDTable[m.heroes[i][j][k].DynamicDestination[0]][m.heroes[i][j][k].DynamicDestination[1]][m.heroes[i][j][k].DynamicDestination[2]]
+							target := m.heroes[m.heroes[i][j][k].DestinationIndex[0]][m.heroes[i][j][k].DestinationIndex[1]][m.heroes[i][j][k].DestinationIndex[2]]
+							targetSPD := m.SPDTable[m.heroes[i][j][k].DestinationIndex[0]][m.heroes[i][j][k].DestinationIndex[1]][m.heroes[i][j][k].DestinationIndex[2]]
 
 							var prox float64
 							var entry string
 							if hunter.LastMile == 0 {
 
 								// radius check
-								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
+								radiusCheck := maps.EuclideanDistance2(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) < hunter.LastMileRadius {
 									fmt.Println("weird behavior!!!", i, j, k, radiusCheck, hunter.LastMileRadius)
 									panic("should not be less than hunter.LastMileRadius")
@@ -1027,11 +991,11 @@ func (m *match) run() {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm0)", prox, entry)
 									absDiff := math.Abs(prox - min_units)
 									if absDiff <= 1e-6 {
-										lastMile = append(lastMile, []int{i, j, k})
+										lastMile = append(lastMile, [3]int{i, j, k})
 										min_units = math.Max(min_units, prox)
 									} else {
-										lastMile = [][]int{[]int{i, j, k}}
-										recompute = [][]int{}
+										lastMile = [][3]int{{i, j, k}}
+										recompute = [][3]int{}
 										min_units = prox
 									}
 								}
@@ -1044,25 +1008,25 @@ func (m *match) run() {
 
 								ans := prediction.CircleIntersectPath(
 									target.Path,
-									target.Position.X, target.Position.Y,
+									target.Position[0], target.Position[1],
 									target.DistanceLeft, target.DistanceLeft-targetTravelled,
 									m.heroes[i][j][k].DynamicCircle,
 									m.heroes[i][j][k].DistanceLeft, (m.heroes[i][j][k].DistanceLeft - distanceTravelled),
 									hunterSPD, targetSPD,
 									3.0,
 								)
-								fmt.Println(i, j, k, "intersect found for unit", m.heroes[i][j][k].DynamicDestination[0], m.heroes[i][j][k].DynamicDestination[1], m.heroes[i][j][k].DynamicDestination[2], "at tick:", ans)
+								fmt.Println(i, j, k, "intersect found for unit", m.heroes[i][j][k].DestinationIndex[0], m.heroes[i][j][k].DestinationIndex[1], m.heroes[i][j][k].DestinationIndex[2], "at tick:", ans)
 
 								if ans >= 0 {
 									fmt.Println("replaced min ", min_units, "w/ recompute", ans, ans-min_units)
 									absDiff := math.Abs(ans - min_units)
 									if absDiff <= 1e-6 {
-										recompute = append(recompute, []int{i, j, k})
+										recompute = append(recompute, [3]int{i, j, k})
 										min_units = math.Max(min_units, ans)
 									} else if ans-min_units <= 0 {
-										recompute = [][]int{[]int{i, j, k}}
-										lastMile = [][]int{}
-										pathDup = [][]int{}
+										recompute = [][3]int{{i, j, k}}
+										lastMile = [][3]int{}
+										pathDup = [][3]int{}
 										min_units = ans
 									}
 								}
@@ -1070,7 +1034,7 @@ func (m *match) run() {
 							} else if hunter.LastMile == 1 {
 
 								// radius check
-								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
+								radiusCheck := maps.EuclideanDistance2(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > hunter.LastMileRadius {
 									fmt.Println("weird behavior!!!1", i, j, k, radiusCheck, hunter.LastMileRadius)
 									panic("should not exceed hunter.LastMileRadius (1)")
@@ -1084,19 +1048,19 @@ func (m *match) run() {
 									fmt.Println("replace min w/ recompute", min_units, prox, entry)
 									absDiff := math.Abs(prox - min_units)
 									if absDiff <= 1e-6 {
-										recompute = append(recompute, []int{i, j, k})
+										recompute = append(recompute, [3]int{i, j, k})
 										min_units = math.Max(min_units, prox)
 									} else {
-										recompute = [][]int{[]int{i, j, k}}
-										lastMile = [][]int{}
-										pathDup = [][]int{}
+										recompute = [][3]int{{i, j, k}}
+										lastMile = [][3]int{}
+										pathDup = [][3]int{}
 										min_units = prox
 									}
 								}
 
 							} else if hunter.LastMile == 2 {
 
-								radiusCheck := getDistanceTwoPoints(hunter.Position, target.Position)
+								radiusCheck := maps.EuclideanDistance2(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > 1 {
 									fmt.Println("weird behavior2!!!", i, j, k, radiusCheck)
 									panic("should not exceed 1 radius")
@@ -1106,35 +1070,34 @@ func (m *match) run() {
 								fmt.Println(i, j, k, "prox (LM2)", prox, min_units, entry, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "exiting" {
-									fmt.Println(i, j, k, m.heroes[i][j][k].DynamicDestination)
+									fmt.Println(i, j, k, m.heroes[i][j][k].DestinationIndex)
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm2)", prox, entry, prox-min_units)
 									absDiff := math.Abs(prox - min_units)
 									if absDiff <= 1e-6 {
-										lastMile = append(lastMile, []int{i, j, k})
+										lastMile = append(lastMile, [3]int{i, j, k})
 										min_units = math.Max(min_units, prox)
 									} else {
-										recompute = [][]int{}
-										lastMile = [][]int{[]int{i, j, k}}
-										pathDup = [][]int{}
+										recompute = [][3]int{}
+										lastMile = [][3]int{{i, j, k}}
+										pathDup = [][3]int{}
 										min_units = prox
 									}
 								}
 
 							} else if hunter.LastMile == 3 {
 
-								pos := []float64{hunter.Position.X, hunter.Position.Y}
-								intersect := prediction.MeetsPoint(target.Path, pos, float64(targetSPD))
+								intersect := prediction.MeetsPoint(target.Path, hunter.Position, float64(targetSPD))
 								fmt.Println("found int", hunter.Index, intersect)
 								if intersect >= 0 && intersect-min_units <= 1e-6 {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ int (lm3)", intersect, intersect-min_units)
 									absDiff := math.Abs(intersect - min_units)
 									if absDiff <= 1e-6 {
-										pathDup = append(pathDup, []int{i, j, k})
+										pathDup = append(pathDup, [3]int{i, j, k})
 										min_units = math.Max(min_units, intersect)
 									} else {
-										recompute = [][]int{}
-										lastMile = [][]int{}
-										pathDup = [][]int{[]int{i, j, k}}
+										recompute = [][3]int{}
+										lastMile = [][3]int{}
+										pathDup = [][3]int{{i, j, k}}
 										min_units = intersect
 									}
 								}
@@ -1163,14 +1126,11 @@ func (m *match) run() {
 								unitOfInterest.TTD = 0
 
 								a := &attack{
-									Attacker: make([]int, 3),
-									Defender: make([][]int, 0),
+									Attacker: unitOfInterest.Index,
+									Defender: make([][3]int, 0),
 									Damage:   make([][]string, 0),
 									Type:     "hit",
 								}
-								a.Attacker[0] = unitOfInterest.Position.I
-								a.Attacker[1] = unitOfInterest.Position.J
-								a.Attacker[2] = unitOfInterest.Position.K
 								atk_list = append(atk_list, a)
 							}
 						}
@@ -1182,8 +1142,8 @@ func (m *match) run() {
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].DynamicDestination, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
+						if len(m.heroes[i][j][k].DestinationIndex) > 0 {
+							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].DestinationIndex, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						} else {
 							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						}
@@ -1204,10 +1164,10 @@ func (m *match) run() {
 							}
 
 							toMove := min_units * float64(m.SPDTable[i][j][k])
-							pos_x := m.heroes[i][j][k].Position.X
-							pos_y := m.heroes[i][j][k].Position.Y
+							pos_x := m.heroes[i][j][k].Position[0]
+							pos_y := m.heroes[i][j][k].Position[1]
 
-							startPos := [2]float64{m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y}
+							startPos := m.heroes[i][j][k].Position
 
 							// figure out what line segment we end up at by incrementing Path_Segment and decreasing toMove
 							// when toMove is negative, it indicates how much distance we have left in that line segment
@@ -1223,12 +1183,12 @@ func (m *match) run() {
 									if toMove >= 0 {
 										pos_x = m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1][0]
 										pos_y = m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1][1]
-										m.heroes[i][j][k].Position.X = pos_x
-										m.heroes[i][j][k].Position.Y = pos_y
+										m.heroes[i][j][k].Position[0] = pos_x
+										m.heroes[i][j][k].Position[1] = pos_y
 										m.heroes[i][j][k].Path_Segment++
 									} else {
 										travelX, travelY := getLineSegmentTravelled(pos_x, pos_y, m.heroes[i][j][k].Path[m.heroes[i][j][k].Path_Segment+1], toMove)
-										m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y = travelX, travelY
+										m.heroes[i][j][k].Position[0], m.heroes[i][j][k].Position[1] = travelX, travelY
 									}
 								}
 							}
@@ -1242,7 +1202,7 @@ func (m *match) run() {
 
 								if m.heroes[i][j][k].LastMile == 1 {
 
-									pathDup = append(pathDup, []int{i, j, k})
+									pathDup = append(pathDup, [3]int{i, j, k})
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
 								} else if m.heroes[i][j][k].LastMile == 2 {
@@ -1252,10 +1212,10 @@ func (m *match) run() {
 
 								} else {
 
-									if m.camps[m.heroes[i][j][k].Destination.I].HP > 0 {
+									if m.heroes[i][j][k].DestinationType == 0 && m.camps[m.heroes[i][j][k].DestinationIndex[0]].HP > 0 {
 										m.heroes[i][j][k].Status = 2
-										m.heroes[i][j][k].Battle = m.camps[m.heroes[i][j][k].Destination.I]
-										m.heroes[i][j][k].Battle.Units = append(m.heroes[i][j][k].Battle.Units, []int{i, j, k})
+										m.heroes[i][j][k].Battle = m.camps[m.heroes[i][j][k].DestinationIndex[0]]
+										m.heroes[i][j][k].Battle.Units = append(m.heroes[i][j][k].Battle.Units, [3]int{i, j, k})
 									} else {
 										m.heroes[i][j][k].Status = 0
 										if !m.heroes[i][j][k].Bot {
@@ -1263,18 +1223,14 @@ func (m *match) run() {
 										}
 									}
 									m.heroes[i][j][k].Position = m.heroes[i][j][k].Destination
-									m.heroes[i][j][k].Position.Type = "unit"
-									m.heroes[i][j][k].Position.I = i
-									m.heroes[i][j][k].Position.J = j
-									m.heroes[i][j][k].Position.K = k
 									m.heroes[i][j][k].Path_Segment = len(m.heroes[i][j][k].Path) - 1
 
 								}
 
 							}
 
-							endPos := [2]float64{m.heroes[i][j][k].Position.X, m.heroes[i][j][k].Position.Y}
-							movementChange += maps.EuclideanDistance(startPos[0], startPos[1], endPos[0], endPos[1])
+							endPos := m.heroes[i][j][k].Position
+							movementChange += maps.EuclideanDistance2(startPos, endPos)
 
 						}
 					}
@@ -1285,7 +1241,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
+						if len(m.heroes[i][j][k].DestinationIndex) > 0 {
 							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						} else {
 							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
@@ -1335,7 +1291,7 @@ func (m *match) run() {
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if len(m.heroes[i][j][k].DynamicDestination) > 0 {
+						if len(m.heroes[i][j][k].DestinationIndex) > 0 {
 							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
 						} else {
 							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
@@ -1407,17 +1363,13 @@ func (m *match) run() {
 
 				for _, i := range m.gamer_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 
 				for _, i := range m.spectator_uid_to_msid_to_match_socket {
 					for _, j := range i {
-						select {
-						case j.incoming_message <- msg:
-						}
+						j.incoming_message <- msg
 					}
 				}
 			}
@@ -1438,7 +1390,7 @@ func (m *match) run() {
 							has_user_cmd = true
 						}
 					}
-					campOfInterest.Units = make([][]int, 0)
+					campOfInterest.Units = make([][3]int, 0)
 				} else if unitOfInterest.TTD <= 0 {
 					unitOfInterest.TTD = 100
 				}
@@ -1467,29 +1419,25 @@ func (m *match) run() {
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 
 			for _, i := range m.spectator_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = init_time.Add(j.system_time.Sub(j.user_time)).String()
-					select {
-					case j.incoming_message <- msg:
-					}
+					j.incoming_message <- msg
 				}
 			}
 
 			m.state_count += 1
 
-			if false && (has_user_cmd == false) {
+			if false && !has_user_cmd {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
 			}
 
-			if (has_user_cmd == false) && (m.state_count < 1000) {
+			if !has_user_cmd && (m.state_count < 1000) {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
 			}
@@ -1549,17 +1497,12 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Camps: tempCamp, When: time.Now(), MatchID: m.mid}:
-
-			}
+			j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Camps: tempCamp, When: time.Now(), MatchID: m.mid}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			select {
-			case j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, When: time.Now(), MatchID: m.mid}:
-			}
+			j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, When: time.Now(), MatchID: m.mid}
 		}
 	}
 }
@@ -1577,11 +1520,11 @@ func game_over_check(state [][][]*heroes.Hero) bool {
 					break
 				}
 			}
-			if at_least_one_alive == true {
+			if at_least_one_alive {
 				break
 			}
 		}
-		if at_least_one_alive == true {
+		if at_least_one_alive {
 			counter++
 			if counter >= 2 {
 				return false
@@ -1597,46 +1540,26 @@ func (m *match) shareint() {
 
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			select {
-			case j.incoming_message <- &message{Event: "assignInt", Message: m.uuid_to_team_int[k].ab, MatchID: m.mid}:
-			}
+			j.incoming_message <- &message{Event: "assignInt", Message: m.uuid_to_team_int[k].ab, MatchID: m.mid}
 		}
 	}
 }
 
-func getDistanceTwoPoints(c1 maps.Coordinate, c2 maps.Coordinate) float64 {
-	y_dist := c2.Y - c1.Y
-	x_dist := c2.X - c1.X
-	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
-}
-
-func getDistanceArray(c1 []float64, c2 []float64) float64 {
-	y_dist := c2[1] - c1[1]
-	x_dist := c2[0] - c1[0]
-	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
-}
-
-func getDistanceLocation(c1 pathfinding.Location, c2 pathfinding.Location) float64 {
-	y_dist := c2.Y - c1.Y
-	x_dist := c2.X - c1.X
-	return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
-}
-
 func getDistFromDynamic(state [][][]*heroes.Hero, unit *heroes.Hero) float64 {
 
-	if len(unit.DynamicDestination) > 0 {
+	if len(unit.DestinationIndex) > 0 {
 
 		hunter := unit
-		target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-		x_dist := target.Position.X - hunter.Position.X
-		y_dist := target.Position.Y - hunter.Position.Y
+		target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
+		x_dist := target.Position[0] - hunter.Position[0]
+		y_dist := target.Position[1] - hunter.Position[1]
 		return toFixed(math.Sqrt((y_dist*y_dist)+(x_dist*x_dist)), 10)
 	}
 	return 0.0
 
 }
 
-func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanceTravelled float64) (float64, float64) {
+func getLineSegmentTravelled(refX float64, refY float64, dest [2]float64, distanceTravelled float64) (float64, float64) {
 	if distanceTravelled == 0 {
 		return refX, refY
 	}
@@ -1648,30 +1571,18 @@ func getLineSegmentTravelled(refX float64, refY float64, dest []float64, distanc
 	return refX + (percent * lineX), refY + (percent * lineY)
 }
 
-func sameCoordinates(a maps.Coordinate, b maps.Coordinate) bool {
-	if (a.X == b.X) && (a.Y == b.Y) {
-		return true
-	}
-	return false
-}
-
-func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
+func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64) {
 
 	// if the unit's position does not equal the start of the path, recalculate the path
-	if (unit.Position.X != p[0][0]) || (unit.Position.Y != p[0][1]) {
+	if (unit.Position[0] != p[0][0]) || (unit.Position[1] != p[0][1]) {
 
-		dist := maps.EuclideanDistance(unit.Position.X, unit.Position.Y, p[0][0], p[0][1])
-		fmt.Println("X:", unit.Position.X, unit.Position.Y, p[0])
-		fmt.Println("dist", dist)
+		dist := maps.EuclideanDistance2(unit.Position, p[0])
 
 		if dist < 1e-8 {
-			unit.Position.X = p[0][0]
-			unit.Position.Y = p[0][1]
+			unit.Position = p[0]
 		} else if dist <= 1 {
 			// to me the best option here would be to calculate A* from unit.Position to the destination
-			s := pathfinding.Location{X: unit.Position.X, Y: unit.Position.Y}
-			e := pathfinding.Location{X: dest.X, Y: dest.Y}
-			AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+			AStarGraph := pathfinding.AStarInit(mapList[0], unit.Position, dest)
 			p = AStarGraph.ComputeShortestPath()
 		} else {
 			panic("Path and unit position exceed 1 dist!")
@@ -1684,10 +1595,10 @@ func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
 	unit.Path = p
 	unit.Path_Segment = 0
 
-	thetas := make([]float64, len(p), len(p))
+	thetas := make([]float64, len(p))
 	dist := 0.0
 	for x := 0; x+1 < len(p); x++ {
-		dist += getDistanceArray(p[x], p[x+1])
+		dist += maps.EuclideanDistance2(p[x], p[x+1])
 		thetas[x] = getTheta(p[x], p[x+1])
 		if x+1 == len(p)-1 {
 			thetas[x+1] = thetas[x]
@@ -1701,35 +1612,33 @@ func setPath(unit *heroes.Hero, dest maps.Coordinate, p [][]float64) {
 }
 
 // pathType can be 0 (camp) or 1 (unit),
-func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j int, k int, path [][]float64, dest maps.Coordinate, pathType int) bool {
+func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, destinationIndex []int, destinationType int) bool {
 
-	// path of 0
-	if len(path) == 0 {
-		fmt.Println("returned path of 0")
+	// destinationIndex of 0
+	if len(destinationIndex) == 0 {
+		fmt.Println("returned destinationIndex of 0")
 		return false
 	}
 
 	// check if the end of the path is a valid destination
-	if pathType == 0 {
-		if dest.I >= 0 && dest.I < len(camps) && dest.J < 0 && dest.K < 0 {
-			if (camps[dest.I].XY.X != path[len(path)-1][0]) || (camps[dest.I].XY.Y != path[len(path)-1][1]) {
-				fmt.Println("path destination does not match camp coordinate")
-				return false
-			}
+	if destinationType == 0 {
+		if len(destinationIndex) == 1 &&
+			destinationIndex[0] >= 0 && destinationIndex[0] < len(camps) &&
+			camps[destinationIndex[0]].HP > 0 {
+
 		} else {
 			fmt.Println("camp index does not exist")
 			return false
 		}
-	} else if pathType == 1 {
-		if dest.I >= 0 && dest.I < len(state) && dest.J >= 0 && dest.J < len(state[dest.I]) && dest.K >= 0 && dest.K < len(state[dest.I][dest.J]) {
+	} else if destinationType == 1 {
+		if len(destinationIndex) == 3 &&
+			destinationIndex[0] >= 0 && destinationIndex[0] < len(state) &&
+			destinationIndex[1] >= 0 && destinationIndex[1] < len(state[destinationIndex[0]]) &&
+			destinationIndex[2] >= 0 && destinationIndex[2] < len(state[destinationIndex[0]][destinationIndex[1]]) &&
+			state[destinationIndex[0]][destinationIndex[1]][destinationIndex[2]].HP > 0 {
 
-			if i == dest.I {
+			if state[destinationIndex[0]][destinationIndex[1]][destinationIndex[2]].Index[0] == destinationIndex[0] {
 				fmt.Println("cannot path to own unit")
-				return false
-			}
-
-			if (state[dest.I][dest.J][dest.K].Position.X != path[len(path)-1][0]) || (state[dest.I][dest.J][dest.K].Position.Y != path[len(path)-1][1]) {
-				fmt.Println("path destination does not match unit coordinate")
 				return false
 			}
 
@@ -1739,23 +1648,12 @@ func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, i int, j i
 		}
 	}
 
-	// check if any of the line segments cross an obstacle
-	for a := 0; a < len(path)-1; a++ {
-		line_segment := []float64{path[a][0], path[a][1], path[a+1][0], path[a+1][1]}
-		for b := 0; b < len(mapList[0].Obstacles); b++ {
-			if mapList[0].Obstacle_type[b] == "BEZIER" {
-				if bezier.IntersectBezierLine(mapList[0].Obstacles[b], line_segment) {
-					fmt.Println("line segment intersects obstacle", mapList[0].Obstacles[b], line_segment)
-					return false
-				}
-			}
-		}
-	}
+	// TODO: shouldn't I be calling A* here?
 
 	return true
 }
 
-func determineBotAction(b *heroes.Hero, state [][][]*heroes.Hero, camps []*heroes.Camp, accessible []bool, campOnly bool) ([][]float64, maps.Coordinate, []int) {
+func determineBotAction(b *heroes.Hero, state [][][]*heroes.Hero, camps []*heroes.Camp, accessible []bool, campOnly bool) ([][2]float64, [2]float64, []int) {
 
 	// get an array of valid camps
 	validCamps := []int{}
@@ -1781,16 +1679,16 @@ func determineBotAction(b *heroes.Hero, state [][][]*heroes.Hero, camps []*heroe
 
 	if campOnly && len(validCamps) > 0 {
 		rng := rand.Intn(len(validCamps))
-		ans := findPath(b.Position, camps[validCamps[rng]].XY)
-		return ans, camps[validCamps[rng]].XY, []int{validCamps[rng]}
+		ans := findPath(b.Position, camps[validCamps[rng]].Position)
+		return ans, camps[validCamps[rng]].Position, []int{validCamps[rng]}
 	}
 
 	if !campOnly && len(validCamps)+len(validUnits) > 0 {
 		rng := rand.Intn(len(validCamps) + len(validUnits))
 
 		if rng < len(validCamps) {
-			ans := findPath(b.Position, camps[validCamps[rng]].XY)
-			return ans, camps[validCamps[rng]].XY, []int{validCamps[rng]}
+			ans := findPath(b.Position, camps[validCamps[rng]].Position)
+			return ans, camps[validCamps[rng]].Position, []int{validCamps[rng]}
 		} else {
 			unitRNG := rng - len(validCamps)
 			target := state[validUnits[unitRNG][0]][validUnits[unitRNG][1]][validUnits[unitRNG][2]]
@@ -1800,16 +1698,16 @@ func determineBotAction(b *heroes.Hero, state [][][]*heroes.Hero, camps []*heroe
 
 	}
 
-	return [][]float64{}, maps.Coordinate{}, []int{}
+	return [][2]float64{}, [2]float64{}, []int{}
 }
 
-func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
+func findPath(start [2]float64, dest [2]float64) [][2]float64 {
 
 	startTime := time.Now()
 
 	// check if direct path from starting node to target is available
 	direct_path := true
-	line_segment := []float64{start.X, start.Y, dest.X, dest.Y}
+	line_segment := []float64{start[0], start[1], dest[0], dest[1]}
 	for i := 0; i < len(mapList[0].Obstacles); i++ {
 		if mapList[0].Obstacle_type[i] == "BEZIER" {
 			if bezier.IntersectBezierLine(mapList[0].Obstacles[i], line_segment) {
@@ -1819,15 +1717,12 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 		}
 	}
 
-	if direct_path == true {
-		ans := [][]float64{{start.X, start.Y}, {dest.X, dest.Y}}
-		return ans
+	if direct_path {
+		return [][2]float64{start, dest}
 	}
 
 	//ans := aStar(start, dest, start_edges, start_dist, dest_edges)
-	s := pathfinding.Location{X: start.X, Y: start.Y}
-	e := pathfinding.Location{X: dest.X, Y: dest.Y}
-	AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+	AStarGraph := pathfinding.AStarInit(mapList[0], start, dest)
 	ans := AStarGraph.ComputeShortestPath()
 
 	elapsed := time.Since(startTime)
@@ -1837,12 +1732,12 @@ func findPath(start maps.Coordinate, dest maps.Coordinate) [][]float64 {
 	return ans
 }
 
-func getEdges(c1 pathfinding.Location, LPA *pathfinding.LPAGraph) ([]pathfinding.Location, []float64) {
-	edges := make([]pathfinding.Location, 0)
+func getEdges(c1 [2]float64, LPA *pathfinding.LPAGraph) ([][2]float64, []float64) {
+	edges := make([][2]float64, 0)
 	dist := make([]float64, 0)
 
-	for key, _ := range LPA.Nodes {
-		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+	for key := range LPA.Nodes {
+		line_seg := []float64{key[0], key[1], c1[0], c1[1]}
 		blocked := false
 		for j := 0; j < len(mapList[0].Obstacles); j++ {
 			if mapList[0].Obstacle_type[j] == "BEZIER" {
@@ -1854,14 +1749,14 @@ func getEdges(c1 pathfinding.Location, LPA *pathfinding.LPAGraph) ([]pathfinding
 		}
 		if !blocked {
 			edges = append(edges, key)
-			dist = append(dist, getDistanceLocation(c1, key))
+			dist = append(dist, maps.EuclideanDistance2(c1, key))
 		}
 	}
 
 	return edges, dist
 }
 
-func getTheta(c1 []float64, c2 []float64) float64 {
+func getTheta(c1 [2]float64, c2 [2]float64) float64 {
 	y := c2[1] - c1[1]
 	x := c2[0] - c1[0]
 	theta := math.Atan2(y, x)
@@ -1871,7 +1766,7 @@ func getTheta(c1 []float64, c2 []float64) float64 {
 	return toFixed(theta, 3)
 }
 
-func LPA(start pathfinding.Location, end pathfinding.Location) {
+func LPA(start [2]float64, end [2]float64) {
 	fmt.Println("ENTERED LPA* -------------------------------------------------------------------------------------")
 
 	LPA := pathfinding.LPAInit(mapList[0], start, end)
@@ -1904,7 +1799,7 @@ func LPA(start pathfinding.Location, end pathfinding.Location) {
 
 }
 
-func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfinding.DLiteGraph {
+func DStarLiteInit(start [2]float64, end [2]float64) *pathfinding.DLiteGraph {
 
 	DStar := pathfinding.DLiteInit(mapList[0], start, end)
 
@@ -1937,7 +1832,7 @@ func DStarLiteInit(start pathfinding.Location, end pathfinding.Location) *pathfi
 
 func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 
-	dist := maps.EuclideanDistance(hunter.Position.X, hunter.Position.Y, target.Position.X, target.Position.Y)
+	dist := maps.EuclideanDistance2(hunter.Position, target.Position)
 
 	fmt.Println("dist", dist)
 
@@ -1953,49 +1848,42 @@ func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 		panic("Collision should not happen! Distance > 1!")
 	}
 
-	end := maps.Coordinate{X: target.Path[len(target.Path)-1][0], Y: target.Path[len(target.Path)-1][1], Type: "unit", I: target.Index[0], J: target.Index[1], K: target.Index[2]}
+	end := target.Path[len(target.Path)-1]
 	newPath := prediction.GetSubPath(target.Path, target.DistanceLeft, 0)
-	fmt.Println("hunter.Position", hunter.Position)
-	fmt.Println("PathDuplication newPath:", newPath)
-	fmt.Println("calling setPath from PathDuplication", hunter.Index)
 	setPath(hunter, end, newPath)
 	hunter.LastMile = 2
 }
 
-func setRecompute(state [][][]*heroes.Hero, idx []int) {
+func setRecompute(state [][][]*heroes.Hero, idx [3]int) {
 	fmt.Println("recompute[x]", idx)
 	hunter := state[idx[0]][idx[1]][idx[2]]
 
-	if len(hunter.DynamicDestination) == 0 {
+	if len(hunter.DestinationIndex) == 0 {
 		hunter.LastMile = 0
 		return
 	}
 
-	target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
-	hunter.DynamicCircle = []float64{target.Position.X, target.Position.Y}
+	target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
+	hunter.DynamicCircle = target.Position[:]
 	if hunter.LastMile == 1 {
 		hunter.LastMileRadius = 25
 	}
 
-	s := pathfinding.Location{X: hunter.Position.X, Y: hunter.Position.Y}
-	e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
-	AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+	AStarGraph := pathfinding.AStarInit(mapList[0], hunter.Position, target.Position)
 	path := AStarGraph.ComputeShortestPath()
-	end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: idx[0], J: idx[1], K: idx[2]}
 	fmt.Println("calling setPath from dynamic destinations", idx)
-	setPath(state[idx[0]][idx[1]][idx[2]], end, path)
+	setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path)
 	hunter.LastMile = 0
 }
 
-func setLastMile(state [][][]*heroes.Hero, idx []int) {
+func setLastMile(state [][][]*heroes.Hero, idx [3]int) {
 	fmt.Println("lastMile[x]", idx)
 
 	// calculate the last mile path
 	hunter := state[idx[0]][idx[1]][idx[2]]
-	target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+	target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
 	targetSPD := heroes.SpeedLookup(state, target)
-	hunterPos := []float64{hunter.Position.X, hunter.Position.Y}
-	path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, targetSPD, hunterPos, hunter.SPD)
+	path := prediction.LastMilePrediction(mapList[0], target.Path, target.DistanceLeft, targetSPD, hunter.Position, hunter.SPD)
 
 	// check if the last mile path doesn't backtrack (causing a corner case)
 	hunterStart := path[0]
@@ -2003,8 +1891,8 @@ func setLastMile(state [][][]*heroes.Hero, idx []int) {
 	if len(path) > 1 {
 		hunterEnd = path[1]
 	}
-	targetStart := []float64{target.Position.X, target.Position.Y}
-	targetEnd := []float64{target.Position.X, target.Position.Y}
+	targetStart := target.Position
+	targetEnd := target.Position
 	if target.Path_Segment+1 < len(target.Path) {
 		targetEnd = target.Path[target.Path_Segment+1]
 	}
@@ -2016,45 +1904,33 @@ func setLastMile(state [][][]*heroes.Hero, idx []int) {
 		fmt.Println("target.path", target.Path, target.Path_Segment)
 
 		hunter.LastMileRadius = hunter.LastMileRadius * 0.75
-		hunter.DynamicCircle = []float64{target.Position.X, target.Position.Y}
-		s := pathfinding.Location{X: hunter.Position.X, Y: hunter.Position.Y}
-		e := pathfinding.Location{X: target.Position.X, Y: target.Position.Y}
-		AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+		hunter.DynamicCircle = target.Position[:]
+		AStarGraph := pathfinding.AStarInit(mapList[0], hunter.Position, target.Position)
 		path := AStarGraph.ComputeShortestPath()
-		end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: idx[0], J: idx[1], K: idx[2]}
 		fmt.Println("calling setPath from gainingGround", idx)
-		setPath(state[idx[0]][idx[1]][idx[2]], end, path)
+		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path)
 		hunter.LastMile = 0
 
 	} else {
 		hunter.LastMile = 1
 		hunter.DynamicCircle = []float64{}
 		hunter.LastMileRadius = 25
-		end := maps.Coordinate{X: path[len(path)-1][0], Y: path[len(path)-1][1], Type: "unit", I: idx[0], J: idx[1], K: idx[2]}
 		fmt.Println("calling setPath from last_mile", idx)
-		setPath(state[idx[0]][idx[1]][idx[2]], end, path)
+		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path)
 	}
 }
 
-func setPathDup(state [][][]*heroes.Hero, idx []int) {
+func setPathDup(state [][][]*heroes.Hero, idx [3]int) {
 	hunter := state[idx[0]][idx[1]][idx[2]]
-	target := state[hunter.DynamicDestination[0]][hunter.DynamicDestination[1]][hunter.DynamicDestination[2]]
+	target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
 	hunter.DynamicCircle = []float64{}
 
 	// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
 	dist := getDistFromDynamic(state, hunter)
 	fmt.Println(idx, "dist", dist)
 	if dist > 1 {
-		fmt.Println("dist is > 1", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
-		fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
-		fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
-		p := [][]float64{[]float64{hunter.Position.X, hunter.Position.Y}}
+		p := [][2]float64{hunter.Position}
 		setPath(hunter, hunter.Position, p)
-
-		fmt.Println("post setPath", hunter.Index, hunter.Path, hunter.DistanceLeft, hunter.Position, hunter.DynamicCircle)
-		fmt.Println("round2", hunter.LastMile, hunter.LastMileRadius)
-		fmt.Println("round3", hunter.Battle, hunter.Destination, hunter.DynamicDestination)
-
 		hunter.LastMile = 3
 	} else {
 		fmt.Println("calling PathDuplication from pathDup")
@@ -2123,7 +1999,7 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 				setPathDup(state, currentHunter.Index)
 			}
 
-		} else if currentHunter.Destination.Type == "camp" {
+		} else if currentHunter.DestinationType == 0 {
 		} else if currentHunter.LastMile == 0 {
 			notRealUpdate = true
 		} else if currentHunter.LastMile == 1 {
@@ -2142,7 +2018,7 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 		}
 
 		// add the current node's dependencies to the queue
-		if notRealUpdate == false {
+		if !notRealUpdate {
 			if val, ok := graph[current]; ok {
 				for i := 0; i < len(val); i++ {
 					queue.PushBack(val[i])
@@ -2159,7 +2035,7 @@ func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]i
 	updated, dependents := updatedCycles(state, cycle, graph, hardUpdate)
 
 	// update cycle dependencies
-	for node, _ := range dependents {
+	for node := range dependents {
 		if _, found := updated[node]; !found {
 			updateStrand(state, node, graph, updated, hardUpdate)
 		}
@@ -2175,7 +2051,7 @@ func updateDependencies(state [][][]*heroes.Hero, cycle [][3]int, strands [][3]i
 }
 
 // could do frechet, or mirror major points, but just going to do simple major point comparison
-func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
+func comparePathSimilarity(p1 [][2]float64, p2 [][2]float64) bool {
 
 	if len(p1) != len(p2) {
 		return false
@@ -2189,7 +2065,7 @@ func comparePathSimilarity(p1 [][]float64, p2 [][]float64) bool {
 			break
 		}
 
-		compare := maps.EuclideanDistance(p1[it][0], p1[it][1], p2[it][0], p2[it][1])
+		compare := maps.EuclideanDistance2(p1[it], p2[it])
 		fmt.Println(it, "compare", compare)
 		if math.Abs(compare) > 0.05 { // instead of 1e-6 because it's too precise, we are just looking for near steady state
 			return false
@@ -2228,7 +2104,7 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 			if _, found := completed[current]; found {
 				completed[current] = true
 			}
-			next := state[current[0]][current[1]][current[2]].DynamicDestination
+			next := state[current[0]][current[1]][current[2]].DestinationIndex
 			current = [3]int{next[0], next[1], next[2]}
 			if current == start {
 				break
@@ -2257,26 +2133,26 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 			if status, ok := hardUpdate[cycle[it]]; ok {
 				if status == 0 {
-					setRecompute(state, cycle[it][:])
+					setRecompute(state, cycle[it])
 				} else if status == 1 {
-					setLastMile(state, cycle[it][:])
+					setLastMile(state, cycle[it])
 				} else if status == 2 {
-					setPathDup(state, cycle[it][:])
+					setPathDup(state, cycle[it])
 				}
 			} else if currentUnit.LastMile == 0 {
 
 			} else if currentUnit.LastMile == 1 {
-				setLastMile(state, cycle[it][:])
+				setLastMile(state, cycle[it])
 			} else if currentUnit.LastMile == 2 {
-				setPathDup(state, cycle[it][:])
+				setPathDup(state, cycle[it])
 			} else if currentUnit.LastMile == 3 {
 				dist := getDistFromDynamic(state, currentUnit)
 				if dist <= 1 {
-					setPathDup(state, cycle[it][:])
+					setPathDup(state, cycle[it])
 				} else if dist <= 25 {
-					setLastMile(state, cycle[it][:])
+					setLastMile(state, cycle[it])
 				} else {
-					setRecompute(state, cycle[it][:])
+					setRecompute(state, cycle[it])
 				}
 			}
 
@@ -2329,17 +2205,14 @@ func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 	// take the endpoint this unit is going to and path all units in the cycle to that endpoint
 	selectedPath := state[selectedUnit[0]][selectedUnit[1]][selectedUnit[2]].Path
 	selectedEndpoint := selectedPath[len(selectedPath)-1]
-	endpoint := maps.Coordinate{X: selectedEndpoint[0], Y: selectedEndpoint[1], Type: "unit", I: selectedUnit[0], J: selectedUnit[1], K: selectedUnit[2]}
 
 	for i := 0; i < len(cycle); i++ {
 		current := state[cycle[i][0]][cycle[i][1]][cycle[i][2]]
 
 		if current.HP > 0 && current.Status == 1 && (current.LastMile == 1 || current.LastMile == 3) {
-			s := pathfinding.Location{X: current.Position.X, Y: current.Position.Y}
-			e := pathfinding.Location{X: endpoint.X, Y: endpoint.Y}
-			AStarGraph := pathfinding.AStarInit(mapList[0], s, e)
+			AStarGraph := pathfinding.AStarInit(mapList[0], current.Position, selectedEndpoint)
 			path := AStarGraph.ComputeShortestPath()
-			setPath(current, endpoint, path)
+			setPath(current, selectedEndpoint, path)
 			current.LastMileRadius = 25
 		}
 	}
@@ -2348,7 +2221,7 @@ func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 		current := state[cycle[i][0]][cycle[i][1]][cycle[i][2]]
 
 		if current.HP > 0 && current.Status == 1 && current.LastMile == 2 {
-			setPathDup(state, cycle[i][:])
+			setPathDup(state, cycle[i])
 		}
 	}
 

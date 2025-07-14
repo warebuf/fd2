@@ -10,30 +10,30 @@ import (
 )
 
 type DLiteKey struct {
-	Location Location
+	Location [2]float64
 	H        float64
 	RHS      float64
 }
 
 type DLiteGraph struct {
-	Start Location
-	Goal  Location
-	Last  Location
+	Start [2]float64
+	Goal  [2]float64
+	Last  [2]float64
 
-	Nodes map[Location][]float64 // [g, RHS]
-	Edges map[Location]map[Location]float64
+	Nodes map[[2]float64][]float64 // [g, RHS]
+	Edges map[[2]float64]map[[2]float64]float64
 
 	PriorityQueue *DLitePQ
-	Visited       map[Location]bool
+	Visited       map[[2]float64]bool
 
 	Km float64
 
-	TemporaryLocations map[Location]bool
+	TemporaryLocations map[[2]float64]bool
 }
 
 type DLitePQ struct {
 	queue    []DLiteKey
-	indexMap map[Location]int // Maps node (coordinate) to its index in queue
+	indexMap map[[2]float64]int // Maps node (coordinate) to its index in queue
 }
 
 func isDLiteKeyLess(a, b DLiteKey) bool {
@@ -89,7 +89,7 @@ func (pq *DLitePQ) topKey() DLiteKey {
 	return pq.queue[0] // The top of the heap is always at index 0
 }
 
-func (pq *DLitePQ) Remove(location Location) {
+func (pq *DLitePQ) Remove(location [2]float64) {
 	removeIndex, exists := pq.indexMap[location]
 	if !exists {
 		return
@@ -103,7 +103,7 @@ func (pq *DLitePQ) Remove(location Location) {
 	}
 }
 
-func (pq *DLitePQ) Update(location Location, hCost float64, rhsCost float64) {
+func (pq *DLitePQ) Update(location [2]float64, hCost float64, rhsCost float64) {
 	index, exists := pq.indexMap[location]
 	if !exists {
 		heap.Push(pq, DLiteKey{Location: location, H: hCost, RHS: rhsCost})
@@ -115,32 +115,32 @@ func (pq *DLitePQ) Update(location Location, hCost float64, rhsCost float64) {
 	heap.Fix(pq, index) // Restore heap property, swap will update index mappings for us
 }
 
-func DLiteInit(mp *maps.MapDetails, start Location, goal Location) *DLiteGraph {
+func DLiteInit(mp *maps.MapDetails, start [2]float64, goal [2]float64) *DLiteGraph {
 
 	masterDLite := &DLiteGraph{
 		Start: start,
 		Goal:  goal,
 		Last:  start,
-		Nodes: make(map[Location][]float64),
-		Edges: make(map[Location]map[Location]float64),
+		Nodes: make(map[[2]float64][]float64),
+		Edges: make(map[[2]float64]map[[2]float64]float64),
 		PriorityQueue: &DLitePQ{
 			queue:    make([]DLiteKey, 0),
-			indexMap: make(map[Location]int),
+			indexMap: make(map[[2]float64]int),
 		},
-		Visited:            make(map[Location]bool),
+		Visited:            make(map[[2]float64]bool),
 		Km:                 0.0,
-		TemporaryLocations: make(map[Location]bool),
+		TemporaryLocations: make(map[[2]float64]bool),
 	}
 
 	for i := 0; i < len(mp.Intersections); i++ {
 
-		interestLocation := Location{X: mp.Intersections[i][0], Y: mp.Intersections[i][1]}
+		interestLocation := mp.Intersections[i]
 		masterDLite.Nodes[interestLocation] = []float64{math.Inf(1), math.Inf(1)}
 
-		indivMap := make(map[Location]float64)
+		indivMap := make(map[[2]float64]float64)
 		for j := 0; j < len(mp.Edges[i]); j++ {
 			edgeArray := mp.Intersections[mp.Edges[i][j]]
-			edgeLocation := Location{edgeArray[0], edgeArray[1]}
+			edgeLocation := edgeArray
 			indivMap[edgeLocation] = mp.EdgeLengths[i][j]
 		}
 		masterDLite.Edges[interestLocation] = indivMap
@@ -149,14 +149,14 @@ func DLiteInit(mp *maps.MapDetails, start Location, goal Location) *DLiteGraph {
 	return masterDLite
 }
 
-func (graph *DLiteGraph) CalculateKey(location Location) DLiteKey {
-	H := maps.EuclideanDistance(location.X, location.Y, graph.Start.X, graph.Start.Y)
+func (graph *DLiteGraph) CalculateKey(location [2]float64) DLiteKey {
+	H := maps.EuclideanDistance2(location, graph.Start)
 	G := graph.Nodes[location][0]
 	RHS := graph.Nodes[location][1]
 	return DLiteKey{Location: location, H: math.Min(G, RHS) + H + graph.Km, RHS: math.Min(G, RHS)}
 }
 
-func (graph *DLiteGraph) updateVertex(location Location) {
+func (graph *DLiteGraph) updateVertex(location [2]float64) {
 	if location != graph.Goal {
 		minRHS := math.Inf(1)
 		for neighborNode, edgeCost := range graph.Edges[location] {
@@ -174,18 +174,18 @@ func (graph *DLiteGraph) updateVertex(location Location) {
 	}
 }
 
-func (graph *DLiteGraph) AddNode(location Location) {
+func (graph *DLiteGraph) AddNode(location [2]float64) {
 
 	if _, exists := graph.Nodes[location]; !exists {
 		graph.Nodes[location] = []float64{math.Inf(1), math.Inf(1)}
-		graph.Edges[location] = make(map[Location]float64)
+		graph.Edges[location] = make(map[[2]float64]float64)
 
 		graph.TemporaryLocations[location] = true
 	}
 
 }
 
-func (graph *DLiteGraph) AddEdge(from Location, to Location, cost float64) {
+func (graph *DLiteGraph) AddEdge(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
@@ -196,11 +196,11 @@ func (graph *DLiteGraph) AddEdge(from Location, to Location, cost float64) {
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -208,7 +208,7 @@ func (graph *DLiteGraph) AddEdge(from Location, to Location, cost float64) {
 
 }
 
-func (graph *DLiteGraph) UpdateEdgeCost(from Location, to Location, cost float64) {
+func (graph *DLiteGraph) UpdateEdgeCost(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
@@ -219,11 +219,11 @@ func (graph *DLiteGraph) UpdateEdgeCost(from Location, to Location, cost float64
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -284,10 +284,10 @@ func (graph *DLiteGraph) ComputeShortestPath() {
 
 }
 
-func (graph *DLiteGraph) ReturnShortestPath() []Location {
+func (graph *DLiteGraph) ReturnShortestPath() [][2]float64 {
 
-	var path []Location
-	visited := make(map[Location]bool)
+	var path [][2]float64
+	visited := make(map[[2]float64]bool)
 
 	if graph.Nodes[graph.Goal][0] == math.Inf(1) {
 		fmt.Println("the path does not exist")
@@ -300,27 +300,29 @@ func (graph *DLiteGraph) ReturnShortestPath() []Location {
 		path = append(path, current)
 		visited[current] = true
 
-		var smallestNeighbor *Location
+		var smallestNeighbor [2]float64
+		atLeastOneFound := false
 		smallest := math.Inf(1)
 
 		for neighborLocation, neighborEdge := range graph.Edges[current] {
 			_, found := visited[neighborLocation]
 			if !found && graph.Nodes[neighborLocation][0]+neighborEdge < smallest {
+				atLeastOneFound = true
 				smallest = graph.Nodes[neighborLocation][0] + neighborEdge
-				smallestNeighbor = &neighborLocation
+				smallestNeighbor = neighborLocation
 			}
 		}
 
-		if smallestNeighbor == nil {
+		if !atLeastOneFound {
 			fmt.Println("the path terminates early")
-			return []Location{}
+			return [][2]float64{}
 		}
-		current = *smallestNeighbor
+		current = smallestNeighbor
 	}
 	path = append(path, current)
 	sum := 0.0
 	for i := 0; i < len(path)-1; i++ {
-		sum += maps.EuclideanDistance(path[i].X, path[i].Y, path[i+1].X, path[i+1].Y)
+		sum += maps.EuclideanDistance2(path[i], path[i+1])
 	}
 	fmt.Println("D* LITE path", path)
 	fmt.Println("D* LITE sum", sum)
@@ -329,12 +331,12 @@ func (graph *DLiteGraph) ReturnShortestPath() []Location {
 
 }
 
-func (graph *DLiteGraph) GetEdges(mp *maps.MapDetails, c1 Location) ([]Location, []float64) {
-	edges := make([]Location, 0)
+func (graph *DLiteGraph) GetEdges(mp *maps.MapDetails, c1 [2]float64) ([][2]float64, []float64) {
+	edges := make([][2]float64, 0)
 	dist := make([]float64, 0)
 
 	for key, _ := range graph.Nodes {
-		line_seg := []float64{key.X, key.Y, c1.X, c1.Y}
+		line_seg := []float64{key[0], key[1], c1[0], c1[1]}
 		blocked := false
 		for j := 0; j < len(mp.Obstacles); j++ {
 			if mp.Obstacle_type[j] == "BEZIER" {
@@ -346,18 +348,18 @@ func (graph *DLiteGraph) GetEdges(mp *maps.MapDetails, c1 Location) ([]Location,
 		}
 		if !blocked {
 			edges = append(edges, key)
-			dist = append(dist, maps.EuclideanDistance(c1.X, c1.Y, key.X, key.Y))
+			dist = append(dist, maps.EuclideanDistance2(c1, key))
 		}
 	}
 
 	return edges, dist
 }
 
-func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation Location) {
+func (graph *DLiteGraph) UpdatePathfinding(mp *maps.MapDetails, newLocation [2]float64) {
 
-	graph.Visited = make(map[Location]bool)
+	graph.Visited = make(map[[2]float64]bool)
 
-	graph.Km += maps.EuclideanDistance(graph.Last.X, graph.Last.Y, newLocation.X, newLocation.Y)
+	graph.Km += maps.EuclideanDistance2(graph.Last, newLocation)
 	graph.Last = newLocation
 
 	_, exists := graph.TemporaryLocations[newLocation]

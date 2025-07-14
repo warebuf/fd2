@@ -8,28 +8,28 @@ import (
 )
 
 type MTDLiteKey struct {
-	Location Location
+	Location [2]float64
 	H        float64
 	RHS      float64
 }
 
 type MTDLiteGraph struct {
-	Start Location
-	Goal  Location
-	Last  Location
+	Start [2]float64
+	Goal  [2]float64
+	Last  [2]float64
 
-	Nodes map[Location][]float64 // [g, RHS]
-	Edges map[Location]map[Location]float64
+	Nodes map[[2]float64][]float64 // [g, RHS]
+	Edges map[[2]float64]map[[2]float64]float64
 
 	PriorityQueue *MTDLitePQ
-	Visited       map[Location]bool
+	Visited       map[[2]float64]bool
 
 	Km float64
 }
 
 type MTDLitePQ struct {
 	queue    []MTDLiteKey
-	indexMap map[Location]int // Maps node (coordinate) to its index in queue
+	indexMap map[[2]float64]int // Maps node (coordinate) to its index in queue
 }
 
 func isMTDLiteKeyLess(a, b MTDLiteKey) bool {
@@ -85,7 +85,7 @@ func (pq *MTDLitePQ) topKey() MTDLiteKey {
 	return pq.queue[0] // The top of the heap is always at index 0
 }
 
-func (pq *MTDLitePQ) Remove(location Location) {
+func (pq *MTDLitePQ) Remove(location [2]float64) {
 	removeIndex, exists := pq.indexMap[location]
 	if !exists {
 		return
@@ -99,7 +99,7 @@ func (pq *MTDLitePQ) Remove(location Location) {
 	}
 }
 
-func (pq *MTDLitePQ) Update(location Location, hCost float64, rhsCost float64) {
+func (pq *MTDLitePQ) Update(location [2]float64, hCost float64, rhsCost float64) {
 	index, exists := pq.indexMap[location]
 	if !exists {
 		heap.Push(pq, MTDLiteKey{Location: location, H: hCost, RHS: rhsCost})
@@ -111,31 +111,31 @@ func (pq *MTDLitePQ) Update(location Location, hCost float64, rhsCost float64) {
 	heap.Fix(pq, index) // Restore heap property, swap will update index mappings for us
 }
 
-func MTDLiteInit(mp *maps.MapDetails, start Location, goal Location) *MTDLiteGraph {
+func MTDLiteInit(mp *maps.MapDetails, start [2]float64, goal [2]float64) *MTDLiteGraph {
 
 	masterDLite := &MTDLiteGraph{
 		Start: start,
 		Goal:  goal,
 		Last:  start,
-		Nodes: make(map[Location][]float64),
-		Edges: make(map[Location]map[Location]float64),
+		Nodes: make(map[[2]float64][]float64),
+		Edges: make(map[[2]float64]map[[2]float64]float64),
 		PriorityQueue: &MTDLitePQ{
 			queue:    make([]MTDLiteKey, 0),
-			indexMap: make(map[Location]int),
+			indexMap: make(map[[2]float64]int),
 		},
-		Visited: make(map[Location]bool),
+		Visited: make(map[[2]float64]bool),
 		Km:      0.0,
 	}
 
 	for i := 0; i < len(mp.Intersections); i++ {
 
-		interestLocation := Location{X: mp.Intersections[i][0], Y: mp.Intersections[i][1]}
+		interestLocation := mp.Intersections[i]
 		masterDLite.Nodes[interestLocation] = []float64{math.Inf(1), math.Inf(1)}
 
-		indivMap := make(map[Location]float64)
+		indivMap := make(map[[2]float64]float64)
 		for j := 0; j < len(mp.Edges[i]); j++ {
 			edgeArray := mp.Intersections[mp.Edges[i][j]]
-			edgeLocation := Location{edgeArray[0], edgeArray[1]}
+			edgeLocation := edgeArray
 			indivMap[edgeLocation] = mp.EdgeLengths[i][j]
 		}
 		masterDLite.Edges[interestLocation] = indivMap
@@ -144,14 +144,14 @@ func MTDLiteInit(mp *maps.MapDetails, start Location, goal Location) *MTDLiteGra
 	return masterDLite
 }
 
-func (graph *MTDLiteGraph) CalculateKey(location Location) MTDLiteKey {
-	H := maps.EuclideanDistance(location.X, location.Y, graph.Start.X, graph.Start.Y)
+func (graph *MTDLiteGraph) CalculateKey(location [2]float64) MTDLiteKey {
+	H := maps.EuclideanDistance2(location, graph.Start)
 	G := graph.Nodes[location][0]
 	RHS := graph.Nodes[location][1]
 	return MTDLiteKey{Location: location, H: math.Min(G, RHS) + H + graph.Km, RHS: math.Min(G, RHS)}
 }
 
-func (graph *MTDLiteGraph) updateVertex(location Location) {
+func (graph *MTDLiteGraph) updateVertex(location [2]float64) {
 	if location != graph.Goal {
 		minRHS := math.Inf(1)
 		for neighborNode, edgeCost := range graph.Edges[location] {
@@ -168,16 +168,16 @@ func (graph *MTDLiteGraph) updateVertex(location Location) {
 	}
 }
 
-func (graph *MTDLiteGraph) AddNode(location Location) {
+func (graph *MTDLiteGraph) AddNode(location [2]float64) {
 
 	if _, exists := graph.Nodes[location]; !exists {
 		graph.Nodes[location] = []float64{math.Inf(1), math.Inf(1)}
-		graph.Edges[location] = make(map[Location]float64)
+		graph.Edges[location] = make(map[[2]float64]float64)
 	}
 
 }
 
-func (graph *MTDLiteGraph) AddEdge(from Location, to Location, cost float64) {
+func (graph *MTDLiteGraph) AddEdge(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
@@ -188,11 +188,11 @@ func (graph *MTDLiteGraph) AddEdge(from Location, to Location, cost float64) {
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -200,7 +200,7 @@ func (graph *MTDLiteGraph) AddEdge(from Location, to Location, cost float64) {
 
 }
 
-func (graph *MTDLiteGraph) UpdateEdgeCost(from Location, to Location, cost float64) {
+func (graph *MTDLiteGraph) UpdateEdgeCost(from [2]float64, to [2]float64, cost float64) {
 
 	if _, exists := graph.Nodes[from]; !exists {
 		graph.Nodes[from] = []float64{math.Inf(1), math.Inf(1)}
@@ -211,11 +211,11 @@ func (graph *MTDLiteGraph) UpdateEdgeCost(from Location, to Location, cost float
 	}
 
 	if _, exists := graph.Edges[from]; !exists {
-		graph.Edges[from] = make(map[Location]float64)
+		graph.Edges[from] = make(map[[2]float64]float64)
 	}
 
 	if _, exists := graph.Edges[to]; !exists {
-		graph.Edges[to] = make(map[Location]float64)
+		graph.Edges[to] = make(map[[2]float64]float64)
 	}
 
 	graph.Edges[from][to] = cost
@@ -246,16 +246,16 @@ func (graph *MTDLiteGraph) ComputeShortestPath() {
 			graph.Visited[oldKey.Location] = true
 			for neighborLocation, _ := range graph.Edges[oldKey.Location] {
 				_, exists := graph.Visited[neighborLocation]
-				if exists == false {
+				if !exists {
 					graph.updateVertex(neighborLocation)
 				}
 			}
 		} else {
 			graph.Nodes[oldKey.Location][0] = math.Inf(1)
 			graph.updateVertex(oldKey.Location)
-			for neighborLocation, _ := range graph.Edges[oldKey.Location] {
+			for neighborLocation := range graph.Edges[oldKey.Location] {
 				_, exists := graph.Visited[neighborLocation]
-				if exists == false {
+				if !exists {
 					graph.updateVertex(neighborLocation)
 				}
 			}
@@ -264,10 +264,10 @@ func (graph *MTDLiteGraph) ComputeShortestPath() {
 
 }
 
-func (graph *MTDLiteGraph) ReturnShortestPath() []Location {
+func (graph *MTDLiteGraph) ReturnShortestPath() [][2]float64 {
 
-	var ans []Location
-	visited := make(map[Location]bool)
+	var ans [][2]float64
+	visited := make(map[[2]float64]bool)
 
 	if graph.Nodes[graph.Goal][0] == math.Inf(1) {
 		fmt.Println("the path does not exist")
@@ -280,7 +280,7 @@ func (graph *MTDLiteGraph) ReturnShortestPath() []Location {
 		ans = append(ans, current)
 		visited[current] = true
 
-		var smallestNeighbor *Location
+		var smallestNeighbor *[2]float64
 		smallest := math.Inf(1)
 
 		for neighborLocation, neighborEdge := range graph.Edges[current] {
@@ -293,19 +293,19 @@ func (graph *MTDLiteGraph) ReturnShortestPath() []Location {
 
 		if smallestNeighbor == nil {
 			fmt.Println("the path terminates early")
-			return []Location{}
+			return [][2]float64{}
 		}
 		current = *smallestNeighbor
 	}
 	ans = append(ans, current)
-	var ans2 []Location
+	var ans2 [][2]float64
 	for i := len(ans) - 1; i >= 0; i-- {
 		ans2 = append(ans2, ans[i])
 	}
 	fmt.Println(ans2)
 	sum := 0.0
 	for i := 0; i < len(ans)-1; i++ {
-		sum += maps.EuclideanDistance(ans[i].X, ans[i].Y, ans[i+1].X, ans[i+1].Y)
+		sum += maps.EuclideanDistance2(ans[i], ans[i+1])
 	}
 	fmt.Println("sum", sum)
 

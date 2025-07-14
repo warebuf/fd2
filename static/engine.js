@@ -634,7 +634,7 @@ function drawHeatMap() {
                 ctx.fillText( state[i][j][k].LastMile, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
 
                 x_shift += 10;
-                ctx.fillText( state[i][j][k].DynamicDestination, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
+                ctx.fillText( state[i][j][k].DestinationIndex, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
                 
                 x_shift = 0;
                 ctx.fillText( state[i][j][k].Start.X.toString() + " " + state[i][j][k].Start.Y.toString() + " " + state[i][j][k].Start.Type + " " + state[i][j][k].Start.I.toString() + " "  + state[i][j][k].Start.J.toString() + " " + state[i][j][k].Start.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 15);
@@ -1223,7 +1223,7 @@ function drawDynamicCircles() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                if(state[i][j][k].DynamicDestination.length > 0) {
+                if(state[i][j][k].DestinationIndex.length > 0) {
                     ctx.beginPath();
                     ctx.arc(width + state[i][j][k].DynamicCircle[0], height - state[i][j][k].DynamicCircle[1], state[i][j][k].DistanceLeft/3, 0, 2 * Math.PI);
                     ctx.stroke();
@@ -1238,8 +1238,8 @@ function drawLastMileCircle() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                if(state[i][j][k].DynamicDestination.length > 0) {
-                    let target = state[ state[i][j][k].DynamicDestination[0] ][ state[i][j][k].DynamicDestination[1] ][ state[i][j][k].DynamicDestination[2] ]
+                if(state[i][j][k].DestinationIndex.length > 0) {
+                    let target = state[ state[i][j][k].DestinationIndex[0] ][ state[i][j][k].DestinationIndex[1] ][ state[i][j][k].DestinationIndex[2] ]
                     ctx.beginPath();
                     ctx.arc(width + target.Position.X, height - target.Position.Y, state[i][j][k].LastMileRadius, 0, 2 * Math.PI);
                     ctx.stroke();

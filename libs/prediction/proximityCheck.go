@@ -6,7 +6,7 @@ import (
 	"math"
 )
 
-func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 float64) ([][]float64, [][]float64, []float64) {
+func createPartitions(path1 [][2]float64, path2 [][2]float64, SPD1 float64, SPD2 float64) ([][2]float64, [][2]float64, []float64) {
 
 	// assume paths are at least 2 points
 
@@ -15,8 +15,8 @@ func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 f
 	point1 := path1[0]
 	point2 := path2[0]
 
-	partition1 := [][]float64{}
-	partition2 := [][]float64{}
+	partition1 := [][2]float64{}
+	partition2 := [][2]float64{}
 	t := []float64{}
 
 	for i < len(path1) && j < len(path2) {
@@ -25,8 +25,8 @@ func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 f
 		partition2 = append(partition2, point2)
 
 		if i+1 < len(path1) && j+1 < len(path2) {
-			dist1 := maps.EuclideanDistance(point1[0], point1[1], path1[i+1][0], path1[i+1][1])
-			dist2 := maps.EuclideanDistance(point2[0], point2[1], path2[j+1][0], path2[j+1][1])
+			dist1 := maps.EuclideanDistance2(point1, path1[i+1])
+			dist2 := maps.EuclideanDistance2(point2, path2[j+1])
 			time1 := dist1 / SPD1
 			time2 := dist2 / SPD2
 
@@ -59,7 +59,7 @@ func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 f
 	}
 
 	for i < len(path1) {
-		dist1 := maps.EuclideanDistance(point1[0], point1[1], path1[i][0], path1[i][1])
+		dist1 := maps.EuclideanDistance2(point1, path1[i])
 		time1 := dist1 / SPD1
 		partition1 = append(partition1, path1[i])
 		partition2 = append(partition2, point2) // unit2 stays where it was
@@ -69,7 +69,7 @@ func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 f
 	}
 
 	for j < len(path2) {
-		dist2 := maps.EuclideanDistance(point2[0], point2[1], path2[j][0], path2[j][1])
+		dist2 := maps.EuclideanDistance2(point2, path2[j])
 		time2 := dist2 / SPD2
 		partition2 = append(partition2, path2[j])
 		partition1 = append(partition1, point1) // unit1 stays where it was
@@ -81,7 +81,7 @@ func createPartitions(path1 [][]float64, path2 [][]float64, SPD1 float64, SPD2 f
 	return partition1, partition2, t
 }
 
-func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, SPD1 float64, SPD2 float64, radius float64) float64 {
+func movingLineRadius(subline1 [][2]float64, subline2 [][2]float64, tMax float64, SPD1 float64, SPD2 float64, radius float64) float64 {
 
 	Xo1 := subline1[0][0]
 	Yo1 := subline1[0][1]
@@ -114,12 +114,12 @@ func movingLineRadius(subline1 [][]float64, subline2 [][]float64, tMax float64, 
 	return QuadraticFormula(A, B, C, tMax)
 }
 
-func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius float64) string {
+func radiusTransitionStatus(p1Start, p1End, p2Start, p2End [2]float64, radius float64) string {
 	const eps = 1e-4 // 0.0001
 
 	// Distances
-	d0 := maps.EuclideanDistance(p1Start[0], p1Start[1], p2Start[0], p2Start[1])
-	d1 := maps.EuclideanDistance(p1End[0], p1End[1], p2End[0], p2End[1])
+	d0 := maps.EuclideanDistance2(p1Start, p2Start)
+	d1 := maps.EuclideanDistance2(p1End, p2End)
 	closest := closestPoint(p1Start, p1End, p2Start, p2End)
 
 	fmt.Println("p1Start", p1Start, p1End, "p1End")
@@ -206,14 +206,14 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End []float64, radius flo
 	}
 }
 
-func interpolate(p1, p2 []float64, tRatio float64) []float64 {
-	return []float64{
+func interpolate(p1, p2 [2]float64, tRatio float64) [2]float64 {
+	return [2]float64{
 		p1[0] + (p2[0]-p1[0])*tRatio,
 		p1[1] + (p2[1]-p1[1])*tRatio,
 	}
 }
 
-func closestPoint(p1Start, p1End, p2Start, p2End []float64) float64 {
+func closestPoint(p1Start, p1End, p2Start, p2End [2]float64) float64 {
 	// Motion vectors
 	ax := p1End[0] - p1Start[0]
 	ay := p1End[1] - p1Start[1]
@@ -247,7 +247,7 @@ func closestPoint(p1Start, p1End, p2Start, p2End []float64) float64 {
 	return math.Sqrt(dx*dx + dy*dy)
 }
 
-func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64, adjustment string) (float64, string) {
+func ProximityCheck(path1 [][2]float64, path2 [][2]float64, distanceLeft1 float64, distanceLeft2 float64, SPD1 float64, SPD2 float64, radius float64, adjustment string) (float64, string) {
 
 	fmt.Println("-----Called ProximityCheck-----")
 
@@ -266,8 +266,8 @@ func ProximityCheck(path1 [][]float64, path2 [][]float64, distanceLeft1 float64,
 	ans := -1.0
 	entryType := ""
 	for i := 0; i < len(partition1)-1; i++ {
-		subline1 := [][]float64{partition1[i], partition1[i+1]}
-		subline2 := [][]float64{partition2[i], partition2[i+1]}
+		subline1 := [][2]float64{partition1[i], partition1[i+1]}
+		subline2 := [][2]float64{partition2[i], partition2[i+1]}
 		t := movingLineRadius(subline1, subline2, times[i], SPD1, SPD2, radius+adj)
 		if t < 0 {
 			totalTime += times[i]

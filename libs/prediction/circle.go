@@ -6,13 +6,13 @@ import (
 	"math"
 )
 
-func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
+func GetSubLine(P1 [2]float64, P2 [2]float64, newLength float64) [][2]float64 {
 
-	line := [][]float64{}
+	line := [][2]float64{}
 
 	line = append(line, P1)
 
-	oldLength := maps.EuclideanDistance(P1[0], P1[1], P2[0], P2[1])
+	oldLength := maps.EuclideanDistance2(P1, P2)
 	fraction := math.Round(10000000000*newLength/oldLength) / 10000000000 // 10 decimal places
 
 	deltaX := P2[0] - P1[0]
@@ -24,13 +24,13 @@ func GetSubLine(P1 []float64, P2 []float64, newLength float64) [][]float64 {
 	newX := newDeltaX + P1[0]
 	newY := newDeltaY + P1[1]
 
-	line = append(line, []float64{newX, newY})
+	line = append(line, [2]float64{newX, newY})
 
 	return line
 }
 
 // TODO: if one of the units has 0 speed, seems like it returns an empty array
-func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd float64) [][]float64 {
+func GetSubPath(path [][2]float64, distanceLeftStart float64, distanceLeftEnd float64) [][2]float64 {
 
 	if len(path) == 1 {
 		return path
@@ -39,26 +39,26 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 	if distanceLeftStart == distanceLeftEnd {
 		curLength := 0.0
 		for i := len(path) - 1; i >= 1; i-- {
-			curLength += maps.EuclideanDistance(path[i][0], path[i][1], path[i-1][0], path[i-1][1])
+			curLength += maps.EuclideanDistance2(path[i], path[i-1])
 			if curLength >= distanceLeftStart {
 				point := GetSubLine(path[i-1], path[i], curLength-distanceLeftStart)
-				return [][]float64{point[1]}
+				return [][2]float64{point[1]}
 			}
 		}
-		return [][]float64{}
+		return [][2]float64{}
 	} else if distanceLeftStart < distanceLeftEnd {
-		return [][]float64{}
+		return [][2]float64{}
 	}
 
-	subPath := [][]float64{}
-	end := [][]float64{}
+	subPath := [][2]float64{}
+	end := [][2]float64{}
 
 	curLength := 0.0
 	for i := len(path) - 1; i >= 1; i-- {
 
 		fmt.Println(path[i], path[i-1], distanceLeftStart, distanceLeftEnd, curLength, subPath)
 
-		curLength = curLength + maps.EuclideanDistance(path[i][0], path[i][1], path[i-1][0], path[i-1][1])
+		curLength = curLength + maps.EuclideanDistance2(path[i], path[i-1])
 
 		if len(end) == 0 && curLength >= distanceLeftEnd {
 			end = GetSubLine(path[i-1], path[i], curLength-distanceLeftEnd)
@@ -72,7 +72,7 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 		}
 
 		if len(subPath) > 0 {
-			euclid := maps.EuclideanDistance(end[1][0], end[1][1], path[i-1][0], path[i-1][1])
+			euclid := maps.EuclideanDistance2(end[1], path[i-1])
 			if euclid < 1e-10 { // CORNER CASE: if the point we are appending is not the same as the end point we appended
 			} else {
 				subPath = append(subPath, path[i-1])
@@ -83,7 +83,7 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 
 	fmt.Println(curLength, subPath)
 
-	reversedSubPath := [][]float64{}
+	reversedSubPath := [][2]float64{}
 	for i := len(subPath) - 1; i >= 0; i-- {
 		reversedSubPath = append(reversedSubPath, subPath[i])
 	}
@@ -92,7 +92,7 @@ func GetSubPath(path [][]float64, distanceLeftStart float64, distanceLeftEnd flo
 
 }
 
-func lineIntersectsCircle(line [][]float64, cX float64, cY float64, r0 float64, r1 float64) float64 {
+func lineIntersectsCircle(line [][2]float64, cX float64, cY float64, r0 float64, r1 float64) float64 {
 
 	p0x := line[0][0]
 	p0y := line[0][1]
@@ -167,7 +167,7 @@ func IsZero(x float64) bool {
 	return math.Abs(x) < 1e-9
 }
 
-func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, distanceLeftStart float64, distanceLeftEnd float64, circle []float64, radiusStart float64, radiusEnd float64, hunterSPD int, targetSPD int, reductionFactor float64) float64 {
+func CircleIntersectPath(path [][2]float64, targetX float64, targetY float64, distanceLeftStart float64, distanceLeftEnd float64, circle []float64, radiusStart float64, radiusEnd float64, hunterSPD int, targetSPD int, reductionFactor float64) float64 {
 
 	fmt.Println("-----Called CircleIntersectPath-----")
 
@@ -194,7 +194,7 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 	distances := []float64{}
 	total := 0.0
 	for i := 0; i < len(subPath)-1; i++ {
-		euclid := maps.EuclideanDistance(subPath[i][0], subPath[i][1], subPath[i+1][0], subPath[i+1][1])
+		euclid := maps.EuclideanDistance2(subPath[i], subPath[i+1])
 		distances = append(distances, euclid)
 		total += euclid
 	}
@@ -217,7 +217,7 @@ func CircleIntersectPath(path [][]float64, targetX float64, targetY float64, dis
 	intersectFound := false
 
 	for i := 0; i < len(subPath)-1; i++ {
-		line := [][]float64{subPath[i], subPath[i+1]}
+		line := [][2]float64{subPath[i], subPath[i+1]}
 		intersects := lineIntersectsCircle(line, circle[0], circle[1], radius[i], radius[i+1])
 
 		if intersects >= 0 {

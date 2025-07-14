@@ -104,11 +104,11 @@ func p_read(p *permission_socket) {
 				pl, exists := plid_to_permission_list.global[msg.PLID]
 				plid_to_permission_list.mutex.Unlock()
 
-				if exists == true {
+				if exists {
 					_, check_plid := pl.gamer_permission_list[p.u.uid]
-					if check_plid == true {
+					if check_plid {
 						fmt.Println("participant ws is already is the match!")
-					} else if pl.started == true {
+					} else if pl.started {
 						fmt.Println("match has already started, of course you can't join")
 					} else if len(pl.gamer_permission_list) > int(pl.capacity) {
 						fmt.Println("the match is full")
@@ -128,8 +128,8 @@ func p_read(p *permission_socket) {
 
 				if exists {
 					_, check_uid := pl.gamer_permission_list[p.u.uid]
-					if check_uid == true {
-						if pl.started == false {
+					if check_uid {
+						if !pl.started {
 							pl.gamer_permission_signout <- p
 						} else {
 							fmt.Println("cannot leave permission list if match is in progress!")
@@ -209,13 +209,13 @@ func (pl *permission_list) run() {
 			// TODO: BUG, same user has different UIDs!!!, therefore the same user on different browsers can join twice
 			_, check_uid := pl.gamer_permission_list[ws.u.uid]
 			pl.mutex.Lock()
-			if check_uid == false {
+			if !check_uid {
 				pl.gamer_permission_list[ws.u.uid] = ws.u
 			}
 			pl.mutex.Unlock()
 
 			// if this is the first join, send a message to everyone that he's joined
-			if check_uid == false {
+			if !check_uid {
 				msg := &pmessage{Name: ws.u.email, Event: "participantJoinSuccess", When: time.Now(), PLID: pl.plid}
 				pid_to_permissions.mutex.RLock()
 				for _, j := range pid_to_permissions.global {
@@ -234,13 +234,13 @@ func (pl *permission_list) run() {
 			// if user is in the match object, delete all sockets as well
 			_, check_uid := pl.gamer_permission_list[ws.u.uid] // check if the user is in the match object
 			pl.mutex.Lock()
-			if check_uid == true {
+			if check_uid {
 				delete(pl.gamer_permission_list, ws.u.uid)
 			}
 			pl.mutex.Unlock()
 
 			// send a message to everyone that he's left
-			if check_uid == true {
+			if check_uid {
 				msg := &pmessage{Name: ws.u.email, Message: "participantLeaveSuccess", Event: "participantLeaveSuccess", When: time.Now(), PLID: pl.plid}
 				pid_to_permissions.mutex.RLock()
 				for _, j := range pid_to_permissions.global {
@@ -302,9 +302,7 @@ func psocketBroadcast(msg *pmessage) {
 	fmt.Println("global broadcast")
 	pid_to_permissions.mutex.RLock()
 	for _, i := range pid_to_permissions.global {
-		select {
-		case i.incoming_message <- msg:
-		}
+		i.incoming_message <- msg
 	}
 
 	pid_to_permissions.mutex.RUnlock()

@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft float64, targetSPD int, hunterPosition []float64, hunterSPD int) [][]float64 {
+func LastMilePrediction(mp *maps.MapDetails, path [][2]float64, distanceLeft float64, targetSPD int, hunterPosition [2]float64, hunterSPD int) [][2]float64 {
 
 	fmt.Println("-----Called LastMilePrediction-----")
 
@@ -16,7 +16,7 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 	subpath := GetSubPath(path, distanceLeft, 0.0)
 
 	if distanceLeft == 0 {
-		subpath = [][]float64{path[len(path)-1]} // this is a shallow copy, not a deep copy beware
+		subpath = [][2]float64{path[len(path)-1]} // this is a shallow copy, not a deep copy beware
 	}
 
 	fmt.Println("subPath", subpath, distanceLeft, targetSPD)
@@ -32,26 +32,23 @@ func LastMilePrediction(mp *maps.MapDetails, path [][]float64, distanceLeft floa
 
 }
 
-func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64) [][]float64 {
+func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][2]float64, distanceStart float64, targetSPD float64, hunterPos [2]float64, hunterSPD float64) [][2]float64 {
 
 	count := 0
 	increment := 0.25 // note: if the linear search is not tight enough and does not find a collision, this algorithm will fail
 
 	if hunterSPD == 0 {
-		return [][]float64{hunterPos}
+		return [][2]float64{hunterPos}
 	}
 
 	if targetSPD == 0 || len(targetPath) == 0 {
-		targetCurrentPos := targetPath[0] // this should be the target's current position
-		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
-		end := pathfinding.Location{X: targetCurrentPos[0], Y: targetCurrentPos[1]}
-		AStarGraph := pathfinding.AStarInit(mp, start, end)
+		AStarGraph := pathfinding.AStarInit(mp, hunterPos, targetPath[0]) // this should be the target's current position
 		ans := AStarGraph.ComputeShortestPath()
 		return ans
 	}
 
 	targetMaxTime := distanceStart / targetSPD
-	var bestPath [][]float64
+	var bestPath [][2]float64
 
 	overshot := false
 	for t := 0.0; ; t += increment {
@@ -70,7 +67,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 			distanceLeft = 0
 		}
 
-		var newPos []float64
+		var newPos [2]float64
 		if t == 0 {
 			newPos = targetPath[0]
 		} else if t == targetMaxTime { // make sure no funny rounding problem, go to destination
@@ -80,9 +77,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 			newPos = testPath[len(testPath)-1]
 		}
 
-		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
-		end := pathfinding.Location{X: newPos[0], Y: newPos[1]}
-		AStarGraph := pathfinding.AStarInit(mp, start, end)
+		AStarGraph := pathfinding.AStarInit(mp, hunterPos, newPos)
 		bestPath = AStarGraph.ComputeShortestPath()
 
 		count += 1
@@ -108,7 +103,7 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][]float64, distan
 
 }
 
-func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float64, distanceStart float64, targetSPD float64, hunterPos []float64, hunterSPD float64, topPath [][]float64) [][]float64 {
+func binary(mp *maps.MapDetails, targetPath [][2]float64, low float64, high float64, distanceStart float64, targetSPD float64, hunterPos [2]float64, hunterSPD float64, topPath [][2]float64) [][2]float64 {
 
 	count := 0
 	bestPath := topPath
@@ -131,9 +126,7 @@ func binary(mp *maps.MapDetails, targetPath [][]float64, low float64, high float
 		fmt.Println("low", low, "high", high, "mid", mid, "distanceStart", distanceStart, "distanceLeft", distanceLeft)
 		newPos := testPath[len(testPath)-1]
 
-		start := pathfinding.Location{X: hunterPos[0], Y: hunterPos[1]}
-		end := pathfinding.Location{X: newPos[0], Y: newPos[1]}
-		AStarGraph := pathfinding.AStarInit(mp, start, end)
+		AStarGraph := pathfinding.AStarInit(mp, hunterPos, newPos)
 		calculated := AStarGraph.ComputeShortestPath()
 
 		count += 1

@@ -162,11 +162,11 @@ var msid_to_sock msid_to_socket
 
 func init() {
 	fmt.Println("initializing...")
-	mapList = make([]*maps.MapDetails, 0, 0)
+	mapList = make([]*maps.MapDetails, 0)
 
 	loadMapDetails("sumrift2.txt")
 
-	fmt.Println("finished init \n")
+	fmt.Println("finished init")
 }
 
 func loadMapDetails(fp string) {
@@ -178,12 +178,10 @@ func loadMapDetails(fp string) {
 	lines := strings.Split(str, "\n")
 
 	m := new(maps.MapDetails)
-	m.Obstacles = make([][]float64, 0, 0)
-	m.Obstacle_type = make([]string, 0, 0)
-	m.IntersectionsC = make([]maps.Coordinate, 0, len(lines))
-	m.Intersections = make([][]float64, 0, len(lines))
-	m.Edges = make([][]int, 0, 0)
-	m.EdgeLengths = make([][]float64, 0, 0)
+	m.Obstacles = make([][]float64, 0)
+	m.Intersections = make([][2]float64, 0, len(lines))
+	m.Edges = make([][]int, 0)
+	m.EdgeLengths = make([][]float64, 0)
 
 	for i := 0; i < len(lines); i++ {
 		result := make(map[string]interface{})
@@ -195,11 +193,9 @@ func loadMapDetails(fp string) {
 
 		if result["Type"] == "INT" {
 
-			XY := []float64{result["X"].(float64), result["Y"].(float64)}
-			XYC := maps.Coordinate{X: result["X"].(float64), Y: result["Y"].(float64), I: -1, J: -1, K: -1}
+			XY := [2]float64{result["X"].(float64), result["Y"].(float64)}
 
 			m.Intersections = append(m.Intersections, XY)
-			m.IntersectionsC = append(m.IntersectionsC, XYC)
 
 			edges := []int{}
 			for _, val := range result["Edges"].([]interface{}) {
@@ -891,7 +887,7 @@ func gameHandler(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	if pl.started == false {
+	if !pl.started {
 		// if there is space left in the permission_list, then add bots to remaining positions
 		wg := new(sync.WaitGroup)
 		for i := len(pl.gamer_permission_list); i < int(pl.capacity); i++ {
@@ -930,7 +926,7 @@ func msocketHandler(res http.ResponseWriter, req *http.Request) {
 	fmt.Println(u, parameters, err)
 	mid, err2 := uuid.Parse(parameters["matchid"][0])
 	mtch, err3 := mid_to_match.match[mid]
-	if (err2 != nil) || (err3 == false) {
+	if (err2 != nil) || !err3 {
 		fmt.Println("mid does not exist! returning")
 		return
 	}
@@ -953,7 +949,7 @@ func msocketHandler(res http.ResponseWriter, req *http.Request) {
 
 	// check if the user is on the permission list
 	_, check_uid := plid_to_permission_list.global[mid].gamer_permission_list[uid]
-	if check_uid == false {
+	if !check_uid {
 		// this is where you add them to spectator mode, unless it is a private match, which is a feature far far far into the future
 		fmt.Println("UID cannot join! Not on permission list")
 		return

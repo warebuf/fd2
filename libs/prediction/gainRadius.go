@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-func GainRadius(hunterStart, hunterEnd, targetStart, targetEnd []float64, hunterSPD, targetSPD int) bool {
+func GainRadius(hunterStart, hunterEnd, targetStart, targetEnd [2]float64, hunterSPD, targetSPD int) bool {
 	fmt.Println("-----Called GainRadius-----")
 	fmt.Println(hunterStart, hunterEnd, targetStart, targetEnd)
 	fmt.Println(hunterSPD, targetSPD)

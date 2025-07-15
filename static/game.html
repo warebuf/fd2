@@ -561,11 +561,10 @@
         }
 
         let hoverables = [];
-        let bestScore = Infinity;
+        let bestDist = Infinity;
         let best = null;
 
         let rotationIndexes = new Map();
-        let rotationIndexCount = 0;
 
         // flatten entities into an array, also save entities on the same position as hoverable
         for (let i = 0; i < state.length; i++) {
@@ -574,8 +573,7 @@
                     hoverables.push(state[i][j][k]);
 
                     if( state[i][j][k].Position[0] === hoverable.Position[0] && state[i][j][k].Position[1] === hoverable.Position[1]) {
-                        rotationIndexes.set(`${i},${j},${k}`, rotationIndexCount);
-                        rotationIndexCount += 1;
+                        rotationIndexes.set(`${i},${j},${k}`, true);
                     }
                 }   
             }
@@ -584,8 +582,7 @@
             hoverables.push(camps[i]);
 
             if( camps[i].Position[0] === hoverable.Position[0] && camps[i].Position[1] === hoverable.Position[1]) {
-                rotationIndexes.set(`${i}`, rotationIndexCount);
-                rotationIndexCount += 1;
+                rotationIndexes.set(`${i}`, true);
             }
         }
 
@@ -602,7 +599,7 @@
                     const arr = nextKey.split(',').map(Number);
 
                     if (arr.length === 1) {
-                        hoverable = camp[arr[0]];
+                        hoverable = camps[arr[0]];
                         return;
                     } else if (arr.length === 3) {
                         hoverable = state[arr[0]][arr[1]][arr[2]];
@@ -619,7 +616,7 @@
                     const arr = prevKey.split(',').map(Number);
 
                     if (arr.length === 1) {
-                        hoverable = camp[arr[0]];
+                        hoverable = camps[arr[0]];
                         return;
                     } else if (arr.length === 3) {
                         hoverable = state[arr[0]][arr[1]][arr[2]];
@@ -630,60 +627,69 @@
             
         }
 
-        // --- 2. Direction vector -------------------------------------
         let dx = 0, dy = 0;
-        if (direction === 0) dy = -1;        // up
+        if (direction === 0) dy =  1;        // up
         if (direction === 1) dx = -1;        // left
         if (direction === 2) dx =  1;        // right
-        if (direction === 3) dy =  1;        // down
+        if (direction === 3) dy = -1;        // down
 
-        // --- 3. First pass : normal half‑plane search ----------------
         for (const h of hoverables) {
             if (h === hoverable) continue;
 
             const vx = h.Position[0] - hoverable.Position[0];
             const vy = h.Position[1] - hoverable.Position[1];
 
-            if (dx * vx + dy * vy <= 0) continue;            // wrong half‑plane
+            const dot = vx * dx + vy * dy;
+            const mag = Math.sqrt(vx * vx + vy * vy);
 
-            const axisProj = dx !== 0 ? vx * dx : vy * dy;
-            const perpDist = dx !== 0 ? Math.abs(vy) : Math.abs(vx);
-            const score    = perpDist * 1e4 + axisProj;
+            if (mag === 0) continue; // avoid divide-by-zero
 
-            if (score < bestScore) { bestScore = score; best = h; }
+            const cosine = dot / mag;
+
+            // Cosine of 45° = ~0.707; anything > that is inside a 90° cone
+            if (cosine < 0.7071) continue;
+
+            const dist = vx * vx + vy * vy;
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = h;
+            }
         }
 
-        // --- 4. Wrap‑around if nothing found -------------------------
         if (best) {
             hoverable = best;
             return;
         }
 
-        /* Pick the farthest object in the *opposite* direction,
-        then re‑apply the straight‑line tie‑breaker. */
+        const BOARD_W = 510;   // logical width  of the map + 10 for ties
+        const BOARD_H = 510;   // logical height of the map + 10 for ties
 
-        let extremeAxis = dx !== 0 ? -Infinity * dx : -Infinity * dy; // sign‑aware
-        for (const h of hoverables) {
-            const axisVal = dx !== 0 ? h.Position[0] : h.Position[1];
-            const signed  = axisVal * (dx || dy);  // flip sign for left / up
-            if (signed > extremeAxis) extremeAxis = signed;
-        }
+        const ghostX = hoverable.Position[0] - dx * BOARD_W;
+        const ghostY = hoverable.Position[1] - dy * BOARD_H;
 
-        bestScore = Infinity;
         for (const h of hoverables) {
             if (h === hoverable) continue;
 
-            const axisVal = dx !== 0 ? h.Position[0] : h.Position[1];
-            const signed  = axisVal * (dx || dy);
-            if (signed !== extremeAxis) continue;            // we want the “edge” row/col
+            const vx = h.Position[0] - ghostX;
+            const vy = h.Position[1] - ghostY;
 
-            const vx = h.Position[0] - hoverable.Position[0];
-            const vy = h.Position[1] - hoverable.Position[1];
-            const perpDist = dx !== 0 ? Math.abs(vy) : Math.abs(vx);
+            const dot = vx * dx + vy * dy;
+            const mag = Math.sqrt(vx * vx + vy * vy);
 
-            if (perpDist < bestScore) { bestScore = perpDist; best = h; }
+            if (mag === 0) continue; // avoid divide-by-zero
+
+            const cosine = dot / mag;
+
+            // Cosine of 45° = ~0.707; anything > that is inside a 90° cone
+            if (cosine < 0.7071) continue;
+
+            const dist = vx * vx + vy * vy;
+            if (dist < bestDist) {
+                bestDist = dist;
+                best = h;
+            }
         }
-
+            
         if(best) {
             hoverable = best;
         }

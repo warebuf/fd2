@@ -187,18 +187,18 @@ function calcPos() {
                                     toMove = 0;
                                     state[i][j][k].DistanceLeft = 0;
                                 } else {
-                                    let seg_x = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][0] - state[i][j][k].Position.X
-                                    let seg_y = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][1] - state[i][j][k].Position.Y
+                                    let seg_x = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][0] - state[i][j][k].Position[0]
+                                    let seg_y = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][1] - state[i][j][k].Position[1]
                                     let segment_distance = Math.sqrt((seg_x * seg_x) + (seg_y * seg_y))
                                     toMove -= segment_distance
                                     if (toMove >= 0) {
-                                        state[i][j][k].Position.X = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][0]
-                                        state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][1]
+                                        state[i][j][k].Position[0] = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][0]
+                                        state[i][j][k].Position[1] = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][1]
                                         state[i][j][k].Path_Segment++
                                     } else { // the negative toMove distance left is the distance left in the segment
                                         let percentLeft = -toMove / segment_distance
-                                        state[i][j][k].Position.X = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][0] - (seg_x * percentLeft)
-                                        state[i][j][k].Position.Y = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][1] - (seg_y * percentLeft)
+                                        state[i][j][k].Position[0] = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][0] - (seg_x * percentLeft)
+                                        state[i][j][k].Position[1] = state[i][j][k].Path[state[i][j][k].Path_Segment + 1][1] - (seg_y * percentLeft)
                                     }
                                 }
                             }
@@ -225,7 +225,6 @@ function calcPos() {
                 }
             }
         }
-        followHoverable()
 
         if (all_status_correct && all_distances_correct) {
             if ((time_queue[animating_state] != "") && (attacking_frames_count == 0)) { // update time stamp
@@ -259,7 +258,7 @@ function drawAttack() {
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
             if (attacking_frames_count == 1) {
-                createDamageNumber(state[atki][atkj][atkk].ATK, width + campOfInterest.XY.X, height - campOfInterest.XY.Y)
+                createDamageNumber(state[atki][atkj][atkk].ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
                 event_log.push(atk_data[animating_state][i])
                 if (event_log.length >= 25) {
                     event_log.shift()
@@ -285,12 +284,12 @@ function drawPos() {
         for (let j = 0; j < state[i].length; j++) {
             for (let k = 0; k < state[i][j].length; k++) {
                 if (state[i][j][k].HP > 0) {
-                    //drawHPBoxes(state[i][j][k].HP,state[i][j][k].HP,width+state[i][j][k].Position.X,height-state[i][j][k].Position.Y)
+                    //drawHPBoxes(state[i][j][k].HP,state[i][j][k].HP,width+state[i][j][k].Position[0],height-state[i][j][k].Position[1])
                     
                     if(i === 0) {
-                        drawRotated('>', width + state[i][j][k].Position.X, height - state[i][j][k].Position.Y, state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "yellow")
+                        drawRotated('>', width + state[i][j][k].Position[0], height - state[i][j][k].Position[1], state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "yellow")
                     } else {
-                        drawRotated('>', width + state[i][j][k].Position.X, height - state[i][j][k].Position.Y, state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "red")
+                        drawRotated('>', width + state[i][j][k].Position[0], height - state[i][j][k].Position[1], state[i][j][k].Thetas, state[i][j][k].Path_Segment, "11", 3, "red")
                     }
                 }
             }
@@ -303,7 +302,7 @@ function drawCamps() {
     ctx.fillStyle = "green";
 
     for (let i = 0; i < camps.length; i++) {
-        ctx.fillRect(width + camps[i].XY.X, height - camps[i].XY.Y, 1, 1);
+        ctx.fillRect(width + camps[i].Position[0], height - camps[i].Position[1], 1, 1);
 
         let x_shift_tracker = []
         x_shift_tracker.push([]) // list of my_team units at this camp
@@ -342,10 +341,10 @@ function drawCamps() {
                 ctx.beginPath();
                 var startAngle = -Math.PI / 2; // Start at the top
                 var endAngle = percentage * 2 * Math.PI + startAngle;
-                ctx.arc(width + (unitOfInterest.Position.X) + x_shift, height - unitOfInterest.Position.Y + y_shift, 5, startAngle, endAngle, false);
+                ctx.arc(width + (unitOfInterest.Position[0]) + x_shift, height - unitOfInterest.Position[1] + y_shift, 5, startAngle, endAngle, false);
 
                 if ((percentage != 0) && (percentage != 1)) { // Close the path to form a wedge
-                    ctx.lineTo(width + unitOfInterest.Position.X + x_shift, height - unitOfInterest.Position.Y + y_shift); // Draw line to center of the circle
+                    ctx.lineTo(width + unitOfInterest.Position[0] + x_shift, height - unitOfInterest.Position[1] + y_shift); // Draw line to center of the circle
                     ctx.closePath(); // Automatically draws a line from the last point to the starting point
                 }
                 if ((camps[i].Units[j][0] == my_team) && (camps[i].Units[j][1] == my_int)) { ctx.strokeStyle = 'blue'; }
@@ -361,8 +360,8 @@ function drawCamps() {
         ctx.fillStyle = '#F5F5F5'
 
         if (camps[i].HP > 0) {
-            //drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].XY.X, height - camps[i].XY.Y)
-            ctx.fillText(camps[i].HP, width + camps[i].XY.X, height - camps[i].XY.Y - 10);
+            //drawHPBoxes(camps[i].HP, camps[i].MaxHP, width + camps[i].Position[0], height - camps[i].Position[1])
+            ctx.fillText(camps[i].HP, width + camps[i].Position[0], height - camps[i].Position[1] - 10);
         }
     }
 
@@ -371,20 +370,20 @@ function drawCamps() {
 
 function drawHoverable() {
     if (hoverable != null) {
-
+        
         ctx.font = '7px monospace';
         ctx.textAlign = "left";
-        if(hoverable.Type == "unit") {
-            ctx.fillText(hoverable.K, width + hoverable.X + 11, height - hoverable.Y + 17);
-        } else if(hoverable.Type == "camp") {
-            ctx.fillText(hoverable.I, width + hoverable.X + 11, height - hoverable.Y + 17);
+        if( hoverable.Index.length === 3 ) {
+            ctx.fillText(hoverable.Index[2], width + hoverable.Position[0] + 11, height - hoverable.Position[1] + 17);
+        } else if( hoverable.Index.length === 1 ) {
+            ctx.fillText(hoverable.Index[0], width + hoverable.Position[0] + 11, height - hoverable.Position[1] + 17);
         }
 
         ctx.fillStyle = 'pink'
-        ctx.fillRect(width + hoverable.X - 10, height - hoverable.Y + 10, 20, 1);
-        ctx.fillRect(width + hoverable.X - 10, height - hoverable.Y - 10, 20, 1);
-        ctx.fillRect(width + hoverable.X - 10, height - hoverable.Y - 10, 1, 20);
-        ctx.fillRect(width + hoverable.X + 10, height - hoverable.Y - 10, 1, 20);
+        ctx.fillRect(width + hoverable.Position[0] - 10, height - hoverable.Position[1] + 10, 20, 1);
+        ctx.fillRect(width + hoverable.Position[0] - 10, height - hoverable.Position[1] - 10, 20, 1);
+        ctx.fillRect(width + hoverable.Position[0] - 10, height - hoverable.Position[1] - 10, 1, 20);
+        ctx.fillRect(width + hoverable.Position[0] + 10, height - hoverable.Position[1] - 10, 1, 20);
         ctx.fillStyle = 'white'
     }
 }
@@ -470,14 +469,14 @@ function drawHeatMap() {
                 ctx.font = '8px monospace';
                 ctx.fillStyle = 'white'
                 if (state_machine == 0) {
-                    if (hoverable.Type == "unit") {
-                        if ((hoverable.I == i) && (hoverable.J == j) && (hoverable.K == k)) {
+                    if ( hoverable.Index.length === 3 ) { // is an unit
+                        if ((hoverable.Index[0] == i) && (hoverable.Index[1] == j) && (hoverable.Index[2] == k)) {
                             ctx.fillStyle = 'red'
                         }
                     }
                 } else if (state_machine == 1) {
-                    if (selected_hoverable.Type == "unit") {
-                        if ((selected_hoverable.I == i) && (selected_hoverable.J == j) && (selected_hoverable.K == k)) {
+                    if ( selected_hoverable.Index === 3 ) { // is an unit
+                        if ((selected_hoverable.Index[0] == i) && (selected_hoverable.Index[1] == j) && (selected_hoverable.Index[2] == k)) {
                             ctx.fillStyle = 'red'
                         }
                     }
@@ -637,9 +636,9 @@ function drawHeatMap() {
                 ctx.fillText( state[i][j][k].DestinationIndex, x_offset + x_shift + t_shift, y_offset + y_shift + 5);
                 
                 x_shift = 0;
-                ctx.fillText( state[i][j][k].Start.X.toString() + " " + state[i][j][k].Start.Y.toString() + " " + state[i][j][k].Start.Type + " " + state[i][j][k].Start.I.toString() + " "  + state[i][j][k].Start.J.toString() + " " + state[i][j][k].Start.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 15);
-                ctx.fillText( state[i][j][k].Position.X.toString() + " " + state[i][j][k].Position.Y.toString() + " " + state[i][j][k].Position.Type + " " + state[i][j][k].Position.I.toString() + " "  + state[i][j][k].Position.J.toString() + " " + state[i][j][k].Position.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 25);
-                ctx.fillText( state[i][j][k].Destination.X.toString() + " " + state[i][j][k].Destination.Y.toString() + " " + state[i][j][k].Destination.Type + " " + state[i][j][k].Destination.I.toString() + " "  + state[i][j][k].Destination.J.toString() + " " + state[i][j][k].Destination.K.toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 35);
+                ctx.fillText( state[i][j][k].Start[0].toString() + " " + state[i][j][k].Start[1].toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 15);
+                ctx.fillText( state[i][j][k].Position[0].toString() + " " + state[i][j][k].Position[1].toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 25);
+                ctx.fillText( state[i][j][k].Destination[0].toString() + " " + state[i][j][k].Destination[1].toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 35);
                 x_shift = 0;
                 y_shift = y_shift + 75;
             }
@@ -669,7 +668,7 @@ function calcColour(n) {
 }
 
 function coordinateEqual(c1, c2) {
-    if ((c1.X == c2.X) && (c1.Y == c2.Y)) {
+    if ((c1[0] == c2[1]) && (c1[0] == c2[1])) {
         return true
     }
     return false
@@ -694,9 +693,9 @@ function drawRotated(s, x, y, thetas, path_segment, size, y_shift, colour) {
 }
 
 function getDistance(c1, c2) {
-    let y_dist = c2.Y - c1.Y
-    let x_dist = c2.X - c1.X
-    return Math.sqrt((y_dist * y_dist) + (x_dist * x_dist))
+    let y_dist = c2[1] - c1[1];
+    let x_dist = c2[0] - c1[0];
+    return Math.sqrt((y_dist * y_dist) + (x_dist * x_dist));
 }
 
 function createDamageNumber(damage, x, y) {
@@ -704,8 +703,7 @@ function createDamageNumber(damage, x, y) {
     let fontSize = 24;
 
     damageNumbers.push({
-        x: x,
-        y: y,
+        Position: [x,y],
         damage: damage,
         color: color,
         fontSize: fontSize,
@@ -751,7 +749,7 @@ function drawDamageNumbers() {
         ctx.save();
         ctx.globalAlpha = dmgNum.opacity;  // Apply opacity for fade effect
         ctx.textAlign = 'center';
-        ctx.fillText(dmgNum.damage, dmgNum.x, dmgNum.y);  // Draw damage number
+        ctx.fillText(dmgNum.damage, dmgNum.Position[0], dmgNum.Position[1]);  // Draw damage number
         ctx.restore();
     }
 }
@@ -809,10 +807,10 @@ function drawObstacles() {
         }
     }
 
-    if(obstaclesOn) {
+    if(intersectionsOn) {
         ctx.fillStyle = "red";
         for (let i = 0; i < intersections.length; i++) {
-            ctx.fillRect(width + intersections[i].X, height - intersections[i].Y, 1, 1);
+            ctx.fillRect(width + intersections[i].Position[0], height - intersections[i].Position[1], 1, 1);
         }
     }
 
@@ -841,12 +839,6 @@ function drawObstacles() {
 
 }
 
-function heuristic(node, goal) { // euclidean distance
-    const dx = goal.X - node.X;
-    const dy = goal.Y - node.Y;
-    return Math.sqrt(dx * dx + dy * dy);
-}
-
 function drawComplexPath(path, color) {
     ctx.strokeStyle = color;
     for (let i = 0; i < path.length - 1; i++) {
@@ -864,8 +856,8 @@ function campEqual(c1, c2) {
         (c1.I == c2.I) &&
         (c1.J == c2.J) &&
         (c1.K == c2.K) &&
-        (c1.X == c2.X) &&
-        (c1.Y == c2.Y)
+        (c1[0] == c2[0]) &&
+        (c1[1] == c2[1])
     ) {
         return true
     }
@@ -1011,15 +1003,13 @@ function drawSprite() {
 
 function drawSelected() {
 
-    let unitDraw = (hoverable != null && hoverable.I >= 0 && hoverable.J >= 0 && hoverable.K >= 0);
-    let opponentDraw = (hoverable != null && selected_hoverable != null && hoverable.I >= 0 && hoverable.J < 0 && hoverable.K < 0);
-
-
+    let unitDraw = hoverable != null && hoverable.Index.length === 3; // draw the hovered unit's stats
+    let opponentDraw = hoverable != null && selected_hoverable != null && hoverable.Index.length === 1;
 
     if (unitDraw || opponentDraw) {
 
-        const x_offset = Math.round(c.width / 2)
-        const y_offset = Math.round(c.height / 2) - 400
+        const x_offset = Math.round(c.width / 2);
+        const y_offset = Math.round(c.height / 2) - 400;
 
         const width = 500;
         const height = 125;
@@ -1030,44 +1020,43 @@ function drawSelected() {
 
         // drawing the square
         if (unitDraw) {
-            ctx.strokeRect(x_offset - (width / 2), y_offset, width, height)
-            
-            unit = state[hoverable.I][hoverable.J][hoverable.K];
+            ctx.strokeRect(x_offset - (width / 2), y_offset, width, height);
+            unit = hoverable;
         } else if (opponentDraw) {
-            unit = state[selected_hoverable.I][selected_hoverable.J][selected_hoverable.K]
+            unit = selected_hoverable;
         }
 
         ctx.font = '11px monospace';
 
-        let botString = ""
+        let botString = "";
         if (unit.Bot == true) {
-            botString = "[BOT] "
+            botString = "[BOT] ";
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
         let iteratorX = 5;
         ctx.fillStyle = 'red';
-        ctx.fillText(botString, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+        ctx.fillText(botString, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
         ctx.fillStyle = 'white';
         const botStringWidth = ctx.measureText(botString).width;
 
-        ctx.fillText(unit.Name, x_offset - (width / 2) + botStringWidth + iteratorX, y_offset + iteratorY)
-        const nameStringWidth = ctx.measureText(unit.Name).width
-        ctx.fillText(" LV. " + (unit.EXP / 100), x_offset - (width / 2) + botStringWidth + nameStringWidth + iteratorX, y_offset + iteratorY)
+        ctx.fillText(unit.Name, x_offset - (width / 2) + botStringWidth + iteratorX, y_offset + iteratorY);
+        const nameStringWidth = ctx.measureText(unit.Name).width;
+        ctx.fillText(" LV. " + (unit.EXP / 100), x_offset - (width / 2) + botStringWidth + nameStringWidth + iteratorX, y_offset + iteratorY);
 
         iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+        ctx.fillText("HP " + unit.HP + " / " + unit.MaxHP, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
         iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("AS " + unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+        ctx.fillText("AS " + unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
         iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("ATK " + unit.ATK, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+        ctx.fillText("ATK " + unit.ATK, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
         iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("DPS " + unit.ATK * unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+        ctx.fillText("DPS " + unit.ATK * unit.AS, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
         iteratorY += ctx.measureText("M").width + 10;
-        ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY)
+        ctx.fillText("SPD " + unit.SPD, x_offset - (width / 2) + iteratorX, y_offset + iteratorY);
 
 
         let iteratorX2 = 125;
@@ -1090,8 +1079,8 @@ function drawSelected() {
             } else {
                 let pathIndex = -1;
                 for(let i = 0; i < paths.length; i++) {
-                    if( (paths[i][paths[i].length - 1][0] == hoverable.X) &&
-                        (paths[i][paths[i].length - 1][1] == hoverable.Y) ) {
+                    if( (paths[i][paths[i].length - 1][0] === hoverable.Position[0]) &&
+                        (paths[i][paths[i].length - 1][1] === hoverable.Position[1]) ) {
                         pathIndex = i;
                         break;
                     }
@@ -1133,9 +1122,9 @@ function drawSelected() {
 
         // draw camp (RS)
         ctx.strokeRect(x_offset + gap, y_offset, width, height)
-        let camper = camps[hoverable.I]
+        let camper = hoverable;
         let campString = "";
-        if (hoverable.Type == "camp") {
+        if ( hoverable.Index.length === 1 ) {
             campString = "[CAMP]";
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
@@ -1165,10 +1154,7 @@ function drawUnitSelect() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
-                if( (hoverable != null) && (hoverable.I == i) && (hoverable.J == j) && (hoverable.K == k) ) {
-                    ctx.strokeStyle = "red";
-                }
-                else if ( (selected_hoverable != null) && (selected_hoverable.I == i) && (selected_hoverable.J == j) && (selected_hoverable.K == k) ) {
+                if( (hoverable != null) && hoverable.Index.length === 3 ) {
                     ctx.strokeStyle = "red";
                 }
                 else if ( state[i][j][k].Status == 0 ) {
@@ -1195,8 +1181,8 @@ function drawPotentialPaths() {
     if (paths.length > 0) {
         for (let i = 0; i < paths.length; i++) {
             if (
-                (paths[i][paths[i].length - 1][0] == hoverable.X) &&
-                (paths[i][paths[i].length - 1][1] == hoverable.Y)
+                (paths[i][paths[i].length - 1][0] == hoverable.Position[0]) &&
+                (paths[i][paths[i].length - 1][1] == hoverable.Position[1])
             ) {
 
                 if(pathType[i] == 1) { drawComplexPath(paths[i], "rgba(255, 0, 0, 1)"); }
@@ -1241,7 +1227,7 @@ function drawLastMileCircle() {
                 if(state[i][j][k].DestinationIndex.length > 0) {
                     let target = state[ state[i][j][k].DestinationIndex[0] ][ state[i][j][k].DestinationIndex[1] ][ state[i][j][k].DestinationIndex[2] ]
                     ctx.beginPath();
-                    ctx.arc(width + target.Position.X, height - target.Position.Y, state[i][j][k].LastMileRadius, 0, 2 * Math.PI);
+                    ctx.arc(width + target.Position[0], height - target.Position[1], state[i][j][k].LastMileRadius, 0, 2 * Math.PI);
                     ctx.stroke();
                 }
             }

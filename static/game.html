@@ -98,10 +98,9 @@
     var state_machine = 0;
     var even = 0; // just a small global variable to let us know when to flash camp icons
 
-    var hoverable = null;
-    var hoverable_coordinate = null;
-    var selected_hoverable = null;
-
+    var hoverable = null; // the current unit's object we are hovering over
+    var selected_hoverable = null; // if we selected a unit, this variable is the previously selected unit's object
+    
     var paths = [];
     var pathLengths = [];
     var pathType = [];
@@ -114,7 +113,7 @@
 
     var obstacles = [];
     var intersections = [];
-    var obstaclesOn = true;
+    var intersectionsOn = false;
 
     var dynamics = [];
 
@@ -147,7 +146,7 @@
 <script defer type="module">
 
     import {Bezier} from 'https://cdn.jsdelivr.net/npm/bezier-js@6.1.4/src/bezier.min.js';
-    import { aStar } from '/static/game/algosNstructs/aStar.mjs';
+    import { aStar } from '/static/game/algos/aStar.mjs';
 
 
     document.onkeydown = function (e) {
@@ -166,48 +165,48 @@
                         // if the current hoverable is a unit, continue
                         if (
                             (
-                                (hoverable.Type == "unit") &&
-                                (hoverable.I == my_team) &&
-                                (hoverable.J == my_int) &&
-                                (state[hoverable.I][hoverable.J][hoverable.K].Status == 0)
+                                (hoverable.Index.length === 3) &&
+                                (hoverable.Index[0] == my_team) &&
+                                (hoverable.Index[1] == my_int) &&
+                                (hoverable.Status == 0)
                             )
                             ||
                             (
-                                (hoverable.Type == "unit") &&
-                                (hoverable.I == my_team) &&
-                                (hoverable.J == my_int) &&
-                                (state[hoverable.I][hoverable.J][hoverable.K].Status == 1) &&
-                                coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
+                                (hoverable.Index.length === 3) &&
+                                (hoverable.Index[0] == my_team) &&
+                                (hoverable.Index[1] == my_int) &&
+                                (hoverable.Status == 1) &&
+                                coordinateEqual(hoverable.Position, hoverable.Start)
                             )
                         ) {
 
-                            console.log("hoverable", hoverable, state[hoverable.I][hoverable.J][hoverable.K].Status)
+                            console.log("hoverable", hoverable.Status);
                             console.log(
-                                state[hoverable.I][hoverable.J][hoverable.K].Position,
-                                state[hoverable.I][hoverable.J][hoverable.K].Start,
+                                hoverable.Position,
+                                hoverable.Start,
                                 animating_state,
-                                coordinateEqual(state[hoverable.I][hoverable.J][hoverable.K].Position, state[hoverable.I][hoverable.J][hoverable.K].Start)
-                            )
+                                coordinateEqual( hoverable.Position, hoverable.Start )
+                            );
 
                             const myAStar = new aStar(intersections);
 
                             paths = [];
                             pathLengths = [];
                             pathType = [];
-                            const startX = state[my_team][my_int][hoverable.K].Position.X;
-                            const startY = state[my_team][my_int][hoverable.K].Position.Y;
+                            const startX = state[my_team][my_int][hoverable.Index[2]].Position[0];
+                            const startY = state[my_team][my_int][hoverable.Index[2]].Position[1];
                             myAStar.addNode(startX, startY);
                             for(let i = 0; i < camps.length; i++) {
                                 if(camps[i].HP > 0) {
-                                    myAStar.addNode(camps[i].XY.X, camps[i].XY.Y);
-                                    const foundPath = myAStar.computePath(startX, startY, camps[i].XY.X, camps[i].XY.Y);
+                                    myAStar.addNode(camps[i].Position[0], camps[i].Position[1]);
+                                    const foundPath = myAStar.computePath(startX, startY, camps[i].Position[0], camps[i].Position[1]);
                                     console.log(foundPath);
                                     if(foundPath.length > 0) {
                                         paths.push(foundPath);
                                         pathLengths.push( getPathLength(foundPath) );
                                         pathType.push(0);
                                     }
-                                    myAStar.removeNode(camps[i].XY.X, camps[i].XY.Y);
+                                    myAStar.removeNode(camps[i].Position[0], camps[i].Position[1]);
                                     myAStar.clear();
                                 }
                             }
@@ -217,14 +216,14 @@
                                     for(let j = 0; j < state[i].length; j++) {
                                         for(let k = 0; k < state[i][j].length; k++) {
                                             if(state[i][j][k].HP > 0) {
-                                                myAStar.addNode(state[i][j][k].Position.X, state[i][j][k].Position.Y);
-                                                const foundPath = myAStar.computePath(startX, startY, state[i][j][k].Position.X, state[i][j][k].Position.Y);
+                                                myAStar.addNode(state[i][j][k].Position[0], state[i][j][k].Position[1]);
+                                                const foundPath = myAStar.computePath(startX, startY, state[i][j][k].Position[0], state[i][j][k].Position[1]);
                                                 if(foundPath.length > 0) {
                                                     paths.push(foundPath);
                                                     pathLengths.push( getPathLength(foundPath) );
                                                     pathType.push(1);
                                                 }
-                                                myAStar.removeNode(state[i][j][k].Position.X, state[i][j][k].Position.Y);
+                                                myAStar.removeNode(state[i][j][k].Position[0], state[i][j][k].Position[1]);
                                                 myAStar.clear();
                                             }
                                         }
@@ -240,18 +239,16 @@
                     else if (state_machine == 1) {
 
                         for(let i = 0; i < paths.length; i++) {
-                            if( (paths[i][paths[i].length-1][0] == hoverable.X) &&
-                                (paths[i][paths[i].length-1][1] == hoverable.Y)
+                            if( (paths[i][paths[i].length-1][0] == hoverable[0]) &&
+                                (paths[i][paths[i].length-1][1] == hoverable[1])
                             ) {
                                 console.log("sent valid path", paths[i])
                                 socket.send(JSON.stringify({
                                     "Event": 'act',
                                     "Message": "",
-                                    "IndexI": my_team,
-                                    "IndexJ": my_int,
-                                    "IndexK": selected_hoverable.K,
-                                    "Route": hoverable,
-                                    "Path": paths[i],
+                                    "Index": [my_team, my_int, selected_hoverable.K],
+                                    "DestinationType": (hoverable.Index.length === 3) ? 1 : 0,
+                                    "DestinationIndex": hoverable.Index,
                                 }))
                                 break;
                             }
@@ -271,7 +268,7 @@
 
             case 'O':
             case 'o':
-                obstaclesOn = !obstaclesOn
+                intersectionsOn = !intersectionsOn
                 break;
 
             case 'C':
@@ -360,23 +357,22 @@
             case ',':
             case '<':
                 if(hoverable != null) {
-                    if(hoverable.Type == "camp") {
+                    if( hoverable.Index.length === 1 ) {
                         console.log("> camp")
                     }
-                    else if(hoverable.Type == "unit") {
+                    else if( hoverable.Index.length === 3 ) {
                         let notFound = true;
-                        let i = hoverable.I;
-                        let j = hoverable.J;
-                        let k = hoverable.K - 1;
+                        let i = hoverable.Index[0];
+                        let j = hoverable.Index[1];
+                        let k = hoverable.Index[2] - 1;
 
                         for(; notFound && (i >= 0); i--) {
-                            if(i != hoverable.I) { j = state[i].length - 1; }
+                            if(i != hoverable.Index[0]) { j = state[i].length - 1; }
                             for(; notFound && (j >= 0); j--) {
-                                if(i != hoverable.I || j != hoverable.J) { k = state[i][j].length - 1; }
+                                if(i != hoverable.Index[0] || j != hoverable.Index[1]) { k = state[i][j].length - 1; }
                                 for(; notFound && (k >= 0); k--) {
                                     if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k].Position;
-                                        hoverable_coordinate = state[i][j][k];
+                                        hoverable = state[i][j][k];
                                         notFound = false;
                                     }
                                 }
@@ -388,11 +384,10 @@
                             for(j=state[i].length-1; keepGoing && notFound && (j >= 0); j--) {
                                 for(k=state[i][j].length-1; keepGoing && notFound && (k >= 0); k--) {
                                     if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k].Position;
-                                        hoverable_coordinate = state[i][j][k];
+                                        hoverable = state[i][j][k];
                                         notFound = false;
                                     }
-                                    if( (i == hoverable.I) && (j == hoverable.J) && (k == hoverable.K) ) {
+                                    if( (i == hoverable.Index[0]) && (j == hoverable.Index[1]) && (k == hoverable.Index[2]) ) {
                                         keepGoing = false;
                                     }
                                 }
@@ -408,22 +403,21 @@
                 console.log(">", hoverable.Type)
 
                 if(hoverable != null) {
-                    if(hoverable.Type == "camp") {
+                    if( hoverable.Index.length === 1 ) {
                         console.log("> camp")
                     }
-                    else if(hoverable.Type == "unit") {
+                    else if( hoverable.Index.length === 3 ) {
                     
                         let notFound = true;
-                        let i = hoverable.I;
-                        let j = hoverable.J;
-                        let k = hoverable.K + 1;
+                        let i = hoverable.Index[0];
+                        let j = hoverable.Index[1];
+                        let k = hoverable.Index[2] + 1;
 
                         for(; notFound && (i < state.length); i++, j = 0) {
                             for(; notFound && (j < state[i].length); j++, k = 0) {
                                 for(; notFound && (k < state[i][j].length); k++) {
                                     if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k].Position;
-                                        hoverable_coordinate = state[i][j][k];
+                                        hoverable = state[i][j][k];
                                         notFound = false;
                                     }
                                 }
@@ -435,11 +429,10 @@
                             for(;keepGoing && notFound && (j < state[i].length); j++, k=0) {
                                 for(;keepGoing && notFound && (k < state[i][j].length); k++) {
                                     if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k].Position;
-                                        hoverable_coordinate = state[i][j][k];
+                                        hoverable = state[i][j][k];
                                         notFound = false;
                                     }
-                                    if( (i == hoverable.I) && (j == hoverable.J) && (k == hoverable.K) ) {
+                                    if( (i == hoverable.Index[0]) && (j == hoverable.Index[1]) && (k == hoverable.Index[2]) ) {
                                         keepGoing = false;
                                     }
                                 }
@@ -470,8 +463,7 @@
                 const y = num % 3
                 
                 console.log(num, x,y)
-                hoverable = state[x][0][y].Position;
-                hoverable_coordinate = state[x][0][y];
+                hoverable = state[x][0][y];
 
                 break;
 
@@ -522,9 +514,9 @@
             for (let i = 0; i < state[my_team][my_int].length; i++) {
                 if (state[my_team][my_int][i].Status == 0) {
                     if (mostNorthActive == null) {
-                        mostNorthActive = state[my_team][my_int][i].Position
-                    } else if (mostNorthActive.Y < state[my_team][my_int][i].Position.Y) {
-                        mostNorthActive = state[my_team][my_int][i].Position
+                        mostNorthActive = state[my_team][my_int][i]
+                    } else if (mostNorthActive.Position[1] < state[my_team][my_int][i].Position[1]) {
+                        mostNorthActive = state[my_team][my_int][i]
                     }
                 }
             }
@@ -532,18 +524,18 @@
         else if (state_machine == 1) {
             for (let i = 0; i < camps.length; i++) {
                 if (camps[i].HP > 0) {
-                    let dist = getDistance(camps[i].XY, hoverable);
+                    let dist = getDistance(camps[i].Position, hoverable.Position);
                     if (closestCamp == null) {
-                        closestCamp = camps[i].XY
-                        closestCampDist = dist
+                        closestCamp = camps[i];
+                        closestCampDist = dist;
                     } else if (dist <= closestCampDist) {
                         if (dist == closestCampDist) {
-                            if (camps[i].XY.Y < closestCamp.Y) {
-                                closestCamp = camps[i].XY
+                            if (camps[i].Position[1] < closestCamp.Position[1]) {
+                                closestCamp = camps[i];
                             }
                         } else {
-                            closestCamp = camps[i].XY
-                            closestCampDist = dist
+                            closestCamp = camps[i];
+                            closestCampDist = dist;
                         }
                     }
                 }
@@ -556,212 +548,155 @@
             hoverable = closestCamp;
         }
 
-        if (hoverable != null) {
-            if (hoverable.Type == "camp") {
-                hoverable_coordinate = null;
-            } else if (hoverable.Type == "unit") {
-                hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
-            }
-        }
     }
 
     window.setupHoverable = setupHoverable;
 
-    export function followHoverable() {
-        if (hoverable_coordinate != null) {
-            hoverable = hoverable_coordinate.Position
-        }
-    }
 
-    window.followHoverable = followHoverable;
 
     function calculateNextHoverable(direction) {
-        let hoverables = [];
+        
+        if(hoverable === null) {
+            return;
+        }
 
+        let hoverables = [];
+        let bestScore = Infinity;
+        let best = null;
+
+        let rotationIndexes = new Map();
+        let rotationIndexCount = 0;
+
+        // flatten entities into an array, also save entities on the same position as hoverable
         for (let i = 0; i < state.length; i++) {
             for (let j = 0; j < state[i].length; j++) {
                 for (let k = 0; k < state[i][j].length; k++) {
-                    hoverables.push(state[i][j][k].Position)
-                }
+                    hoverables.push(state[i][j][k]);
+
+                    if( state[i][j][k].Position[0] === hoverable.Position[0] && state[i][j][k].Position[1] === hoverable.Position[1]) {
+                        rotationIndexes.set(`${i},${j},${k}`, rotationIndexCount);
+                        rotationIndexCount += 1;
+                    }
+                }   
+            }
+        }
+        for (let i = 0; i < camps.length; i++) {
+            hoverables.push(camps[i]);
+
+            if( camps[i].Position[0] === hoverable.Position[0] && camps[i].Position[1] === hoverable.Position[1]) {
+                rotationIndexes.set(`${i}`, rotationIndexCount);
+                rotationIndexCount += 1;
             }
         }
 
-        if (camps.length > 0) {
-            for (let i = 0; i < camps.length; i++) {
-                hoverables.push(camps[i].XY);
+        // check if multiple units on hoverable position, rotate if possible
+        if(rotationIndexes.size > 1) {
+            const lookup = current.Index.join(',');
+
+            if(direction === 0 || direction === 2) { // iterate forwards 1
+                const keys = Array.from(rotationIndexes.keys());
+                const index = keys.indexOf(lookup);
+
+                if (index !== -1 && index < keys.length - 1) {
+                    const nextKey = keys[index + 1];
+                    const arr = nextKey.split(',').map(Number);
+
+                    if (arr.length === 1) {
+                        hoverable = camp[arr[0]];
+                        return;
+                    } else if (arr.length === 3) {
+                        hoverable = state[arr[0]][arr[1]][arr[2]];
+                        return;
+                    }
+                }
             }
+            else if(direction === 1 || direction === 3) { // iterate backwards 1
+                const keys = Array.from(rotationIndexes.keys());
+                const index = keys.indexOf(lookup);
+
+                if (index > 0) {
+                    const prevKey = keys[index - 1];
+                    const arr = prevKey.split(',').map(Number);
+
+                    if (arr.length === 1) {
+                        hoverable = camp[arr[0]];
+                        return;
+                    } else if (arr.length === 3) {
+                        hoverable = state[arr[0]][arr[1]][arr[2]];
+                        return;
+                    }
+                }
+            }
+            
         }
 
-        // next figure out the U,L,R,D
-        let closestCardinalCoordinate = null;
-        let closestCardinalDistance = Number.MAX_SAFE_INTEGER;
+        // --- 2. Direction vector -------------------------------------
+        let dx = 0, dy = 0;
+        if (direction === 0) dy = -1;        // up
+        if (direction === 1) dx = -1;        // left
+        if (direction === 2) dx =  1;        // right
+        if (direction === 3) dy =  1;        // down
 
-        let closestWrapCoordinate = null; // this handles wrapping
-        let closestWrapDistance = Number.MAX_SAFE_INTEGER;
+        // --- 3. First pass : normal half‑plane search ----------------
+        for (const h of hoverables) {
+            if (h === hoverable) continue;
 
-        let nextSameCoordinate = null;
+            const vx = h.Position[0] - hoverable.Position[0];
+            const vy = h.Position[1] - hoverable.Position[1];
 
-        for (let i = 0; i < hoverables.length; i++) {
-            let dist = getDistance(hoverable, hoverables[i])
-            if (dist == 0) {
-                if ((direction == 2) || (direction == 3)) {
-                    if (isFirstCoordinateGreater(hoverables[i], hoverable)) {
-                        if (nextSameCoordinate == null) {
-                            nextSameCoordinate = hoverables[i];
-                        } else {
-                            if (isFirstCoordinateGreater(nextSameCoordinate, hoverables[i])) {
-                                nextSameCoordinate = hoverables[i];
-                            }
-                        }
-                    }
-                } else {
-                    if (isFirstCoordinateGreater(hoverable, hoverables[i])) {
-                        if (nextSameCoordinate == null) {
-                            nextSameCoordinate = hoverables[i];
-                        } else {
-                            if (isFirstCoordinateGreater(hoverables[i], nextSameCoordinate)) {
-                                nextSameCoordinate = hoverables[i];
-                            }
-                        }
-                    }
-                }
-            } else if (direction == 0) {
-                if (hoverables[i].Y > hoverable.Y) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if (closestCardinalDistance > dist) {
-                        closestCardinalCoordinate = hoverables[i];
-                        closestCardinalDistance = dist;
-                    } else if (closestCardinalDistance == dist) {
-                        if (isFirstCoordinateGreater(hoverables[i], closestCardinalCoordinate)) {
-                            closestCardinalCoordinate = hoverables[i];
-                        }
-                    }
-                }
-            } else if (direction == 1) {
-                if (hoverable.X > hoverables[i].X) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if (closestCardinalDistance > dist) {
-                        closestCardinalCoordinate = hoverables[i];
-                        closestCardinalDistance = dist;
-                    } else if (closestCardinalDistance == dist) {
-                        if (isFirstCoordinateGreater(hoverables[i], closestCardinalCoordinate)) {
-                            closestCardinalCoordinate = hoverables[i];
-                        }
-                    }
-                }
-            } else if (direction == 2) {
-                if (hoverable.X < hoverables[i].X) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if (closestCardinalDistance > dist) {
-                        closestCardinalCoordinate = hoverables[i];
-                        closestCardinalDistance = dist;
-                    } else if (closestCardinalDistance == dist) {
-                        if (isFirstCoordinateGreater(closestCardinalCoordinate, hoverables[i])) {
-                            closestCardinalCoordinate = hoverables[i];
-                        }
-                    }
-                }
-            } else if (direction == 3) {
-                if (hoverables[i].Y < hoverable.Y) {
-                    let dist = getDistance(hoverable, hoverables[i])
-                    if (closestCardinalDistance > dist) {
-                        closestCardinalCoordinate = hoverables[i];
-                        closestCardinalDistance = dist;
-                    } else if (closestCardinalDistance == dist) {
-                        if (isFirstCoordinateGreater(closestCardinalCoordinate, hoverables[i])) {
-                            closestCardinalCoordinate = hoverables[i];
-                        }
-                    }
-                }
-            }
+            if (dx * vx + dy * vy <= 0) continue;            // wrong half‑plane
 
-            if ((closestCardinalCoordinate == null) && (dist != 0)) {
-                let wrap_x = 0;
-                let wrap_y = 0;
-                if (direction == 0) {
-                    wrap_y = -200;
-                } else if (direction == 1) {
-                    wrap_x = 200;
-                } else if (direction == 2) {
-                    wrap_x = -200;
-                } else if (direction == 3) {
-                    wrap_y = 200;
-                }
+            const axisProj = dx !== 0 ? vx * dx : vy * dy;
+            const perpDist = dx !== 0 ? Math.abs(vy) : Math.abs(vx);
+            const score    = perpDist * 1e4 + axisProj;
 
-                let wrap = structuredClone(hoverable); // deep copy of coordinate
-                wrap.X = wrap.X + wrap_x;
-                wrap.Y = wrap.Y + wrap_y;
-
-                let wrapDist = getDistance(wrap, hoverables[i]);
-                if (closestWrapDistance > wrapDist) {
-                    closestWrapCoordinate = hoverables[i];
-                    closestWrapDistance = wrapDist;
-                } else if (closestWrapDistance == wrapDist) {
-                    if ((direction == 3) || (direction == 2)) {
-                        if (isFirstCoordinateGreater(closestWrapCoordinate, hoverables[i])) {
-                            closestWrapCoordinate = hoverables[i];
-                        }
-                    } else {
-                        if (isFirstCoordinateGreater(hoverables[i], closestWrapCoordinate)) {
-                            closestWrapCoordinate = hoverables[i];
-                        }
-                    }
-                }
-            }
+            if (score < bestScore) { bestScore = score; best = h; }
         }
 
-        if (nextSameCoordinate != null) {
-            hoverable = nextSameCoordinate;
-        } else if (closestCardinalCoordinate != null) {
-            hoverable = closestCardinalCoordinate;
-        } else if (closestWrapCoordinate != null) {
-            hoverable = closestWrapCoordinate;
+        // --- 4. Wrap‑around if nothing found -------------------------
+        if (best) {
+            hoverable = best;
+            return;
         }
 
-        if (hoverable != null) {
-            if (hoverable.Type == "camp") {
-                hoverable_coordinate = null;
-            } else if (hoverable.Type == "unit") {
-                hoverable_coordinate = state[hoverable.I][hoverable.J][hoverable.K]
-            }
+        /* Pick the farthest object in the *opposite* direction,
+        then re‑apply the straight‑line tie‑breaker. */
+
+        let extremeAxis = dx !== 0 ? -Infinity * dx : -Infinity * dy; // sign‑aware
+        for (const h of hoverables) {
+            const axisVal = dx !== 0 ? h.Position[0] : h.Position[1];
+            const signed  = axisVal * (dx || dy);  // flip sign for left / up
+            if (signed > extremeAxis) extremeAxis = signed;
         }
 
-    }
+        bestScore = Infinity;
+        for (const h of hoverables) {
+            if (h === hoverable) continue;
 
-    function isFirstCoordinateGreater(c1, c2) {
-        if ((c1.Type == "camp") && (c2.Type == "unit")) {
-            return true;
-        } else if ((c1.Type == "unit") && (c2.Type == "unit")) {
-            if (c2.I < c1.I) {
-                return true;
-            } else if (c1.I == c2.I) {
-                if (c2.J < c1.J) {
-                    return true;
-                } else if (c2.J == c1.J) {
-                    if (c2.K < c1.K) {
-                        return true;
-                    }
-                }
-            }
-        } else if ((c1.Type == "camp") && (c2.Type == "camp")) {
-            if (c2.I < c1.I) {
-                return true;
-            }
+            const axisVal = dx !== 0 ? h.Position[0] : h.Position[1];
+            const signed  = axisVal * (dx || dy);
+            if (signed !== extremeAxis) continue;            // we want the “edge” row/col
+
+            const vx = h.Position[0] - hoverable.Position[0];
+            const vy = h.Position[1] - hoverable.Position[1];
+            const perpDist = dx !== 0 ? Math.abs(vy) : Math.abs(vx);
+
+            if (perpDist < bestScore) { bestScore = perpDist; best = h; }
         }
-        return false;
+
+        if(best) {
+            hoverable = best;
+        }
     }
 
     function findPath(startingNode, target) {
 
-        let targetCoordinate;
-
-        if(target.hasOwnProperty("XY")) { targetCoordinate = target.XY; }
-        else if(target.hasOwnProperty("Position")) { targetCoordinate = target.Position; }
+        let targetCoordinate = target.Position;
 
         // check if direct path from starting node, if so, add that and return
         let available = true;
         for (let j = 0; j < obstacles.length; j++) {
-            if(obstacles[j].Shape=="BEZIER") {
+            if(obstacles[j].Shape==="BEZIER") {
                 if (lineIntersectsBezier(startingNode, targetCoordinate, obstacles[j]) == true) {
                     available = false;
                     break;
@@ -770,10 +705,10 @@
         }
         if (available == true) {
             let ans = [];
-            ans.push([startingNode.X, startingNode.Y])
-            ans.push([targetCoordinate.X, targetCoordinate.Y])
-            paths.push(ans)
-            console.log("direct path found")
+            ans.push( startingNode );
+            ans.push( targetCoordinate );
+            paths.push(ans);
+            console.log("direct path found");
             return true;
         }
 
@@ -804,45 +739,13 @@
 
     function returnPath(start, end) {
         const myAStar = new aStar(intersections);
-        myAStar.addNode(start.X, start.Y);
-        myAStar.addNode(end.X, end.Y);
-        return myAStar.computePath(start.X, start.Y, end.X, end.Y);
-    }
-
-    function createStartingNode(unit) {
-
-        // create unit node
-        const start4 = performance.now()
-        let starting_paths = [];
-        let starting_lengths = [];
-        for (let i = 0; i < intersections.length; i++) { // find all edges
-            let available = true;
-            for (let j = 0; j < obstacles.length; j++) {
-                if(obstacles[j].Shape =="BEZIER") {
-                    if (lineIntersectsBezier(unit.Position, intersections[i], obstacles[j]) == true) {
-                        available = false;
-                        break;
-                    }
-                }
-            }
-            if (available == true) {
-                starting_paths.push(i);
-                starting_lengths.push(getDistance(unit.Position, intersections[i]))
-            }
-        }
-        const start = {};
-        start.X = unit.Position.X;
-        start.Y = unit.Position.Y;
-        start.Edges = starting_paths;
-        start.EdgeLengths = starting_lengths;
-        const end4 = performance.now();
-        console.log(`createStartingNode executed in ${end4 - start4} ms`);
-
-        return start;
+        myAStar.addNode(start[0], start[1]);
+        myAStar.addNode(end[0], end[1]);
+        return myAStar.computePath(start[0], start[1], end[0], end[1]);
     }
 
     function lineIntersectsBezier(P1, P2, B) {
-        const line = {p1: {x: P1.X, y: P1.Y}, p2: {x: P2.X, y: P2.Y}};
+        const line = {p1: {x: P1[0], y: P1[1]}, p2: {x: P2[0], y: P2[1]}};
         const intersections = B.intersects(line);
         if (intersections.length > 0) {
             return true
@@ -853,8 +756,7 @@
     function addToIntersections(dest) {
 
         const newIntersection = {};
-        newIntersection.X = dest.X;
-        newIntersection.Y = dest.Y;
+        newIntersection.Position = dest;
 
         let starting_paths = [];
         let starting_lengths = [];
@@ -864,17 +766,16 @@
             let available = true;
             for (let j = 0; j < obstacles.length; j++) {
                 if(obstacles[j].Shape=="BEZIER") {
-                    if (lineIntersectsBezier(newIntersection, intersections[i], obstacles[j]) == true) {
+                    if( lineIntersectsBezier(newIntersection, intersections[i], obstacles[j]) ) {
                         available = false;
                         break;
                     }
                 }
             }
-            if (available == true) {
-
+            if (available) {
                 starting_paths.push( i );
-                starting_lengths.push(getDistance(newIntersection, intersections[i]));
-                intersections[i].Edges.push('d' + dynamics.length.toString());
+                starting_lengths.push(getDistance(newIntersection.Position, intersections[i]));
+                intersections[i].Edges.push( dynamics.length );
                 intersections[i].EdgeLengths.push(getDistance(newIntersection, intersections[i]));
             }
         }
@@ -891,7 +792,6 @@
     function removeFromIntersections() {
         for (let i = 0; i < dynamics.length; i++) {
             for (let j = 0; j < dynamics[i].Edges.length; j++) {
-
                 if (dynamics[i].Edges[j][0] == 'i') {
                     intersections[parseInt(dynamics[i].Edges[j].slice(1))].Edges.pop();
                     intersections[parseInt(dynamics[i].Edges[j].slice(1))].EdgeLengths.pop();
@@ -955,7 +855,7 @@
                     }
                 }
             } else {
-                endPos = camps[randomUnit - unitCount].XY;
+                endPos = camps[randomUnit - unitCount].Position;
             }
             console.log("endPos", endPos)
 
@@ -1042,17 +942,16 @@
                         event_log.shift()
                     }
                 } else if (msg.Event == 'map') {
-                    console.log("recieved map wsmessage")
-                    let map = JSON.parse(msg.Message)
+                    console.log("recieved map wsmessage");
+                    let map = JSON.parse(msg.Message);
 
                     // populate intersection global data structure
                     for(let i = 0; i < map["Intersections"].length; i++) {
                         let newIntersect = new Object();
-                        newIntersect.X = map["Intersections"][i][0]
-                        newIntersect.Y = map["Intersections"][i][1]
-                        newIntersect.Edges = map["Edges"][i]
-                        newIntersect.EdgeLengths = map["EdgeLengths"][i]
-                        intersections.push(newIntersect)
+                        newIntersect.Position = map["Intersections"][i];
+                        newIntersect.Edges = map["Edges"][i];
+                        newIntersect.EdgeLengths = map["EdgeLengths"][i];
+                        intersections.push(newIntersect);
                     }
 
                     // population obstacles global data structure
@@ -1071,8 +970,7 @@
                             newObs.EAngle = map["Obstacles"][i][0];
                             newObs.SAngle = map["Obstacles"][i][1];
                             newObs.R = map["Obstacles"][i][2];
-                            newObs.X = map["Obstacles"][i][3];
-                            newObs.Y = map["Obstacles"][i][4];
+                            newObs.Position = [ map["Obstacles"][i][3], map["Obstacles"][i][4] ];
                             newObs.Shape = map["Obstacle_type"][i];
                             obstacles.push(newObs)
                         }
@@ -1096,11 +994,11 @@
 
                         let cdata = [];
                         for (let i = 0; i < msg.Camps.length; i++) {
-                            cdata.push(JSON.parse(msg.Camps[i]))
+                            cdata.push(JSON.parse(msg.Camps[i]));
                         }
 
-                        state = md
-                        camps = cdata
+                        state = md;
+                        camps = cdata;
 
                     } else {
                         turn_queue.push(msg.Turn)

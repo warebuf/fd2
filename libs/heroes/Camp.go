@@ -1,6 +1,8 @@
 package heroes
 
 type Camp struct {
+	Index [1]int
+
 	MaxHP    int
 	HP       int
 	Position [2]float64

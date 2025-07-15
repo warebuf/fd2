@@ -120,9 +120,7 @@ type message struct {
 	DestinationType  int
 	DestinationIndex []int
 
-	IndexI int
-	IndexJ int
-	IndexK int
+	UnitIndex [3]int
 }
 
 func m_write(m *match_socket) {
@@ -161,31 +159,31 @@ func m_read(m *match_socket) {
 			} else if msg.Event == "act" {
 
 				// check if the match has started and the action is to a user's own hero
-				if m.m.phase == "TURN" && !m.m.ended && m.m.uuid_to_team_int[m.u.uid].a == msg.IndexI && m.m.uuid_to_team_int[m.u.uid].b == msg.IndexJ {
+				if m.m.phase == "TURN" && !m.m.ended && m.m.uuid_to_team_int[m.u.uid].a == msg.UnitIndex[0] && m.m.uuid_to_team_int[m.u.uid].b == msg.UnitIndex[1] {
 					// check if the hero is alive and at starting position
-					if (m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].HP > 0) &&
-						((m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 0) ||
-							((m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Position == m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Start) &&
-								(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Status == 1))) {
+					if (m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].HP > 0) &&
+						((m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].Status == 0) ||
+							((m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].Position == m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].Start) &&
+								(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].Status == 1))) {
 
 						canSetPath := false
 						oldTarget := []int{}
 						if msg.DestinationType == 0 {
 							if confirmValidPath(m.m.heroes, m.m.camps, msg.DestinationIndex, msg.DestinationType) {
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationType = 0
-								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex = []int{msg.DestinationIndex[0]}
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = []float64{}
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationType = 0
+								oldTarget = m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex = []int{msg.DestinationIndex[0]}
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DynamicCircle = []float64{}
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].LastMileRadius = 25
 								canSetPath = true
 							}
 						} else if msg.DestinationType == 1 {
 							if confirmValidPath(m.m.heroes, m.m.camps, msg.DestinationIndex, msg.DestinationType) {
-								oldTarget = m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationType = 1
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex = msg.DestinationIndex
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DynamicCircle = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position[:]
-								m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].LastMileRadius = 25
+								oldTarget = m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationType = 1
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex = msg.DestinationIndex
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DynamicCircle = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position[:]
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].LastMileRadius = 25
 								canSetPath = true
 							}
 						} else {
@@ -194,7 +192,7 @@ func m_read(m *match_socket) {
 
 						// setting the path
 						if canSetPath {
-							fmt.Println("calling setPath from m_read", msg.IndexI, msg.IndexJ, msg.IndexK)
+							fmt.Println("calling setPath from m_read", msg.UnitIndex)
 
 							var dest [2]float64
 							if msg.DestinationType == 0 {
@@ -203,10 +201,10 @@ func m_read(m *match_socket) {
 								dest = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position
 							}
 
-							AStarGraph := pathfinding.AStarInit(mapList[0], m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].Position, dest)
+							AStarGraph := pathfinding.AStarInit(mapList[0], m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].Position, dest)
 							path := AStarGraph.ComputeShortestPath()
 							if len(path) > 0 {
-								setPath(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], dest, path)
+								setPath(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]], dest, path)
 							} else {
 								canSetPath = false
 							}
@@ -215,29 +213,29 @@ func m_read(m *match_socket) {
 
 						if canSetPath {
 
-							updateDependencyGraph(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK], oldTarget, m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex, m.m.dependencies)
+							updateDependencyGraph(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]], oldTarget, m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex, m.m.dependencies)
 
 							// checking the hunter's distance from the target to decide the pathfinding algorithm
 							hardUpdate := make(map[[3]int]int)
-							if len(m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex) <= 0 {
-								hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
+							if len(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex) <= 0 {
+								hardUpdate[msg.UnitIndex] = 0
 							} else {
-								hunter := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK]
-								targetIdx := m.m.heroes[msg.IndexI][msg.IndexJ][msg.IndexK].DestinationIndex
+								hunter := m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]]
+								targetIdx := m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex
 								target := m.m.heroes[targetIdx[0]][targetIdx[1]][targetIdx[2]]
 								dist := maps.EuclideanDistance2(hunter.Position, target.Position)
 
 								if dist <= 1 {
-									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 2
+									hardUpdate[msg.UnitIndex] = 2
 								} else if dist <= 25 {
-									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 1
+									hardUpdate[msg.UnitIndex] = 1
 								} else {
-									hardUpdate[[3]int{msg.IndexI, msg.IndexJ, msg.IndexK}] = 0
+									hardUpdate[msg.UnitIndex] = 0
 								}
 							}
 
 							// running the pathfinding algorithm and updating dependencies
-							points := [][3]int{{msg.IndexI, msg.IndexJ, msg.IndexK}}
+							points := [][3]int{msg.UnitIndex}
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points, hardUpdate)
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
@@ -310,7 +308,6 @@ func m_read(m *match_socket) {
 
 				all_done := true
 				for _, j := range m.m.char_sel_done {
-
 					if !j {
 						all_done = false
 						break
@@ -421,7 +418,7 @@ func createMatch(pl *permission_list) *match {
 			c := [2]float64{50.0 + (random_x * 10.0), 50.0 + (random_y * 10.0)}
 			HP := rand.Intn(100) + 1
 			//HP := 1
-			ans.camps = append(ans.camps, &heroes.Camp{MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
+			ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
 		}
 
 		// check for camp accessiblity
@@ -2182,7 +2179,6 @@ func updatedCycles(state [][][]*heroes.Hero, cyclePoints [][3]int, graph map[[3]
 
 }
 
-// TODO: please do heavy testing on this, not sure if it is good enough
 func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 
 	selectedUnit := [3]int{-1, -1, -1}

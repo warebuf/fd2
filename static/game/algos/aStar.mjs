@@ -10,7 +10,7 @@ function unhash(hash) {
     const [xStr, yStr] = hash.split(",");
     const X = Number(xStr);
     const Y = Number(yStr);
-    return { X, Y };
+    return [X, Y];
 }
 
 function euclideanDistance(X1, Y1, X2, Y2) {
@@ -39,13 +39,13 @@ export class aStar {
 
         for(let i = 0; i < intersections.length; i++) {
 
-            const key = hash(intersections[i].X, intersections[i].Y);
+            const key = hash(intersections[i].Position[0], intersections[i].Position[1]);
 
             this.Nodes.set(key, Number.POSITIVE_INFINITY);
 
             let edgeMap = new Map();
             for(let j = 0; j < intersections[i].Edges.length; j++) {
-                const key2 = hash(intersections[intersections[i].Edges[j]].X, intersections[intersections[i].Edges[j]].Y);
+                const key2 = hash( intersections[intersections[i].Edges[j]].Position[0], intersections[intersections[i].Edges[j]].Position[1] );
                 edgeMap.set(key2, intersections[i].EdgeLengths[j])
             }
             this.Edges.set(key, edgeMap);
@@ -62,13 +62,13 @@ export class aStar {
             const unhashed = unhash(key);
             let valid = true;
             for(let j = 0; j < obstacles.length; j++) {
-                if(lineIntersectsBezier(X, Y, unhashed.X, unhashed.Y, obstacles[j])) {
+                if(lineIntersectsBezier(X, Y, unhashed[0], unhashed[1], obstacles[j])) {
                     valid = false;
                     break;
                 }
             }
             if(valid) {
-                const euclid = euclideanDistance(X, Y, unhashed.X, unhashed.Y);
+                const euclid = euclideanDistance(X, Y, unhashed[0], unhashed[1]);
                 edgeMap.set(key, euclid);
                 this.Edges.get(key).set(newKey, euclid)
             }
@@ -131,7 +131,7 @@ export class aStar {
                 let iterate = current.key;
                 while(iterate !== null) {
                     const point = unhash(iterate);
-                    ans.push([point.X, point.Y]);
+                    ans.push([point[0], point[1]]);
                     iterate = this.Parent.get(iterate);
                 }
 
@@ -146,7 +146,7 @@ export class aStar {
 
                     const unhashed = unhash(key);
                     const gVal = this.Nodes.get(current.key) + value;
-                    const hVal = euclideanDistance(unhashed.X, unhashed.Y, X2, Y2);
+                    const hVal = euclideanDistance(unhashed[0], unhashed[1], X2, Y2);
                     const fVal = gVal + hVal;
 
                     if(gVal < this.Nodes.get(key)) {

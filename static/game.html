@@ -98,8 +98,8 @@
     var state_machine = 0;
     var even = 0; // just a small global variable to let us know when to flash camp icons
 
-    var hoverable = null; // the current unit's object we are hovering over
-    var selected_hoverable = null; // if we selected a unit, this variable is the previously selected unit's object
+    var hovIdx = []; // the index of the current entity we are hovering over
+    var hovIdx2 = []; // if we selected a unit, this variable is the previously selected unit's index
     
     var paths = [];
     var pathLengths = [];
@@ -162,44 +162,24 @@
                     console.log("enter")
 
                     if (state_machine == 0) {
+
                         // if the current hoverable is a unit, continue
-                        if (
-                            (
-                                (hoverable.Index.length === 3) &&
-                                (hoverable.Index[0] == my_team) &&
-                                (hoverable.Index[1] == my_int) &&
-                                (hoverable.Status == 0)
-                            )
-                            ||
-                            (
-                                (hoverable.Index.length === 3) &&
-                                (hoverable.Index[0] == my_team) &&
-                                (hoverable.Index[1] == my_int) &&
-                                (hoverable.Status == 1) &&
-                                coordinateEqual(hoverable.Position, hoverable.Start)
-                            )
-                        ) {
+                        if(hovIdx.length !== 3) { return; }
+                        if((hovIdx[0] !== my_team) || (hovIdx[1] !== my_int)) { return; }
 
-                            console.log("hoverable", hoverable.Status);
-                            console.log(
-                                hoverable.Position,
-                                hoverable.Start,
-                                animating_state,
-                                coordinateEqual( hoverable.Position, hoverable.Start )
-                            );
-
+                        const current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
+                        if ( current.Status == 0 || ( current.Status == 1 && coordinateEqual(current.Position, current.Start) ) ) {
+                            
                             const myAStar = new aStar(intersections);
 
                             paths = [];
                             pathLengths = [];
                             pathType = [];
-                            const startX = state[my_team][my_int][hoverable.Index[2]].Position[0];
-                            const startY = state[my_team][my_int][hoverable.Index[2]].Position[1];
                             myAStar.addNode(startX, startY);
                             for(let i = 0; i < camps.length; i++) {
                                 if(camps[i].HP > 0) {
                                     myAStar.addNode(camps[i].Position[0], camps[i].Position[1]);
-                                    const foundPath = myAStar.computePath(startX, startY, camps[i].Position[0], camps[i].Position[1]);
+                                    const foundPath = myAStar.computePath(current.Position[0], current.Position[1], camps[i].Position[0], camps[i].Position[1]);
                                     console.log(foundPath);
                                     if(foundPath.length > 0) {
                                         paths.push(foundPath);
@@ -217,7 +197,7 @@
                                         for(let k = 0; k < state[i][j].length; k++) {
                                             if(state[i][j][k].HP > 0) {
                                                 myAStar.addNode(state[i][j][k].Position[0], state[i][j][k].Position[1]);
-                                                const foundPath = myAStar.computePath(startX, startY, state[i][j][k].Position[0], state[i][j][k].Position[1]);
+                                                const foundPath = myAStar.computePath(current.Position[0], current.Position[1], state[i][j][k].Position[0], state[i][j][k].Position[1]);
                                                 if(foundPath.length > 0) {
                                                     paths.push(foundPath);
                                                     pathLengths.push( getPathLength(foundPath) );
@@ -231,23 +211,23 @@
                                 }
                             }
 
-                            selected_hoverable = hoverable;
+                            hovIdx2 = hovIdx;
                             state_machine = 1;
                             setupHoverable();
                         }
                     }
                     else if (state_machine == 1) {
 
-                        console.log("sent valid path", selected_hoverable.Index, hoverable.Index)
+                        console.log("sent valid path", hovIdx2.Index, hovIdx.Index)
                         socket.send(JSON.stringify({
                             "Event": 'act',
                             "Message": "",
-                            "UnitIndex": selected_hoverable.Index,
-                            "DestinationType": (hoverable.Index.length === 3) ? 1 : 0,
-                            "DestinationIndex": hoverable.Index,
+                            "UnitIndex": hovIdx2,
+                            "DestinationType": (hovIdx.length === 3) ? 1 : 0,
+                            "DestinationIndex": hovIdx,
                         }))
 
-                        selected_hoverable = null;
+                        hovIdx2 = null;
                         selected_hoverable_path = null;
                         state_machine = 0;
                         paths = [];
@@ -339,7 +319,7 @@
             case "Backspace":
                 if (state_machine == 1) {
                     state_machine = 0;
-                    selected_hoverable = null;
+                    hovIdx2 = null;
                     selected_hoverable_path = null;
                     paths = [];
                     pathLengths = [];
@@ -349,95 +329,92 @@
 
             case ',':
             case '<':
-                if(hoverable != null) {
-                    if( hoverable.Index.length === 1 ) {
-                        console.log("> camp")
-                    }
-                    else if( hoverable.Index.length === 3 ) {
-                        let notFound = true;
-                        let i = hoverable.Index[0];
-                        let j = hoverable.Index[1];
-                        let k = hoverable.Index[2] - 1;
 
-                        for(; notFound && (i >= 0); i--) {
-                            if(i != hoverable.Index[0]) { j = state[i].length - 1; }
-                            for(; notFound && (j >= 0); j--) {
-                                if(i != hoverable.Index[0] || j != hoverable.Index[1]) { k = state[i][j].length - 1; }
-                                for(; notFound && (k >= 0); k--) {
-                                    if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k];
-                                        notFound = false;
-                                    }
+                if( hovIdx.length === 1 ) {
+                    console.log("> camp")
+                }
+                else if( hovIdx.length === 3 ) {
+                    let notFound = true;
+                    let i = hovIdx[0];
+                    let j = hovIdx[1];
+                    let k = hovIdx[2] - 1;
+
+                    for(; notFound && (i >= 0); i--) {
+                        if(i != hovIdx[0]) { j = state[i].length - 1; }
+                        for(; notFound && (j >= 0); j--) {
+                            if(i != hovIdx[0] || j != hovIdx[1]) { k = state[i][j].length - 1; }
+                            for(; notFound && (k >= 0); k--) {
+                                if(state[i][j][k].HP > 0) {
+                                    hovIdx = [i,j,k];
+                                    notFound = false;
                                 }
                             }
                         }
+                    }
 
-                        let keepGoing = true;
-                        for(i=state.length-1; keepGoing && notFound && (i >= 0); i--) {
-                            for(j=state[i].length-1; keepGoing && notFound && (j >= 0); j--) {
-                                for(k=state[i][j].length-1; keepGoing && notFound && (k >= 0); k--) {
-                                    if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k];
-                                        notFound = false;
-                                    }
-                                    if( (i == hoverable.Index[0]) && (j == hoverable.Index[1]) && (k == hoverable.Index[2]) ) {
-                                        keepGoing = false;
-                                    }
+                    let keepGoing = true;
+                    for(i=state.length-1; keepGoing && notFound && (i >= 0); i--) {
+                        for(j=state[i].length-1; keepGoing && notFound && (j >= 0); j--) {
+                            for(k=state[i][j].length-1; keepGoing && notFound && (k >= 0); k--) {
+                                if(state[i][j][k].HP > 0) {
+                                    hovIdx = [i,j,k];
+                                    notFound = false;
+                                }
+                                if( (i == hovIdx[0]) && (j == hovIdx[1]) && (k == hovIdx[2]) ) {
+                                    keepGoing = false;
                                 }
                             }
                         }
                     }
                 }
-
+            
                 break;
 
             case '.':
             case '>':
-                console.log(">", hoverable.Type)
+                console.log(">", hovIdx)
 
-                if(hoverable != null) {
-                    if( hoverable.Index.length === 1 ) {
-                        console.log("> camp")
-                    }
-                    else if( hoverable.Index.length === 3 ) {
-                    
-                        let notFound = true;
-                        let i = hoverable.Index[0];
-                        let j = hoverable.Index[1];
-                        let k = hoverable.Index[2] + 1;
-
-                        for(; notFound && (i < state.length); i++, j = 0) {
-                            for(; notFound && (j < state[i].length); j++, k = 0) {
-                                for(; notFound && (k < state[i][j].length); k++) {
-                                    if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k];
-                                        notFound = false;
-                                    }
-                                }
-                            }
-                        }
-
-                        let keepGoing = true;
-                        for(i=0,j=0,k=0;keepGoing && notFound && (i < state.length); i++,j=0) {
-                            for(;keepGoing && notFound && (j < state[i].length); j++, k=0) {
-                                for(;keepGoing && notFound && (k < state[i][j].length); k++) {
-                                    if(state[i][j][k].HP > 0) {
-                                        hoverable = state[i][j][k];
-                                        notFound = false;
-                                    }
-                                    if( (i == hoverable.Index[0]) && (j == hoverable.Index[1]) && (k == hoverable.Index[2]) ) {
-                                        keepGoing = false;
-                                    }
-                                }
-                            }
-                        }
-                    
-                        
-
-
-                    }
+                if( hovIdx.length === 1 ) {
+                    console.log("> camp")
                 }
+                else if( hovIdx.length === 3 ) {
+                
+                    let notFound = true;
+                    let i = hovIdx[0];
+                    let j = hovIdx[1];
+                    let k = hovIdx[2] + 1;
 
+                    for(; notFound && (i < state.length); i++, j = 0) {
+                        for(; notFound && (j < state[i].length); j++, k = 0) {
+                            for(; notFound && (k < state[i][j].length); k++) {
+                                if(state[i][j][k].HP > 0) {
+                                    hovIdx = [i,j,k];
+                                    notFound = false;
+                                }
+                            }
+                        }
+                    }
+
+                    let keepGoing = true;
+                    for(i=0,j=0,k=0;keepGoing && notFound && (i < state.length); i++,j=0) {
+                        for(;keepGoing && notFound && (j < state[i].length); j++, k=0) {
+                            for(;keepGoing && notFound && (k < state[i][j].length); k++) {
+                                if(state[i][j][k].HP > 0) {
+                                    hovIdx = [i,j,k];
+                                    notFound = false;
+                                }
+                                if( (i == hovIdx[0]) && (j == hovIdx[1]) && (k == hovIdx[2]) ) {
+                                    keepGoing = false;
+                                }
+                            }
+                        }
+                    }
+                
+                    
+
+
+                }
+            
                 break;
 
             case '0':
@@ -450,14 +427,12 @@
             case '7':
             case '8':
             case '9':
-                
+    
                 const num = parseInt(e.key) - 1;
                 const x = Math.floor(num / 3)
                 const y = num % 3
-                
                 console.log(num, x,y)
-                hoverable = state[x][0][y];
-
+                hovIdx = [x,0,y];
                 break;
 
             case 'R':
@@ -517,7 +492,7 @@
         else if (state_machine == 1) {
             for (let i = 0; i < camps.length; i++) {
                 if (camps[i].HP > 0) {
-                    let dist = getDistance(camps[i].Position, hoverable.Position);
+                    let dist = getDistance(camps[i].Position, state[hovIdx[0]][hovIdx[1]][hovIdx[2]].Position);
                     if (closestCamp == null) {
                         closestCamp = camps[i];
                         closestCampDist = dist;
@@ -536,9 +511,9 @@
         }
 
         if (mostNorthActive != null) {
-            hoverable = mostNorthActive;
+            hovIdx = mostNorthActive.Index;
         } else if (closestCamp != null) {
-            hoverable = closestCamp;
+            hovIdx = closestCamp.Index;
         }
 
     }
@@ -549,10 +524,11 @@
 
     function calculateNextHoverable(direction) {
         
-        if(hoverable === null) {
+        if(hovIdx.length === 0) {
             return;
         }
 
+        const current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]]
         let hoverables = [];
         let bestDist = Infinity;
         let best = null;
@@ -565,7 +541,7 @@
                 for (let k = 0; k < state[i][j].length; k++) {
                     hoverables.push(state[i][j][k]);
 
-                    if( state[i][j][k].Position[0] === hoverable.Position[0] && state[i][j][k].Position[1] === hoverable.Position[1]) {
+                    if( state[i][j][k].Position[0] === current.Position[0] && state[i][j][k].Position[1] === current.Position[1]) {
                         rotationIndexes.set(`${i},${j},${k}`, true);
                     }
                 }   
@@ -574,7 +550,7 @@
         for (let i = 0; i < camps.length; i++) {
             hoverables.push(camps[i]);
 
-            if( camps[i].Position[0] === hoverable.Position[0] && camps[i].Position[1] === hoverable.Position[1]) {
+            if( camps[i].Position[0] === current.Position[0] && camps[i].Position[1] === current.Position[1]) {
                 rotationIndexes.set(`${i}`, true);
             }
         }
@@ -591,13 +567,11 @@
                     const nextKey = keys[index + 1];
                     const arr = nextKey.split(',').map(Number);
 
-                    if (arr.length === 1) {
-                        hoverable = camps[arr[0]];
-                        return;
-                    } else if (arr.length === 3) {
-                        hoverable = state[arr[0]][arr[1]][arr[2]];
+                    if (arr.length === 1 || arr.length === 3) {
+                        hovIdx = arr;
                         return;
                     }
+                    
                 }
             }
             else if(direction === 1 || direction === 3) { // iterate backwards 1
@@ -608,13 +582,10 @@
                     const prevKey = keys[index - 1];
                     const arr = prevKey.split(',').map(Number);
 
-                    if (arr.length === 1) {
-                        hoverable = camps[arr[0]];
+                    if (arr.length === 1 || arr.length === 3) {
+                        hovIdx = arr;
                         return;
-                    } else if (arr.length === 3) {
-                        hoverable = state[arr[0]][arr[1]][arr[2]];
-                        return;
-                    }
+                    } 
                 }
             }
             
@@ -627,10 +598,10 @@
         if (direction === 3) dy = -1;        // down
 
         for (const h of hoverables) {
-            if (h === hoverable) continue;
+            if (h === current) continue;
 
-            const vx = h.Position[0] - hoverable.Position[0];
-            const vy = h.Position[1] - hoverable.Position[1];
+            const vx = h.Position[0] - current.Position[0];
+            const vy = h.Position[1] - current.Position[1];
 
             const dot = vx * dx + vy * dy;
             const mag = Math.sqrt(vx * vx + vy * vy);
@@ -649,19 +620,19 @@
             }
         }
 
-        if (best) {
-            hoverable = best;
+        if(best) {
+            hovIdx = best.Index;
             return;
         }
 
         const BOARD_W = 510;   // logical width  of the map + 10 for ties
         const BOARD_H = 510;   // logical height of the map + 10 for ties
 
-        const ghostX = hoverable.Position[0] - dx * BOARD_W;
-        const ghostY = hoverable.Position[1] - dy * BOARD_H;
+        const ghostX = current.Position[0] - dx * BOARD_W;
+        const ghostY = current.Position[1] - dy * BOARD_H;
 
         for (const h of hoverables) {
-            if (h === hoverable) continue;
+            if (h === current) continue;
 
             const vx = h.Position[0] - ghostX;
             const vy = h.Position[1] - ghostY;
@@ -684,7 +655,7 @@
         }
             
         if(best) {
-            hoverable = best;
+            hovIdx = best.Index;
         }
     }
 

@@ -204,7 +204,7 @@ function calcPos() {
                             }
 
                             if (state[i][j][k].DistanceLeft - 0.01 <= match_data[animating_state][i][j][k].DistanceLeft) {
-                                state[i][j][k].Position = structuredClone(match_data[animating_state][i][j][k].Position)
+                                state[i][j][k].Position = match_data[animating_state][i][j][k].Position
                                 state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft
                                 state[i][j][k].Path_Segment = match_data[animating_state][i][j][k].Path_Segment
                             }
@@ -369,21 +369,21 @@ function drawCamps() {
 }
 
 function drawHoverable() {
-    if (hoverable != null) {
-        
+    if (hovIdx.length !== 0) {
+        const current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]]
         ctx.font = '7px monospace';
         ctx.textAlign = "left";
-        if( hoverable.Index.length === 3 ) {
-            ctx.fillText(hoverable.Index[2], width + hoverable.Position[0] + 11, height - hoverable.Position[1] + 17);
-        } else if( hoverable.Index.length === 1 ) {
-            ctx.fillText(hoverable.Index[0], width + hoverable.Position[0] + 11, height - hoverable.Position[1] + 17);
+        if( hovIdx.length === 3 ) {
+            ctx.fillText(hovIdx[2], width + current.Position[0] + 11, height - current.Position[1] + 17);
+        } else if( hovIdx.length === 1 ) {
+            ctx.fillText(hovIdx[0], width + current.Position[0] + 11, height - current.Position[1] + 17);
         }
 
         ctx.fillStyle = 'pink'
-        ctx.fillRect(width + hoverable.Position[0] - 10, height - hoverable.Position[1] + 10, 20, 1);
-        ctx.fillRect(width + hoverable.Position[0] - 10, height - hoverable.Position[1] - 10, 20, 1);
-        ctx.fillRect(width + hoverable.Position[0] - 10, height - hoverable.Position[1] - 10, 1, 20);
-        ctx.fillRect(width + hoverable.Position[0] + 10, height - hoverable.Position[1] - 10, 1, 20);
+        ctx.fillRect(width + current.Position[0] - 10, height - current.Position[1] + 10, 20, 1);
+        ctx.fillRect(width + current.Position[0] - 10, height - current.Position[1] - 10, 20, 1);
+        ctx.fillRect(width + current.Position[0] - 10, height - current.Position[1] - 10, 1, 20);
+        ctx.fillRect(width + current.Position[0] + 10, height - current.Position[1] - 10, 1, 20);
         ctx.fillStyle = 'white'
     }
 }
@@ -469,14 +469,14 @@ function drawHeatMap() {
                 ctx.font = '8px monospace';
                 ctx.fillStyle = 'white'
                 if (state_machine == 0) {
-                    if ( hoverable.Index.length === 3 ) { // is an unit
-                        if ((hoverable.Index[0] == i) && (hoverable.Index[1] == j) && (hoverable.Index[2] == k)) {
+                    if ( hovIdx.length === 3 ) { // is an unit
+                        if ((hovIdx[0] == i) && (hovIdx[1] == j) && (hovIdx[2] == k)) {
                             ctx.fillStyle = 'red'
                         }
                     }
                 } else if (state_machine == 1) {
-                    if ( selected_hoverable.Index === 3 ) { // is an unit
-                        if ((selected_hoverable.Index[0] == i) && (selected_hoverable.Index[1] == j) && (selected_hoverable.Index[2] == k)) {
+                    if ( hovIdx2.length === 3 ) { // is an unit
+                        if ((hovIdx2[0] == i) && (hovIdx2[1] == j) && (hovIdx2[2] == k)) {
                             ctx.fillStyle = 'red'
                         }
                     }
@@ -998,8 +998,8 @@ function drawSprite() {
 
 function drawSelected() {
 
-    let unitDraw = hoverable != null && hoverable.Index.length === 3; // draw the hovered unit's stats
-    let opponentDraw = hoverable != null && selected_hoverable != null && hoverable.Index.length === 1;
+    let unitDraw = hovIdx.length === 3; // draw the hovered unit's stats
+    let opponentDraw = hovIdx2.length === 3 && hovIdx.length === 1;
 
     if (unitDraw || opponentDraw) {
 
@@ -1016,9 +1016,17 @@ function drawSelected() {
         // drawing the square
         if (unitDraw) {
             ctx.strokeRect(x_offset - (width / 2), y_offset, width, height);
-            unit = hoverable;
+            if(hovIdx.length === 1) {
+                unit = camps[hovIdx[0]];
+            } else if(hovIdx.length === 3) {
+                unit = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
+            }
         } else if (opponentDraw) {
-            unit = selected_hoverable;
+            if(hovIdx2.length === 1) {
+                unit = camps[hovIdx2[0]];
+            } else if(hovIdx2.length === 3) {
+                unit = state[hovIdx2[0]][hovIdx2[1]][hovIdx2[2]];
+            }
         }
 
         ctx.font = '11px monospace';
@@ -1074,8 +1082,8 @@ function drawSelected() {
             } else {
                 let pathIndex = -1;
                 for(let i = 0; i < paths.length; i++) {
-                    if( (paths[i][paths[i].length - 1][0] === hoverable.Position[0]) &&
-                        (paths[i][paths[i].length - 1][1] === hoverable.Position[1]) ) {
+                    if( (paths[i][paths[i].length - 1][0] === unit.Position[0]) &&
+                        (paths[i][paths[i].length - 1][1] === unit.Position[1]) ) {
                         pathIndex = i;
                         break;
                     }
@@ -1117,9 +1125,9 @@ function drawSelected() {
 
         // draw camp (RS)
         ctx.strokeRect(x_offset + gap, y_offset, width, height)
-        let camper = hoverable;
+        let camper = camps[hovIdx[0]];
         let campString = "";
-        if ( hoverable.Index.length === 1 ) {
+        if ( hovIdx.length === 1 ) {
             campString = "[CAMP]";
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
@@ -1149,7 +1157,7 @@ function drawUnitSelect() {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
 
-                if( (hoverable != null) && hoverable.Index.length === 3 ) {
+                if( hovIdx.length === 3 ) {
                     ctx.strokeStyle = "red";
                 }
                 else if ( state[i][j][k].Status == 0 ) {
@@ -1174,10 +1182,18 @@ function drawUnitSelect() {
 
 function drawPotentialPaths() {
     if (paths.length > 0) {
+        let current = null;
+        if(hovIdx.length === 1) {
+            current = camps[hovIdx[0]];
+        } else if(hovIdx.length === 3) {
+            current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
+        } 
+        
         for (let i = 0; i < paths.length; i++) {
             if (
-                (paths[i][paths[i].length - 1][0] == hoverable.Position[0]) &&
-                (paths[i][paths[i].length - 1][1] == hoverable.Position[1])
+                current &&
+                (paths[i][paths[i].length - 1][0] == current.Position[0]) &&
+                (paths[i][paths[i].length - 1][1] == current.Position[1])
             ) {
 
                 if(pathType[i] == 1) { drawComplexPath(paths[i], "rgba(255, 0, 0, 1)"); }

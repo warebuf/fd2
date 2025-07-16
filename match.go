@@ -169,19 +169,15 @@ func m_read(m *match_socket) {
 						canSetPath := false
 						oldTarget := []int{}
 						if msg.DestinationType == 0 {
-							if confirmValidPath(m.m.heroes, m.m.camps, msg.DestinationIndex, msg.DestinationType) {
-								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationType = 0
-								oldTarget = m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex
+							if confirmValidPath(m.m.heroes, m.m.camps, msg.UnitIndex[:], msg.DestinationIndex, msg.DestinationType) {
 								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex = []int{msg.DestinationIndex[0]}
 								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DynamicCircle = []float64{}
 								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].LastMileRadius = 25
 								canSetPath = true
 							}
 						} else if msg.DestinationType == 1 {
-							if confirmValidPath(m.m.heroes, m.m.camps, msg.DestinationIndex, msg.DestinationType) {
+							if confirmValidPath(m.m.heroes, m.m.camps, msg.UnitIndex[:], msg.DestinationIndex, msg.DestinationType) {
 								oldTarget = m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex
-								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationType = 1
-								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex = msg.DestinationIndex
 								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DynamicCircle = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position[:]
 								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].LastMileRadius = 25
 								canSetPath = true
@@ -204,7 +200,7 @@ func m_read(m *match_socket) {
 							AStarGraph := pathfinding.AStarInit(mapList[0], m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].Position, dest)
 							path := AStarGraph.ComputeShortestPath()
 							if len(path) > 0 {
-								setPath(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]], dest, path)
+								setPath(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]], dest, path, msg.DestinationType, msg.DestinationIndex)
 							} else {
 								canSetPath = false
 							}
@@ -217,7 +213,7 @@ func m_read(m *match_socket) {
 
 							// checking the hunter's distance from the target to decide the pathfinding algorithm
 							hardUpdate := make(map[[3]int]int)
-							if len(m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex) <= 0 {
+							if len(msg.DestinationIndex) <= 1 {
 								hardUpdate[msg.UnitIndex] = 0
 							} else {
 								hunter := m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]]
@@ -240,7 +236,6 @@ func m_read(m *match_socket) {
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
 							m.m.sharepos(nil, 0)
-							//m.m.printState()
 
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
@@ -878,11 +873,15 @@ func (m *match) run() {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if m.heroes[i][j][k].Bot && (m.heroes[i][j][k].Status == 0) {
 							p, pint, idx := determineBotAction(m.heroes[i][j][k], m.heroes, m.camps, m.accessible, true)
+							destinationType := 0
+							if len(idx) == 3 {
+								destinationType = 1
+							}
 							if len(p) == 0 || len(idx) == 0 {
 								// figure out how to end the game here
 							} else {
 								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
-								setPath(m.heroes[i][j][k], pint, p)
+								setPath(m.heroes[i][j][k], pint, p, destinationType, idx)
 
 								hardUpdate := make(map[[3]int]int)
 								if len(idx) == 1 {
@@ -963,7 +962,7 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 
-						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DestinationIndex) > 0 {
+						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DestinationIndex) > 1 {
 
 							hunter := m.heroes[i][j][k]
 							hunterSPD := m.SPDTable[i][j][k]
@@ -1135,18 +1134,7 @@ func (m *match) run() {
 				}
 			}
 
-			// quick check
-			for i := 0; i < len(m.heroes); i++ {
-				for j := 0; j < len(m.heroes[i]); j++ {
-					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if len(m.heroes[i][j][k].DestinationIndex) > 0 {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, m.heroes[i][j][k].DestinationIndex, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
-						} else {
-							fmt.Println("before", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
-						}
-					}
-				}
-			}
+			printState(m.heroes, m.SPDTable, "before")
 
 			movementChange := 0.0
 
@@ -1234,18 +1222,7 @@ func (m *match) run() {
 				}
 			}
 
-			// quick check
-			for i := 0; i < len(m.heroes); i++ {
-				for j := 0; j < len(m.heroes[i]); j++ {
-					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if len(m.heroes[i][j][k].DestinationIndex) > 0 {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
-						} else {
-							fmt.Println("after1", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
-						}
-					}
-				}
-			}
+			printState(m.heroes, m.SPDTable, "after")
 
 			// simulate all attacks
 			levelUp := [][]int{}
@@ -1281,19 +1258,6 @@ func (m *match) run() {
 				// TODO: not sure why this is here TBH
 				if m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
 					m.ended = true
-				}
-			}
-
-			// quick check
-			for i := 0; i < len(m.heroes); i++ {
-				for j := 0; j < len(m.heroes[i]); j++ {
-					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if len(m.heroes[i][j][k].DestinationIndex) > 0 {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "DynamicDist:", getDistFromDynamic(m.heroes, m.heroes[i][j][k]), "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
-						} else {
-							fmt.Println("after2", i, j, k, "LM:", m.heroes[i][j][k].LastMile, "Dist:", m.heroes[i][j][k].DistanceLeft, "Pos:", m.heroes[i][j][k].Position, "SPD", m.heroes[i][j][k].SPD, "cSPD", m.SPDTable[i][j][k])
-						}
-					}
 				}
 			}
 
@@ -1411,8 +1375,6 @@ func (m *match) run() {
 
 			fmt.Println("sending:", msg)
 
-			//m.printState()
-
 			for _, i := range m.gamer_uid_to_msid_to_match_socket {
 				for _, j := range i {
 					msg.Message = init_time.Add(j.user_time.Sub(j.system_time)).UTC().String()
@@ -1450,6 +1412,20 @@ func printAllMatchUserWS() {
 		fmt.Println("MID:", i)
 		for k, l := range j.gamer_uid_to_user {
 			fmt.Println("UID:", k, l.email)
+		}
+	}
+}
+
+func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
+	for i := 0; i < len(state); i++ {
+		for j := 0; j < len(state[i]); j++ {
+			for k := 0; k < len(state[i][j]); k++ {
+				if len(state[i][j][k].DestinationIndex) > 1 {
+					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+				} else {
+					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+				}
+			}
 		}
 	}
 }
@@ -1544,7 +1520,7 @@ func (m *match) shareint() {
 
 func getDistFromDynamic(state [][][]*heroes.Hero, unit *heroes.Hero) float64 {
 
-	if len(unit.DestinationIndex) > 0 {
+	if len(unit.DestinationIndex) > 1 {
 
 		hunter := unit
 		target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
@@ -1568,7 +1544,7 @@ func getLineSegmentTravelled(refX float64, refY float64, dest [2]float64, distan
 	return refX + (percent * lineX), refY + (percent * lineY)
 }
 
-func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64) {
+func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType int, destinationIndex []int) {
 
 	// if the unit's position does not equal the start of the path, recalculate the path
 	if (unit.Position[0] != p[0][0]) || (unit.Position[1] != p[0][1]) {
@@ -1592,6 +1568,9 @@ func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64) {
 	unit.Path = p
 	unit.Path_Segment = 0
 
+	unit.DestinationType = destinationType
+	unit.DestinationIndex = destinationIndex
+
 	thetas := make([]float64, len(p))
 	dist := 0.0
 	for x := 0; x+1 < len(p); x++ {
@@ -1609,7 +1588,7 @@ func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64) {
 }
 
 // pathType can be 0 (camp) or 1 (unit),
-func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, destinationIndex []int, destinationType int) bool {
+func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, index []int, destinationIndex []int, destinationType int) bool {
 
 	// destinationIndex of 0
 	if len(destinationIndex) == 0 {
@@ -1617,12 +1596,25 @@ func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, destinatio
 		return false
 	}
 
+	if len(index) == len(destinationIndex) {
+		different := false
+		for i := range index {
+			if index[i] != destinationIndex[i] {
+				different = true
+				break
+			}
+		}
+		if !different {
+			fmt.Println("cannot path to itself")
+			return false
+		}
+	}
+
 	// check if the end of the path is a valid destination
 	if destinationType == 0 {
 		if len(destinationIndex) == 1 &&
 			destinationIndex[0] >= 0 && destinationIndex[0] < len(camps) &&
 			camps[destinationIndex[0]].HP > 0 {
-
 		} else {
 			fmt.Println("camp index does not exist")
 			return false
@@ -1634,13 +1626,13 @@ func confirmValidPath(state [][][]*heroes.Hero, camps []*heroes.Camp, destinatio
 			destinationIndex[2] >= 0 && destinationIndex[2] < len(state[destinationIndex[0]][destinationIndex[1]]) &&
 			state[destinationIndex[0]][destinationIndex[1]][destinationIndex[2]].HP > 0 {
 
-			if state[destinationIndex[0]][destinationIndex[1]][destinationIndex[2]].Index[0] == destinationIndex[0] {
-				fmt.Println("cannot path to own unit")
+			if index[0] == destinationIndex[0] {
+				fmt.Println("cannot path to unit of same team")
 				return false
 			}
 
 		} else {
-			fmt.Println("unit index does not exist")
+			fmt.Println("destination index does not exist")
 			return false
 		}
 	}
@@ -1847,7 +1839,7 @@ func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 
 	end := target.Path[len(target.Path)-1]
 	newPath := prediction.GetSubPath(target.Path, target.DistanceLeft, 0)
-	setPath(hunter, end, newPath)
+	setPath(hunter, end, newPath, hunter.DestinationType, hunter.DestinationIndex)
 	hunter.LastMile = 2
 }
 
@@ -1855,7 +1847,7 @@ func setRecompute(state [][][]*heroes.Hero, idx [3]int) {
 	fmt.Println("recompute[x]", idx)
 	hunter := state[idx[0]][idx[1]][idx[2]]
 
-	if len(hunter.DestinationIndex) == 0 {
+	if len(hunter.DestinationIndex) <= 1 {
 		hunter.LastMile = 0
 		return
 	}
@@ -1869,7 +1861,7 @@ func setRecompute(state [][][]*heroes.Hero, idx [3]int) {
 	AStarGraph := pathfinding.AStarInit(mapList[0], hunter.Position, target.Position)
 	path := AStarGraph.ComputeShortestPath()
 	fmt.Println("calling setPath from dynamic destinations", idx)
-	setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path)
+	setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path, hunter.DestinationType, hunter.DestinationIndex)
 	hunter.LastMile = 0
 }
 
@@ -1905,7 +1897,7 @@ func setLastMile(state [][][]*heroes.Hero, idx [3]int) {
 		AStarGraph := pathfinding.AStarInit(mapList[0], hunter.Position, target.Position)
 		path := AStarGraph.ComputeShortestPath()
 		fmt.Println("calling setPath from gainingGround", idx)
-		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path)
+		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path, hunter.DestinationType, hunter.DestinationIndex)
 		hunter.LastMile = 0
 
 	} else {
@@ -1913,7 +1905,7 @@ func setLastMile(state [][][]*heroes.Hero, idx [3]int) {
 		hunter.DynamicCircle = []float64{}
 		hunter.LastMileRadius = 25
 		fmt.Println("calling setPath from last_mile", idx)
-		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path)
+		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path, hunter.DestinationType, hunter.DestinationIndex)
 	}
 }
 
@@ -1927,7 +1919,7 @@ func setPathDup(state [][][]*heroes.Hero, idx [3]int) {
 	fmt.Println(idx, "dist", dist)
 	if dist > 1 {
 		p := [][2]float64{hunter.Position}
-		setPath(hunter, hunter.Position, p)
+		setPath(hunter, hunter.Position, p, hunter.DestinationType, hunter.DestinationIndex)
 		hunter.LastMile = 3
 	} else {
 		fmt.Println("calling PathDuplication from pathDup")
@@ -1940,7 +1932,7 @@ func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int
 	hunterIndex := [3]int{hunter.Index[0], hunter.Index[1], hunter.Index[2]}
 
 	// remove from old array
-	if len(oldTarget) > 0 {
+	if len(oldTarget) == 3 {
 		oldKey := [3]int{oldTarget[0], oldTarget[1], oldTarget[2]}
 		updatedArray := [][3]int{}
 		for i := 0; i < len(dependencies[oldKey]); i++ {
@@ -1952,7 +1944,7 @@ func updateDependencyGraph(hunter *heroes.Hero, oldTarget []int, newTarget []int
 	}
 
 	// update to new array
-	if len(newTarget) > 0 {
+	if len(newTarget) == 3 {
 		newKey := [3]int{newTarget[0], newTarget[1], newTarget[2]}
 		dependencies[newKey] = append(dependencies[newKey], hunterIndex)
 	}
@@ -2208,7 +2200,7 @@ func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 		if current.HP > 0 && current.Status == 1 && (current.LastMile == 1 || current.LastMile == 3) {
 			AStarGraph := pathfinding.AStarInit(mapList[0], current.Position, selectedEndpoint)
 			path := AStarGraph.ComputeShortestPath()
-			setPath(current, selectedEndpoint, path)
+			setPath(current, selectedEndpoint, path, current.DestinationType, current.DestinationIndex)
 			current.LastMileRadius = 25
 		}
 	}

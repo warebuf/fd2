@@ -238,21 +238,14 @@
                     }
                     else if (state_machine == 1) {
 
-                        for(let i = 0; i < paths.length; i++) {
-                            if( (paths[i][paths[i].length-1][0] == hoverable[0]) &&
-                                (paths[i][paths[i].length-1][1] == hoverable[1])
-                            ) {
-                                console.log("sent valid path", paths[i])
-                                socket.send(JSON.stringify({
-                                    "Event": 'act',
-                                    "Message": "",
-                                    "Index": [my_team, my_int, selected_hoverable.K],
-                                    "DestinationType": (hoverable.Index.length === 3) ? 1 : 0,
-                                    "DestinationIndex": hoverable.Index,
-                                }))
-                                break;
-                            }
-                        }
+                        console.log("sent valid path", selected_hoverable.Index, hoverable.Index)
+                        socket.send(JSON.stringify({
+                            "Event": 'act',
+                            "Message": "",
+                            "UnitIndex": selected_hoverable.Index,
+                            "DestinationType": (hoverable.Index.length === 3) ? 1 : 0,
+                            "DestinationIndex": hoverable.Index,
+                        }))
 
                         selected_hoverable = null;
                         selected_hoverable_path = null;
@@ -847,6 +840,8 @@
             const randomUnit = Math.floor(Math.random() * (unitCount + campCount));
 
             let endPos;
+            let destinationType = 0;
+            let destinationIndex = [];
             if( randomUnit < unitCount ) {
                 let count = 0;
                 for(let i = 0; i < state.length; i++) {
@@ -854,16 +849,19 @@
                         for(let k = 0; k < state[i][j].length; k++) {
                             if(randomUnit === count) {
                                 endPos = state[i][j][k].Position;
+                                destinationIndex = [i,j,k];
+                                destinationType = 1;
                                 break;
                             }
                             count += 1;
                         }
                     }
-                }
+                }                
             } else {
                 endPos = camps[randomUnit - unitCount].Position;
+                destinationType = 0;
+                destinationIndex = [randomUnit - unitCount];
             }
-            console.log("endPos", endPos)
 
             // find path from ready unit to random unit
             const foundPath = returnPath(state[my_team][my_int][readyUnit].Position, endPos);
@@ -872,13 +870,11 @@
                 socket.send(JSON.stringify({
                     "Event": 'act',
                     "Message": "",
-                    "IndexI": my_team,
-                    "IndexJ": my_int,
-                    "IndexK": readyUnit,
-                    "Route": endPos,
-                    "Path": foundPath,
+                    "UnitIndex": state[my_team][my_int][readyUnit].Index,
+                    "destinationType": destinationType,
+                    "destinationIndex": destinationIndex,
                 }));
-                randomMove = my_team.toString() + my_int.toString() + readyUnit.toString() + '->' + endPos.I.toString() + endPos.J.toString() + endPos.K.toString() + ' | ' + JSON.stringify(foundPath);
+                randomMove = my_team.toString() + my_int.toString() + readyUnit.toString() + '->' + destinationIndex.toString() + ' | ' + JSON.stringify(foundPath);
                 randomMoveFrameCount = 120;
             } else {
                 randomMove = "notfound123";

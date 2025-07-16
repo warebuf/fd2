@@ -137,10 +137,10 @@ function calcPos() {
                             state[i][j][k].Thetas = match_data[animating_state][i][j][k].Path;
                         } else if (state[i][j][k].Status == 1) {
                             if (state[i][j][k].DistanceLeft <= 0) {
-                                if (camps[state[i][j][k].Destination.I].HP > 0) {
+                                if ( state[i][j][k].DestinationIndex.length == 1 && camps[state[i][j][k].DestinationIndex[0]].HP > 0) {
                                     state[i][j][k].Status = 2;
-                                    state[i][j][k].Battle = camps[state[i][j][k].Destination.I]
-                                    camps[state[i][j][k].Destination.I].Units.push([i, j, k])
+                                    state[i][j][k].Battle = camps[state[i][j][k].DestinationIndex[0]]
+                                    camps[state[i][j][k].DestinationIndex[0]].Units.push([i, j, k])
                                 } else {
                                     state[i][j][k].Status = 0;
                                 }
@@ -164,7 +164,7 @@ function calcPos() {
                 for (let k = 0; k < state[i][j].length; k++) {
                     if (state[i][j][k].Status == 1) {
 
-                        if (campEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination) == false) {
+                        if (arraysEqual(state[i][j][k].DestinationIndex, match_data[animating_state][i][j][k].DestinationIndex) == false) {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;
@@ -668,7 +668,7 @@ function calcColour(n) {
 }
 
 function coordinateEqual(c1, c2) {
-    if ((c1[0] == c2[1]) && (c1[0] == c2[1])) {
+    if ((c1[0] == c2[0]) && (c1[1] == c2[1])) {
         return true
     }
     return false
@@ -850,19 +850,14 @@ function drawComplexPath(path, color) {
     ctx.strokeStyle = "white";
 }
 
-function campEqual(c1, c2) {
-    if (
-        (c1.Type == c2.Type) &&
-        (c1.I == c2.I) &&
-        (c1.J == c2.J) &&
-        (c1.K == c2.K) &&
-        (c1[0] == c2[0]) &&
-        (c1[1] == c2[1])
-    ) {
-        return true
+function arraysEqual(a, b) {
+    if (a.length !== b.length) return false;
+    
+    for (let i = 0; i < a.length; i++) {
+        if (a[i] !== b[i]) return false;
     }
 
-    return false
+    return true;
 }
 
 function getHeatMapColor(t) {
@@ -1209,7 +1204,7 @@ function drawDynamicCircles() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                if(state[i][j][k].DestinationIndex.length > 0) {
+                if(state[i][j][k].DestinationIndex.length > 1) {
                     ctx.beginPath();
                     ctx.arc(width + state[i][j][k].DynamicCircle[0], height - state[i][j][k].DynamicCircle[1], state[i][j][k].DistanceLeft/3, 0, 2 * Math.PI);
                     ctx.stroke();
@@ -1224,7 +1219,7 @@ function drawLastMileCircle() {
     for(let i = 0; i < state.length; i++) {
         for(let j = 0; j < state[i].length; j++) {
             for(let k = 0; k < state[i][j].length; k++) {
-                if(state[i][j][k].DestinationIndex.length > 0) {
+                if(state[i][j][k].DestinationIndex.length > 1) {
                     let target = state[ state[i][j][k].DestinationIndex[0] ][ state[i][j][k].DestinationIndex[1] ][ state[i][j][k].DestinationIndex[2] ]
                     ctx.beginPath();
                     ctx.arc(width + target.Position[0], height - target.Position[1], state[i][j][k].LastMileRadius, 0, 2 * Math.PI);

@@ -369,13 +369,18 @@ function drawCamps() {
 }
 
 function drawHoverable() {
+
+    ctx.font = '7px monospace';
+    ctx.textAlign = "left";
+
     if (hovIdx.length !== 0) {
-        const current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]]
-        ctx.font = '7px monospace';
-        ctx.textAlign = "left";
+
+        let current;
         if( hovIdx.length === 3 ) {
+            current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
             ctx.fillText(hovIdx[2], width + current.Position[0] + 11, height - current.Position[1] + 17);
         } else if( hovIdx.length === 1 ) {
+            current = camps[hovIdx[0]];
             ctx.fillText(hovIdx[0], width + current.Position[0] + 11, height - current.Position[1] + 17);
         }
 
@@ -999,7 +1004,8 @@ function drawSprite() {
 function drawSelected() {
 
     let unitDraw = hovIdx.length === 3; // draw the hovered unit's stats
-    let opponentDraw = hovIdx2.length === 3 && hovIdx.length === 1;
+    console.log(hovIdx2, hovIdx)
+    let opponentDraw = (hovIdx2.length === 3) && (hovIdx.length === 1);
 
     if (unitDraw || opponentDraw) {
 

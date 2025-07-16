@@ -175,7 +175,7 @@
                             paths = [];
                             pathLengths = [];
                             pathType = [];
-                            myAStar.addNode(startX, startY);
+                            myAStar.addNode(current.Position[0], current.Position[1]);
                             for(let i = 0; i < camps.length; i++) {
                                 if(camps[i].HP > 0) {
                                     myAStar.addNode(camps[i].Position[0], camps[i].Position[1]);
@@ -227,7 +227,7 @@
                             "DestinationIndex": hovIdx,
                         }))
 
-                        hovIdx2 = null;
+                        hovIdx2 = [];
                         selected_hoverable_path = null;
                         state_machine = 0;
                         paths = [];
@@ -319,7 +319,7 @@
             case "Backspace":
                 if (state_machine == 1) {
                     state_machine = 0;
-                    hovIdx2 = null;
+                    hovIdx2 = [];
                     selected_hoverable_path = null;
                     paths = [];
                     pathLengths = [];
@@ -528,7 +528,13 @@
             return;
         }
 
-        const current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]]
+        let current
+        if(hovIdx.length === 1) {
+            current = camps[hovIdx[0]]
+        } else if(hovIdx.length === 3) {
+            current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
+        }
+        
         let hoverables = [];
         let bestDist = Infinity;
         let best = null;

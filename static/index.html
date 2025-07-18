@@ -1,4 +1,14 @@
 <a>{{.}}</a><br>
 <a>Fighting Demons</a><br>
 <br>
-<a href="/login?%3Aprovider=google">Log in with google</a><br>
+<a id="myLink" href="/login?%3Aprovider=google">Log in with google</a><br>
+
+<script>
+  document.addEventListener("keydown", function(event) {
+    if (event.code === "Space") {
+      event.preventDefault(); // Prevent scrolling
+      const link = document.getElementById("myLink");
+      if (link) link.click();
+    }
+  });
+</script>

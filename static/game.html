@@ -180,7 +180,6 @@
                                 if(camps[i].HP > 0) {
                                     myAStar.addNode(camps[i].Position[0], camps[i].Position[1]);
                                     const foundPath = myAStar.computePath(current.Position[0], current.Position[1], camps[i].Position[0], camps[i].Position[1]);
-                                    console.log(foundPath);
                                     if(foundPath.length > 0) {
                                         paths.push(foundPath);
                                         pathLengths.push( getPathLength(foundPath) );
@@ -431,7 +430,6 @@
                 const num = parseInt(e.key) - 1;
                 const x = Math.floor(num / 3)
                 const y = num % 3
-                console.log(num, x,y)
                 hovIdx = [x,0,y];
                 break;
 
@@ -879,7 +877,6 @@
             socket.onmessage = function (e) {
                 var receive_time = Date.now()
                 var msg = eval('(' + e.data + ')');
-                //console.log("msg_init", msg.Event, msg.Name, msg.MatchID, msg.Message, msg.TCH, msg.Turn, msg.Spawns, msg.POAs);
                 console.log("msg received", msg.Event)
 
                 var msg_date = msg.When.substring(0, 10);

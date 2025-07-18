@@ -1316,6 +1316,8 @@ func (m *match) run() {
 				m.sharepos(nil, 0)
 			}
 
+			printState(m.heroes, m.SPDTable, "after2")
+
 			if game_over_check(m.heroes) {
 				has_user_cmd = true
 				m.ended = true
@@ -1421,9 +1423,9 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 		for j := 0; j < len(state[i]); j++ {
 			for k := 0; k < len(state[i][j]); k++ {
 				if len(state[i][j][k].DestinationIndex) > 1 {
-					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "path", state[i][j][k].Path)
 				} else {
-					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k])
+					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "path", state[i][j][k].Path)
 				}
 			}
 		}
@@ -1431,7 +1433,7 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 }
 
 func (m *match) sharepos(a []*attack, utime float64) {
-	fmt.Println("sharepos", a)
+	fmt.Println("*****************************sharepos*****************************", a)
 
 	atk_temp := make([]string, 0)
 	if a == nil {

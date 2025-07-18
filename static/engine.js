@@ -1004,7 +1004,6 @@ function drawSprite() {
 function drawSelected() {
 
     let unitDraw = hovIdx.length === 3; // draw the hovered unit's stats
-    console.log(hovIdx2, hovIdx)
     let opponentDraw = (hovIdx2.length === 3) && (hovIdx.length === 1);
 
     if (unitDraw || opponentDraw) {

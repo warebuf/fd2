@@ -12,6 +12,16 @@
 
 <a href="/lobby">lobby</a>
 <br>
-<a href="/waitroom">game</a>
+<a id="gameLink" href="/waitroom">game</a>
 <br>
 <a href="/editor">map editor</a>
+
+<script>
+  document.addEventListener("keydown", function(event) {
+    if (event.code === "Space") {
+      event.preventDefault(); // Prevent page scroll
+      const link = document.getElementById("gameLink");
+      if (link) link.click();
+    }
+  });
+</script>

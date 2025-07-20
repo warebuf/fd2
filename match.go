@@ -151,7 +151,7 @@ func m_read(m *match_socket) {
 
 			msg.When = time.Now()
 			msg.Name = m.u.email
-			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
+	 			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
 			if m.m.ended {

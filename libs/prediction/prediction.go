@@ -4,14 +4,11 @@ import (
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
 	"fmt"
-	"time"
 )
 
 func LastMilePrediction(mp *maps.MapDetails, path [][2]float64, distanceLeft float64, targetSPD int, hunterPosition [2]float64, hunterSPD int) [][2]float64 {
 
 	fmt.Println("-----Called LastMilePrediction-----")
-
-	fmt.Println("targetPath", path, distanceLeft, targetSPD)
 
 	subpath := GetSubPath(path, distanceLeft, 0.0)
 
@@ -19,14 +16,7 @@ func LastMilePrediction(mp *maps.MapDetails, path [][2]float64, distanceLeft flo
 		subpath = [][2]float64{path[len(path)-1]} // this is a shallow copy, not a deep copy beware
 	}
 
-	fmt.Println("subPath", subpath, distanceLeft, targetSPD)
-
-	start := time.Now()
 	finalPath := findCollisionPathLinear(mp, subpath, distanceLeft, float64(targetSPD), hunterPosition, float64(hunterSPD))
-	elapsed := time.Since(start)
-	fmt.Println("Execution time:", elapsed)
-
-	fmt.Println("linear path", finalPath)
 
 	return finalPath
 
@@ -85,8 +75,6 @@ func findCollisionPathLinear(mp *maps.MapDetails, targetPath [][2]float64, dista
 		hunterTime := newDist / float64(hunterSPD)
 
 		if hunterTime <= t {
-			fmt.Println("found earliest hunterTime", hunterTime, count)
-			fmt.Println("earliest targetTime", t, t-increment)
 			if t == 0 {
 				return bestPath // already at the position ? weird
 			} else {
@@ -123,7 +111,6 @@ func binary(mp *maps.MapDetails, targetPath [][2]float64, low float64, high floa
 			distanceLeft = 0
 		}
 		testPath := GetSubPath(targetPath, distanceStart, distanceLeft)
-		fmt.Println("low", low, "high", high, "mid", mid, "distanceStart", distanceStart, "distanceLeft", distanceLeft)
 		newPos := testPath[len(testPath)-1]
 
 		AStarGraph := pathfinding.AStarInit(mp, hunterPos, newPos)

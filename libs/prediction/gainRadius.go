@@ -7,8 +7,6 @@ import (
 
 func GainRadius(hunterStart, hunterEnd, targetStart, targetEnd [2]float64, hunterSPD, targetSPD int) bool {
 	fmt.Println("-----Called GainRadius-----")
-	fmt.Println(hunterStart, hunterEnd, targetStart, targetEnd)
-	fmt.Println(hunterSPD, targetSPD)
 
 	// Compute direction vectors
 	hx := hunterEnd[0] - hunterStart[0]
@@ -37,7 +35,6 @@ func GainRadius(hunterStart, hunterEnd, targetStart, targetEnd [2]float64, hunte
 
 	// Dot product
 	dot := pRel[0]*vRel[0] + pRel[1]*vRel[1]
-	fmt.Println("dot", dot)
 
 	return dot >= 0 // true = hunter is gaining ground
 }

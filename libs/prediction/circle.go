@@ -56,8 +56,6 @@ func GetSubPath(path [][2]float64, distanceLeftStart float64, distanceLeftEnd fl
 	curLength := 0.0
 	for i := len(path) - 1; i >= 1; i-- {
 
-		fmt.Println(path[i], path[i-1], distanceLeftStart, distanceLeftEnd, curLength, subPath)
-
 		curLength = curLength + maps.EuclideanDistance2(path[i], path[i-1])
 
 		if len(end) == 0 && curLength >= distanceLeftEnd {
@@ -80,8 +78,6 @@ func GetSubPath(path [][2]float64, distanceLeftStart float64, distanceLeftEnd fl
 		}
 
 	}
-
-	fmt.Println(curLength, subPath)
 
 	reversedSubPath := [][2]float64{}
 	for i := len(subPath) - 1; i >= 0; i-- {
@@ -122,8 +118,6 @@ func lineIntersectsCircle(line [][2]float64, cX float64, cY float64, r0 float64,
 
 func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { // returns the first t between 0 and 1, returns -1 if no roots
 
-	fmt.Println("A:", A, "B:", B, "C:", C, "tMax:", tMax)
-
 	if IsZero(A) && IsZero(B) {
 		if C == 0 {
 			return 0
@@ -147,8 +141,6 @@ func QuadraticFormula(A float64, B float64, C float64, tMax float64) float64 { /
 	sqrtDisc := math.Sqrt(discriminant)
 	t1 := (-B - sqrtDisc) / (2 * A)
 	t2 := (-B + sqrtDisc) / (2 * A)
-
-	fmt.Println("t1:", t1, "t2:", t2)
 
 	if t1 >= 0 && t1-tMax <= 1e-6 && t2 >= 0 && t2-tMax <= 1e-6 {
 		return math.Min(t1, t2)

@@ -122,11 +122,6 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End [2]float64, radius fl
 	d1 := maps.EuclideanDistance2(p1End, p2End)
 	closest := closestPoint(p1Start, p1End, p2Start, p2End)
 
-	fmt.Println("p1Start", p1Start, p1End, "p1End")
-	fmt.Println("p2Start", p2Start, p2End, "p2End")
-
-	fmt.Println("d0", d0, "d1", d1)
-
 	// Classify d0 and d1 as "inside", "outside", or "edge"
 	s0, s1 := "", ""
 
@@ -273,7 +268,6 @@ func ProximityCheck(path1 [][2]float64, path2 [][2]float64, distanceLeft1 float6
 			totalTime += times[i]
 		} else {
 			totalTime += t
-			fmt.Println("ProximityCheck", totalTime)
 
 			tRatio := t / times[i]
 			p1Now := interpolate(subline1[0], subline1[1], tRatio)

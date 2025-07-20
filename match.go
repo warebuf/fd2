@@ -178,7 +178,9 @@ func m_read(m *match_socket) {
 						} else if msg.DestinationType == 1 {
 							if confirmValidPath(m.m.heroes, m.m.camps, msg.UnitIndex[:], msg.DestinationIndex, msg.DestinationType) {
 								oldTarget = m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DestinationIndex
-								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DynamicCircle = m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position[:]
+								var dynamicCircle [2]float64
+								copy(dynamicCircle[:], m.m.heroes[msg.DestinationIndex[0]][msg.DestinationIndex[1]][msg.DestinationIndex[2]].Position[:])
+								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].DynamicCircle = dynamicCircle[:]
 								m.m.heroes[msg.UnitIndex[0]][msg.UnitIndex[1]][msg.UnitIndex[2]].LastMileRadius = 25
 								canSetPath = true
 							}
@@ -880,7 +882,6 @@ func (m *match) run() {
 							if len(p) == 0 || len(idx) == 0 {
 								// figure out how to end the game here
 							} else {
-								fmt.Println("calling setPath from gave_bot_acts", i, j, k)
 								setPath(m.heroes[i][j][k], pint, p, destinationType, idx)
 
 								hardUpdate := make(map[[3]int]int)
@@ -981,7 +982,6 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), hunter.LastMileRadius, "enter")
-								fmt.Println(i, j, k, "LM0", prox, min_units, entry, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "entering" {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm0)", prox, entry)
@@ -1037,7 +1037,6 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), hunter.LastMileRadius, "exit")
-								fmt.Println(i, j, k, "prox (LM1)", prox, entry, min_units, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && (entry == "exiting" || entry == "passing") {
 
@@ -1063,10 +1062,8 @@ func (m *match) run() {
 								}
 
 								prox, entry = prediction.ProximityCheck(hunter.Path, target.Path, hunter.DistanceLeft, target.DistanceLeft, float64(hunterSPD), float64(targetSPD), 1, "exit")
-								fmt.Println(i, j, k, "prox (LM2)", prox, min_units, entry, prox-min_units)
 
 								if prox >= 0 && prox-min_units <= 1e-6 && entry == "exiting" {
-									fmt.Println(i, j, k, m.heroes[i][j][k].DestinationIndex)
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ prox (lm2)", prox, entry, prox-min_units)
 									absDiff := math.Abs(prox - min_units)
 									if absDiff <= 1e-6 {
@@ -1083,7 +1080,6 @@ func (m *match) run() {
 							} else if hunter.LastMile == 3 {
 
 								intersect := prediction.MeetsPoint(target.Path, hunter.Position, float64(targetSPD))
-								fmt.Println("found int", hunter.Index, intersect)
 								if intersect >= 0 && intersect-min_units <= 1e-6 {
 									fmt.Println(i, j, k, "replaced min", min_units, "w/ int (lm3)", intersect, intersect-min_units)
 									absDiff := math.Abs(intersect - min_units)
@@ -1233,7 +1229,6 @@ func (m *match) run() {
 				if campOfInterest.HP > 0 {
 					calculatedEXP := 0
 					startEXP := unitOfInterest.EXP
-					fmt.Println(unitOfInterest.ATK, campOfInterest.HP)
 					if unitOfInterest.ATK <= campOfInterest.HP {
 						calculatedEXP = unitOfInterest.ATK
 					} else {
@@ -1246,8 +1241,6 @@ func (m *match) run() {
 					} else {
 						unitOfInterest.EXP += calculatedEXP
 					}
-					fmt.Println("startEXP", startEXP)
-					fmt.Println("endEXP", unitOfInterest.EXP)
 					levels := math.Floor(float64(unitOfInterest.EXP)/100.0) - math.Floor(float64(startEXP)/100.0)
 					if levels > 0 {
 						levelUp = append(levelUp, []int{atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2]})
@@ -1423,9 +1416,9 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 		for j := 0; j < len(state[i]); j++ {
 			for k := 0; k < len(state[i][j]); k++ {
 				if len(state[i][j][k].DestinationIndex) > 1 {
-					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "path", state[i][j][k].Path)
+					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "DynamicCircle", state[i][j][k].DynamicCircle)
 				} else {
-					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "path", state[i][j][k].Path)
+					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "DynamicCircle", state[i][j][k].DynamicCircle)
 				}
 			}
 		}
@@ -1584,7 +1577,6 @@ func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType
 	}
 	unit.Thetas = thetas
 
-	fmt.Println("setPath", len(p), p)
 	unit.DistanceLeft = dist
 	unit.Status = 1
 }
@@ -1825,8 +1817,6 @@ func PathDuplication(hunter *heroes.Hero, target *heroes.Hero) {
 
 	dist := maps.EuclideanDistance2(hunter.Position, target.Position)
 
-	fmt.Println("dist", dist)
-
 	if dist > 1 { // this should break the program
 		panic("Collision should not happen! Distance > 1!")
 	}
@@ -1847,14 +1837,15 @@ func setRecompute(state [][][]*heroes.Hero, idx [3]int) {
 	}
 
 	target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
-	hunter.DynamicCircle = target.Position[:]
+	var dynamicCircle [2]float64
+	copy(dynamicCircle[:], target.Position[:])
+	hunter.DynamicCircle = dynamicCircle[:]
 	if hunter.LastMile == 1 {
 		hunter.LastMileRadius = 25
 	}
 
 	AStarGraph := pathfinding.AStarInit(mapList[0], hunter.Position, target.Position)
 	path := AStarGraph.ComputeShortestPath()
-	fmt.Println("calling setPath from dynamic destinations", idx)
 	setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path, hunter.DestinationType, hunter.DestinationIndex)
 	hunter.LastMile = 0
 }
@@ -1883,14 +1874,12 @@ func setLastMile(state [][][]*heroes.Hero, idx [3]int) {
 
 	if !gainingGround && hunter.LastMile == 0 {
 
-		fmt.Println("hunter.path", path)
-		fmt.Println("target.path", target.Path, target.Path_Segment)
-
 		hunter.LastMileRadius = hunter.LastMileRadius * 0.75
-		hunter.DynamicCircle = target.Position[:]
+		var dynamicCircle [2]float64
+		copy(dynamicCircle[:], target.Position[:])
+		hunter.DynamicCircle = dynamicCircle[:]
 		AStarGraph := pathfinding.AStarInit(mapList[0], hunter.Position, target.Position)
 		path := AStarGraph.ComputeShortestPath()
-		fmt.Println("calling setPath from gainingGround", idx)
 		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path, hunter.DestinationType, hunter.DestinationIndex)
 		hunter.LastMile = 0
 
@@ -1898,7 +1887,6 @@ func setLastMile(state [][][]*heroes.Hero, idx [3]int) {
 		hunter.LastMile = 1
 		hunter.DynamicCircle = []float64{}
 		hunter.LastMileRadius = 25
-		fmt.Println("calling setPath from last_mile", idx)
 		setPath(state[idx[0]][idx[1]][idx[2]], path[len(path)-1], path, hunter.DestinationType, hunter.DestinationIndex)
 	}
 }
@@ -1910,13 +1898,11 @@ func setPathDup(state [][][]*heroes.Hero, idx [3]int) {
 
 	// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
 	dist := getDistFromDynamic(state, hunter)
-	fmt.Println(idx, "dist", dist)
 	if dist > 1 {
 		p := [][2]float64{hunter.Position}
 		setPath(hunter, hunter.Position, p, hunter.DestinationType, hunter.DestinationIndex)
 		hunter.LastMile = 3
 	} else {
-		fmt.Println("calling PathDuplication from pathDup")
 		PathDuplication(hunter, target)
 	}
 }
@@ -2049,7 +2035,6 @@ func comparePathSimilarity(p1 [][2]float64, p2 [][2]float64) bool {
 		}
 
 		compare := maps.EuclideanDistance2(p1[it], p2[it])
-		fmt.Println(it, "compare", compare)
 		if math.Abs(compare) > 0.05 { // instead of 1e-6 because it's too precise, we are just looking for near steady state
 			return false
 		}

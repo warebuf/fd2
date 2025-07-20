@@ -164,7 +164,7 @@ function calcPos() {
                 for (let k = 0; k < state[i][j].length; k++) {
                     if (state[i][j][k].Status == 1) {
 
-                        if (arraysEqual(state[i][j][k].DestinationIndex, match_data[animating_state][i][j][k].DestinationIndex) == false) {
+                        if (!arraysEqual(state[i][j][k].DestinationIndex, match_data[animating_state][i][j][k].DestinationIndex) || !arraysEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination)) {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
                             state[i][j][k].DistanceLeft = match_data[animating_state][i][j][k].DistanceLeft;

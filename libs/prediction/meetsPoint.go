@@ -2,7 +2,6 @@ package prediction
 
 import (
 	"fd/libs/maps"
-	"fmt"
 	"math"
 )
 

@@ -151,7 +151,7 @@ func m_read(m *match_socket) {
 
 			msg.When = time.Now()
 			msg.Name = m.u.email
-	 			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
+			fmt.Println("Event:", msg.Event, ", Message: ", msg.Message)
 
 			// user requests to create match
 			if m.m.ended {
@@ -874,15 +874,15 @@ func (m *match) run() {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if m.heroes[i][j][k].Bot && (m.heroes[i][j][k].Status == 0) {
-							p, pint, idx := determineBotAction(m.heroes[i][j][k], m.heroes, m.camps, m.accessible, true)
+							path, dest, idx := determineBotAction(m.heroes[i][j][k], m.heroes, m.camps, m.accessible, false)
 							destinationType := 0
 							if len(idx) == 3 {
 								destinationType = 1
 							}
-							if len(p) == 0 || len(idx) == 0 {
+							if len(path) == 0 || len(idx) == 0 {
 								// figure out how to end the game here
 							} else {
-								setPath(m.heroes[i][j][k], pint, p, destinationType, idx)
+								setPath(m.heroes[i][j][k], dest, path, destinationType, idx)
 
 								hardUpdate := make(map[[3]int]int)
 								if len(idx) == 1 {
@@ -1550,8 +1550,10 @@ func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType
 			unit.Position = p[0]
 		} else if dist <= 1 {
 			// to me the best option here would be to calculate A* from unit.Position to the destination
+			fmt.Println("debugging1", unit.Position, dest)
 			AStarGraph := pathfinding.AStarInit(mapList[0], unit.Position, dest)
 			p = AStarGraph.ComputeShortestPath()
+			fmt.Println("debugging2", p)
 		} else {
 			panic("Path and unit position exceed 1 dist!")
 		}

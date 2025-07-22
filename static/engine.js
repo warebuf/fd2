@@ -373,17 +373,17 @@ function drawCamps() {
 function drawHoverable() {
 
     ctx.font = '7px monospace';
-    ctx.textAlign = "left";
+    ctx.textAlign = "center";
 
     if (hovIdx.length !== 0) {
 
         let current;
         if( hovIdx.length === 3 ) {
             current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
-            ctx.fillText(hovIdx[2], width + current.Position[0] + 11, height - current.Position[1] + 17);
+            ctx.fillText(current.Name, width + current.Position[0], height - current.Position[1] - 15 );
         } else if( hovIdx.length === 1 ) {
             current = camps[hovIdx[0]];
-            ctx.fillText(hovIdx[0], width + current.Position[0] + 11, height - current.Position[1] + 17);
+            ctx.fillText("CAMP " + hovIdx[0].toString(), width + current.Position[0], height - current.Position[1] - 15 );
         }
 
         ctx.fillStyle = 'pink'
@@ -392,6 +392,7 @@ function drawHoverable() {
         ctx.fillRect(width + current.Position[0] - 10, height - current.Position[1] - 10, 1, 20);
         ctx.fillRect(width + current.Position[0] + 10, height - current.Position[1] - 10, 1, 20);
         ctx.fillStyle = 'white'
+
     }
 }
 

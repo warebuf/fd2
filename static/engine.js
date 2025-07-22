@@ -647,6 +647,8 @@ function drawHeatMap() {
                 ctx.fillText( state[i][j][k].Start[0].toString() + " " + state[i][j][k].Start[1].toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 15);
                 ctx.fillText( state[i][j][k].Position[0].toString() + " " + state[i][j][k].Position[1].toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 25);
                 ctx.fillText( state[i][j][k].Destination[0].toString() + " " + state[i][j][k].Destination[1].toString(), x_offset + x_shift + t_shift, y_offset + y_shift + 35);
+                ctx.fillText( state[i][j][k].DistanceLeft, x_offset + x_shift + t_shift, y_offset + y_shift + 45);
+
                 x_shift = 0;
                 y_shift = y_shift + 75;
             }

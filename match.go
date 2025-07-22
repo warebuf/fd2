@@ -424,47 +424,47 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		// creating camps
-		hardcodedCamps := [][2]float64{
-			{250, 290},
-			{310, 150},
-			{220, 350},
-			{290, 300},
-			{210, 420},
-			{210, 400},
-			{400, 420},
-			{90, 320},
-			{230, 60},
-			{70, 50},
-			{260, 310},
-			{320, 300},
-		}
-		hardcodedHP := []int{
-			18,
-			39,
-			42,
-			5,
-			66,
-			69,
-			41,
-			4,
-			45,
-			6,
-			95,
-			75,
-		}
-		for i := 0; i < len(hardcodedCamps); i++ {
-			ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: hardcodedHP[i], HP: hardcodedHP[i], Position: hardcodedCamps[i], Units: make([][3]int, 0)})
-		}
-
-		// random_count := 10 + rand.Intn(5)
-		// for i := 0; i < random_count; i++ {
-		// 	random_x := float64(rand.Intn(40))
-		// 	random_y := float64(rand.Intn(40))
-		// 	c := [2]float64{50.0 + (random_x * 10.0), 50.0 + (random_y * 10.0)}
-		// 	HP := rand.Intn(100) + 1
-		// 	//HP := 1
-		// 	ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
+		// hardcodedCamps := [][2]float64{
+		// 	{250, 290},
+		// 	{310, 150},
+		// 	{220, 350},
+		// 	{290, 300},
+		// 	{210, 420},
+		// 	{210, 400},
+		// 	{400, 420},
+		// 	{90, 320},
+		// 	{230, 60},
+		// 	{70, 50},
+		// 	{260, 310},
+		// 	{320, 300},
 		// }
+		// hardcodedHP := []int{
+		// 	18,
+		// 	39,
+		// 	42,
+		// 	5,
+		// 	66,
+		// 	69,
+		// 	41,
+		// 	4,
+		// 	45,
+		// 	6,
+		// 	95,
+		// 	75,
+		// }
+		// for i := 0; i < len(hardcodedCamps); i++ {
+		// 	ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: hardcodedHP[i], HP: hardcodedHP[i], Position: hardcodedCamps[i], Units: make([][3]int, 0)})
+		// }
+
+		random_count := 10 + rand.Intn(5)
+		for i := 0; i < random_count; i++ {
+			random_x := float64(rand.Intn(40))
+			random_y := float64(rand.Intn(40))
+			c := [2]float64{50.0 + (random_x * 10.0), 50.0 + (random_y * 10.0)}
+			HP := rand.Intn(100) + 1
+			//HP := 1
+			ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
+		}
 
 		// check for camp accessiblity
 		accessible := make([]bool, len(ans.camps))
@@ -489,7 +489,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		SPDHardcode := []int{52, 87, 35, 37, 94, 98}
+		//SPDHardcode := []int{52, 87, 35, 37, 94, 98}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -539,7 +539,7 @@ func createMatch(pl *permission_list) *match {
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
 					AS:    75,             //stats[2],
-					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100), SPDHardcode[a]
+					SPD:   rand.Intn(100), //stats[3], rand.Intn(100), SPDHardcode[a]
 					Scale: scale,
 
 					Battle: nil,
@@ -1950,12 +1950,20 @@ func setPathDup(state [][][]*heroes.Hero, idx [3]int) {
 	target := state[hunter.DestinationIndex[0]][hunter.DestinationIndex[1]][hunter.DestinationIndex[2]]
 	hunter.DynamicCircle = []float64{}
 
-	// if the hunter and target are > 1 dist, then the hunter has arrived early, set the LastMile to 3 and wait for collision
+	// if the hunter and target are > 1 dist, then either
+	// 1) the hunter has arrived early -> set LastMile to 3 and wait for collision
+	// 2) the hunter has a slight rounding error, set LastMile to 1
 	dist := getDistFromDynamic(state, hunter)
 	if dist > 1 {
-		p := [][2]float64{hunter.Position}
-		setPath(hunter, hunter.Position, p, hunter.DestinationType, hunter.DestinationIndex)
-		hunter.LastMile = 3
+
+		if prediction.IsPointOnPath(target.Path, hunter.Position) { // set LM3
+			path := [][2]float64{hunter.Position}
+			setPath(hunter, hunter.Position, path, hunter.DestinationType, hunter.DestinationIndex)
+			hunter.LastMile = 3
+		} else { // set to LM1
+			setLastMile(state, hunter.Index)
+		}
+
 	} else {
 		PathDuplication(hunter, target)
 	}

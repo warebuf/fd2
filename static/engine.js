@@ -88,6 +88,8 @@ function anime() {
         drawSelected();
         drawUnitSelect();
 
+        //temp
+        drawCampData();
 
         if (view == 0) {
             drawHeatMap()
@@ -1251,3 +1253,12 @@ function drawLastMileCircle() {
     }
 }
 
+function drawCampData() {
+    let x = 100;
+    let y = 100;
+    for(let i = 0; i < camps.length; i++) {
+        ctx.fillStyle = 'white';
+        ctx.fillText(i + " " + camps[i].Position, x, y);
+        y += 10
+    }
+}

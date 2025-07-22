@@ -4,6 +4,7 @@ import (
 	"container/heap"
 	"container/list"
 	"encoding/json"
+	"log"
 
 	"fmt"
 	"math"
@@ -14,6 +15,7 @@ import (
 
 	"fd/libs/bezier"
 	"fd/libs/heroes"
+	"fd/libs/logger"
 	"fd/libs/maps"
 	"fd/libs/pathfinding"
 	"fd/libs/prediction"
@@ -80,6 +82,8 @@ type match struct {
 	message_logs []*message
 
 	simulate chan bool
+
+	logger *logger.Logger
 }
 
 type match_socket struct {
@@ -190,6 +194,9 @@ func m_read(m *match_socket) {
 
 						// setting the path
 						if canSetPath {
+
+							m.m.logger.Write("user: " + util.IntsToString(msg.UnitIndex[:]) + "->" + util.IntsToString(msg.DestinationIndex))
+
 							fmt.Println("calling setPath from m_read", msg.UnitIndex)
 
 							var dest [2]float64
@@ -352,6 +359,13 @@ func createMatch(pl *permission_list) *match {
 	mid_to_match.mutex.RUnlock()
 	if !found {
 
+		// logging stuff
+		logFilename := fmt.Sprintf("matchlog_%s.txt", time.Now().Format("20060102_150405"))
+		logger, err := logger.NewLogger(logFilename)
+		if err != nil {
+			log.Fatal(err)
+		}
+
 		ans = &match{
 
 			mutex: sync.RWMutex{},
@@ -398,6 +412,8 @@ func createMatch(pl *permission_list) *match {
 			message_logs: make([]*message, 0, 16),
 
 			simulate: make(chan bool),
+
+			logger: logger,
 		}
 
 		// add bots to gamer_uid_to_user
@@ -408,6 +424,7 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		// creating camps
+		//hardcodedCamps := [][2]float64{[2]float64{1, 1}, [2]float64{1, 1}, [2]float64{1, 1}}
 		random_count := 10 + rand.Intn(5)
 		for i := 0; i < random_count; i++ {
 			random_x := float64(rand.Intn(40))
@@ -441,7 +458,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		//SPDHardcode := []int{44, 76, 52, 21, 36, 32}
+		//SPDHardcode := []int{75, 0, 22, 87, 65, 84}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -882,6 +899,9 @@ func (m *match) run() {
 							if len(path) == 0 || len(idx) == 0 {
 								// figure out how to end the game here
 							} else {
+
+								m.logger.Write("bot: " + strconv.Itoa(i) + "," + strconv.Itoa(j) + "," + strconv.Itoa(k) + "->" + util.IntsToString(idx))
+
 								setPath(m.heroes[i][j][k], dest, path, destinationType, idx)
 
 								hardUpdate := make(map[[3]int]int)
@@ -1312,6 +1332,7 @@ func (m *match) run() {
 			printState(m.heroes, m.SPDTable, "after2")
 
 			if game_over_check(m.heroes) {
+				m.logger.Close()
 				has_user_cmd = true
 				m.ended = true
 				m.ticker.Stop()

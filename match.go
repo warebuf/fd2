@@ -1289,6 +1289,7 @@ func (m *match) run() {
 
 				// TODO: not sure why this is here TBH
 				if m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Start == m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]].Destination {
+					panic("did this actually hit??")
 					m.ended = true
 				}
 			}

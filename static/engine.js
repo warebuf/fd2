@@ -1261,7 +1261,7 @@ function drawCampData() {
     let y = 100;
     for(let i = 0; i < camps.length; i++) {
         ctx.fillStyle = 'white';
-        ctx.fillText(i + " " + camps[i].Position + " " + camps[i].HP, x, y);
+        ctx.fillText(i + " " + camps[i].Position + " " + camps[i].HP +  "/" + camps[i].MaxHP, x, y);
         y += 10
     }
 }

@@ -425,32 +425,20 @@ func createMatch(pl *permission_list) *match {
 
 		// creating camps
 		// hardcodedCamps := [][2]float64{
-		// 	{250, 290},
-		// 	{310, 150},
-		// 	{220, 350},
-		// 	{290, 300},
-		// 	{210, 420},
-		// 	{210, 400},
-		// 	{400, 420},
-		// 	{90, 320},
-		// 	{230, 60},
-		// 	{70, 50},
-		// 	{260, 310},
-		// 	{320, 300},
+		// 	{310, 210},
+		// 	{400, 330},
+		// 	{210, 320},
+		// 	{230, 290},
+		// 	{380, 320},
+		// 	{310, 130},
+		// 	{310, 430},
+		// 	{420, 70},
+		// 	{290, 140},
+		// 	{150, 190},
+		// 	{320, 240},
 		// }
 		// hardcodedHP := []int{
-		// 	18,
-		// 	39,
-		// 	42,
-		// 	5,
-		// 	66,
-		// 	69,
-		// 	41,
-		// 	4,
-		// 	45,
-		// 	6,
-		// 	95,
-		// 	75,
+		// 	17, 30, 12, 68, 57, 54, 65, 44, 61, 5, 99,
 		// }
 		// for i := 0; i < len(hardcodedCamps); i++ {
 		// 	ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: hardcodedHP[i], HP: hardcodedHP[i], Position: hardcodedCamps[i], Units: make([][3]int, 0)})
@@ -489,7 +477,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		//SPDHardcode := []int{52, 87, 35, 37, 94, 98}
+		//SPDHardcode := []int{98, 84, 76, 39, 51, 28}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -1925,8 +1913,9 @@ func setLastMile(state [][][]*heroes.Hero, idx [3]int) {
 		targetEnd = target.Path[target.Path_Segment+1]
 	}
 	gainingGround := prediction.GainRadius(hunterStart, hunterEnd, targetStart, targetEnd, hunter.SPD, targetSPD)
+	distRadius := maps.EuclideanDistance2(hunter.Position, target.Position)
 
-	if !gainingGround && hunter.LastMile == 0 {
+	if !gainingGround && hunter.LastMile == 0 && distRadius >= 25 {
 
 		hunter.LastMileRadius = hunter.LastMileRadius * 0.75
 		var dynamicCircle [2]float64

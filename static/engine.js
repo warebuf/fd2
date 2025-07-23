@@ -1138,7 +1138,7 @@ function drawSelected() {
         let camper = camps[hovIdx[0]];
         let campString = "";
         if ( hovIdx.length === 1 ) {
-            campString = "[CAMP]";
+            campString = "[CAMP "  + camper.Index[0] + "]";
         }
         let iteratorY = ctx.measureText("M").width + 10; // trick to get height
         let iteratorX = 5;

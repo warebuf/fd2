@@ -1264,4 +1264,15 @@ function drawCampData() {
         ctx.fillText(i + " " + camps[i].Position + " " + camps[i].HP +  "/" + camps[i].MaxHP, x, y);
         y += 10
     }
+    y += 10;
+
+    for(let i = 0; i < state.length; i++) {
+        for(let j = 0; j < state[i].length; j++) {
+            for(let k = 0; k < state[i][j].length; k++) {
+                ctx.fillStyle = 'white';
+                ctx.fillText(i + " " + j + " " + k +  " " + state[i][j][k].SPD, x, y);
+                y += 10
+            }
+        }
+    }
 }

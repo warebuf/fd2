@@ -87,6 +87,7 @@ function anime() {
         drawLog();
         drawSelected();
         drawUnitSelect();
+        drawMouse();
 
         //temp
         drawCampData();
@@ -1274,5 +1275,16 @@ function drawCampData() {
                 y += 10
             }
         }
+    }
+}
+
+function drawMouse() {
+    ctx.textAlign = "right";
+    if(hovIdx.length === 1) {
+        ctx.fillText(camps[hovIdx[0]].Position, width+500, height+20);
+        ctx.fillText("CAMP "+hovIdx[0], width+500, height+10);
+    } else if(hovIdx.length === 3) {
+        ctx.fillText(state[hovIdx[0]][hovIdx[1]][hovIdx[2]].Position, width+500, height+20);
+        ctx.fillText(state[hovIdx[0]][hovIdx[1]][hovIdx[2]].Name, width+500, height+10);
     }
 }

@@ -330,7 +330,14 @@
             case '<':
 
                 if( hovIdx.length === 1 ) {
-                    console.log("> camp")
+                    const n = camps.length;
+                    for (let offset = 1; offset < n; offset++) {
+                        const i = (hovIdx[0] - offset + n) % n;
+                        if (camps[i].HP > 0) {
+                            hovIdx = [i];
+                            return;
+                        }
+                    }
                 }
                 else if( hovIdx.length === 3 ) {
                     let notFound = true;
@@ -374,7 +381,14 @@
                 console.log(">", hovIdx)
 
                 if( hovIdx.length === 1 ) {
-                    console.log("> camp")
+                    const n = camps.length;
+                    for (let offset = 1; offset < n; offset++) {
+                        const i = (hovIdx[0] + offset) % n;
+                        if (camps[i].HP > 0) {
+                            hovIdx = [i];
+                            return;
+                        }
+                    }
                 }
                 else if( hovIdx.length === 3 ) {
                 
@@ -514,6 +528,23 @@
             hovIdx = mostNorthActive.Index;
         } else if (closestCamp != null) {
             hovIdx = closestCamp.Index;
+        } else if( (mostNorthActive == null) && (closestCamp == null) ) {
+            for(let i = 0; i < state.length; i++) {
+                for(let j = 0; j < state[i].length; j++) {
+                    for(let k = 0; k < state[i][j].length; k++) {
+                        if(state[i][j][k].HP > 0) {
+                            hovIdx = state[i][j][k].Index;
+                            return;
+                        }
+                    }
+                }
+            }
+            for(let i = 0; i < camps.length; i++) {
+                if(camps[i].HP > 0) {
+                    hovIdx = camps[i].Index;
+                    return;
+                }
+            }
         }
 
     }
@@ -523,16 +554,14 @@
 
 
     function calculateNextHoverable(direction) {
-        
-        if(hovIdx.length === 0) {
-            return;
-        }
 
-        let current
+        let current = [];
         if(hovIdx.length === 1) {
-            current = camps[hovIdx[0]]
+            current = camps[hovIdx[0]];
         } else if(hovIdx.length === 3) {
             current = state[hovIdx[0]][hovIdx[1]][hovIdx[2]];
+        } else {
+            return;
         }
         
         let hoverables = [];
@@ -598,24 +627,25 @@
         }
 
         let dx = 0, dy = 0;
-        if (direction === 0) dy =  1;        // up
-        if (direction === 1) dx = -1;        // left
-        if (direction === 2) dx =  1;        // right
-        if (direction === 3) dy = -1;        // down
+        if (direction === 0) {dy =  1;}        // up
+        if (direction === 1) {dx = -1;}        // left
+        if (direction === 2) {dx =  1;}        // right
+        if (direction === 3) {dy = -1;}        // down
 
         for (const h of hoverables) {
-            if (h === current) continue;
+            if (h.Position[0] === current.Position[0] && h.Position[1] === current.Position[1]) continue;
 
             const vx = h.Position[0] - current.Position[0];
             const vy = h.Position[1] - current.Position[1];
 
             const dot = vx * dx + vy * dy;
             const mag = Math.sqrt(vx * vx + vy * vy);
+            const dirMag = Math.sqrt(dx * dx + dy * dy);
+            
+            if (mag === 0 || dirMag === 0) continue;
 
-            if (mag === 0) continue; // avoid divide-by-zero
-
-            const cosine = dot / mag;
-
+            const cosine = dot / (mag * dirMag);
+            
             // Cosine of 45° = ~0.707; anything > that is inside a 90° cone
             if (cosine < 0.7071) continue;
 
@@ -638,17 +668,18 @@
         const ghostY = current.Position[1] - dy * BOARD_H;
 
         for (const h of hoverables) {
-            if (h === current) continue;
+            if (h.Position === current.Position) continue;
 
             const vx = h.Position[0] - ghostX;
             const vy = h.Position[1] - ghostY;
 
             const dot = vx * dx + vy * dy;
             const mag = Math.sqrt(vx * vx + vy * vy);
+            const dirMag = Math.sqrt(dx * dx + dy * dy);
 
-            if (mag === 0) continue; // avoid divide-by-zero
+            if (mag === 0 || dirMag === 0) continue; // avoid divide-by-zero
 
-            const cosine = dot / mag;
+            const cosine = dot / (mag * dirMag);
 
             // Cosine of 45° = ~0.707; anything > that is inside a 90° cone
             if (cosine < 0.7071) continue;

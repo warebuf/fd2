@@ -1,9 +1,5 @@
 package heroes
 
-import (
-	"fmt"
-)
-
 func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 
 	if interest.Status != 1 || interest.LastMile != 2 {
@@ -66,8 +62,6 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		}
 		table = append(table, subside)
 	}
-
-	fmt.Println("original SPD table", table)
 
 	// determine the 0-degree LM2 units
 	degree0 := [][3]int{}
@@ -179,8 +173,6 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 			}
 		}
 	}
-
-	fmt.Println("modified SPD table", table)
 
 	return table
 }

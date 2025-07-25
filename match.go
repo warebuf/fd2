@@ -1587,11 +1587,10 @@ func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType
 			unit.Position = p[0]
 		} else if dist <= 1 {
 			// to me the best option here would be to calculate A* from unit.Position to the destination
-			fmt.Println("debugging1", unit.Position, dest)
 			AStarGraph := pathfinding.AStarInit(mapList[0], unit.Position, dest)
 			p = AStarGraph.ComputeShortestPath()
-			fmt.Println("debugging2", p)
 		} else {
+			fmt.Println(unit.Position, p)
 			panic("Path and unit position exceed 1 dist!")
 		}
 

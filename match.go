@@ -425,23 +425,21 @@ func createMatch(pl *permission_list) *match {
 
 		// creating camps
 		hardcodedCamps := [][2]float64{
-			{140, 110},
-			{290, 70},
-			{240, 230},
-			{370, 290},
-			{200, 330},
-			{100, 50},
-			{330, 380},
-			{390, 410},
-			{420, 280},
-			{270, 370},
-			{440, 230},
-			{340, 200},
-			{350, 250},
-			{400, 300},
+			{190, 420},
+			{350, 430},
+			{330, 410},
+			{240, 110},
+			{350, 420},
+			{220, 360},
+			{280, 370},
+			{120, 370},
+			{320, 390},
+			{180, 100},
+			{410, 70},
+			{430, 370},
 		}
 		hardcodedHP := []int{
-			10, 55, 5, 41, 47, 92, 34, 43, 50, 15, 23, 96, 12, 32,
+			70, 30, 70, 66, 100, 32, 5, 36, 66, 54, 84, 25,
 		}
 		for i := 0; i < len(hardcodedCamps); i++ {
 			ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: hardcodedHP[i], HP: hardcodedHP[i], Position: hardcodedCamps[i], Units: make([][3]int, 0)})
@@ -480,7 +478,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		SPDHardcode := []int{56, 89, 58, 72, 77, 46}
+		SPDHardcode := []int{72, 39, 62, 99, 5, 72}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {

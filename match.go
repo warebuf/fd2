@@ -1578,6 +1578,8 @@ func getLineSegmentTravelled(refX float64, refY float64, dest [2]float64, distan
 
 func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType int, destinationIndex []int) {
 
+	fmt.Println("?!?!?!?!?!?!?!?!?!?!", unit.Start, unit.Position, unit.Destination, unit.Path)
+
 	// if the unit's position does not equal the start of the path, recalculate the path
 	if (unit.Position[0] != p[0][0]) || (unit.Position[1] != p[0][1]) {
 
@@ -1590,7 +1592,9 @@ func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType
 			AStarGraph := pathfinding.AStarInit(mapList[0], unit.Position, dest)
 			p = AStarGraph.ComputeShortestPath()
 		} else {
+			fmt.Println("-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*")
 			fmt.Println(unit.Position, p)
+			// seems like uses start not position
 			panic("Path and unit position exceed 1 dist!")
 		}
 

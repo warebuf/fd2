@@ -965,30 +965,32 @@ func (m *match) run() {
 
 			// calculate min unit of time to action
 			min_units := 999999.99
-			for i := 0; i < len(m.heroes); i++ {
-				for j := 0; j < len(m.heroes[i]); j++ {
-					for k := 0; k < len(m.heroes[i][j]); k++ {
-						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.SPDTable[i][j][k] != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
-							units_of_time := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.SPDTable[i][j][k]), 10)
-							if units_of_time < min_units {
-								min_units = units_of_time
-							}
-						}
-					}
-				}
-			}
+			for i := 0; (min_units > 0) && i < len(m.heroes); i++ {
+				for j := 0; (min_units > 0) && j < len(m.heroes[i]); j++ {
+					for k := 0; (min_units > 0) && k < len(m.heroes[i][j]); k++ {
 
-			// calculate time until damage
-			for i := 0; i < len(m.camps); i++ {
-				if (m.camps[i].HP > 0) && (len(m.camps[i].Units) > 0) {
-					for j := 0; j < len(m.camps[i].Units); j++ {
-						unitOfInterest := m.heroes[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
-						if unitOfInterest.HP > 0 {
-							ttd := unitOfInterest.TTD / float64(unitOfInterest.AS)
-							if ttd < min_units {
-								min_units = ttd
+						// if the unit is ready to attack, set min_units to 0
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.heroes[i][j][k].LastMile == 2) && (m.heroes[i][j][k].TTD <= 0) {
+							min_units = 0
+							continue
+						}
+
+						// calculate min units of time to destiation
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].Status == 1) && (m.SPDTable[i][j][k] != 0) && (m.heroes[i][j][k].LastMile != 2) && (m.heroes[i][j][k].LastMile != 3) {
+							unitsOfTime := toFixed(m.heroes[i][j][k].DistanceLeft/float64(m.SPDTable[i][j][k]), 10)
+							if unitsOfTime < min_units {
+								min_units = unitsOfTime
 							}
 						}
+
+						// calculate min units of time to attack reset
+						if (m.heroes[i][j][k].HP > 0) && (m.heroes[i][j][k].AS != 0) && (m.heroes[i][j][k].TTD > 0) {
+							unitsOfTime := toFixed(m.heroes[i][j][k].TTD/float64(m.heroes[i][j][k].AS), 10)
+							if unitsOfTime < min_units {
+								min_units = unitsOfTime
+							}
+						}
+
 					}
 				}
 			}
@@ -999,9 +1001,9 @@ func (m *match) run() {
 			lastMile := [][3]int{}
 			pathDup := [][3]int{}
 
-			for i := 0; i < len(m.heroes); i++ {
-				for j := 0; j < len(m.heroes[i]); j++ {
-					for k := 0; k < len(m.heroes[i][j]); k++ {
+			for i := 0; (min_units > 0) && i < len(m.heroes); i++ {
+				for j := 0; (min_units > 0) && j < len(m.heroes[i]); j++ {
+					for k := 0; (min_units > 0) && k < len(m.heroes[i][j]); k++ {
 
 						if m.heroes[i][j][k].HP > 0 && len(m.heroes[i][j][k].DestinationIndex) > 1 {
 

@@ -1148,30 +1148,6 @@ func (m *match) run() {
 
 			has_user_cmd := false
 
-			// calculate TTD for each unit, save the units that are going to attack next
-			atk_list := make([]*attack, 0)
-			for i := 0; i < len(m.camps); i++ {
-				if m.camps[i].HP > 0 {
-					for j := 0; j < len(m.camps[i].Units); j++ {
-						unitOfInterest := m.heroes[m.camps[i].Units[j][0]][m.camps[i].Units[j][1]][m.camps[i].Units[j][2]]
-						if unitOfInterest.HP > 0 {
-							unitOfInterest.TTD = unitOfInterest.TTD - (min_units * float64(unitOfInterest.AS))
-							if unitOfInterest.TTD <= 1e-6 {
-								unitOfInterest.TTD = 0
-
-								a := &attack{
-									Attacker: unitOfInterest.Index,
-									Defender: make([][3]int, 0),
-									Damage:   make([][]string, 0),
-									Type:     "hit",
-								}
-								atk_list = append(atk_list, a)
-							}
-						}
-					}
-				}
-			}
-
 			//printState(m.heroes, m.SPDTable, "before")
 
 			movementChange := 0.0
@@ -1262,9 +1238,51 @@ func (m *match) run() {
 
 			//printState(m.heroes, m.SPDTable, "after")
 
-			// simulate all attacks
+			// simulate all cooldowns
 			levelUp := [][]int{}
 			levelCount := []int{}
+
+			for i := 0; i < len(m.heroes); i++ {
+				for j := 0; j < len(m.heroes[i]); j++ {
+					for k := 0; k < len(m.heroes[i][j]); k++ {
+
+						if m.heroes[i][j][k].HP > 0 {
+							m.heroes[i][j][k].TTD = m.heroes[i][j][k].TTD - (min_units * float64(m.heroes[i][j][k].AS))
+
+							if m.heroes[i][j][k].TTD <= 1e-6 {
+								m.heroes[i][j][k].TTD = 0
+							}
+
+						}
+					}
+				}
+			}
+
+			// makes sense to sharepos here...
+
+			for i := 0; i < len(m.heroes); i++ {
+				for j := 0; j < len(m.heroes[i]); j++ {
+					for k := 0; k < len(m.heroes[i][j]); k++ {
+
+						if m.heroes[i][j][k].HP > 0 && m.heroes[i][j][k].TTD <= 0 {
+							if (m.heroes[i][j][k].Status == 1 && (m.heroes[i][j][k].LastMile == 2 || m.heroes[i][j][k].LastMile == 3)) ||
+								(m.heroes[i][j][k].Status == 2) {
+
+								if m.heroes[i][j][k].DestinationType == 0 {
+
+									enemyCamp := m.camps[m.heroes[i][j][k].DestinationIndex[0]]
+
+								} else if m.heroes[i][j][k].DestinationType == 1 {
+
+									enemyUnit := m.heroes[m.heroes[i][j][k].DestinationIndex[0]][m.heroes[i][j][k].DestinationIndex[1]][m.heroes[i][j][k].DestinationIndex[2]]
+
+								}
+							}
+						}
+
+					}
+				}
+			}
 			for i := 0; i < len(atk_list); i++ {
 				unitOfInterest := m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 				campOfInterest := unitOfInterest.Battle

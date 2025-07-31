@@ -1260,6 +1260,7 @@ func (m *match) run() {
 
 			// makes sense to sharepos here...
 
+			// simulate attacks
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
@@ -1283,6 +1284,7 @@ func (m *match) run() {
 					}
 				}
 			}
+
 			for i := 0; i < len(atk_list); i++ {
 				unitOfInterest := m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
 				campOfInterest := unitOfInterest.Battle

@@ -1150,9 +1150,8 @@ func (m *match) run() {
 
 			//printState(m.heroes, m.SPDTable, "before")
 
-			movementChange := 0.0
-
 			// move all unit positions
+			movementChange := 0.0
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
@@ -1239,15 +1238,15 @@ func (m *match) run() {
 			//printState(m.heroes, m.SPDTable, "after")
 
 			// simulate all cooldowns
-			levelUp := [][]int{}
-			levelCount := []int{}
-
+			cooldownChange := 0.0
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 
 						if m.heroes[i][j][k].HP > 0 {
-							m.heroes[i][j][k].TTD = m.heroes[i][j][k].TTD - (min_units * float64(m.heroes[i][j][k].AS))
+							cooldown := min_units * float64(m.heroes[i][j][k].AS)
+							m.heroes[i][j][k].TTD = m.heroes[i][j][k].TTD - cooldown
+							cooldownChange += cooldown
 
 							if m.heroes[i][j][k].TTD <= 1e-6 {
 								m.heroes[i][j][k].TTD = 0
@@ -1258,8 +1257,12 @@ func (m *match) run() {
 				}
 			}
 
-			// makes sense to sharepos here...
+			if movementChange > 0 || cooldownChange > 0 {
+				m.sharepos(nil, 0)
+			}
 
+			// TODO: have to consider grouping attacks into a single state, better simulation flow
+			simulatedAttack := false
 			// simulate attacks
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1272,12 +1275,68 @@ func (m *match) run() {
 								if m.heroes[i][j][k].DestinationType == 0 {
 
 									enemyCamp := m.camps[m.heroes[i][j][k].DestinationIndex[0]]
+									if enemyCamp.HP <= 0 { // camp is dead, do not continue
+										continue
+									}
+
+									// calculate DMG & subtract HP
+									ATKDMG := m.heroes[i][j][k].ATK
+									if enemyCamp.HP < ATKDMG {
+										ATKDMG = enemyCamp.HP
+									}
+									enemyCamp.HP -= ATKDMG
+									simulatedAttack = true
+
+									// sharepos w/ attack
+
+									// calculate EXP to add
+									EXPGain := ATKDMG
+									if enemyCamp.HP <= 0 {
+										EXPGain += 100
+									}
+									addEXP(m.heroes[i][j][k], EXPGain)
+
+									m.sharepos(nil, 0)
 
 								} else if m.heroes[i][j][k].DestinationType == 1 {
 
 									enemyUnit := m.heroes[m.heroes[i][j][k].DestinationIndex[0]][m.heroes[i][j][k].DestinationIndex[1]][m.heroes[i][j][k].DestinationIndex[2]]
+									if enemyUnit.HP <= 0 { // unit is dead, do not continue
+										continue
+									}
+
+									// calculate DMG & subtract HP
+									ATKDMG := m.heroes[i][j][k].ATK - enemyUnit.DEF
+									DMGToAttacker := 0
+									DMGToDefender := 0
+									if ATKDMG > 0 {
+										DMGToDefender = min(enemyUnit.HP, ATKDMG)
+									} else if ATKDMG < 0 {
+										DMGToAttacker = min(m.heroes[i][j][k].HP, -ATKDMG)
+									}
+									m.heroes[i][j][k].HP -= DMGToAttacker
+									enemyUnit.HP -= DMGToDefender
+									simulatedAttack = true
+
+									// sharepos w/ attack
+
+									// TODO: have to play around with how much EXP gain for defender and attacker
+									attackerEXPGain := max(m.heroes[i][j][k].ATK, enemyUnit.DEF)
+									if enemyUnit.HP <= 0 {
+										attackerEXPGain += 100
+									}
+									addEXP(m.heroes[i][j][k], attackerEXPGain)
+
+									defenderEXPGain := max(m.heroes[i][j][k].ATK, enemyUnit.DEF)
+									if m.heroes[i][j][k].HP <= 0 {
+										defenderEXPGain += 100
+									}
+									addEXP(m.heroes[i][j][k], defenderEXPGain)
+
+									m.sharepos(nil, 0)
 
 								}
+
 							}
 						}
 
@@ -1285,67 +1344,14 @@ func (m *match) run() {
 				}
 			}
 
-			for i := 0; i < len(atk_list); i++ {
-				unitOfInterest := m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
-				campOfInterest := unitOfInterest.Battle
-				if campOfInterest.HP > 0 {
-					calculatedEXP := 0
-					startEXP := unitOfInterest.EXP
-					if unitOfInterest.ATK <= campOfInterest.HP {
-						calculatedEXP = unitOfInterest.ATK
-					} else {
-						calculatedEXP = campOfInterest.HP
-					}
-					campOfInterest.HP -= unitOfInterest.ATK
-					if campOfInterest.HP <= 0 {
-						campOfInterest.HP = 0
-						unitOfInterest.EXP += calculatedEXP + 100
-					} else {
-						unitOfInterest.EXP += calculatedEXP
-					}
-					levels := math.Floor(float64(unitOfInterest.EXP)/100.0) - math.Floor(float64(startEXP)/100.0)
-					if levels > 0 {
-						levelUp = append(levelUp, []int{atk_list[i].Attacker[0], atk_list[i].Attacker[1], atk_list[i].Attacker[2]})
-						levelCount = append(levelCount, int(levels))
-					}
-				}
-
-			}
-
 			num, _ := strconv.Atoi(m.turn[5:])
-			if len(atk_list) > 0 {
+			if simulatedAttack {
 				m.turn = "TURN " + strconv.Itoa(num+1)
 				m.sharepos(atk_list, min_units)
-			} else {
-				m.turn = "TURN " + strconv.Itoa(num+len(atk_list))
-				if movementChange != 0 {
-					m.sharepos(nil, 0)
-				} else {
-					fmt.Println("no more movement")
-				}
-
 			}
 
-			// handle level up
-			for i := 0; i < len(levelUp); i++ {
-
-				continue // for testing - skip level ups
-
-				fmt.Println("levelUp[i]", levelUp[i])
-				fmt.Println("levelCount[i]", levelCount[i])
-
-				for j := 0; j < levelCount[i]; j++ {
-					focus := m.heroes[levelUp[i][0]][levelUp[i][1]][levelUp[i][2]]
-					additions := heroes.LevelUp(focus.Scale, 20)
-					focus.MaxHP += additions[0]
-					focus.HP += additions[0]
-					focus.ATK += additions[1]
-					focus.AS += additions[2]
-					focus.DEF += additions[3]
-					focus.SPD += additions[4]
-					m.sharepos(nil, 0)
-				}
-
+			if !simulatedAttack && movementChange <= 0 && cooldownChange <= 0 {
+				fmt.Println("no more movement, CD, or attacks")
 			}
 
 			// update paths
@@ -2266,6 +2272,18 @@ func bruteForceCycleSolver(state [][][]*heroes.Hero, cycle [][3]int) {
 		if current.HP > 0 && current.Status == 1 && current.LastMile == 2 {
 			setPathDup(state, cycle[i])
 		}
+	}
+
+}
+
+func addEXP(unit *heroes.Hero, EXP int) {
+
+	startEXP := unit.EXP
+	unit.EXP += EXP
+
+	levels := int(math.Floor(float64(unit.EXP)/100.0) - math.Floor(float64(startEXP)/100.0))
+	for i := 0; i < levels; i++ {
+		heroes.LevelUp(unit, 20)
 	}
 
 }

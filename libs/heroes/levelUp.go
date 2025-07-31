@@ -5,11 +5,25 @@ import (
 	"math/rand"
 )
 
-func LevelUp(distribution []int, points int) []int {
+func LevelUp(unit *Hero, rolls int) {
+
+	statChanges := LevelUpRoll(unit.Scale, rolls)
+
+	unit.MaxHP += statChanges[0]
+	unit.HP += statChanges[0]
+	unit.ATK += statChanges[1]
+	unit.AS += statChanges[2]
+	unit.DEF += statChanges[3]
+	unit.SPD += statChanges[4]
+
+}
+
+// given probabilities (1-100) and number of chances, generate an array of how much each stat increases for a level up
+func LevelUpRoll(distribution []int, rolls int) []int {
 
 	results := []int{}
 	for i := 0; i < len(distribution); i++ {
-		results = append(results, binomialDistribution(points, float64(distribution[i])/100))
+		results = append(results, binomialDistribution(rolls, float64(distribution[i])/100))
 	}
 
 	return results

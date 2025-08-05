@@ -26,10 +26,10 @@ import (
 )
 
 type attack struct {
-	Attacker [3]int     //i,j,k
-	Defender [][3]int   //list of i,j,k
-	Damage   [][]string // list of damage strings - 0: H, 1: DMG, 2: H%, 3: L%, 4: R%, 5: B%, 6: RNG
-	Type     string     //miss,
+	Attacker [3]int //i,j,k
+	Defender []int  //i or i,j,k
+	Damage   int
+	Type     string //miss, hit
 }
 
 type match struct {
@@ -114,12 +114,11 @@ type message struct {
 	Phase string
 
 	// game state stuff
-	TCH         [][][]string
-	SPDTable    [][][]int
-	Turn        string
-	Atk         []string
-	UnitsOfTime string
-	Camps       []string
+	TCH      [][][]string
+	SPDTable [][][]int
+	Turn     string
+	Atk      string
+	Camps    []string
 
 	DestinationType  int
 	DestinationIndex []int
@@ -244,7 +243,7 @@ func m_read(m *match_socket) {
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points, hardUpdate)
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
-							m.m.sharepos(nil, 0)
+							m.m.sharepos(nil)
 
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
@@ -282,9 +281,9 @@ func m_read(m *match_socket) {
 				m.incoming_message <- msg2
 
 				if m.m.phase == "TURN" {
-					m.m.sharepos(nil, 0)
+					m.m.sharepos(nil)
 				} else if m.m.phase == "CHARACTER SELECTION" {
-					m.m.sharepos(nil, 0)
+					m.m.sharepos(nil)
 				}
 				m.incoming_message <- &message{Event: "assignInt", Message: m.m.uuid_to_team_int[m.u.uid].ab, MatchID: m.m.mid}
 
@@ -836,7 +835,7 @@ func (m *match) run() {
 			}
 			continue
 
-			m.sharepos(nil, 0)
+			m.sharepos(nil)
 			m.shareint()
 
 		case <-m.start_ticker:
@@ -874,7 +873,7 @@ func (m *match) run() {
 				}
 			}
 
-			m.sharepos(nil, 0)
+			m.sharepos(nil)
 
 			continue
 
@@ -958,7 +957,7 @@ func (m *match) run() {
 				}
 			}
 			if gave_bots_acts {
-				m.sharepos(nil, 0)
+				m.sharepos(nil)
 			}
 
 			m.SPDTable = heroes.SpeedTable(m.heroes, m.dependencies)
@@ -1212,8 +1211,6 @@ func (m *match) run() {
 
 									if m.heroes[i][j][k].DestinationType == 0 && m.camps[m.heroes[i][j][k].DestinationIndex[0]].HP > 0 {
 										m.heroes[i][j][k].Status = 2
-										m.heroes[i][j][k].Battle = m.camps[m.heroes[i][j][k].DestinationIndex[0]]
-										m.heroes[i][j][k].Battle.Units = append(m.heroes[i][j][k].Battle.Units, [3]int{i, j, k})
 									} else {
 										m.heroes[i][j][k].Status = 0
 										if !m.heroes[i][j][k].Bot {
@@ -1258,12 +1255,12 @@ func (m *match) run() {
 			}
 
 			if movementChange > 0 || cooldownChange > 0 {
-				m.sharepos(nil, 0)
+				m.sharepos(nil)
 			}
 
-			// TODO: have to consider grouping attacks into a single state, better simulation flow
-			simulatedAttack := false
 			// simulate attacks
+			dead := make([][]int, 0)
+			simulatedAttack := false
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
@@ -1286,8 +1283,13 @@ func (m *match) run() {
 									}
 									enemyCamp.HP -= ATKDMG
 									simulatedAttack = true
+									if enemyCamp.HP <= 0 {
+										dead = append(dead, m.heroes[i][j][k].DestinationIndex)
+									}
 
 									// sharepos w/ attack
+									ATK := &attack{Attacker: [3]int{i, j, k}, Defender: m.heroes[i][j][k].DestinationIndex, Damage: ATKDMG, Type: "hit"}
+									m.sharepos(ATK)
 
 									// calculate EXP to add
 									EXPGain := ATKDMG
@@ -1296,7 +1298,8 @@ func (m *match) run() {
 									}
 									addEXP(m.heroes[i][j][k], EXPGain)
 
-									m.sharepos(nil, 0)
+									// sharepos - EXP
+									m.sharepos(nil)
 
 								} else if m.heroes[i][j][k].DestinationType == 1 {
 
@@ -1317,8 +1320,13 @@ func (m *match) run() {
 									m.heroes[i][j][k].HP -= DMGToAttacker
 									enemyUnit.HP -= DMGToDefender
 									simulatedAttack = true
+									if enemyUnit.HP <= 0 {
+										dead = append(dead, m.heroes[i][j][k].DestinationIndex)
+									}
 
 									// sharepos w/ attack
+									ATK := &attack{Attacker: [3]int{i, j, k}, Defender: m.heroes[i][j][k].DestinationIndex, Damage: ATKDMG, Type: "hit"}
+									m.sharepos(ATK)
 
 									// TODO: have to play around with how much EXP gain for defender and attacker
 									attackerEXPGain := max(m.heroes[i][j][k].ATK, enemyUnit.DEF)
@@ -1333,7 +1341,7 @@ func (m *match) run() {
 									}
 									addEXP(m.heroes[i][j][k], defenderEXPGain)
 
-									m.sharepos(nil, 0)
+									m.sharepos(nil)
 
 								}
 
@@ -1344,10 +1352,11 @@ func (m *match) run() {
 				}
 			}
 
+			// increment the turn
 			num, _ := strconv.Atoi(m.turn[5:])
 			if simulatedAttack {
 				m.turn = "TURN " + strconv.Itoa(num+1)
-				m.sharepos(atk_list, min_units)
+				m.sharepos(nil)
 			}
 
 			if !simulatedAttack && movementChange <= 0 && cooldownChange <= 0 {
@@ -1370,7 +1379,7 @@ func (m *match) run() {
 			updateDependencies(m.heroes, cycles, strands, m.dependencies, hardUpdate)
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {
-				m.sharepos(nil, 0)
+				m.sharepos(nil)
 			}
 
 			//printState(m.heroes, m.SPDTable, "after2")
@@ -1396,28 +1405,33 @@ func (m *match) run() {
 			}
 
 			// determine if camp is dead, reset camps
-			for i := 0; i < len(atk_list); i++ {
-				unitOfInterest := m.heroes[atk_list[i].Attacker[0]][atk_list[i].Attacker[1]][atk_list[i].Attacker[2]]
-				campOfInterest := unitOfInterest.Battle
-				if campOfInterest == nil {
-					continue
-				} else if campOfInterest.HP <= 0 {
-					for j := 0; j < len(campOfInterest.Units); j++ {
-						unitOfInterest2 := m.heroes[campOfInterest.Units[j][0]][campOfInterest.Units[j][1]][campOfInterest.Units[j][2]]
-						unitOfInterest2.TTD = 100
-						unitOfInterest2.Status = 0
-						unitOfInterest2.Battle = nil
-						if !unitOfInterest2.Bot {
-							has_user_cmd = true
+			if len(dead) > 0 {
+
+				for i := 0; i < len(m.heroes); i++ {
+					for j := 0; j < len(m.heroes[i]); j++ {
+						for k := 0; k < len(m.heroes[i][j]); k++ {
+
+							// iterate through dead, if unit's destination is equal to dead, then set to Status 0 (waiting for new input)
+							panic("breakpoint here")
+
+							for l := 0; l < len(dead); l++ {
+
+								if util.EqualSlices(dead[l], m.heroes[i][j][k].DestinationIndex) {
+
+									m.heroes[i][j][k].Status = 0
+									if !m.heroes[i][j][k].Bot {
+										has_user_cmd = true
+									}
+
+								}
+
+							}
+
 						}
 					}
-					campOfInterest.Units = make([][3]int, 0)
-				} else if unitOfInterest.TTD <= 0 {
-					unitOfInterest.TTD = 100
 				}
-			}
-			if len(atk_list) > 0 {
-				m.sharepos(nil, 0)
+
+				m.sharepos(nil)
 			}
 
 			// send new timer to everyone
@@ -1490,22 +1504,13 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 	}
 }
 
-func (m *match) sharepos(a []*attack, utime float64) {
+func (m *match) sharepos(a *attack) {
 	fmt.Println("*****************************sharepos*****************************", a)
 
-	atk_temp := make([]string, 0)
-	if a == nil {
-		atk_temp = nil
-	} else {
-		for i := 0; i < len(a); i++ {
-			marshalled, _ := json.Marshal(a[i])
-			atk_temp = append(atk_temp, string(marshalled))
-		}
-	}
-
-	utime_conv := ""
-	if utime != 0 {
-		utime_conv = strconv.FormatFloat(utime, 'E', 3, 64)
+	atk_temp := ""
+	if a != nil {
+		marshalled, _ := json.Marshal(a)
+		atk_temp = string(marshalled)
 	}
 
 	// convert game state to JSON
@@ -1530,7 +1535,7 @@ func (m *match) sharepos(a []*attack, utime float64) {
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: utime_conv, Camps: tempCamp, When: time.Now(), MatchID: m.mid}
+			j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, Camps: tempCamp, When: time.Now(), MatchID: m.mid}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {

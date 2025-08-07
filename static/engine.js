@@ -236,23 +236,6 @@ function calcPos() {
             }
         }
 
-        // simulate any attacks (not sure if this is correct)
-        for(let i = 0; i < state.length; i++) {
-            for(let j = 0; j < state[i].length; j++) {
-                for(let k = 0; k < state[i][j].length; k++) {
-                    
-                    if (state[i][j][k].HP > 0 && state[i][j][k].TTD === 0) {
-
-                        if ( state[i][j][k].Status === 2 || ( state[i][j][k].Status === 1 && state[i][j][k].LastMile === 2 ) ) {
-                            attacking_frames_count = 1
-                        }
-
-                    }
-
-                }
-            }
-        }
-
         if (all_status_correct && all_distances_correct && allTTDCorrect) {
             if ((time_queue[animating_state] != "") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
@@ -276,23 +259,20 @@ function drawAttack() {
     if ((animating_state < match_data.length) && (attacking_frames_count > 0)) {
 
         console.log("atk_data[animating_state]", atk_data[animating_state]);
+        let atk_obj = JSON.parse(atk_data[animating_state]);
+        console.log("atk_obj", atk_obj)
+        let atki = atk_obj.Attacker[0]
+        let atkj = atk_obj.Attacker[1]
+        let atkk = atk_obj.Attacker[2]
 
-        for (let i = 0; i < atk_data[animating_state].length; i++) {
-            let atk_obj = JSON.parse(atk_data[animating_state][i]);
-            console.log("atk_obj", atk_obj)
-            let atki = atk_obj.Attacker[0]
-            let atkj = atk_obj.Attacker[1]
-            let atkk = atk_obj.Attacker[2]
+        let campOfInterest = camps[ state[atki][atkj][atkk].DestinationIndex[0] ];
+        campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
-            let campOfInterest = camps[ state[atki][atkj][atkk].DestinationIndex[0] ];
-            campOfInterest.HP -= state[atki][atkj][atkk].ATK
-
-            if (attacking_frames_count == 1) {
-                createDamageNumber(state[atki][atkj][atkk].ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
-                event_log.push(atk_data[animating_state][i])
-                if (event_log.length >= 25) {
-                    event_log.shift()
-                }
+        if (attacking_frames_count == 1) {
+            createDamageNumber(state[atki][atkj][atkk].ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
+            event_log.push(atk_data[animating_state])
+            if (event_log.length >= 25) {
+                event_log.shift()
             }
         }
 

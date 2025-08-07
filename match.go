@@ -425,6 +425,7 @@ func createMatch(pl *permission_list) *match {
 
 		// creating camps
 		// hardcodedCamps := [][2]float64{
+
 		// 	{190, 420},
 		// 	{350, 430},
 		// 	{330, 410},

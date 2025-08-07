@@ -236,15 +236,14 @@ function calcPos() {
             }
         }
 
-        if (all_status_correct && all_distances_correct && allTTDCorrect) {
-
+        // run attack animations
+        if (all_status_correct && all_distances_correct && allTTDCorrect && attackAnimationState === 0) {
             if(atk_data[animating_state] !== "") {
-                attacking_frames_count = 1;
+                attackAnimationState = 1;
             }
-
         }
 
-        if (all_status_correct && all_distances_correct && allTTDCorrect) {
+        if (all_status_correct && all_distances_correct && allTTDCorrect && (attackAnimationState === 0 || attackAnimationState === 2)) {
             if ((time_queue[animating_state] != "") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
@@ -257,6 +256,7 @@ function calcPos() {
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++
+            attackStateFinished = 0;
             setupHoverable()
         }
     }
@@ -264,20 +264,26 @@ function calcPos() {
 
 function drawAttack() {
 
-    if ((animating_state < match_data.length) && (attacking_frames_count > 0)) {
+    if ((animating_state < match_data.length) && (attackAnimationState === 1) ) {
 
-        console.log("atk_data[animating_state]", atk_data[animating_state]);
-        let atk_obj = JSON.parse(atk_data[animating_state]);
-        console.log("atk_obj", atk_obj)
-        let atki = atk_obj.Attacker[0]
-        let atkj = atk_obj.Attacker[1]
-        let atkk = atk_obj.Attacker[2]
+        if (attacking_frames_count == 0) {
 
-        let campOfInterest = camps[ state[atki][atkj][atkk].DestinationIndex[0] ];
-        campOfInterest.HP -= state[atki][atkj][atkk].ATK
+            console.log("atk_data[animating_state]", atk_data[animating_state]);
+            let atk_obj = JSON.parse(atk_data[animating_state]);
+            console.log("atk_obj", atk_obj)
 
-        if (attacking_frames_count == 1) {
-            createDamageNumber(state[atki][atkj][atkk].ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
+            let attacker = state[atk_obj.Attacker[0]][atk_obj.Attacker[1]][atk_obj.Attacker[2]]
+            if(attacker.DestinationIndex.length === 1) {
+                let campOfInterest = camps[ state[a[0]][a[1]][a[2]].DestinationIndex[0] ];
+                campOfInterest.HP -= state[atki][atkj][atkk].ATK
+                
+            } else if(attacker.DestinationIndex.length === 3) {
+
+            }
+
+            
+
+            createDamageNumber(state[a[0]][a[1]][a[2]].ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
             event_log.push(atk_data[animating_state])
             if (event_log.length >= 25) {
                 event_log.shift()
@@ -285,7 +291,7 @@ function drawAttack() {
         }
 
         attacking_frames_count++
-        if (attacking_frames_count >= 1) { attacking_frames_count = 0 }
+        if (attacking_frames_count >= 25) { attacking_frames_count = 0 }
     }
 }
 

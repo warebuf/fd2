@@ -1413,8 +1413,6 @@ func (m *match) run() {
 						for k := 0; k < len(m.heroes[i][j]); k++ {
 
 							// iterate through dead, if unit's destination is equal to dead, then set to Status 0 (waiting for new input)
-							panic("breakpoint here")
-
 							for l := 0; l < len(dead); l++ {
 
 								if util.EqualSlices(dead[l], m.heroes[i][j][k].DestinationIndex) {

@@ -163,7 +163,7 @@ function calcPos() {
 
         
         let all_distances_correct = true;
-        let allTTDCorrect = false;
+        let allTTDCorrect = true;
         for (let i = 0; i < state.length; i++) {
             for (let j = 0; j < state[i].length; j++) {
                 for (let k = 0; k < state[i][j].length; k++) {

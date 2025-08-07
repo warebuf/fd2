@@ -114,11 +114,12 @@ type message struct {
 	Phase string
 
 	// game state stuff
-	TCH      [][][]string
-	SPDTable [][][]int
-	Turn     string
-	Atk      string
-	Camps    []string
+	TCH         [][][]string
+	SPDTable    [][][]int
+	Turn        string
+	UnitsOfTime float64
+	Atk         string
+	Camps       []string
 
 	DestinationType  int
 	DestinationIndex []int
@@ -243,7 +244,7 @@ func m_read(m *match_socket) {
 							cycle, strand := prediction.GetCyclesAndStrands(m.m.heroes, points, hardUpdate)
 							updateDependencies(m.m.heroes, cycle, strand, m.m.dependencies, hardUpdate) // the way that updateDependencies works right now, it updates the unit's path twice (in setPath and updateDependencies)
 
-							m.m.sharepos(nil)
+							m.m.sharepos(nil, 0)
 
 							// check if all heroes have commands (ignore bots). If all heroes have commands, calculate next position
 							sim_check := true
@@ -281,9 +282,9 @@ func m_read(m *match_socket) {
 				m.incoming_message <- msg2
 
 				if m.m.phase == "TURN" {
-					m.m.sharepos(nil)
+					m.m.sharepos(nil, 0)
 				} else if m.m.phase == "CHARACTER SELECTION" {
-					m.m.sharepos(nil)
+					m.m.sharepos(nil, 0)
 				}
 				m.incoming_message <- &message{Event: "assignInt", Message: m.m.uuid_to_team_int[m.u.uid].ab, MatchID: m.m.mid}
 
@@ -835,7 +836,7 @@ func (m *match) run() {
 			}
 			continue
 
-			m.sharepos(nil)
+			m.sharepos(nil, 0)
 			m.shareint()
 
 		case <-m.start_ticker:
@@ -873,7 +874,7 @@ func (m *match) run() {
 				}
 			}
 
-			m.sharepos(nil)
+			m.sharepos(nil, 0)
 
 			continue
 
@@ -957,7 +958,7 @@ func (m *match) run() {
 				}
 			}
 			if gave_bots_acts {
-				m.sharepos(nil)
+				m.sharepos(nil, 0)
 			}
 
 			m.SPDTable = heroes.SpeedTable(m.heroes, m.dependencies)
@@ -1255,7 +1256,7 @@ func (m *match) run() {
 			}
 
 			if movementChange > 0 || cooldownChange > 0 {
-				m.sharepos(nil)
+				m.sharepos(nil, 0)
 			}
 
 			// simulate attacks
@@ -1289,7 +1290,7 @@ func (m *match) run() {
 
 									// sharepos w/ attack
 									ATK := &attack{Attacker: [3]int{i, j, k}, Defender: m.heroes[i][j][k].DestinationIndex, Damage: ATKDMG, Type: "hit"}
-									m.sharepos(ATK)
+									m.sharepos(ATK, 0)
 
 									// calculate EXP to add
 									EXPGain := ATKDMG
@@ -1299,7 +1300,7 @@ func (m *match) run() {
 									addEXP(m.heroes[i][j][k], EXPGain)
 
 									// sharepos - EXP
-									m.sharepos(nil)
+									m.sharepos(nil, 0)
 
 								} else if m.heroes[i][j][k].DestinationType == 1 {
 
@@ -1326,7 +1327,7 @@ func (m *match) run() {
 
 									// sharepos w/ attack
 									ATK := &attack{Attacker: [3]int{i, j, k}, Defender: m.heroes[i][j][k].DestinationIndex, Damage: ATKDMG, Type: "hit"}
-									m.sharepos(ATK)
+									m.sharepos(ATK, 0)
 
 									// TODO: have to play around with how much EXP gain for defender and attacker
 									attackerEXPGain := max(m.heroes[i][j][k].ATK, enemyUnit.DEF)
@@ -1341,7 +1342,7 @@ func (m *match) run() {
 									}
 									addEXP(m.heroes[i][j][k], defenderEXPGain)
 
-									m.sharepos(nil)
+									m.sharepos(nil, 0)
 
 								}
 
@@ -1356,7 +1357,7 @@ func (m *match) run() {
 			num, _ := strconv.Atoi(m.turn[5:])
 			if simulatedAttack {
 				m.turn = "TURN " + strconv.Itoa(num+1)
-				m.sharepos(nil)
+				m.sharepos(nil, min_units)
 			}
 
 			if !simulatedAttack && movementChange <= 0 && cooldownChange <= 0 {
@@ -1379,7 +1380,7 @@ func (m *match) run() {
 			updateDependencies(m.heroes, cycles, strands, m.dependencies, hardUpdate)
 
 			if len(recompute) > 0 || len(lastMile) > 0 || len(pathDup) > 0 {
-				m.sharepos(nil)
+				m.sharepos(nil, 0)
 			}
 
 			//printState(m.heroes, m.SPDTable, "after2")
@@ -1431,7 +1432,7 @@ func (m *match) run() {
 					}
 				}
 
-				m.sharepos(nil)
+				m.sharepos(nil, 0)
 			}
 
 			// send new timer to everyone
@@ -1504,7 +1505,7 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 	}
 }
 
-func (m *match) sharepos(a *attack) {
+func (m *match) sharepos(a *attack, t float64) {
 	fmt.Println("*****************************sharepos*****************************", a)
 
 	atk_temp := ""
@@ -1535,7 +1536,7 @@ func (m *match) sharepos(a *attack) {
 	// send updated positions to everyone
 	for k, i := range m.gamer_uid_to_msid_to_match_socket {
 		for _, j := range i {
-			j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, Camps: tempCamp, When: time.Now(), MatchID: m.mid}
+			j.incoming_message <- &message{Event: "game_state", TCH: temp, Atk: atk_temp, SPDTable: m.SPDTable, Message: m.uuid_to_team_int[k].ab, Turn: m.turn, UnitsOfTime: t, Camps: tempCamp, When: time.Now(), MatchID: m.mid}
 		}
 	}
 	for _, i := range m.spectator_uid_to_msid_to_match_socket {

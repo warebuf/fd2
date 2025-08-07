@@ -124,6 +124,7 @@ anime()
 function calcPos() {
     if ((animating_state < match_data.length) && (attacking_frames_count <= 0)) {
 
+        // change the unit's state when it's ready
         let all_status_correct = true;
         for (let i = 0; i < state.length; i++) {
             for (let j = 0; j < state[i].length; j++) {
@@ -142,31 +143,37 @@ function calcPos() {
                             if (state[i][j][k].DistanceLeft <= 0) {
                                 if ( state[i][j][k].DestinationIndex.length == 1 && camps[state[i][j][k].DestinationIndex[0]].HP > 0) {
                                     state[i][j][k].Status = 2;
-                                    state[i][j][k].Battle = camps[state[i][j][k].DestinationIndex[0]]
                                     camps[state[i][j][k].DestinationIndex[0]].Units.push([i, j, k])
                                 } else {
                                     state[i][j][k].Status = 0;
                                 }
                             }
                         } else if (state[i][j][k].Status == 2) {
-                            if ((state[i][j][k].Battle != null) && (state[i][j][k].Battle.HP <= 0)) {
+
+                            let targetCamp = camps[ state[i][j][k].DestinationIndex[0] ] ;
+                            if ( targetCamp.HP <= 0 ) {
                                 state[i][j][k].Status = 0;
-                                state[i][j][k].TTD = state[i][j][k].AS;
-                                state[i][j][k].Battle.Units = []
-                                state[i][j][k].Battle = null;
                             }
+
                         }
                     }
                 }
             }
         }
 
+        
         let all_distances_correct = true;
+        let allTTDCorrect = false;
         for (let i = 0; i < state.length; i++) {
             for (let j = 0; j < state[i].length; j++) {
                 for (let k = 0; k < state[i][j].length; k++) {
+
+                    if (state[i][j][k].HP <= 0) {continue;}
+
+                    // move the units into position
                     if (state[i][j][k].Status == 1) {
 
+                        // the state is always trying to match the current match_data, so of course update the destination if it is different
                         if (!arraysEqual(state[i][j][k].DestinationIndex, match_data[animating_state][i][j][k].DestinationIndex) || !arraysEqual(state[i][j][k].Destination, match_data[animating_state][i][j][k].Destination)) {
                             state[i][j][k].Start = match_data[animating_state][i][j][k].Start;
                             state[i][j][k].Destination = match_data[animating_state][i][j][k].Destination;
@@ -175,6 +182,7 @@ function calcPos() {
                             state[i][j][k].Path_Segment = 0;
                         }
                         
+                        // move the units
                         if (state[i][j][k].DistanceLeft != match_data[animating_state][i][j][k].DistanceLeft) {
                             all_distances_correct = false;
 
@@ -213,23 +221,39 @@ function calcPos() {
                             }
 
                         }
-                    } else if (state[i][j][k].Status == 2) {
-                        if (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD) {
-                            all_distances_correct = false;
-                            state[i][j][k].TTD -= (0.015 * state[i][j][k].AS)
-                            if (state[i][j][k].TTD <= match_data[animating_state][i][j][k].TTD) {
-                                state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
-                            }
-                            if (state[i][j][k].TTD == 0) {
-                                attacking_frames_count = 1
-                            }
+                    } 
+                    
+                    // progress the attack CD
+                    if (state[i][j][k].TTD != match_data[animating_state][i][j][k].TTD) {
+                        allTTDCorrect = false;
+                        state[i][j][k].TTD -= (0.015 * state[i][j][k].AS)
+                        if (state[i][j][k].TTD <= match_data[animating_state][i][j][k].TTD) {
+                            state[i][j][k].TTD = match_data[animating_state][i][j][k].TTD
                         }
                     }
+                    
                 }
             }
         }
 
-        if (all_status_correct && all_distances_correct) {
+        // simulate any attacks (not sure if this is correct)
+        for(let i = 0; i < state.length; i++) {
+            for(let j = 0; j < state[i].length; j++) {
+                for(let k = 0; k < state[i][j].length; k++) {
+                    
+                    if (state[i][j][k].HP > 0 && state[i][j][k].TTD === 0) {
+
+                        if ( state[i][j][k].Status === 2 || ( state[i][j][k].Status === 1 && state[i][j][k].LastMile === 2 ) ) {
+                            attacking_frames_count = 1
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        if (all_status_correct && all_distances_correct && allTTDCorrect) {
             if ((time_queue[animating_state] != "") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
                 total_units_of_time = parseFloat(total_units_of_time.toFixed(3))
@@ -251,13 +275,16 @@ function drawAttack() {
 
     if ((animating_state < match_data.length) && (attacking_frames_count > 0)) {
 
+        console.log("atk_data[animating_state]", atk_data[animating_state]);
+
         for (let i = 0; i < atk_data[animating_state].length; i++) {
             let atk_obj = JSON.parse(atk_data[animating_state][i]);
+            console.log("atk_obj", atk_obj)
             let atki = atk_obj.Attacker[0]
             let atkj = atk_obj.Attacker[1]
             let atkk = atk_obj.Attacker[2]
 
-            let campOfInterest = state[atki][atkj][atkk].Battle
+            let campOfInterest = camps[ state[atki][atkj][atkk].DestinationIndex[0] ];
             campOfInterest.HP -= state[atki][atkj][atkk].ATK
 
             if (attacking_frames_count == 1) {

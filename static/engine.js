@@ -274,16 +274,27 @@ function drawAttack() {
 
             let attacker = state[atk_obj.Attacker[0]][atk_obj.Attacker[1]][atk_obj.Attacker[2]]
             if(attacker.DestinationIndex.length === 1) {
-                let campOfInterest = camps[ state[a[0]][a[1]][a[2]].DestinationIndex[0] ];
-                campOfInterest.HP -= state[atki][atkj][atkk].ATK
-                
+
+                let campOfInterest = camps[ attacker.DestinationIndex[0] ];
+                campOfInterest.HP -= attacker.ATK
+                createDamageNumber(attacker.ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
+            
             } else if(attacker.DestinationIndex.length === 3) {
+
+                let defender = state[ attacker.DestinationIndex[0] ][ attacker.DestinationIndex[1] ][ attacker.DestinationIndex[2] ];
+                
+                if(attacker.ATK < defender.DEF) {
+                    const selfdmg = defender.DEF - attacker.ATK;
+                    attacker.HP -= selfdmg;
+                    createDamageNumber(selfdmg, width + attacker.Position[0], height - attacker.Position[1]);
+                } else {
+                    const dmg = attacker.ATK - defender.DEF;
+                    defender.HP -= dmg;
+                    createDamageNumber(dmg, width + defender.Position[0], height - defender.Position[1]);
+                }
 
             }
 
-            
-
-            createDamageNumber(state[a[0]][a[1]][a[2]].ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
             event_log.push(atk_data[animating_state])
             if (event_log.length >= 25) {
                 event_log.shift()
@@ -291,7 +302,10 @@ function drawAttack() {
         }
 
         attacking_frames_count++
-        if (attacking_frames_count >= 25) { attacking_frames_count = 0 }
+        if (attacking_frames_count >= 25) { 
+            attacking_frames_count = 0;
+            attackAnimationState = 2;
+        }
     }
 }
 

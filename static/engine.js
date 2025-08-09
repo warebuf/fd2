@@ -140,14 +140,24 @@ function calcPos() {
                             state[i][j][k].Path_Segment = 0;
                             state[i][j][k].Thetas = match_data[animating_state][i][j][k].Path;
                         } else if (state[i][j][k].Status == 1) {
-                            if (state[i][j][k].DistanceLeft <= 0) {
-                                if ( state[i][j][k].DestinationIndex.length == 1 && camps[state[i][j][k].DestinationIndex[0]].HP > 0) {
+
+                            // figure out who the target is
+                            let target = null;
+                            if(state[i][j][k].DestinationIndex.length === 1) {
+                                target = camps[state[i][j][k].DestinationIndex[0]];
+                            } else if(state[i][j][k].DestinationIndex.length === 3) {
+                                target = state[state[i][j][k].DestinationIndex[0]][state[i][j][k].DestinationIndex[1]][state[i][j][k].DestinationIndex[2]];
+                            }
+
+                            if(target !== null && target.HP <= 0) { // check HP, if dead, await new input
+                                state[i][j][k].Status = 0;
+                            } else if(state[i][j][k].DistanceLeft <= 0) {
+                                if ( state[i][j][k].DestinationIndex.length == 1 ) { // otherwise, check if arrived at destination, units arriving at camps go into status 2
                                     state[i][j][k].Status = 2;
                                     camps[state[i][j][k].DestinationIndex[0]].Units.push([i, j, k])
-                                } else {
-                                    state[i][j][k].Status = 0;
-                                }
+                                } 
                             }
+                            
                         } else if (state[i][j][k].Status == 2) {
 
                             let targetCamp = camps[ state[i][j][k].DestinationIndex[0] ] ;
@@ -309,7 +319,7 @@ function drawAttack() {
         }
 
         attacking_frames_count++
-        if (attacking_frames_count >= 25) { 
+        if (attacking_frames_count >= 600) { 
             attacking_frames_count = 0;
             attackAnimationState = 2;
         }

@@ -424,37 +424,36 @@ func createMatch(pl *permission_list) *match {
 		}
 
 		// creating camps
-		// hardcodedCamps := [][2]float64{
-
-		// 	{190, 420},
-		// 	{350, 430},
-		// 	{330, 410},
-		// 	{240, 110},
-		// 	{350, 420},
-		// 	{220, 360},
-		// 	{280, 370},
-		// 	{120, 370},
-		// 	{320, 390},
-		// 	{180, 100},
-		// 	{410, 70},
-		// 	{430, 370},
-		// }
-		// hardcodedHP := []int{
-		// 	70, 30, 70, 66, 100, 32, 5, 36, 66, 54, 84, 25,
-		// }
-		// for i := 0; i < len(hardcodedCamps); i++ {
-		// 	ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: hardcodedHP[i], HP: hardcodedHP[i], Position: hardcodedCamps[i], Units: make([][3]int, 0)})
-		// }
-
-		random_count := 10 + rand.Intn(5)
-		for i := 0; i < random_count; i++ {
-			random_x := float64(rand.Intn(40))
-			random_y := float64(rand.Intn(40))
-			c := [2]float64{50.0 + (random_x * 10.0), 50.0 + (random_y * 10.0)}
-			HP := rand.Intn(100) + 1
-			//HP := 1
-			ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
+		hardcodedCamps := [][2]float64{
+			{190, 420},
+			{350, 430},
+			{330, 410},
+			{240, 110},
+			{350, 420},
+			{220, 360},
+			{280, 370},
+			{120, 370},
+			{320, 390},
+			{180, 100},
+			{410, 70},
+			{430, 370},
 		}
+		hardcodedHP := []int{
+			70, 30, 70, 66, 100, 32, 5, 36, 66, 54, 84, 25,
+		}
+		for i := 0; i < len(hardcodedCamps); i++ {
+			ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: hardcodedHP[i], HP: hardcodedHP[i], Position: hardcodedCamps[i], Units: make([][3]int, 0)})
+		}
+
+		// random_count := 10 + rand.Intn(5)
+		// for i := 0; i < random_count; i++ {
+		// 	random_x := float64(rand.Intn(40))
+		// 	random_y := float64(rand.Intn(40))
+		// 	c := [2]float64{50.0 + (random_x * 10.0), 50.0 + (random_y * 10.0)}
+		// 	HP := rand.Intn(100) + 1
+		// 	//HP := 1
+		// 	ans.camps = append(ans.camps, &heroes.Camp{Index: [1]int{i}, MaxHP: HP, HP: HP, Position: c, Units: make([][3]int, 0)})
+		// }
 
 		// check for camp accessiblity
 		accessible := make([]bool, len(ans.camps))
@@ -479,7 +478,7 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		//SPDHardcode := []int{72, 39, 62, 99, 5, 72}
+		SPDHardcode := []int{72, 39, 62, 99, 5, 72}
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -529,7 +528,7 @@ func createMatch(pl *permission_list) *match {
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
 					AS:    75,             //stats[2],
-					SPD:   rand.Intn(100), //stats[3], rand.Intn(100), SPDHardcode[a]
+					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100), SPDHardcode[a]
 					Scale: scale,
 
 					Battle: nil,

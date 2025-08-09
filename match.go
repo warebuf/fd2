@@ -1284,6 +1284,7 @@ func (m *match) run() {
 										ATKDMG = enemyCamp.HP
 									}
 									enemyCamp.HP -= ATKDMG
+									m.heroes[i][j][k].TTD = 100
 									simulatedAttack = true
 									if enemyCamp.HP <= 0 {
 										dead = append(dead, m.heroes[i][j][k].DestinationIndex)
@@ -1321,6 +1322,7 @@ func (m *match) run() {
 									}
 									m.heroes[i][j][k].HP -= DMGToAttacker
 									enemyUnit.HP -= DMGToDefender
+									m.heroes[i][j][k].TTD = 100
 									simulatedAttack = true
 									if enemyUnit.HP <= 0 {
 										dead = append(dead, m.heroes[i][j][k].DestinationIndex)

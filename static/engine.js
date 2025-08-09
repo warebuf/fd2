@@ -243,6 +243,8 @@ function calcPos() {
             }
         }
 
+        console.log("all_status_correct", all_status_correct, "all_distances_correct", all_distances_correct, "allTTDCorrect", allTTDCorrect, "attackAnimationState", attackAnimationState, "attacking_frames_count", attacking_frames_count)
+
         if (all_status_correct && all_distances_correct && allTTDCorrect && (attackAnimationState === 0 || attackAnimationState === 2)) {
             if ((time_queue[animating_state] != "") && (attacking_frames_count == 0)) { // update time stamp
                 total_units_of_time += parseFloat(time_queue[animating_state])
@@ -277,6 +279,7 @@ function drawAttack() {
 
                 let campOfInterest = camps[ attacker.DestinationIndex[0] ];
                 campOfInterest.HP -= attacker.ATK
+
                 createDamageNumber(attacker.ATK, width + campOfInterest.Position[0], height - campOfInterest.Position[1]);
             
             } else if(attacker.DestinationIndex.length === 3) {
@@ -286,14 +289,18 @@ function drawAttack() {
                 if(attacker.ATK < defender.DEF) {
                     const selfdmg = defender.DEF - attacker.ATK;
                     attacker.HP -= selfdmg;
+                    
                     createDamageNumber(selfdmg, width + attacker.Position[0], height - attacker.Position[1]);
                 } else {
                     const dmg = attacker.ATK - defender.DEF;
                     defender.HP -= dmg;
+                    
                     createDamageNumber(dmg, width + defender.Position[0], height - defender.Position[1]);
                 }
 
             }
+
+            
 
             event_log.push(atk_data[animating_state])
             if (event_log.length >= 25) {

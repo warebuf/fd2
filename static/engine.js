@@ -278,6 +278,10 @@ function drawAttack() {
 
     if ((animating_state < match_data.length) && (attackAnimationState === 1) ) {
 
+        ctx.textAlign = "center";
+        ctx.fillStyle = 'red';
+        ctx.fillText("ATTACK ANIMATION", Math.round(c.width / 2), 220);
+
         if (attacking_frames_count == 0) {
 
             console.log("atk_data[animating_state]", atk_data[animating_state]);
@@ -319,7 +323,7 @@ function drawAttack() {
         }
 
         attacking_frames_count++
-        if (attacking_frames_count >= 600) { 
+        if (attacking_frames_count >= 150) { 
             attacking_frames_count = 0;
             attackAnimationState = 2;
         }

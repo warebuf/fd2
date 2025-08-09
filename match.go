@@ -478,7 +478,9 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		SPDHardcode := []int{72, 39, 62, 99, 5, 72}
+		//SPDHardcode := []int{72, 39, 62, 99, 5, 72}
+		SPDHardcode := []int{71, 72}
+
 		a := 0
 
 		for i, j := range pl.gamer_permission_list {
@@ -500,7 +502,7 @@ func createMatch(pl *permission_list) *match {
 				"SOUND OF THE RAIN", "CAT TAIL", "HOG WILD", "YEAR ZERO",
 			}
 
-			for y := 0; y < 3; y++ {
+			for y := 0; y < 1; y++ {
 				stats := heroes.RandomBudget(100, 4)
 				scale := []int{rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10}
 				temp_coordinate := [2]float64{float64(team_int * 500), 500 - (float64(y) * 100)}
@@ -2289,6 +2291,7 @@ func addEXP(unit *heroes.Hero, EXP int) {
 
 	levels := int(math.Floor(float64(unit.EXP)/100.0) - math.Floor(float64(startEXP)/100.0))
 	for i := 0; i < levels; i++ {
+		continue
 		heroes.LevelUp(unit, 20)
 	}
 

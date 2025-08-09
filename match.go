@@ -479,7 +479,6 @@ func createMatch(pl *permission_list) *match {
 		client_int := 0
 
 		//SPDHardcode := []int{72, 39, 62, 99, 5, 72}
-		SPDHardcode := []int{71, 72}
 
 		a := 0
 
@@ -502,7 +501,7 @@ func createMatch(pl *permission_list) *match {
 				"SOUND OF THE RAIN", "CAT TAIL", "HOG WILD", "YEAR ZERO",
 			}
 
-			for y := 0; y < 1; y++ {
+			for y := 0; y < 3; y++ {
 				stats := heroes.RandomBudget(100, 4)
 				scale := []int{rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10}
 				temp_coordinate := [2]float64{float64(team_int * 500), 500 - (float64(y) * 100)}
@@ -530,7 +529,7 @@ func createMatch(pl *permission_list) *match {
 					ATK:   50, //stats[0],
 					DEF:   stats[1],
 					AS:    75,             //stats[2],
-					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100), SPDHardcode[a]
+					SPD:   rand.Intn(100), //stats[3], rand.Intn(100), SPDHardcode[a]
 					Scale: scale,
 
 					Battle: nil,

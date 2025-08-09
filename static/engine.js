@@ -268,7 +268,7 @@ function calcPos() {
             camps = camp_data[animating_state]
             turn = turn_queue[animating_state]
             animating_state++
-            attackStateFinished = 0;
+            attackAnimationState = 0;
             setupHoverable()
         }
     }
@@ -284,11 +284,8 @@ function drawAttack() {
 
         if (attacking_frames_count == 0) {
 
-            console.log("atk_data[animating_state]", atk_data[animating_state]);
-            let atk_obj = JSON.parse(atk_data[animating_state]);
-            console.log("atk_obj", atk_obj)
-
-            let attacker = state[atk_obj.Attacker[0]][atk_obj.Attacker[1]][atk_obj.Attacker[2]]
+            const atk_obj = JSON.parse(atk_data[animating_state]);
+            const attacker = state[atk_obj.Attacker[0]][atk_obj.Attacker[1]][atk_obj.Attacker[2]]
             if(attacker.DestinationIndex.length === 1) {
 
                 let campOfInterest = camps[ attacker.DestinationIndex[0] ];

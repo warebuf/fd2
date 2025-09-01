@@ -824,7 +824,7 @@
         // find a ready unit on your team
         let readyUnit = -1;
         for(let i = 0; i < state[my_team][my_int].length; i++) {
-            if(state[my_team][my_int][i].Status == 0) {
+            if(state[my_team][my_int][i].HP > 0 && state[my_team][my_int][i].Status == 0) {
                 readyUnit = i;
                 break;
             }

@@ -1075,7 +1075,7 @@ func (m *match) run() {
 								// radius check
 								radiusCheck := maps.EuclideanDistance2(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > hunter.LastMileRadius {
-									fmt.Println("weird behavior!!!1", i, j, k, radiusCheck, hunter.LastMileRadius)
+									fmt.Println("weird behavior!!!", i, j, k, radiusCheck, hunter.LastMileRadius)
 									panic("should not exceed hunter.LastMileRadius (1)")
 								}
 

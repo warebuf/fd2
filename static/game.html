@@ -853,14 +853,13 @@
             let destinationIndex = [];
             if( randomUnit < unitCount ) {
                 let count = 0;
-                for(let i = 0; i < state.length; i++) {
-                    for(let j = 0; j < state[i].length; j++) {
-                        for(let k = 0; k < state[i][j].length; k++) {
+                for(let i = 0; (i < state.length) && (count <= randomUnit); i++) {
+                    for(let j = 0; (j < state[i].length) && (count <= randomUnit); j++) {
+                        for(let k = 0; (k < state[i][j].length) && (count <= randomUnit); k++) {
                             if(randomUnit === count) {
                                 endPos = state[i][j][k].Position;
                                 destinationIndex = [i,j,k];
                                 destinationType = 1;
-                                break;
                             }
                             count += 1;
                         }
@@ -873,6 +872,7 @@
             }
 
             // find path from ready unit to random unit
+            console.log(randomUnit, destinationType, destinationIndex)
             const foundPath = returnPath(state[my_team][my_int][readyUnit].Position, endPos);
 
             if(foundPath.length > 0) {

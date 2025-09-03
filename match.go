@@ -478,7 +478,8 @@ func createMatch(pl *permission_list) *match {
 		team_int := 0
 		client_int := 0
 
-		//SPDHardcode := []int{72, 39, 62, 99, 5, 72}
+		SPDHardcode := []int{72, 39, 62, 99, 5, 72}
+		DEFHardcode := []int{29, 54, 29, 45, 38, 9}
 
 		a := 0
 
@@ -502,7 +503,7 @@ func createMatch(pl *permission_list) *match {
 			}
 
 			for y := 0; y < 3; y++ {
-				stats := heroes.RandomBudget(100, 4)
+				//stats := heroes.RandomBudget(100, 4)
 				scale := []int{rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10, rand.Intn(10) * 10}
 				temp_coordinate := [2]float64{float64(team_int * 500), 500 - (float64(y) * 100)}
 				temp := &heroes.Hero{
@@ -527,9 +528,9 @@ func createMatch(pl *permission_list) *match {
 
 					HP:    100,
 					ATK:   50, //stats[0],
-					DEF:   stats[1],
+					DEF:   DEFHardcode[a],
 					AS:    75,             //stats[2],
-					SPD:   rand.Intn(100), //stats[3], rand.Intn(100), SPDHardcode[a]
+					SPD:   SPDHardcode[a], //stats[3], rand.Intn(100), SPDHardcode[a]
 					Scale: scale,
 
 					Battle: nil,
@@ -1098,6 +1099,9 @@ func (m *match) run() {
 
 							} else if hunter.LastMile == 2 {
 
+								dynamicDist := getDistFromDynamic(m.heroes, hunter)
+								fmt.Println("dynamicDist", hunter.Index, target.Index, dynamicDist, hunter.Position, target.Position)
+
 								radiusCheck := maps.EuclideanDistance2(hunter.Position, target.Position)
 								if util.SigDig3(radiusCheck) > 1 {
 									fmt.Println("weird behavior2!!!", i, j, k, radiusCheck)
@@ -1149,7 +1153,7 @@ func (m *match) run() {
 
 			has_user_cmd := false
 
-			//printState(m.heroes, m.SPDTable, "before")
+			printState(m.heroes, m.SPDTable, "before")
 
 			// move all unit positions
 			movementChange := 0.0
@@ -1408,7 +1412,7 @@ func (m *match) run() {
 				}
 			}
 
-			// determine if camp is dead, reset camps
+			// determine if camp/unit is dead, reset hunters
 			if len(dead) > 0 {
 
 				for i := 0; i < len(m.heroes); i++ {
@@ -1472,7 +1476,7 @@ func (m *match) run() {
 				go func() { m.simulate <- true }()
 			}
 
-			if !has_user_cmd && (m.state_count < 1000) {
+			if !has_user_cmd && (m.state_count < 8000) {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
 			}
@@ -1497,9 +1501,9 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 		for j := 0; j < len(state[i]); j++ {
 			for k := 0; k < len(state[i][j]); k++ {
 				if len(state[i][j][k].DestinationIndex) > 1 {
-					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "DynamicCircle", state[i][j][k].DynamicCircle)
+					fmt.Println(period, i, j, k, "Status", state[i][j][k].Status, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "DynamicDist:", getDistFromDynamic(state, state[i][j][k]), "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "DynamicCircle", state[i][j][k].DynamicCircle)
 				} else {
-					fmt.Println(period, i, j, k, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "DynamicCircle", state[i][j][k].DynamicCircle)
+					fmt.Println(period, i, j, k, "Status", state[i][j][k].Status, "LM:", state[i][j][k].LastMile, "DestinationIndex", state[i][j][k].DestinationIndex, "Dist:", state[i][j][k].DistanceLeft, "Pos:", state[i][j][k].Position, "SPD", state[i][j][k].SPD, "cSPD", SPDTable[i][j][k], "DynamicCircle", state[i][j][k].DynamicCircle)
 				}
 			}
 		}
@@ -2042,6 +2046,11 @@ func updateStrand(state [][][]*heroes.Hero, point [3]int, graph map[[3]int][][3]
 			continue
 		} else {
 			updated[current] = struct{}{}
+		}
+
+		// if current HP < 0, skip
+		if state[current[0]][current[1]][current[2]].HP <= 0 {
+			continue
 		}
 
 		// update the current node

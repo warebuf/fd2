@@ -25,6 +25,13 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][3]int, hardUpdate m
 			continue
 		}
 
+		if state[current[0]][current[1]][current[2]].HP <= 0 {
+			visited[current] = true
+			completed[current] = true
+			strand = append(strand, current)
+			continue
+		}
+
 		cycleCheck := make(map[[3]int]bool)
 		path := [][3]int{}       // the nodes that we have visited
 		interested := [][3]int{} // the nodes that we have visited that are points
@@ -74,8 +81,8 @@ func GetCyclesAndStrands(state [][][]*heroes.Hero, points [][3]int, hardUpdate m
 			next := state[current[0]][current[1]][current[2]].DestinationIndex
 			status, ok := hardUpdate[current]
 			stayLastMile0 := !ok && state[current[0]][current[1]][current[2]].LastMile == 0
-			changeToLastMile0 := ok && status == 0                    // lm0 will never be an effective cycle
-			if stayLastMile0 || changeToLastMile0 || len(next) <= 1 { // if we are at an end, let's save (LastMile 0 is an end because it does't need to be updated more than once, and therefore not a cycle)
+			changeToLastMile0 := ok && status == 0                                                                // lm0 will never be an effective cycle
+			if stayLastMile0 || changeToLastMile0 || len(next) <= 1 || state[next[0]][next[1]][next[2]].HP <= 0 { // if we are at an end, let's save (LastMile 0 is an end because it does't need to be updated more than once, and therefore not a cycle)
 				for j := len(interested) - 1; j >= 0; j-- { // append in reverse for hierarchy
 					strand = append(strand, interested[j])
 				}

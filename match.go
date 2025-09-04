@@ -903,7 +903,7 @@ func (m *match) run() {
 
 		case <-m.simulate:
 
-			fmt.Println("SIMULATE")
+			fmt.Println("SIMULATE", m.state_count)
 
 			m.ticker.Stop()
 
@@ -1099,10 +1099,8 @@ func (m *match) run() {
 
 							} else if hunter.LastMile == 2 {
 
-								dynamicDist := getDistFromDynamic(m.heroes, hunter)
-								fmt.Println("dynamicDist", hunter.Index, target.Index, dynamicDist, hunter.Position, target.Position)
-
 								radiusCheck := maps.EuclideanDistance2(hunter.Position, target.Position)
+								fmt.Println(hunter.Index, target.Index, hunter.Position, target.Position, radiusCheck)
 								if util.SigDig3(radiusCheck) > 1 {
 									fmt.Println("weird behavior2!!!", i, j, k, radiusCheck)
 									panic("should not exceed 1 radius")
@@ -1238,7 +1236,7 @@ func (m *match) run() {
 				}
 			}
 
-			//printState(m.heroes, m.SPDTable, "after")
+			printState(m.heroes, m.SPDTable, "after")
 
 			// simulate all cooldowns
 			cooldownChange := 0.0
@@ -1328,6 +1326,9 @@ func (m *match) run() {
 									enemyUnit.HP -= DMGToDefender
 									m.heroes[i][j][k].TTD = 100
 									simulatedAttack = true
+									if m.heroes[i][j][k].HP <= 0 {
+										dead = append(dead, []int{i, j, k})
+									}
 									if enemyUnit.HP <= 0 {
 										dead = append(dead, m.heroes[i][j][k].DestinationIndex)
 									}

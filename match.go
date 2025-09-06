@@ -1475,11 +1475,6 @@ func (m *match) run() {
 
 			fmt.Println("concurrent variables", !has_user_cmd && (m.state_count < 8000), has_user_cmd, m.state_count < 8000)
 
-			if false && !has_user_cmd {
-				fmt.Println("concurrent SIMULATE called", m.state_count)
-				go func() { m.simulate <- true }()
-			}
-
 			if !has_user_cmd && (m.state_count < 8000) {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()

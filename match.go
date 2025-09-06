@@ -1392,6 +1392,7 @@ func (m *match) run() {
 			}
 
 			//printState(m.heroes, m.SPDTable, "after2")
+			printCamps(m.camps)
 
 			if game_over_check(m.heroes) {
 				m.logger.Close()
@@ -1472,6 +1473,8 @@ func (m *match) run() {
 
 			m.state_count += 1
 
+			fmt.Println("concurrent variables", !has_user_cmd && (m.state_count < 8000), has_user_cmd, m.state_count < 8000)
+
 			if false && !has_user_cmd {
 				fmt.Println("concurrent SIMULATE called", m.state_count)
 				go func() { m.simulate <- true }()
@@ -1508,6 +1511,13 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 				}
 			}
 		}
+	}
+}
+
+func printCamps(camps []*heroes.Camp) {
+	fmt.Println("printing camps")
+	for i := 0; i < len(camps); i++ {
+		fmt.Println(i, camps[i].HP)
 	}
 }
 

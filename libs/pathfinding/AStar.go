@@ -4,7 +4,6 @@ import (
 	"container/heap"
 	"fd/libs/bezier"
 	"fd/libs/maps"
-	"fmt"
 	"math"
 )
 
@@ -130,9 +129,6 @@ func AStarInit(mp *maps.MapDetails, start [2]float64, goal [2]float64) *AStarGra
 		}
 	}
 
-	fmt.Println("!!!!!!!!!!!!!!!!!!!!!!!!!!")
-	fmt.Println(start)
-
 	masterAStar.Nodes[start] = 0
 	heap.Push(masterAStar.PriorityQueue, masterAStar.CalculateKey(start))
 
@@ -183,7 +179,6 @@ func (graph *AStarGraph) ComputeShortestPath() [][2]float64 {
 	for graph.PriorityQueue.Len() > 0 {
 
 		current := heap.Pop(graph.PriorityQueue).(AStarKey)
-		fmt.Println("current", current)
 
 		if current.Location == graph.Goal {
 

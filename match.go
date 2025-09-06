@@ -1512,7 +1512,7 @@ func printState(state [][][]*heroes.Hero, SPDTable [][][]int, period string) {
 }
 
 func (m *match) sharepos(a *attack, t float64) {
-	fmt.Println("*****************************sharepos*****************************", a)
+	fmt.Println("sharepos", a)
 
 	atk_temp := ""
 	if a != nil {
@@ -1617,8 +1617,6 @@ func getLineSegmentTravelled(refX float64, refY float64, dest [2]float64, distan
 }
 
 func setPath(unit *heroes.Hero, dest [2]float64, p [][2]float64, destinationType int, destinationIndex []int) {
-
-	fmt.Println("?!?!?!?!?!?!?!?!?!?!", unit.Start, unit.Position)
 
 	// if the unit's position does not equal the start of the path, recalculate the path
 	if (unit.Position[0] != p[0][0]) || (unit.Position[1] != p[0][1]) {
@@ -1836,7 +1834,6 @@ func LPA(start [2]float64, end [2]float64) {
 	LPA := pathfinding.LPAInit(mapList[0], start, end)
 
 	if _, exists := LPA.Nodes[start]; !exists {
-		fmt.Println("LPA start node not found", start)
 		edgeIndex, edgeCost := getEdges(start, LPA)
 		LPA.AddNode(start)
 		for i := 0; i < len(edgeIndex); i++ {
@@ -1845,7 +1842,6 @@ func LPA(start [2]float64, end [2]float64) {
 	}
 
 	if _, exists := LPA.Nodes[end]; !exists {
-		fmt.Println("LPA end node not found", end)
 		edgeIndex, edgeCost := getEdges(end, LPA)
 		LPA.AddNode(end)
 		for i := 0; i < len(edgeIndex); i++ {
@@ -1885,10 +1881,9 @@ func DStarLiteInit(start [2]float64, end [2]float64) *pathfinding.DLiteGraph {
 
 	DStar.Nodes[end][1] = 0
 	heap.Push(DStar.PriorityQueue, DStar.CalculateKey(end))
-	s := time.Now()
+	//s := time.Now()
 	DStar.ComputeShortestPath()
-	elapsed := time.Since(s)
-	fmt.Println("D* runtime", elapsed)
+	//elapsed := time.Since(s)
 	DStar.ReturnShortestPath()
 
 	return DStar

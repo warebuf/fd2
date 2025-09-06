@@ -149,54 +149,48 @@ func radiusTransitionStatus(p1Start, p1End, p2Start, p2End [2]float64, radius fl
 	// Classify transition
 	switch {
 	case s0 == "outside" && s1 == "inside":
-		fmt.Println("entering1")
 		return "entering"
 	case s0 == "outside" && s1 == "edge":
-		fmt.Println("entering2")
 		return "entering"
 	case s0 == "edge" && s1 == "inside":
-		fmt.Println("entering3")
 		return "entering"
 	case s0 == "inside" && s1 == "outside":
-		fmt.Println("exiting1")
 		return "exiting"
 	case s0 == "inside" && s1 == "edge":
-		fmt.Println("exiting2")
 		return "exiting"
 	case s0 == "edge" && s1 == "outside":
-		fmt.Println("exiting3")
 		return "exiting"
 	case s0 == "outside" && s1 == "outside" && closestInside:
-		fmt.Println("passing", d0, d1, closest)
+		//fmt.Println("passing", d0, d1, closest)
 		return "passing"
 	case s0 == "edge" && s1 == "edge" && closestInside:
-		fmt.Println("passing2", d0, d1, closest)
+		//fmt.Println("passing2", d0, d1, closest)
 		return "passing"
 	case s0 == "edge" && s1 == "edge" && closestOnEdge:
 		rd0 := math.Round(d0*10000) / 10000
 		rd1 := math.Round(d1*10000) / 10000
-		fmt.Println("grazing", d0, d1, closest, radius, rd0, rd1)
+		//fmt.Println("grazing", d0, d1, closest, radius, rd0, rd1)
 
 		if d0 < radius && d1 > radius {
-			fmt.Println("grazing -> exiting")
+			//fmt.Println("grazing -> exiting")
 			return "exiting"
 		} else if d0 > radius && d1 < radius {
-			fmt.Println("grazing -> entering")
+			//fmt.Println("grazing -> entering")
 			return "entering"
 		} else if rd0 >= radius-eps && rd1 <= radius-eps {
-			fmt.Println("grazing2 -> entering")
+			//fmt.Println("grazing2 -> entering")
 			return "entering"
 		} else if rd0 <= radius+eps && rd1 >= radius+eps {
-			fmt.Println("grazing2 -> exiting")
+			//fmt.Println("grazing2 -> exiting")
 			return "exiting"
 		}
 
-		fmt.Println("grazing -> did not choose")
+		//fmt.Println("grazing -> did not choose")
 		return "grazing"
 	case s0 == "inside" && s1 == "inside":
 		return "sitting"
 	default:
-		fmt.Println("on_edge", s0, s1, d0, d1, closest)
+		//fmt.Println("on_edge", s0, s1, d0, d1, closest)
 		return "on_edge"
 	}
 }

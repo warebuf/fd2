@@ -1,5 +1,7 @@
 package heroes
 
+import "fmt"
+
 func SpeedLookup(state [][][]*Hero, interest *Hero) int {
 
 	if interest.Status != 1 || interest.LastMile != 2 {
@@ -63,6 +65,8 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		table = append(table, subside)
 	}
 
+	fmt.Println(1, LM2Units)
+
 	// determine the 0-degree LM2 units
 	degree0 := [][3]int{}
 	for LM2 := range LM2Units {
@@ -81,6 +85,8 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 		}
 
 	}
+
+	fmt.Println(2, LM2Units)
 
 	// set the speed for the LM2 strands
 	for i := 0; i < len(degree0); i++ {
@@ -144,6 +150,8 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 
 	}
 
+	fmt.Println(3, LM2Units)
+
 	// for cycles, iterate through the cycle and find the lowest SPD unit (maybe set SPD to 0 idk)
 	for LM2, completed := range LM2Units {
 		if !completed && state[LM2[0]][LM2[1]][LM2[2]].HP > 0 {
@@ -173,6 +181,8 @@ func SpeedTable(state [][][]*Hero, dependencies map[[3]int][][3]int) [][][]int {
 			}
 		}
 	}
+
+	fmt.Println(4, LM2Units)
 
 	return table
 }

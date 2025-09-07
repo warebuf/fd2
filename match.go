@@ -162,6 +162,8 @@ func m_read(m *match_socket) {
 				continue
 			} else if msg.Event == "act" {
 
+				fmt.Println("msg", msg)
+
 				// check if the match has started and the action is to a user's own hero
 				if m.m.phase == "TURN" && !m.m.ended && m.m.uuid_to_team_int[m.u.uid].a == msg.UnitIndex[0] && m.m.uuid_to_team_int[m.u.uid].b == msg.UnitIndex[1] {
 					// check if the hero is alive and at starting position
@@ -907,6 +909,7 @@ func (m *match) run() {
 
 			m.ticker.Stop()
 
+			fmt.Println("bot actions")
 			// give all bots an action
 			gave_bots_acts := false
 			for i := 0; i < len(m.heroes); i++ {
@@ -914,6 +917,7 @@ func (m *match) run() {
 					for k := 0; k < len(m.heroes[i][j]); k++ {
 						if m.heroes[i][j][k].Bot && (m.heroes[i][j][k].Status == 0) {
 							path, dest, idx := determineBotAction(m.heroes[i][j][k], m.heroes, m.camps, m.accessible, false)
+							fmt.Println(i, j, k, "determineBotAction", path, dest, idx)
 							destinationType := 0
 							if len(idx) == 3 {
 								destinationType = 1
@@ -963,9 +967,11 @@ func (m *match) run() {
 				m.sharepos(nil, 0)
 			}
 
+			fmt.Println("SPD Table")
 			m.SPDTable = heroes.SpeedTable(m.heroes, m.dependencies)
 
 			// calculate min unit of time to action
+			fmt.Println("Min path")
 			min_units := 999999.99
 			for i := 0; (min_units > 0) && i < len(m.heroes); i++ {
 				for j := 0; (min_units > 0) && j < len(m.heroes[i]); j++ {
@@ -1002,7 +1008,7 @@ func (m *match) run() {
 			recompute := [][3]int{}
 			lastMile := [][3]int{}
 			pathDup := [][3]int{}
-
+			fmt.Println("Mode changes")
 			for i := 0; (min_units > 0) && i < len(m.heroes); i++ {
 				for j := 0; (min_units > 0) && j < len(m.heroes[i]); j++ {
 					for k := 0; (min_units > 0) && k < len(m.heroes[i][j]); k++ {
@@ -1151,9 +1157,10 @@ func (m *match) run() {
 
 			has_user_cmd := false
 
-			printState(m.heroes, m.SPDTable, "before")
+			//printState(m.heroes, m.SPDTable, "before")
 
 			// move all unit positions
+			fmt.Println("Movement")
 			movementChange := 0.0
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1236,9 +1243,10 @@ func (m *match) run() {
 				}
 			}
 
-			printState(m.heroes, m.SPDTable, "after")
+			//printState(m.heroes, m.SPDTable, "after")
 
 			// simulate all cooldowns
+			fmt.Println("Cooldowns")
 			cooldownChange := 0.0
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1263,6 +1271,7 @@ func (m *match) run() {
 			}
 
 			// simulate attacks
+			fmt.Println("Attacks")
 			dead := make([][]int, 0)
 			simulatedAttack := false
 			for i := 0; i < len(m.heroes); i++ {
@@ -1362,6 +1371,7 @@ func (m *match) run() {
 			}
 
 			// increment the turn
+			fmt.Println("Turn increment")
 			num, _ := strconv.Atoi(m.turn[5:])
 			if simulatedAttack {
 				m.turn = "TURN " + strconv.Itoa(num+1)
@@ -1373,6 +1383,7 @@ func (m *match) run() {
 			}
 
 			// update paths
+			fmt.Println("Path updates")
 			allToUpdate := append(append(recompute, lastMile...), pathDup...)
 			hardUpdate := make(map[[3]int]int)
 			for i := 0; i < len(recompute); i++ {
@@ -1392,8 +1403,9 @@ func (m *match) run() {
 			}
 
 			//printState(m.heroes, m.SPDTable, "after2")
-			printCamps(m.camps)
+			//printCamps(m.camps)
 
+			fmt.Println("Game Over check")
 			if game_over_check(m.heroes) {
 				m.logger.Close()
 				has_user_cmd = true
@@ -1415,11 +1427,17 @@ func (m *match) run() {
 			}
 
 			// determine if camp/unit is dead, reset hunters
+			fmt.Println("Dead check")
 			if len(dead) > 0 {
 
 				for i := 0; i < len(m.heroes); i++ {
 					for j := 0; j < len(m.heroes[i]); j++ {
 						for k := 0; k < len(m.heroes[i][j]); k++ {
+
+							// if dead, skips
+							if m.heroes[i][j][k].HP <= 0 {
+								continue
+							}
 
 							// iterate through dead, if unit's destination is equal to dead, then set to Status 0 (waiting for new input)
 							for l := 0; l < len(dead); l++ {

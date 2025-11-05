@@ -909,7 +909,7 @@ func (m *match) run() {
 
 			m.ticker.Stop()
 
-			fmt.Println("bot actions")
+			fmt.Println("bot actions", m.state_count)
 			// give all bots an action
 			gave_bots_acts := false
 			for i := 0; i < len(m.heroes); i++ {
@@ -967,11 +967,11 @@ func (m *match) run() {
 				m.sharepos(nil, 0)
 			}
 
-			fmt.Println("SPD Table")
+			fmt.Println("SPD Table", m.state_count)
 			m.SPDTable = heroes.SpeedTable(m.heroes, m.dependencies)
 
 			// calculate min unit of time to action
-			fmt.Println("Min path")
+			fmt.Println("Min path", m.state_count)
 			min_units := 999999.99
 			for i := 0; (min_units > 0) && i < len(m.heroes); i++ {
 				for j := 0; (min_units > 0) && j < len(m.heroes[i]); j++ {
@@ -1008,7 +1008,7 @@ func (m *match) run() {
 			recompute := [][3]int{}
 			lastMile := [][3]int{}
 			pathDup := [][3]int{}
-			fmt.Println("Mode changes")
+			fmt.Println("Mode changes", m.state_count)
 			for i := 0; (min_units > 0) && i < len(m.heroes); i++ {
 				for j := 0; (min_units > 0) && j < len(m.heroes[i]); j++ {
 					for k := 0; (min_units > 0) && k < len(m.heroes[i][j]); k++ {
@@ -1160,7 +1160,7 @@ func (m *match) run() {
 			//printState(m.heroes, m.SPDTable, "before")
 
 			// move all unit positions
-			fmt.Println("Movement")
+			fmt.Println("Movement", m.state_count)
 			movementChange := 0.0
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1246,7 +1246,7 @@ func (m *match) run() {
 			//printState(m.heroes, m.SPDTable, "after")
 
 			// simulate all cooldowns
-			fmt.Println("Cooldowns")
+			fmt.Println("Cooldowns", m.state_count)
 			cooldownChange := 0.0
 			for i := 0; i < len(m.heroes); i++ {
 				for j := 0; j < len(m.heroes[i]); j++ {
@@ -1271,7 +1271,7 @@ func (m *match) run() {
 			}
 
 			// simulate attacks
-			fmt.Println("Attacks")
+			fmt.Println("Attacks", m.state_count)
 			dead := make([][]int, 0)
 			simulatedAttack := false
 			for i := 0; i < len(m.heroes); i++ {
@@ -1371,7 +1371,7 @@ func (m *match) run() {
 			}
 
 			// increment the turn
-			fmt.Println("Turn increment")
+			fmt.Println("Turn increment", m.state_count)
 			num, _ := strconv.Atoi(m.turn[5:])
 			if simulatedAttack {
 				m.turn = "TURN " + strconv.Itoa(num+1)
@@ -1383,7 +1383,7 @@ func (m *match) run() {
 			}
 
 			// update paths
-			fmt.Println("Path updates")
+			fmt.Println("Path updates", m.state_count)
 			allToUpdate := append(append(recompute, lastMile...), pathDup...)
 			hardUpdate := make(map[[3]int]int)
 			for i := 0; i < len(recompute); i++ {
@@ -1405,7 +1405,7 @@ func (m *match) run() {
 			//printState(m.heroes, m.SPDTable, "after2")
 			//printCamps(m.camps)
 
-			fmt.Println("Game Over check")
+			fmt.Println("Game Over check", m.state_count)
 			if game_over_check(m.heroes) {
 				m.logger.Close()
 				has_user_cmd = true
@@ -1427,7 +1427,7 @@ func (m *match) run() {
 			}
 
 			// determine if camp/unit is dead, reset hunters
-			fmt.Println("Dead check")
+			fmt.Println("Dead check", m.state_count)
 			if len(dead) > 0 {
 
 				for i := 0; i < len(m.heroes); i++ {
@@ -1491,7 +1491,7 @@ func (m *match) run() {
 
 			m.state_count += 1
 
-			fmt.Println("concurrent variables", !has_user_cmd && (m.state_count < 8000), has_user_cmd, m.state_count < 8000)
+			fmt.Println("concurrent variables", m.state_count, ": ", !has_user_cmd && (m.state_count < 8000), has_user_cmd, m.state_count < 8000)
 
 			if !has_user_cmd && (m.state_count < 8000) {
 				fmt.Println("concurrent SIMULATE called", m.state_count)

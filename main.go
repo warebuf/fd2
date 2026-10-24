@@ -260,6 +260,8 @@ func main() {
 	sid_to_sock.mutex = sync.RWMutex{}
 	msid_to_sock.msid_to_sock = make(map[uuid.UUID]*match_socket)
 
+	// these OAuth2 tokens have been revoked
+	
 	goth.UseProviders(google.New(
 		"676118167957-4bpa000p9bfaf5vu6halmen6nfjnuo1r.apps.googleusercontent.com",
 		"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",
